@@ -38,7 +38,7 @@ export function Hero() {
               href="#contact"
               className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-accent px-6 py-3 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-neon)] hover:shadow-[var(--shadow-glow)] hover:scale-[1.02] transition-all"
             >
-              Réserver un audit gratuit
+              Réserver une consultance gratuite
               <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
             </a>
             <a

@@ -30,6 +30,10 @@ export function Contact() {
             <span className="material-symbols-outlined text-[color:var(--neon-cyan)]">●</span>
           </div>
           <SectionHeader eyebrow="Contact" title="Parlons de vos blocages opérationnels." />
+          <p className="mt-6 text-muted-foreground leading-relaxed">
+            Si votre équipe perd du temps sur des tâches répétitives, des relances, des saisies
+            ou des échanges mal structurés, nous pouvons vous aider à voir plus clair.
+          </p>
         </motion.div>
 
         <motion.form
@@ -55,7 +59,7 @@ export function Contact() {
             disabled={loading}
             className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-primary to-accent px-6 py-3 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-neon)] hover:shadow-[var(--shadow-glow)] hover:scale-[1.01] transition-all disabled:opacity-60"
           >
-            {loading ? "Envoi..." : <>Demander un audit <Send size={16} /></>}
+            {loading ? "Envoi..." : <>Demander une consultance <Send size={16} /></>}
           </button>
         </motion.form>
       </div>

@@ -48,7 +48,7 @@ export function Navbar() {
               href="#contact"
               className="hidden md:inline-flex items-center justify-center rounded-full bg-primary/10 border border-primary/20 px-4 py-1.5 text-xs font-semibold text-foreground hover:bg-primary/20 hover:border-primary/40 transition-all"
             >
-              Audit gratuit
+              Consultance gratuite
             </a>
 
             <button
@@ -80,7 +80,7 @@ export function Navbar() {
             onClick={() => setOpen(false)}
             className="flex items-center justify-center rounded-xl bg-primary/10 border border-primary/20 px-4 py-2.5 text-sm font-semibold text-foreground"
           >
-            Audit gratuit
+            Consultance gratuite
           </a>
         </div>
       )}
