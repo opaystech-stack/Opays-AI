@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useState, type FormEvent } from "react";
-import { Send, Hub } from "lucide-react";
+import { Send } from "lucide-react";
 import { toast } from "sonner";
 import { SectionHeader } from "./Approche";
 
