@@ -7,14 +7,31 @@ import { SectionHeader } from "./Approche";
 export function Contact() {
   const [loading, setLoading] = useState(false);
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => {
+
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+      const response = await fetch("/api/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        toast.success("Demande envoyée — nous vous recontactons sous 24h.");
+        (e.target as HTMLFormElement).reset();
+      } else {
+        toast.error("Erreur lors de l'envoi. Veuillez réessayer.");
+      }
+    } catch (error) {
+      toast.error("Un problème est survenu. Réessayez plus tard.");
+    } finally {
       setLoading(false);
-      toast.success("Demande envoyée — nous vous recontactons sous 24h.");
-      (e.target as HTMLFormElement).reset();
-    }, 800);
+    }
   };
 
   return (
