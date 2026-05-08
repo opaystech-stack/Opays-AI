@@ -30,16 +30,6 @@ export function Contact() {
             <span className="material-symbols-outlined text-[color:var(--neon-cyan)]">●</span>
           </div>
           <SectionHeader eyebrow="Contact" title="Parlons de vos blocages opérationnels." />
-          <p className="mt-6 text-muted-foreground leading-relaxed">
-            Si votre équipe perd du temps sur des tâches répétitives, des relances, des saisies
-            ou des échanges mal structurés, nous pouvons vous aider à voir plus clair.
-          </p>
-
-          <div className="mt-8 space-y-3 text-sm">
-            <Bullet>Audit gratuit de 30 minutes</Bullet>
-            <Bullet>Diagnostic clair sous 5 jours</Bullet>
-            <Bullet>Aucun engagement</Bullet>
-          </div>
         </motion.div>
 
         <motion.form
