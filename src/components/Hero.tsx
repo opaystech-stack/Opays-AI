@@ -20,17 +20,16 @@ export function Hero() {
           </div>
 
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05]">
-            L'IA <span className="text-gradient">utile.</span>
+            L'IA <span className="text-gradient">Souveraine.</span>
             <br />
             <span className="text-foreground/90 text-3xl md:text-4xl lg:text-5xl font-semibold block mt-4">
-              Pour des entreprises qui veulent travailler mieux.
+              Utile. Pragmatique.
             </span>
           </h1>
 
           <p className="mt-6 text-lg text-muted-foreground max-w-xl leading-relaxed">
-            Nous aidons les organisations à repérer les tâches inutiles, automatiser ce qui se
-            répète et construire des systèmes plus fluides, plus fiables et plus adaptés à leur
-            réalité.
+            Nous aidons les organisations à transformer leur fatigue opérationnelle en performance
+            grâce à des systèmes IA maîtrisés, ouverts et adaptés aux réalités du terrain.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-4">

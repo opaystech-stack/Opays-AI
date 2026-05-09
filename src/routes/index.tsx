@@ -3,6 +3,8 @@ import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
 import { Approche } from "@/components/Approche";
 import { Solutions } from "@/components/Solutions";
+import { RD } from "@/components/RD";
+import { Vision } from "@/components/Vision";
 import { PourquoiNous } from "@/components/PourquoiNous";
 import { Contact } from "@/components/Contact";
 import { Footer } from "@/components/Footer";
@@ -20,7 +22,9 @@ function Index() {
         <Hero />
         <Approche />
         <Solutions />
+        <RD />
         <PourquoiNous />
+        <Vision />
         <Contact />
       </main>
       <Footer />

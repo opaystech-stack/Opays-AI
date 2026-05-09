@@ -1,25 +1,25 @@
 import { motion } from "framer-motion";
-import { FileText, MessageSquare, GitBranch } from "lucide-react";
+import { Shield, GitBranch, Layers } from "lucide-react";
 import { SectionHeader } from "./Approche";
 
 const items = [
   {
-    icon: FileText,
-    eyebrow: "Traitement intelligent",
-    title: "Documents et données",
-    text: "Nous aidons les entreprises à extraire, organiser et traiter les données contenues dans les factures, formulaires, contrats et autres supports opérationnels.",
-  },
-  {
-    icon: MessageSquare,
-    eyebrow: "Assistants de relation",
-    title: "Communication automatisée",
-    text: "Nous mettons en place des assistants capables de répondre, orienter et qualifier les demandes simples, notamment sur les canaux que vos clients utilisent déjà.",
+    icon: Shield,
+    eyebrow: "Souveraineté numérique",
+    title: "IA Open Source & Clonage",
+    text: "Sélection et ré-entraînement de modèles mondiaux pour créer des instances privées, indépendantes et parfaitement adaptées à votre patrimoine de données.",
   },
   {
     icon: GitBranch,
-    eyebrow: "Automatisation des processus",
-    title: "Workflows internes",
-    text: "Nous relions vos outils entre eux pour que les tâches répétitives s'exécutent plus proprement, avec moins de relances manuelles et moins de pertes d'information.",
+    eyebrow: "Fluidité opérationnelle",
+    title: "Automatisation des processus",
+    text: "Suppression des tâches répétitives et coordination intelligente des flux pour que vos opérations critiques s'exécutent avec une précision totale.",
+  },
+  {
+    icon: Layers,
+    eyebrow: "Structure & Performance",
+    title: "Architecture & Intégration",
+    text: "Construction de ponts robustes entre vos données et vos outils, garantissant une intégration de l'IA sans friction dans votre écosystème existant.",
   },
 ];
 
