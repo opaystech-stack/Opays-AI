@@ -26,13 +26,13 @@ export function RD() {
             <div className="mt-10 space-y-8">
               <Feature 
                 icon={Cpu}
-                title="Optimisation Infrastructurelle"
-                text="Adaptation des modèles pour fonctionner sur des serveurs locaux avec des contraintes de bande passante ou d'énergie."
+                title="Ingénierie Edge & Déploiement Privé"
+                text="Développement de modèles ultra-optimisés capables de s’exécuter en circuit fermé sur vos propres serveurs, garantissant une latence zéro et une confidentialité totale."
               />
               <Feature 
                 icon={Globe}
-                title="Intelligence Contextuelle"
-                text="Travaux sur l'optimisation des modèles pour les données régionales et les spécificités linguistiques locales."
+                title="Fine-Tuning & Alignement Cognitif"
+                text="Spécialisation des modèles open-source sur vos terminologies expertes et votre jargon métier pour créer un assistant qui comprend réellement votre écosystème."
               />
             </div>
           </motion.div>
