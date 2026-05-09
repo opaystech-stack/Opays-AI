@@ -19,11 +19,12 @@ export function Hero() {
             Architecture IA & Automatisation
           </div>
 
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05]">
-            L'IA <span className="text-gradient">Souveraine.</span>
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1]">
+            L'IA bâtie pour <br />
+            <span className="text-gradient text-4xl md:text-5xl lg:text-6xl">votre réalité.</span>
             <br />
-            <span className="text-foreground/90 text-3xl md:text-4xl lg:text-5xl font-semibold block mt-4">
-              Utile. Pragmatique.
+            <span className="text-foreground/90 text-2xl md:text-3xl lg:text-4xl font-semibold block mt-4">
+              De l'infrastructure à l'usage.
             </span>
           </h1>
 

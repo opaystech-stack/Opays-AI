@@ -44,15 +44,63 @@ export function RD() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="relative"
           >
-            <div className="aspect-square rounded-3xl overflow-hidden border border-white/10 glass p-8 flex items-center justify-center">
-              <div className="relative h-full w-full rounded-2xl bg-black/40 border border-white/5 overflow-hidden flex items-center justify-center group">
-                 <Beaker size={120} className="text-primary/20 absolute group-hover:scale-110 transition-transform duration-700" />
+            <div className="aspect-square rounded-3xl overflow-hidden border border-white/10 glass p-8 flex items-center justify-center relative">
+              {/* Pulsing rings background */}
+              <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
+                {[...Array(3)].map((_, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 2, opacity: [0, 0.1, 0] }}
+                    transition={{ 
+                      duration: 4, 
+                      repeat: Infinity, 
+                      delay: i * 1.3,
+                      ease: "easeOut"
+                    }}
+                    className="absolute h-40 w-40 rounded-full border border-primary/40"
+                  />
+                ))}
+              </div>
+
+              <div className="relative h-full w-full rounded-2xl bg-black/40 border border-white/5 overflow-hidden flex items-center justify-center group shadow-2xl">
+                 <motion.div 
+                   animate={{ rotate: 360 }}
+                   transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                   className="absolute h-[150%] w-[150%] opacity-20"
+                   style={{ 
+                     background: "conic-gradient(from 0deg, transparent, var(--neon-cyan), transparent 30%)" 
+                   }}
+                 />
+                 
                  <div className="relative z-10 text-center p-6">
-                    <div className="text-4xl font-bold text-gradient mb-2">R&D Lab</div>
-                    <div className="text-sm text-muted-foreground font-mono">Constant Innovation Cycle</div>
+                    <motion.div
+                      animate={{ y: [0, -10, 0] }}
+                      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                    >
+                      <Beaker size={80} className="text-primary mb-4 mx-auto drop-shadow-[0_0_15px_rgba(0,186,255,0.5)]" />
+                    </motion.div>
+                    <div className="text-3xl font-bold text-white mb-2 tracking-tight">R&D Lab</div>
+                    <div className="flex items-center justify-center gap-2">
+                      <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+                      <span className="text-[10px] text-muted-foreground font-mono uppercase tracking-[0.2em]">Active Innovation Cycle</span>
+                    </div>
                  </div>
-                 {/* Decorative elements */}
-                 <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(0,186,255,0.1),transparent_70%)]" />
+
+                 {/* Particle effects */}
+                 {[...Array(6)].map((_, i) => (
+                   <motion.div
+                     key={i}
+                     initial={{ x: Math.random() * 200 - 100, y: Math.random() * 200 - 100, opacity: 0 }}
+                     animate={{ 
+                       x: [null, Math.random() * 200 - 100], 
+                       y: [null, Math.random() * 200 - 100],
+                       opacity: [0, 0.5, 0] 
+                     }}
+                     transition={{ duration: 5 + Math.random() * 5, repeat: Infinity }}
+                     className="absolute h-1 w-1 bg-primary rounded-full blur-[1px]"
+                   />
+                 ))}
               </div>
             </div>
           </motion.div>
