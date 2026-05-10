@@ -6,6 +6,7 @@ import { Solutions } from "@/components/Solutions";
 import { RD } from "@/components/RD";
 import { Vision } from "@/components/Vision";
 import { PourquoiNous } from "@/components/PourquoiNous";
+import { FAQ } from "@/components/FAQ";
 import { Contact } from "@/components/Contact";
 import { Footer } from "@/components/Footer";
 import { Toaster } from "@/components/ui/sonner";
@@ -25,6 +26,7 @@ function Index() {
         <RD />
         <PourquoiNous />
         <Vision />
+        <FAQ />
         <Contact />
       </main>
       <Footer />
