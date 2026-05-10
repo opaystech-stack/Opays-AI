@@ -47,7 +47,7 @@ export function Navbar() {
           <div className="flex items-center gap-4 shrink-0">
             <a
               href="#contact"
-              className="hidden md:inline-flex items-center justify-center rounded-full bg-primary/10 border border-primary/20 px-4 py-1.5 text-xs font-semibold text-foreground hover:bg-primary/20 hover:border-primary/40 transition-all"
+              className="hidden md:inline-flex items-center justify-center rounded-full bg-blue-600 px-5 py-1.5 text-xs font-semibold text-white hover:bg-blue-500 shadow-[0_0_15px_rgba(37,99,235,0.4)] hover:shadow-[0_0_20px_rgba(37,99,235,0.6)] transition-all"
             >
               Consultance gratuite
             </a>
@@ -79,7 +79,7 @@ export function Navbar() {
           <a
             href="#contact"
             onClick={() => setOpen(false)}
-            className="flex items-center justify-center rounded-xl bg-primary/10 border border-primary/20 px-4 py-2.5 text-sm font-semibold text-foreground"
+            className="flex items-center justify-center rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-[0_0_15px_rgba(37,99,235,0.4)]"
           >
             Consultance gratuite
           </a>
