@@ -118,11 +118,15 @@ export function FAQ() {
 
         <div className="space-y-12">
           {faqData.map((category, catIndex) => (
-            <div key={catIndex} className="space-y-6">
-              <h3 className="text-xl font-semibold text-[var(--neon-cyan)] border-b border-white/10 pb-2">
+            <div 
+              key={catIndex} 
+              className="p-8 rounded-3xl border border-[color:var(--neon-cyan)]/30 bg-[color:var(--neon-cyan)]/5 backdrop-blur-sm space-y-6 shadow-[var(--shadow-neon)] transition-all hover:border-[color:var(--neon-cyan)]/60"
+            >
+              <h3 className="text-2xl font-bold text-white flex items-center gap-3">
+                <span className="w-3 h-3 rounded-full bg-[color:var(--neon-cyan)] shadow-[var(--shadow-neon)]" />
                 {category.title}
               </h3>
-              <div className="space-y-4">
+              <div className="space-y-4 pt-2">
                 {category.items.map((item, itemIndex) => (
                   <FAQAccordionItem
                     key={itemIndex}
