@@ -23,7 +23,7 @@ export function Navbar() {
 
   return (
     <header className="fixed inset-x-0 top-6 z-50 px-6">
-      <div className="mx-auto max-w-5xl rounded-full border border-white/10 bg-background/20 backdrop-blur-lg shadow-[0_8px_32px_rgba(0,0,0,0.3)] transition-all duration-300">
+      <div className="mx-auto max-w-5xl rounded-full border border-white/30 bg-background/20 backdrop-blur-lg shadow-[0_8px_32px_rgba(0,0,0,0.3)] transition-all duration-300">
         <div className="flex h-12 items-center justify-between px-6">
           <a href="#top" className="flex items-center gap-2 group shrink-0">
             <img src={logoIcon} alt="Opays Tech" className="h-6 w-6 transition-transform group-hover:scale-110" />
@@ -65,7 +65,7 @@ export function Navbar() {
 
 
       {open && (
-        <div className="md:hidden mt-2 rounded-2xl border border-white/10 bg-background/90 backdrop-blur-xl p-4 space-y-3 shadow-xl">
+        <div className="md:hidden mt-2 rounded-2xl border border-white/30 bg-background/90 backdrop-blur-xl p-4 space-y-3 shadow-xl">
           {items.map((it) => (
             <a
               key={it.href}
