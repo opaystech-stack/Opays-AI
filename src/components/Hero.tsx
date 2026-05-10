@@ -29,8 +29,7 @@ export function Hero() {
           </h1>
 
           <p className="mt-6 text-lg text-muted-foreground max-w-xl leading-relaxed">
-            Nous aidons les organisations à transformer leur fatigue opérationnelle en performance
-            grâce à des systèmes IA maîtrisés, ouverts et adaptés aux réalités du terrain.
+            De la stratégie au déploiement, nous accompagnons les entreprises dans leur modernisation. Nous identifions vos goulots d'étranglement pour automatiser vos processus, réduire la charge mentale de vos équipes et bâtir une infrastructure technologique robuste, parfaitement alignée avec vos objectifs.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-4">
