@@ -9,18 +9,21 @@ Tout ce qui touche a la marque, a la strategie, au site, aux offres et aux futur
 **Domaine:** `opays.io`  
 **Nature:** cabinet d'ingenierie de l'efficience  
 
-### Definition simple
+## 2. Structure Hybride : STUDIO & LABS
 
-Opays Tech aide les entreprises a eliminer le travail inutile, mieux structurer leurs operations et automatiser ce qui se repete, avec des systemes adaptes a leur realite.
+Opays Tech opère selon deux branches complémentaires pour couvrir le marché :
 
-### Ce que le projet n'est pas
+### 2.1 OPAYS STUDIO (Exécution & Volume)
+*   **Mission :** La "Machine à Efficience" pour les PME.
+*   **Méthode :** Audit rapide -> Offre ROI (Remplacement de coût) -> Implémentation via Blueprints.
+*   **But :** Générer du cash-flow immédiat et de la clarté opérationnelle pour le client.
 
-- Pas une agence IA generique.
-- Pas une vitrine technologique sans execution.
-- Pas une promesse abstraite de modernite.
-- Pas un catalogue d'outils sans logique business.
+### 2.2 OPAYS LABS (Recherche & Souveraineté)
+*   **Mission :** Le pôle R&D pour les défis complexes et les niches stratégiques (ex: Mines, Douanes).
+*   **Méthode :** Recherche profonde, création de nouveaux "Skills" IA, innovation souveraine.
+*   **But :** Créer des barrières à l'entrée et maintenir une avance technologique imbattable.
 
-## 2. Promesse centrale
+## 3. Promesse centrale
 
 La promesse d'Opays Tech est de rendre les operations plus simples, plus fluides et plus fiables.
 
@@ -140,28 +143,16 @@ Contient:
 
 Pour l'instant, il faut privilegier une base centrale plutot qu'une fragmentation prematuree.
 
-### Base centrale
-Un seul noyau doit contenir:
+### OPAYS HQ : L'OS de l'Entreprise
+Un seul noyau applicatif (ERP/OS) doit contenir :
 
-- la strategie,
-- la memoire,
-- les regles,
-- les documents de reference,
-- les actifs de marque,
-- les grandes decisions.
+- **Profils Associés :** Suivi d'Equity (Vesting mensuel), Trésorerie, Stratégie.
+- **Profils Employés :** RH (Salaires, documents), suivi de Performance.
+- **Opérations :** CRM, Gestion de Projets, Tâches en temps réel.
+- **Knowledge Base :** "Les Ficelles du Métier" intégrées (Guides spécifiques par rôle).
+- **Communication :** Calendrier partagé, Vision et Objectifs.
 
-### Separation future possible
-On ne separera en depots distincts que si la maturite le justifie.
-
-Exemples de futurs blocs separes:
-
-- `opays-hq` pour la connaissance centrale,
-- `opays-site` pour le site public,
-- `opays-ops` pour les outils internes,
-- `opays-delivery` pour la livraison client,
-- `opays-labs` pour les prototypes.
-
-Cette separation ne doit pas etre forcee trop tot.
+Cette architecture unique garantit que chaque membre de l'équipe applique la méthode standardisée sans erreur.
 
 ## 8. Cadre pour le site
 

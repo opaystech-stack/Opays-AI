@@ -5,8 +5,10 @@ Ce fichier sert de guide de travail pour toute personne ou assistant qui intervi
 ## Priorite
 
 1. Lire `OPAYS_HQ.md` avant de proposer une strategie, un site, une offre ou une evolution de marque.
-2. Traiter ce workspace comme la source de reference du projet Opays Tech.
-3. Preserver la coherence globale avant d'ajouter de nouvelles idees.
+2. Se referer aux fichiers de compétences dans `00_hq/skills/` (Propriétaires et standards Anthropics) pour guider les propositions techniques et strategiques.
+3. Utiliser le skill `skill_creator.md` pour toute création ou amélioration de compétence future.
+4. Traiter ce workspace comme la source de reference du projet Opays Tech.
+5. Preserver la coherence globale avant d'ajouter de nouvelles idees.
 
 ## Regles de base
 

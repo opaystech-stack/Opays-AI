@@ -1,23 +1,18 @@
-# Workspace Map
+# Workspace Map - OPAYS TECH
 
-Carte simple du workspace Opays Tech.
+## 📁 00_hq (Quartier Général)
+- **OPAYS_HQ.md** : Vision centrale et promesse de marque.
+- **OPAYS_HQ_GOVERNANCE.md** : Pacte d'associés et règles de fonctionnement.
+- **skills/** : Répertoire des compétences IA (Ingénierie, Vente, Design).
 
-## Source de reference
+## 📁 opays-hq (Application de Gestion)
+- **supabase/schema.sql** : Structure de la base de données (CRM, Equity, Projets).
+- **src/components/** : Interface du dashboard pour les associés.
+- **USER_MANUAL.md** : Guide pratique pour l'équipe.
 
-- [OPAYS_HQ.md](./OPAYS_HQ.md)
-- [CLAUDE.md](./CLAUDE.md)
+## 📁 src (Site Vitrine)
+- **components/** : Sections du site public (Hero, Solutions, Vision).
+- **routes/** : Architecture TanStack Router.
 
-## Structure principale
-
-- `00_hq/` : noyau central
-- `01_strategy/` : fondations strategiques
-- `02_brand/` : marque et langage
-- `03_site/` : site public
-- `04_offers/` : offres et propositions
-- `05_decisions/` : journal des decisions
-- `06_ops/` : operations internes
-- `07_archive/` : archive
-
-## Regle simple
-
-Si un element du projet ne sait pas ou aller, il doit revenir ici avant d'etre disperse.
+## 📁 01_strategy, 02_brand, etc.
+- Dossiers de planification et actifs de marque.
