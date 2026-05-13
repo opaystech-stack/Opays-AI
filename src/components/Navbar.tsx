@@ -26,7 +26,7 @@ export function Navbar() {
       <div className="mx-auto max-w-5xl rounded-full border border-white/30 bg-background/20 backdrop-blur-lg shadow-[0_8px_32px_rgba(0,0,0,0.3)] transition-all duration-300">
         <div className="flex h-12 items-center justify-between px-6">
           <a href="#top" className="flex items-center gap-2 group shrink-0">
-            <img src="/icon%20logo.PNG" alt="Opays Tech" className="h-6 w-6 transition-transform group-hover:scale-110" />
+            <img src={logoIcon} alt="Opays Tech" className="h-6 w-6 object-contain bg-transparent transition-transform group-hover:scale-110" style={{ mixBlendMode: 'screen' }} />
             <span className="font-display text-sm font-semibold tracking-tight">
               OPAYS <span className="text-gradient">TECH</span>
             </span>

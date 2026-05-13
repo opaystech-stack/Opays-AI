@@ -5,7 +5,7 @@ export function Footer() {
     <footer className="border-t border-border/50 py-10">
       <div className="mx-auto max-w-7xl px-6 flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="flex items-center gap-2.5">
-          <img src={logoIcon} alt="Opays Tech" className="h-7 w-7" />
+          <img src={logoIcon} alt="Opays Tech" className="h-7 w-7" style={{ mixBlendMode: 'screen' }} />
           <span className="font-display text-sm font-semibold">
             OPAYS <span className="text-gradient">TECH</span>
           </span>
