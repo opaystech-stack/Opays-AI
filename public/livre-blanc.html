@@ -56,6 +56,18 @@
       box-shadow: 0 28px 90px rgba(0, 0, 0, 0.38);
     }
 
+    .cover::after {
+      content: "";
+      position: absolute;
+      right: -80px;
+      bottom: -120px;
+      width: 360px;
+      height: 360px;
+      border: 1px solid rgba(72, 217, 255, 0.18);
+      transform: rotate(18deg);
+      opacity: 0.5;
+    }
+
     .brand {
       display: flex;
       align-items: center;
@@ -153,6 +165,10 @@
       backdrop-filter: blur(18px);
     }
 
+    .section.hero-summary {
+      background: linear-gradient(135deg, rgba(18, 30, 52, 0.94), rgba(10, 16, 32, 0.9));
+    }
+
     h2 {
       margin: 0 0 16px;
       font-size: 27px;
@@ -172,7 +188,7 @@
       color: #e7edfb;
     }
 
-    ul {
+    ul, ol {
       margin: 10px 0 16px 22px;
       padding: 0;
       color: #e7edfb;
@@ -194,6 +210,11 @@
     .note.green {
       border-left-color: var(--green);
       background: rgba(94, 226, 160, 0.08);
+    }
+
+    .note.amber {
+      border-left-color: var(--amber);
+      background: rgba(245, 199, 107, 0.08);
     }
 
     .split {
@@ -222,6 +243,33 @@
       font-size: 14px;
     }
 
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .role {
+      padding: 16px;
+      border: 1px solid rgba(116, 174, 255, 0.18);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.035);
+    }
+
+    .role b {
+      display: block;
+      color: #ffffff;
+      font-size: 15px;
+    }
+
+    .role span {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
     .footer {
       margin-top: 24px;
       color: var(--muted);
@@ -234,7 +282,13 @@
       .cover, .section { padding: 22px; border-radius: 18px; }
       .brand { margin-bottom: 36px; }
       .logo { width: 58px; height: 58px; }
-      .split { grid-template-columns: 1fr; }
+      .split, .role-grid { grid-template-columns: 1fr; }
+    }
+
+    @media print {
+      body { background: #080d18; }
+      .page { width: auto; padding: 0; }
+      .cover, .section { break-inside: avoid; box-shadow: none; }
     }
   </style>
 </head>
@@ -249,87 +303,201 @@
           <a href="/" class="back-link">← Retour au site</a>
         </div>
       </div>
-      <p class="eyebrow">La Doctrine Opays Tech</p>
-      <h1>Ingénierie Systémique</h1>
-      <p class="cover-lead">Stabiliser les opérations. Automatiser la performance. Sécuriser la souveraineté.</p>
+      <p class="eyebrow">Livre blanc officiel</p>
+      <h1>Opays Tech</h1>
+      <p class="cover-lead">Opays Tech construit trois choses : une méthode, un outil, une capacité.</p>
       <div class="meta">
-        <span class="pill">Version : v1.0</span>
+        <span class="pill">Version : Mai 2026</span>
         <span class="pill">Statut : Public</span>
+        <span class="pill">Accès : Libre</span>
       </div>
     </section>
 
-    <section class="section">
+    <section class="section hero-summary">
       <h2>1. Notre raison d'être</h2>
-      <p>Opays Tech n'est pas un prestataire de services classique. Nous sommes une unité d'ingénierie qui utilise l'intelligence artificielle pour résoudre un problème universel : la friction opérationnelle.</p>
+      <p>Opays Tech n'est pas une agence de services classique. Nous sommes une entreprise d'ingénierie systémique qui utilise l'intelligence artificielle pour résoudre un problème universel : la friction opérationnelle.</p>
       <p>Nous avons choisi une voie claire : l'efficience pure. Nous transformons le chaos organisationnel en systèmes fluides, automatisés et souverains.</p>
       <div class="note">
-        <strong>Notre vision</strong><br />
+        <strong>Le principe Opays</strong><br />
         Nous ne vendons pas de la technologie. Nous vendons la suppression des coûts inutiles, la réduction des risques et le retour du contrôle aux dirigeants.
       </div>
+      <p>Les entreprises perdent rarement de l'argent sur un seul problème visible. Elles en perdent dans des gestes répétés, des fichiers dispersés, des validations lentes, des informations mal classées, des tâches copiées d'un outil à l'autre et des décisions prises sans données propres.</p>
+      <p>Notre promesse est simple : rendre les opérations plus fluides, plus fiables et plus contrôlables. Cela veut dire moins de friction, moins de perte de temps, moins d'erreurs, plus de clarté et plus de disponibilité pour les tâches utiles.</p>
     </section>
 
     <section class="section">
-      <h2>2. L'IA comme infrastructure</h2>
-      <p>Pour Opays Tech, l'IA n'est pas un gadget marketing ou une interface de discussion. C'est l'infrastructure invisible qui porte la performance.</p>
+      <h2>2. L'IA comme colonne vertébrale</h2>
+      <p>Chez Opays Tech, l'IA n'est pas un gadget marketing. C'est notre ouvrier principal. Elle intervient à chaque étape du travail.</p>
       <div class="split">
         <div class="card">
-          <p class="card-title">Audit Systémique</p>
-          <p>Détecter les fuites de revenus et de précision que l'œil humain ne voit plus.</p>
+          <p class="card-title">Audit assisté</p>
+          <p>Détecter les fuites de revenus, de temps et de précision que l'œil humain ne voit plus.</p>
         </div>
         <div class="card">
-          <p class="card-title">Automatisation Avancée</p>
-          <p>Libérer les talents des tâches répétitives pour les recentrer sur la valeur ajoutée.</p>
+          <p class="card-title">Automatisation métier</p>
+          <p>Libérer les talents des tâches répétitives, coûteuses et sans valeur durable.</p>
         </div>
         <div class="card">
-          <p class="card-title">Intelligence Souveraine</p>
-          <p>Déployer des modèles d'IA locaux qui respectent la confidentialité absolue de vos données.</p>
+          <p class="card-title">Intelligence d'infrastructure</p>
+          <p>Créer des systèmes qui apprennent des données spécifiques des clients sans les compromettre.</p>
         </div>
         <div class="card">
-          <p class="card-title">Pilotage Réel</p>
-          <p>Transformer les opérations en données exploitables pour une prise de décision éclairée.</p>
+          <p class="card-title">Aide à la décision</p>
+          <p>Transformer les opérations en données lisibles pour mieux piloter les projets, les risques et la marge.</p>
         </div>
       </div>
     </section>
 
     <section class="section">
-      <h2>3. Performance & Innovation</h2>
-      <p>Notre approche équilibre le besoin de résultats immédiats et l'ambition stratégique à long terme.</p>
-      <h3>Impact Opérationnel Immédiat</h3>
-      <p>Nous intervenons pour stabiliser vos flux de travail. L'objectif est de produire une efficience mesurable dès les premières semaines de déploiement.</p>
+      <h2>3. La double hélice : Performance & Innovation</h2>
+      <p>Notre structure sépare l'exécution immédiate de l'ambition à long terme. Cet équilibre permet de produire du résultat maintenant, tout en construisant une capacité stratégique pour demain.</p>
+      <h3>Impact opérationnel</h3>
+      <p>L'unité de performance est notre moteur de production. Elle porte l'exécution de projets à fort retour sur investissement. Son rôle est de transformer vos besoins en systèmes d'IA concrets et utilisables immédiatement.</p>
       <ul>
-        <li>Optimisation des processus métiers critiques.</li>
-        <li>Fiabilisation des flux documentaires et financiers.</li>
-        <li>Réduction drastique des erreurs manuelles.</li>
+        <li>Réduction des délais de traitement et automatisation métier.</li>
+        <li>Fiabilisation des flux financiers et documentaires.</li>
+        <li>Mise en place de cerveaux numériques spécialisés.</li>
       </ul>
-      <h3>Souveraineté et Indépendance</h3>
-      <p>Nous construisons votre autonomie technique. Dans un monde de dépendances technologiques, posséder ses propres outils est un avantage stratégique majeur.</p>
+      <h3>Indépendance stratégique</h3>
+      <p>L'unité d'innovation travaille sur l'autonomie technique réelle, le développement d'outils d'usage large et les défis de sécurité.</p>
       <ul>
-        <li><strong>Intelligence en circuit fermé :</strong> modèles d'IA capables de fonctionner sans dépendance extérieure.</li>
-        <li><strong>Actifs de progrès :</strong> chaque déploiement devient un patrimoine technique pour votre entreprise.</li>
-        <li><strong>Sécurité des Systèmes :</strong> protection native de votre savoir-faire industriel et intellectuel.</li>
+        <li><strong>Intelligence en circuit fermé :</strong> développer des modèles d'IA capables de fonctionner sans dépendance aux infrastructures étrangères.</li>
+        <li><strong>Actifs de progrès :</strong> concevoir des systèmes spécialisés pour traiter des problèmes structurels à portée nationale.</li>
+        <li><strong>Patrimoine technique :</strong> chaque projet laisse derrière lui un actif propriétaire réutilisable.</li>
       </ul>
     </section>
 
     <section class="section">
-      <h2>4. La Méthode Opays Tech</h2>
-      <p>Nous partons du terrain. Nous ne commençons pas par vendre une solution, nous commençons par identifier la fuite opérationnelle.</p>
+      <h2>4. Système d'Exploitation Opays : notre preuve par l'exemple</h2>
+      <p>Pour transformer les entreprises de nos clients, nous avons d'abord transformé la nôtre. Ce système d'exploitation interne pilote notre entreprise. Ce n'est pas un simple logiciel de gestion ; c'est le centre nerveux de notre intelligence collective.</p>
+      <div class="split">
+        <div class="card">
+          <p class="card-title">Pilotage centralisé</p>
+          <p>De la gestion des opportunités à la gouvernance stratégique, chaque information importante a sa place.</p>
+        </div>
+        <div class="card">
+          <p class="card-title">Transparence opérationnelle</p>
+          <p>Les équipes suivent les projets, les engagements, les priorités et la santé financière avec une lecture commune.</p>
+        </div>
+        <div class="card">
+          <p class="card-title">Sécurité et Mémoire</p>
+          <p>Le cloisonnement par rôle protège les informations sensibles grâce à une logique d'accès native.</p>
+        </div>
+        <div class="card">
+          <p class="card-title">Patrimoine de savoir</p>
+          <p>La connaissance, les décisions, les documents et les méthodes restent accessibles et structurés.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>5. La méthode Opays</h2>
+      <p>Opays Tech part du terrain. Nous ne commençons pas par vendre une IA, un agent ou un logiciel. Nous commençons par identifier la fuite. Ensuite seulement, nous choisissons le bon véhicule : audit, automatisation, système RAG, agent IA, micro-SaaS, infrastructure IA, formation ou accompagnement.</p>
+      <h3>La logique de déploiement</h3>
       <ol>
-        <li><strong>Diagnostic :</strong> Identification des points de friction.</li>
-        <li><strong>Chiffrage :</strong> Traduction du blocage en temps et en coût.</li>
-        <li><strong>Déploiement :</strong> Intégration de l'infrastructure d'optimisation.</li>
-        <li><strong>Stabilisation :</strong> Suivi et ajustement en continu.</li>
+        <li>Audit rapide du terrain.</li>
+        <li>Chiffrage de la fuite.</li>
+        <li>Proposition basée sur le ROI.</li>
+        <li>Cadrage technique.</li>
+        <li>Développement ou intégration.</li>
+        <li>Mise en production.</li>
+        <li>Suivi et ajustement.</li>
       </ol>
-      <div class="note green">
-        <strong>L'engagement Opays Tech</strong><br />
-        Nous ne livrons pas un produit fini ; nous déployons une capacité opérationnelle qui évolue avec votre croissance.
+      <div class="note amber">
+        <strong>Chiffrage de la fuite</strong><br />
+        Chiffrer la fuite, c'est traduire un blocage en argent, en temps et en risque. Nous estimons le coût avant, le coût après, le temps perdu, les erreurs, le rework, le coût d'opportunité et le niveau de confiance du calcul. L'objectif n'est pas d'impressionner. L'objectif est de vendre une économie défendable.
       </div>
+      <h3>Les critères de l'audit</h3>
+      <ul>
+        <li>Tâches répétitives.</li>
+        <li>Tâches chères en temps salarié ou dirigeant.</li>
+        <li>Coût d'opportunité.</li>
+      </ul>
+      <h3>Les questions de terrain</h3>
+      <ul>
+        <li>Qu'est-ce qui prend trop de temps ?</li>
+        <li>Où est-ce que ça fuit ?</li>
+        <li>Que ferait l'équipe si elle récupérait dix heures par semaine ?</li>
+      </ul>
+      <p>Le calcul doit rester conservateur. Il intègre le salaire chargé, les heures productives réelles, les erreurs, le rework, la maintenance, le setup initial et un niveau de confiance.</p>
+      <div class="note">
+        <strong>Règle commerciale</strong><br />
+        La vente ne doit pas présenter une économie brute comme certaine. Elle doit présenter une fourchette défendable et vendre la réduction du risque.
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>6. Gouvernance et leadership</h2>
+      <p>Opays Tech est dirigé par un noyau d'experts alliant stratégie, technique et commerciale.</p>
+      <div class="role-grid">
+        <div class="role">
+          <b>Direction Générale</b>
+          <span>Pilotage de la vision, de la gouvernance et de la trajectoire d'innovation.</span>
+        </div>
+        <div class="role">
+          <b>Direction Technique</b>
+          <span>Architecture, sécurité, qualité et livraison technique.</span>
+        </div>
+        <div class="role">
+          <b>Direction Commerciale</b>
+          <span>Stratégie commerciale, terrain, closing et valeur marché.</span>
+        </div>
+        <div class="role">
+          <b>Gestion Administrative & Financière</b>
+          <span>Prospection, finance, trésorerie, factures et suivi administratif.</span>
+        </div>
+        <div class="role">
+          <b>Communication & Marque</b>
+          <span>Prospection, communication, marque et supports institutionnels.</span>
+        </div>
+      </div>
+      <p>Notre modèle de collaboration protège l'entreprise et assure un engagement réel. Chaque membre contribue activement à une vision de long terme.</p>
+    </section>
+
+    <section class="section">
+      <h2>7. La souveraineté comme doctrine</h2>
+      <p>La technologie est une arme de souveraineté. Pour Opays Tech, cela signifie garder la maîtrise de l'infrastructure, des logiciels, des données et de l'intelligence produite.</p>
+      <ul>
+        <li><strong>Maîtrise de l'infrastructure :</strong> privilégier les serveurs privés, les déploiements locaux et les architectures contrôlables.</li>
+        <li><strong>Indépendance logicielle :</strong> utiliser et contribuer à l'open source pour éviter la dépendance totale aux licences propriétaires.</li>
+        <li><strong>Protection des données :</strong> l'intelligence produite doit rester la propriété de celui qui la génère.</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>8. Ambition technologique</h2>
+      <p>L'ambition technique d'Opays n'est pas de multiplier les outils. Elle est de construire une capacité autonome.</p>
+      <div class="split">
+        <div class="card"><p class="card-title">Infrastructure maîtrisée</p><p>Construire des systèmes fiables, sécurisés et adaptés au contexte réel.</p></div>
+        <div class="card"><p class="card-title">IA adaptée au métier</p><p>Spécialiser l'intelligence sur les données, les documents et les contraintes du client.</p></div>
+        <div class="card"><p class="card-title">Open source et autonomie</p><p>Garder la capacité d'adapter, d'auditer et de déplacer les solutions.</p></div>
+        <div class="card"><p class="card-title">Actifs réutilisables</p><p>Transformer chaque projet utile en méthode, composant, dataset, skill ou preuve terrain.</p></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>9. Positionnement partenaire</h2>
+      <p>Un partenaire stratégique ne rejoint pas Opays pour financer une agence. Il rejoint une infrastructure d'exécution et de recherche.</p>
+      <ul>
+        <li>Méthode commerciale basée sur le ROI.</li>
+        <li>Équipe avec des rôles définis.</li>
+        <li>Système interne pour piloter les opérations.</li>
+        <li>Discipline de gouvernance.</li>
+        <li>Orientation innovation claire.</li>
+      </ul>
     </section>
 
     <section class="section">
       <h2>Conclusion</h2>
-      <p>Opays Tech se construit sur une conviction simple : les entreprises n'ont pas besoin de plus de bruit technologique. Elles ont besoin de systèmes qui enlèvent du poids, clarifient les décisions et renforcent leur souveraineté.</p>
-      <div class="footer">Opays Tech - Intelligence Infrastructure - 2026</div>
+      <p>Opays Tech se construit sur une conviction simple : les entreprises n'ont pas besoin de plus de bruit technologique. Elles ont besoin de systèmes qui enlèvent du poids, clarifient les décisions et renforcent leur contrôle.</p>
+      <p>Notre exécution donne la preuve. Notre recherche construit l'avance. Notre système tient l'ensemble. La souveraineté donne la direction.</p>
+      <div class="note green">
+        <strong>Encadré final</strong><br />
+        La prochaine étape n'est pas de tout agrandir. Elle est de rendre chaque maillon plus fiable : le lead, l'audit, le contrat, le projet, la marge, la donnée, la sécurité et la connaissance.
+      </div>
     </section>
+
+    <div class="footer">Opays Tech - Livre blanc officiel - Mai 2026</div>
   </main>
 </body>
 </html>
