@@ -16,20 +16,20 @@ export function Hero() {
         >
           <div className="inline-flex items-center gap-2 rounded-full glass px-3 py-1.5 text-xs font-medium text-muted-foreground mb-6">
             <Sparkles size={14} className="text-[color:var(--neon-cyan)]" />
-            Architecture IA & Automatisation
+            Ingénierie de l'Efficience & Systèmes IA
           </div>
 
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1]">
-            L'IA bâtie pour <br />
-            <span className="text-gradient text-4xl md:text-5xl lg:text-6xl">votre réalité.</span>
+            L'IA au service de votre <br />
+            <span className="text-gradient text-4xl md:text-5xl lg:text-6xl">performance réelle.</span>
             <br />
             <span className="text-foreground/90 text-2xl md:text-3xl lg:text-4xl font-semibold block mt-4">
-              De l'infrastructure à l'usage.
+              Robuste. Locale. Souveraine.
             </span>
           </h1>
 
           <p className="mt-6 text-lg text-muted-foreground max-w-xl leading-relaxed">
-            De la stratégie au déploiement, nous accompagnons les entreprises dans leur modernisation. Nous identifions vos goulots d'étranglement pour automatiser vos processus, réduire la charge mentale de vos équipes et bâtir une infrastructure technologique robuste, parfaitement alignée avec vos objectifs.
+            Nous aidons les entreprises à stabiliser et automatiser leurs opérations quotidiennes. Nous identifions vos goulots d'étranglement pour simplifier vos processus et bâtir des systèmes fiables qui protègent durablement votre savoir-faire.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-4">

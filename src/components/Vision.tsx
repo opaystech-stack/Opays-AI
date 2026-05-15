@@ -10,30 +10,30 @@ export function Vision() {
       <div className="mx-auto max-w-7xl px-6">
         <div className="text-center mb-20">
           <SectionHeader
-            eyebrow="Vision 2030"
-            title="Bâtir l'indépendance numérique."
+            eyebrow="Notre Engagement"
+            title="Votre autonomie technologique."
           />
           <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto">
-            Notre vision dépasse le logiciel. Nous construisons les fondations d'une 
-            infrastructure IA souveraine pour garantir l'autonomie technologique de demain.
+            Nous ne nous contentons pas de déployer des logiciels. Nous bâtissons les fondations d'une 
+            intelligence souveraine qui garantit le contrôle total de vos données.
           </p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-8">
           <VisionCard 
             icon={Landmark}
-            title="Infrastructure Locale"
-            text="Projeter le déploiement de capacités de calcul souveraines (Data Centers) pour un traitement local et sécurisé."
+            title="Traitement Local"
+            text="Nous privilégions l'inférence locale : vos données sont traitées sur vos propres serveurs pour une sécurité et une vitesse maximales."
           />
           <VisionCard 
             icon={ShieldCheck}
-            title="Autonomie Totale"
-            text="Libérer les organisations de la dépendance aux infrastructures et aux abonnements technologiques étrangers."
+            title="Souveraineté Totale"
+            text="Libérez votre organisation de la dépendance aux abonnements étrangers et aux infrastructures que vous ne contrôlez pas."
           />
           <VisionCard 
             icon={Zap}
-            title="Savoir-faire National"
-            text="Entraîner et spécialiser les modèles de demain directement sur le sol national pour une maîtrise technologique absolue."
+            title="Patrimoine Cognitif"
+            text="Vos modèles d'IA sont entraînés sur votre expertise unique et restent votre propriété exclusive, pour toujours."
           />
         </div>
 
@@ -44,10 +44,10 @@ export function Vision() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="mt-20 p-8 rounded-3xl border border-primary/20 bg-gradient-to-r from-primary/5 to-accent/5 text-center"
         >
-          <p className="text-sm font-medium text-primary uppercase tracking-[0.2em] mb-4">Notre engagement</p>
-          <h3 className="text-2xl font-bold mb-4">Une trajectoire vers la souveraineté complète.</h3>
+          <p className="text-sm font-medium text-primary uppercase tracking-[0.2em] mb-4">Notre Priorité</p>
+          <h3 className="text-2xl font-bold mb-4">Une intelligence qui travaille pour vous, chez vous.</h3>
           <p className="text-muted-foreground max-w-xl mx-auto text-sm leading-relaxed">
-            Nous préparons le terrain pour un écosystème où l'intelligence n'est plus importée, mais produite et hébergée localement pour une sécurité et une performance sans compromis.
+            Nous préparons le terrain pour un écosystème où l'intelligence n'est plus importée, mais produite et maîtrisée localement pour une résilience et une performance sans compromis.
           </p>
         </motion.div>
       </div>

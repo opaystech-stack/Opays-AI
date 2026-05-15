@@ -6,20 +6,20 @@ const items = [
   {
     icon: Shield,
     eyebrow: "Souveraineté numérique",
-    title: "IA Open Source & Clonage",
-    text: "Sélection et ré-entraînement de modèles mondiaux pour créer des instances privées, indépendantes et parfaitement adaptées à votre patrimoine de données.",
+    title: "IA Privée & Souveraine",
+    text: "Mise en place d'instances d'intelligence artificielle indépendantes, tournant sur votre infrastructure. Vous gardez la propriété totale de votre cerveau numérique.",
   },
   {
     icon: GitBranch,
-    eyebrow: "Fluidité opérationnelle",
-    title: "Automatisation des processus",
-    text: "Suppression des tâches répétitives et coordination intelligente des flux pour que vos opérations critiques s'exécutent avec une précision totale.",
+    eyebrow: "Efficience accrue",
+    title: "Automatisation Métier",
+    text: "Suppression des goulots d'étranglement et coordination des flux critiques pour que vos opérations s'exécutent sans erreur et sans fatigue.",
   },
   {
     icon: Layers,
-    eyebrow: "Structure & Performance",
-    title: "Architecture & Intégration",
-    text: "Construction de ponts robustes entre vos données et vos outils, garantissant une intégration de l'IA sans friction dans votre écosystème existant.",
+    eyebrow: "Stabilité & Fiabilité",
+    title: "Systèmes Robustes",
+    text: "Conception d'architectures technologiques résilientes qui s'intègrent à vos outils existants tout en assurant une continuité de service.",
   },
 ];
 
