@@ -31,15 +31,15 @@ Trois critères pour repérer où l'argent s'échappe :
 
 ## 3. Les 7 "Véhicules" (Nos Solutions)
 
-On ne choisit le véhicule qu'APRÈS avoir identifié le problème.
+On ne choisit le véhicule qu'APRÈS avoir identifié le problème lors du diagnostic.
 
-1.  **Micro-SaaS :** Outil propriétaire à fonctionnalité unique.
-2.  **Agent IA :** Collaborateur virtuel autonome sur une mission.
-3.  **Infrastructure IA :** Plusieurs agents pilotés par l'humain (pour PME/ETI).
-4.  **Système RAG :** Interrogation intelligente de la base documentaire interne.
-5.  **Audit :** Diagnostic complet et feuille de route.
-6.  **Formation :** Montée en compétence des équipes.
-7.  **Automatisation IA :** Tâches linéaires à gros volume.
+1.  **Forge Métier :** Développement d'un système d'automatisation sur-mesure.
+2.  **Instance d'IA Privée :** Déploiement d'un modèle souverain en circuit fermé.
+3.  **Intelligence d'Infrastructure :** Réseau d'agents coordonnés pour les opérations complexes.
+4.  **Système RAG Expert :** Base de connaissance intelligente basée sur vos données propriétaires.
+5.  **Diagnostic Systémique :** Audit profond et cartographie des frictions.
+6.  **Transfert de Compétence :** Formation des équipes à l'usage de l'IA locale.
+7.  **Flux Automatisés :** Traitement de gros volumes de données sans intervention humaine.
 
 ---
 

@@ -35,52 +35,49 @@ Chez Opays Tech, l'IA n'est pas un gadget marketing. C'est notre ouvrier princip
 
 ---
 
-## 3. La double hélice : Studio & Labs
+## 3. La double hélice : Forge & Sovereign
 
 Notre structure sépare l'exécution immédiate de l'ambition à long terme. Cet équilibre permet de produire du résultat maintenant, tout en construisant une capacité stratégique pour demain.
 
-### Opays Studio : l'impact immédiat
+### Opays Forge : l'impact opérationnel
 
-Le Studio est notre moteur économique. Il porte l'exécution de projets à fort retour sur investissement. Son rôle est de prouver notre méthode par des résultats chiffrés.
+La Forge est notre moteur de production. Elle porte l'exécution de projets à fort retour sur investissement. Son rôle est de transformer vos besoins en systèmes d'IA concrets et utilisables immédiatement.
 
-- Réduction des délais de traitement.
+- Réduction des délais de traitement et automatisation métier.
 - Fiabilisation des flux financiers et documentaires.
-- Mise en place de systèmes décisionnels basés sur la donnée réelle.
+- Mise en place de cerveaux numériques spécialisés.
 
-### Opays Labs : l'ambition d'intérêt général
+### Opays Sovereign : l'indépendance stratégique
 
-Les Labs représentent le pôle de recherche d'Opays Tech. Ici, la rentabilité immédiate n'est pas le seul critère. Les Labs travaillent sur l'utilité publique, le développement d'outils d'usage large et les défis qui demandent une avance technique réelle.
+Le pôle Sovereign représente l'unité de recherche d'Opays Tech. Ici, nous travaillons sur l'autonomie technique réelle, le développement d'outils d'usage large et les défis de sécurité nationale.
 
-- **Souveraineté numérique :** développer des modèles d'IA et des infrastructures capables de fonctionner en circuit fermé, avec une dépendance réduite aux acteurs étrangers.
-- **Outils de progrès :** concevoir des actifs technologiques, des systèmes spécialisés et des outils de recherche pour traiter des problèmes structurels à portée nationale.
-- **Patrimoine technique :** chaque projet Labs doit laisser derrière lui un actif réutilisable.
+- **Intelligence en circuit fermé :** développer des modèles d'IA capables de fonctionner sans dépendance aux infrastructures étrangères.
+- **Actifs de progrès :** concevoir des systèmes spécialisés pour traiter des problèmes structurels à portée nationale (mines, douanes, finances).
+- **Patrimoine technique :** chaque projet Sovereign laisse derrière lui un actif propriétaire réutilisable.
 
 ---
 
-## 4. Opays HQ : notre preuve par l'exemple
+## 4. Opays Nexus : notre preuve par l'exemple
 
-Pour transformer les entreprises de nos clients, nous avons d'abord transformé la nôtre. Opays HQ est l'OS interne qui pilote notre entreprise. Ce n'est pas un simple logiciel de gestion. C'est la démonstration vivante de notre savoir-faire.
+Pour transformer les entreprises de nos clients, nous avons d'abord transformé la nôtre. Opays Nexus est le système d'exploitation interne qui pilote notre entreprise. Ce n'est pas un simple logiciel de gestion ; c'est le centre nerveux de notre intelligence collective.
 
-- **Pilotage centralisé :** de la gestion des leads à la gouvernance de l'equity, chaque information importante a sa place.
-- **Transparence opérationnelle :** les associés suivent les projets, les engagements, les priorités et la santé financière avec une lecture commune.
-- **Sécurité native :** le cloisonnement par rôle protège les informations sensibles grâce à une logique RBAC.
-- **Mémoire d'entreprise :** la connaissance, les décisions, les documents et les méthodes restent accessibles et structurés.
+- **Pilotage centralisé :** de la gestion des opportunités à la gouvernance stratégique.
+- **Transparence opérationnelle :** une lecture commune de la santé de l'entreprise pour tous les associés.
+- **Sécurité et Mémoire :** chaque décision et chaque fragment de connaissance est structuré et protégé.
 
 ---
 
 ## 5. La méthode Opays
 
-Opays Tech part du terrain. Nous ne commençons pas par vendre une IA, un agent ou un logiciel. Nous commençons par identifier la fuite. Ensuite seulement, nous choisissons le bon véhicule : audit, automatisation, système RAG, agent IA, micro-SaaS, infrastructure IA, formation ou accompagnement.
+Opays Tech part du terrain. Nous ne commençons pas par vendre une technologie, mais par identifier une fuite de performance. Ensuite seulement, nous forgeons le bon véhicule : diagnostic, automatisation, instance d'IA privée, ou infrastructure souveraine.
 
 ### La logique de déploiement
 
-1. Audit rapide du terrain.
-2. Chiffrage de la fuite.
+1. Diagnostic systémique du terrain.
+2. Chiffrage des fuites opérationnelles.
 3. Proposition basée sur le ROI.
-4. Cadrage technique.
-5. Développement ou intégration.
-6. Mise en production.
-7. Suivi et ajustement.
+4. Forge et intégration technique.
+5. Mise en service et suivi.
 
 > **Chiffrage de la fuite :** chiffrer la fuite, c'est traduire un blocage en argent, en temps et en risque. Nous estimons le coût avant, le coût après, le temps perdu, les erreurs, le rework, le coût d'opportunité et le niveau de confiance du calcul. L'objectif n'est pas d'impressionner. L'objectif est de vendre une économie défendable.
 

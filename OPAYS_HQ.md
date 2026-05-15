@@ -9,19 +9,19 @@ Tout ce qui touche a la marque, a la strategie, au site, aux offres et aux futur
 **Domaine:** `opays.io`  
 **Nature:** cabinet d'ingenierie de l'efficience  
 
-## 2. Structure Hybride : STUDIO & LABS
+## 2. Structure Hybride : FORGE & SOVEREIGN
 
 Opays Tech opère selon deux branches complémentaires pour couvrir le marché :
 
-### 2.1 OPAYS STUDIO (Exécution & Volume)
-*   **Mission :** La "Machine à Efficience" pour les PME.
-*   **Méthode :** Audit rapide -> Offre ROI (Remplacement de coût) -> Implémentation via Blueprints.
-*   **But :** Générer du cash-flow immédiat et de la clarté opérationnelle pour le client.
+### 2.1 OPAYS FORGE (Exécution & Efficience)
+*   **Mission :** La "Machine à Performance" pour les organisations.
+*   **Méthode :** Diagnostic systémique -> Offre ROI (Remplacement de coût) -> Implémentation de systèmes IA.
+*   **But :** Générer des économies immédiates et une clarté opérationnelle pour le client.
 
-### 2.2 OPAYS LABS (Recherche & Souveraineté)
-*   **Mission :** Le pôle R&D pour les défis complexes et les niches stratégiques (ex: Mines, Douanes).
-*   **Méthode :** Recherche profonde, création de nouveaux "Skills" IA, innovation souveraine.
-*   **But :** Créer des barrières à l'entrée et maintenir une avance technologique imbattable.
+### 2.2 OPAYS SOVEREIGN (Recherche & Autonomie)
+*   **Mission :** Le pôle R&D pour les défis stratégiques et la résilience technologique (ex: Mines, Douanes, Souveraineté).
+*   **Méthode :** Recherche profonde sur l'IA locale, création d'actifs cognitifs propriétaires.
+*   **But :** Garantir l'indépendance de nos clients vis-à-vis des infrastructures étrangères.
 
 ## 3. Promesse centrale
 
@@ -139,20 +139,20 @@ Contient:
 - les tests abandonnes,
 - les references historiques.
 
-## 7. Structure de travail recommandee
+## 7. Structure de travail recommandée
 
-Pour l'instant, il faut privilegier une base centrale plutot qu'une fragmentation prematuree.
+Pour l'instant, il faut privilégier une base centrale plutôt qu'une fragmentation prématurée.
 
-### OPAYS HQ : L'OS de l'Entreprise
-Un seul noyau applicatif (ERP/OS) doit contenir :
+### OPAYS NEXUS : L'OS de l'Entreprise
+Un seul noyau applicatif (Nexus) doit contenir :
 
-- **Profils Associés :** Suivi d'Equity (Vesting mensuel), Trésorerie, Stratégie.
-- **Profils Employés :** RH (Salaires, documents), suivi de Performance.
-- **Opérations :** CRM, Gestion de Projets, Tâches en temps réel.
-- **Knowledge Base :** "Les Ficelles du Métier" intégrées (Guides spécifiques par rôle).
-- **Communication :** Calendrier partagé, Vision et Objectifs.
+- **Profils Associés :** Suivi de la Vision, Trésorerie, Gouvernance (Equity).
+- **Profils Employés :** RH, Performance, Intelligence Métier.
+- **Opérations :** CRM, Gestion de Projets, Suivi des Forges en cours.
+- **Knowledge Base :** La mémoire vive de l'entreprise intégrée.
+- **Communication :** Calendrier partagé et Objectifs stratégiques.
 
-Cette architecture unique garantit que chaque membre de l'équipe applique la méthode standardisée sans erreur.
+Cette architecture garantit que chaque membre de l'équipe applique la méthode standardisée sans erreur.
 
 ## 8. Cadre pour le site
 
