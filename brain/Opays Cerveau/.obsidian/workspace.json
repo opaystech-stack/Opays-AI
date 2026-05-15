@@ -1,0 +1,211 @@
+{
+  "main": {
+    "id": "e04d558a8984b43f",
+    "type": "split",
+    "children": [
+      {
+        "id": "cf1a84ad747d9b0f",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "8554f966d0e7b898",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Vue graphique"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "8cdc33696f5c7525",
+    "type": "split",
+    "children": [
+      {
+        "id": "1581339ecf91da0a",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "35577c570a5b05ca",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": true
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Explorateur de fichiers"
+            }
+          },
+          {
+            "id": "868f7e9c2bc587e7",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Rechercher"
+            }
+          },
+          {
+            "id": "1783d4efc8291f90",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Signets"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "66aed0b4b3d091c8",
+    "type": "split",
+    "children": [
+      {
+        "id": "b591fbd92d349e57",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "4cdbd2b61f56ef55",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Rétroliens"
+            }
+          },
+          {
+            "id": "458fed167eb0ede0",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Liens sortants"
+            }
+          },
+          {
+            "id": "444ce5824b84e6a9",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Mots-clés"
+            }
+          },
+          {
+            "id": "47c3237c8a062a92",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "Toutes les propriétés"
+            }
+          },
+          {
+            "id": "a90cce0dbf32cd80",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Plan"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Ouvrir le sélecteur rapide": false,
+      "graph:Ouvrir la vue graphique": false,
+      "canvas:Créer une nouvelle toile": false,
+      "daily-notes:Ouvrir la note quotidienne": false,
+      "templates:Insérer le modèle": false,
+      "command-palette:Ouvrir la palette de commandes": false,
+      "bases:Créer une nouvelle base": false
+    }
+  },
+  "active": "8554f966d0e7b898",
+  "lastOpenFiles": [
+    "wiki/Règles de Décision.md",
+    "wiki/Document Suite.md",
+    "wiki/Lead Research.md",
+    "wiki/Theme Factory.md",
+    "wiki/Webapp Testing.md",
+    "wiki/AI Operational Intelligence.md",
+    "wiki/Web Artifacts Builder.md",
+    "wiki/Strategic Planning.md",
+    "wiki/Frontend Design.md",
+    "wiki/Premium UI Design.md",
+    "wiki/Ingénierie de l'Efficience.md",
+    "wiki/Chiffrage de la Fuite.md",
+    "wiki/Doctrine Souveraineté.md",
+    "wiki/Livre Blanc Thèse.md",
+    "wiki/Thèse et Doctrine.md",
+    "MCP Builder.md",
+    "wiki/Répertoire des Compétences.md",
+    "wiki/Gouvernance et Pacte d'Associés.md",
+    "wiki/Opays HQ OS.md",
+    "wiki/Modèle Hybride.md",
+    "wiki/Fondations Stratégiques.md",
+    "Wiki Index.md",
+    "log.md",
+    "wiki/Automatisation IA.md",
+    "wiki/Formation.md",
+    "wiki/Audit.md",
+    "assets",
+    "sources",
+    "wiki"
+  ]
+}

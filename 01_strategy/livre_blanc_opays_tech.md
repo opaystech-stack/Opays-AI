@@ -152,6 +152,6 @@ Un partenaire stratégique ne rejoint pas Opays pour financer une agence. Il rej
 
 Opays Tech se construit sur une conviction simple : les entreprises n'ont pas besoin de plus de bruit technologique. Elles ont besoin de systèmes qui enlèvent du poids, clarifient les décisions et renforcent leur contrôle.
 
-Le Studio donne la preuve par l'exécution. Les Labs construisent l'avance. Opays HQ tient l'ensemble. La souveraineté donne la direction.
+La Forge donne la preuve par l'exécution. Sovereign construit l'avance. Opays Nexus tient l'ensemble. La souveraineté donne la direction.
 
 > **Encadré final :** la prochaine étape n'est pas de tout agrandir. Elle est de rendre chaque maillon plus fiable : le lead, l'audit, le contrat, le projet, la marge, la donnée, la sécurité et la connaissance.
