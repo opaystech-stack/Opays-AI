@@ -41,10 +41,10 @@ export function Hero() {
               <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
             </a>
             <a
-              href="#approche"
+              href="/livre-blanc.html"
               className="inline-flex items-center gap-2 rounded-full glass px-6 py-3 text-sm font-medium hover:border-primary/50 transition-all"
             >
-              Voir notre approche
+              Lire le Livre Blanc
             </a>
           </div>
 

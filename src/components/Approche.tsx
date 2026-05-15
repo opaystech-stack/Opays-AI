@@ -35,6 +35,21 @@ export function Approche() {
             </motion.div>
           ))}
         </div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, delay: 0.5 }}
+          className="mt-12 text-center"
+        >
+          <p className="text-sm text-muted-foreground">
+            Vous souhaitez comprendre la théorie derrière notre pratique ?{" "}
+            <a href="/livre-blanc.html" className="text-[color:var(--neon-cyan)] font-semibold hover:underline">
+              Lire le Livre Blanc complet →
+            </a>
+          </p>
+        </motion.div>
       </div>
     </section>
   );
