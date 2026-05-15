@@ -5,7 +5,6 @@ import logoIcon from "@/assets/opays-icon.png";
 const items = [
   { label: "Approche", href: "#approche" },
   { label: "Solutions", href: "#solutions" },
-  { label: "Livre Blanc", href: "/livre-blanc.html" },
   { label: "R&D", href: "#rd" },
   { label: "Vision", href: "#vision" },
   { label: "Contact", href: "#contact" },
