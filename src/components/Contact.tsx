@@ -46,11 +46,17 @@ export function Contact() {
           <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 border border-primary/30 mb-6">
             <span className="material-symbols-outlined text-[color:var(--neon-cyan)]">●</span>
           </div>
-          <SectionHeader eyebrow="Contact" title="Parlons de vos blocages opérationnels." />
+          <SectionHeader eyebrow="Nexus Access" title="Engagez la Forge. Sécurisez votre Souveraineté." />
           <p className="mt-6 text-muted-foreground leading-relaxed">
-            Si votre équipe perd du temps sur des tâches répétitives, des relances, des saisies
-            ou des échanges mal structurés, nous pouvons vous aider à voir plus clair.
+            Opays Tech n'est pas un prestataire, c'est votre unité d'ingénierie systémique. 
+            Que vous ayez besoin de performance immédiate (**Forge**) ou d'innovation stratégique (**Sovereign**), 
+            parlons de votre prochain saut technologique.
           </p>
+          <div className="mt-8 space-y-4">
+            <Bullet>Analyse de vos flux par nos ingénieurs Nexus</Bullet>
+            <Bullet>Audit de souveraineté numérique (Data & IA)</Bullet>
+            <Bullet>Simulation de ROI opérationnel gratuite</Bullet>
+          </div>
         </motion.div>
 
         <motion.form
@@ -61,22 +67,38 @@ export function Contact() {
           transition={{ duration: 0.5, delay: 0.15 }}
           className="rounded-2xl glass p-8 space-y-5 shadow-[var(--shadow-glow)]"
         >
-          <Field label="Nom de l'entreprise" name="company" placeholder="Acme Corp" />
-          <Field label="Votre rôle" name="role" placeholder="Directeur des opérations" />
+          <Field label="Entreprise / Organisation" name="company" placeholder="Acme Corp" />
+          
+          <div className="space-y-3">
+            <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground block">Votre axe de priorité</span>
+            <div className="grid grid-cols-2 gap-4">
+              <label className="flex flex-col gap-1 p-4 rounded-xl border border-border bg-background/20 cursor-pointer hover:border-primary/40 transition-all has-[:checked]:border-primary/60 has-[:checked]:bg-primary/5">
+                <input type="radio" name="axe" value="forge" className="sr-only" defaultChecked />
+                <span className="text-sm font-bold text-foreground">FORGE</span>
+                <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-black">Performance</span>
+              </label>
+              <label className="flex flex-col gap-1 p-4 rounded-xl border border-border bg-background/20 cursor-pointer hover:border-primary/40 transition-all has-[:checked]:border-primary/60 has-[:checked]:bg-primary/5">
+                <input type="radio" name="axe" value="sovereign" className="sr-only" />
+                <span className="text-sm font-bold text-foreground">SOVEREIGN</span>
+                <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-black">Innovation</span>
+              </label>
+            </div>
+          </div>
+
           <Field
-            label="Le processus qui vous prend le plus de temps aujourd'hui"
+            label="Votre vision du projet"
             name="process"
-            placeholder="Ex: traitement des factures fournisseurs"
+            placeholder="Décrivez votre besoin technique ou stratégique..."
             textarea
           />
-          <Field label="Email ou téléphone" name="contact" placeholder="vous@entreprise.com" type="email" />
+          <Field label="Email Professionnel" name="contact" placeholder="expert@entreprise.com" type="email" />
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-primary to-accent px-6 py-3 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-neon)] hover:shadow-[var(--shadow-glow)] hover:scale-[1.01] transition-all disabled:opacity-60"
+            className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-primary to-accent px-6 py-3 text-sm font-black uppercase tracking-widest text-primary-foreground shadow-[var(--shadow-neon)] hover:shadow-[var(--shadow-glow)] hover:scale-[1.01] transition-all disabled:opacity-60"
           >
-            {loading ? "Envoi..." : <>Demander une consultance <Send size={16} /></>}
+            {loading ? "Initialisation..." : <>Activer la consultance <Send size={16} /></>}
           </button>
         </motion.form>
       </div>
