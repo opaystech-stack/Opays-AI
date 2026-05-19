@@ -3,6 +3,7 @@
 ## 🎯 Vision & Stratégie
 - [[Vision Souveraineté Numérique]] : Les piliers de l'autonomie technologique.
 - [[Modèle Hybride]] : Distinction entre Studio (Volume) et Labs (R&D).
+- [[Recherche Épidémiologique IA]] : Accélérateur de recherche souverain (Ebola/Santé).
 - [[Methodologie Opays]] : Ingénierie de l'efficience et philosophie du ROI.
 - [[Règles de Décision]] : Le filtre des 4 questions stratégiques.
 - [[Gouvernance et Pacte d'Associés]] : Structure du Board et Vesting.
