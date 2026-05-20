@@ -104,7 +104,7 @@ Le calcul doit rester conservateur. Il intègre le salaire chargé, les heures p
 Opays Tech est dirigé par un noyau de cinq associés, alliant expertise stratégique, technique et commerciale.
 
 - **Directeur Général & Lead R&D :** Fenelon LAMSASIRI. Pilotage de la vision, de la gouvernance et de la trajectoire Labs.
-- **Directeur Technique :** Evariste SELEMANI. Rôle CTO. Architecture, sécurité, qualité et livraison technique.
+- **Directeur Technique :** *Poste vacant — En cours de recrutement (recherche de remplaçant)*. Rôle CTO. Architecture, sécurité, qualité et livraison technique.
 - **Chef Commercial / CSO :** Prince BAGHENI. Stratégie commerciale, terrain, closing et valeur marché.
 - **Sales & Gestion Comptable :** Patricia ZAMWANA. Prospection, finance, trésorerie, factures et suivi administratif.
 - **Sales & Communication :** Zaina BWALE Godlove. Prospection, communication, marque et supports institutionnels.

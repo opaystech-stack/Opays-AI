@@ -8,7 +8,7 @@ L'organisation est basée sur un modèle "Commando" agile alliant expertise stra
 - **Rôle** : Pilotage de la vision, de la gouvernance et de la trajectoire [[Modèle Hybride | Labs]].
 
 ### 2. Directeur Technique (CTO)
-- **Evariste SELEMANI**
+- *Poste vacant — En cours de recrutement (recherche de remplaçant)*
 - **Rôle** : Architecture, sécurité, qualité et livraison technique de l'[[Architecture Opays HQ | OS Opays HQ]].
 
 ### 3. Chef Commercial (CSO)

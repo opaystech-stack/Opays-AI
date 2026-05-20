@@ -98,7 +98,7 @@ Pour transformer nos clients, nous avons d'abord automatisé Opays Tech. **Opays
 Opays Tech est porté par une équipe aux rôles clairement définis pour garantir une exécution "Commando".
 
 - **Direction Générale & Lead R&D :** Fenelon LAMSASIRI – Vision & Stratégie Labs.
-- **Direction Technique (CTO) :** Evariste SELEMANI – Excellence architecturale et Sécurité.
+- **Direction Technique (CTO) :** *Poste vacant — En cours de recrutement (recherche de remplaçant)* – Excellence architecturale et Sécurité.
 - **Direction Commerciale (CSO) :** Prince BAGHENI – Vente de valeur et ROI.
 - **Sales & Gestion Comptable :** Patricia ZAMWANA – Opérations & Finance.
 - **Sales & Communication :** Zaina BWALE Godlove – Marque & Expansion.
