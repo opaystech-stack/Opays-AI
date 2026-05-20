@@ -1,105 +1,168 @@
-# 📝 COMPTE-RENDU DE RÉUNION : PREMIÈRE RÉUNION OFFICIELLE DE CADRAGE
-**Date :** 19 Mai 2026  
-**Statut :** Document de Direction  
-**Accès :** Réservé aux Associés  
-**Rédacteur :** Antigravity (IA Interne)  
+# 📝 Compte rendu de réunion : Lancement d'Opays Tech
+
+**Date de la réunion :** Mardi 19 mai 2026  
+**Objet :** Première réunion officielle de cadrage en vue du lancement d'Opays Tech  
+**Statut :** Document interne de direction  
+**Public :** Associés et membres impliqués dans le lancement  
 
 ---
 
-## 📌 Synthèse Décisionnelle (Executive Summary)
-Hier s'est tenue la première réunion de cadrage d'**Opays Tech** en vue de notre lancement imminent. L'objectif était d'aligner l'ensemble des associés sur la vision de l'entreprise, de clarifier la répartition des rôles suite à la restructuration récente, de prendre en main notre système d'exploitation interne (**Opays HQ**) et d'adopter la feuille de route opérationnelle et juridique à court terme.
+## 📌 1. Synthèse générale
+La réunion du 19 mai 2026 avait pour objectif d'aligner l'équipe fondatrice sur la vision d'Opays Tech, de clarifier les rôles de chacun, de présenter l'outil interne de pilotage **Opays HQ** et de fixer les actions prioritaires à réaliser avant le lancement officiel de l'entreprise.
 
-La réunion a validé le démarrage des démarches administratives dans le Grand Nord, la signature imminente du premier contrat commercial (**Bridgesats**) et la stratégie marketing économe (lancement numérique ciblé et double dépliant tarifaire).
+Les échanges ont confirmé que le lancement se fera de manière progressive, principalement en ligne, avec une communication ciblée et maîtrisée afin de limiter les dépenses inutiles. L'équipe a également validé la nécessité de préparer rapidement les supports commerciaux, le communiqué de lancement, les documents juridiques et les démarches administratives liées à l'enregistrement de la société.
 
----
-
-## 📋 Ordre du Jour & Décisions Clés
-
-### 1. Vision Stratégique & Raison d'Être
-Les associés ont réaffirmé la mission fondamentale d'Opays Tech : **« L'intelligence de l'efficience »**. Notre positionnement consiste à forger des solutions d'IA souveraines et sur-mesure pour éradiquer les frictions opérationnelles des entreprises et des institutions.
-*   **Opays Forge :** Moteur d'impact immédiat (automatisation des processus, audits de ROI, applications métiers).
-*   **Opays Sovereign :** Pôle de R&D pour concevoir des infrastructures souveraines et des cerveaux numériques autonomes adaptés au marché local et panafricain.
+Un point commercial important a aussi été rappelé : le dossier **Bridgesats** doit avancer rapidement afin de sécuriser le premier marché d'Opays Tech et de lancer les travaux dans les meilleurs délais.
 
 ---
 
-### 👥 2. Structure & Cartographie des Rôles (Mise à jour)
-Afin d'assurer une exécution agile de type "Commando", les responsabilités clés de chaque associé ont été clarifiées. Suite au départ récent d'**Evans Selemani**, l'équipe s'organise de manière transitoire autour de ses 4 associés actifs tout en lançant immédiatement le recrutement de son remplaçant.
+## 🎯 2. Objectifs de la réunion
+La réunion poursuivait quatre objectifs principaux :
+*   Rappeler la vision globale d'Opays Tech et les objectifs à court et moyen terme ;
+*   Clarifier les responsabilités de chaque membre de l'équipe afin d'éviter les zones d'ombre ;
+*   Présenter **Opays HQ**, le système interne de gestion, de collaboration et d'intelligence opérationnelle ;
+*   Définir les actions prioritaires à exécuter dans les 30 prochains jours, avec une attention particulière sur les tâches à finaliser avant le lancement.
 
-| Associé | Rôle Officiel | Périmètre de Responsabilité Stratégique | Outil HQ Principal |
-| :--- | :--- | :--- | :--- |
-| **Fénelon LAMSASIRI** | **Directeur Général (CEO)** & Lead R&D | Vision stratégique, R&D souveraine, arbitrages juridiques, relations extérieures, validation d'audit et intérim technique. | Workspace & Command Center |
-| **Prince BAGHENI** | **Chief Sales Officer (CSO)** | Stratégie commerciale globale, coordination terrain, négociation de grands comptes et exécution du lancement. | Sales Hub (CRM & Studio) |
-| **Patricia ZAMWANA** | **Sales & Gestion Comptable** | Prospection de terrain, gestion financière stricte, facturation, trésorerie de l'agence et pièces administratives. | Treasury Module & Sales Hub |
-| **Zaina BWALE GODLOVE** | **Sales & Communication** | Prospection stratégique, image de marque, relations presse, réseaux professionnels (LinkedIn) et conception des supports. | Brand Assets & Sales Hub |
-| **À Recruter** | **Directeur Technique (CTO)** | Maintenance de l'infrastructure, sécurité des serveurs, déploiements de production et gestion de la qualité. | Workspace (Dev & Build) |
+---
 
+## 💡 3. Vision et positionnement d'Opays Tech
+Opays Tech se positionne comme un **cabinet d'ingénierie de l'efficience**. Sa mission est d'aider les entreprises, organisations et institutions à mieux structurer leurs opérations, réduire les pertes de temps, automatiser les tâches répétitives et améliorer leur performance grâce à des solutions numériques et d'intelligence artificielle adaptées au terrain.
+
+La vision rappelée pendant la réunion est la suivante : **construire une entreprise technologique sérieuse**, capable de proposer des solutions concrètes, utiles et compréhensibles, sans tomber dans le jargon technique inutile. Opays Tech ne vend pas simplement de "l'IA" comme effet de mode ; l'entreprise vend de la clarté, de l'efficacité, de la fiabilité et du gain opérationnel.
+
+Les offres de base à mieux formaliser dans les supports de lancement sont :
+*   **L'audit d'efficience :** Pour identifier les pertes de temps, les blocages et les opportunités d'automatisation ;
+*   **La conception de solutions :** Pour transformer un besoin client en système concret et utilisable ;
+*   **La mise en place de solutions :** Pour déployer les outils dans le contexte réel du client ;
+*   **Le suivi et l'ajustement :** Pour améliorer les solutions après leur mise en service.
+
+---
+
+## 👥 4. Présentation de l'équipe et clarification des rôles
+Un tour d'équipe a permis de rappeler les responsabilités principales au sein d'Opays Tech. Cette clarification est importante pour que chacun sache à qui revient chaque type de décision, d'action ou de suivi.
+
+| Membre | Rôle | Responsabilités principales |
+| :--- | :--- | :--- |
+| **Fénelon LAMSASIRI** | Directeur Général et Lead R&D | Vision stratégique, gouvernance, coordination générale, partenariats, financement, arbitrages, structuration juridique et supervision de la recherche. |
+| **Poste à pourvoir** | Directeur Technique / CTO | Architecture technique, sécurité, qualité des livraisons, maintenance des systèmes, supervision des développements et infrastructures. |
+| **Prince BAGHENI** | Chief Sales Officer / Chef Commercial | Stratégie commerciale, prospection, négociation, closing, lancement en ligne et coordination des démarches commerciales prioritaires. |
+| **Patricia ZAMWANA** | Sales et Gestion Comptable | Prospection, gestion comptable, suivi de la trésorerie, facturation, appui administratif et préparation des pièces liées à l'entreprise. |
+| **Zaina BWALE GODLOVE** | Sales et Communication | Prospection, communication, image de marque, supports institutionnels, relais médias et visibilité professionnelle. |
+| **Antigravity** | Collaborateur IA interne | Assistance à la rédaction, structuration documentaire, automatisation, appui technique, recherche et soutien opérationnel. |
+
+> [!NOTE]
+> Il a été rappelé que les rôles permanents doivent rester distincts des tâches temporaires liées au lancement. Certaines personnes peuvent recevoir des missions ponctuelles avant le lancement sans que cela modifie leur responsabilité principale dans l'entreprise.
+
+---
+
+## 🛠️ 5. Présentation d'Opays HQ et des processus opérationnels
+Une partie importante de la réunion a été consacrée à la présentation d'**Opays HQ**, l'outil interne de gestion et de pilotage d'Opays Tech.
+
+L'équipe a parcouru les principales fonctionnalités de l'application et la manière dont elle sera utilisée au quotidien pour améliorer la circulation de l'information, suivre les activités en temps réel et coordonner les projets.
+
+**Opays HQ permettra notamment de :**
+*   Suivre les tâches, les projets et les commandes clients ;
+*   Centraliser les informations importantes de l'entreprise ;
+*   Suivre la caisse, les transactions, la facturation et les éléments financiers ;
+*   Gérer les documents, contrats, supports commerciaux et éléments administratifs ;
+*   Visualiser les contributions et actions liées au mécanisme de *sweat equity* ;
+*   Faciliter la collaboration entre les différents pôles de responsabilité.
+
+L'outil intègre également des agents IA spécialisés par pôle ou responsabilité. Ces agents connaissent la base de connaissances d'Opays Tech et peuvent aider l'équipe à exécuter des tâches concrètes, par exemple :
+*   Créer une carte de tâche pour un membre de l'équipe ;
+*   Rédiger un contrat ou un projet de contrat pour un client ;
+*   Produire un support commercial ;
+*   Structurer une proposition de service ;
+*   Aider à préparer un audit, une offre ou un argumentaire commercial.
+
+L'objectif est que chaque membre de l'équipe prenne l'habitude d'utiliser Opays HQ comme espace central de travail, afin d'éviter la dispersion des informations et de garder une vision claire de l'avancement collectif.
+
+---
+
+## 🗺️ 6. Feuille de route avant le lancement officiel
+Plusieurs tâches prioritaires ont été identifiées pour préparer le lancement officiel d'Opays Tech.
+
+### 6.1 Dépliant public
+L'équipe doit produire un dépliant clair, simple et professionnel présentant les services d'Opays Tech. Ce document doit permettre à toute personne extérieure, même sans connaissance technique, de comprendre :
+*   Ce qu'est Opays Tech ;
+*   Les problèmes que l'entreprise aide à résoudre ;
+*   Les types de solutions proposées ;
+*   Les bénéfices concrets pour les clients ;
+*   La manière de contacter ou solliciter l'équipe.
+
+Le ton devra rester accessible, précis et commercialement convaincant.
+
+### 6.2 Guide tarifaire interne
+Un second document devra être préparé pour un usage strictement interne. Il ne s'agira pas d'une grille tarifaire rigide, car les prix des services d'Opays Tech dépendent de plusieurs paramètres : complexité du besoin, taille de l'entreprise cliente, niveau d'automatisation demandé, durée du projet, volume de travail, urgence et niveau d'accompagnement attendu.
+
+L'objectif est donc de définir des **fourchettes tarifaires indicatives** afin d'aider l'équipe commerciale à mieux orienter les discussions avec les prospects. Ce guide permettra de professionnaliser les échanges commerciaux sans enfermer l'entreprise dans des prix standards qui ne correspondent pas toujours à la réalité des projets.
+
+### 6.3 Communiqué de lancement
+Un communiqué de lancement doit être rédigé afin d'annoncer officiellement Opays Tech. Ce communiqué pourra être partagé avec :
+*   Les médias en ligne ciblés ;
+*   Les contacts professionnels ;
+*   Les proches et relais de confiance ;
+*   Les réseaux sociaux et communautés pertinentes.
+
+Le communiqué devra présenter Opays Tech, sa mission, son positionnement et son ambition, tout en restant sobre, crédible et compréhensible.
+
+### 6.4 Stratégie de lancement en ligne
+Le lancement se fera principalement en ligne. L'équipe a convenu de ne pas organiser un lancement coûteux ou trop bruyant au départ. La priorité est de limiter les dépenses, de tester le message, de cibler les bons relais et de construire une visibilité progressive.
+
+La stratégie retenue consiste à identifier quelques médias ou pages en ligne capables de relayer le communiqué à faible coût ou dans le cadre d'un accompagnement souple.
+
+---
+
+## 📅 7. Tâches et responsabilités immédiates
 > [!IMPORTANT]
-> **Ajustement de Gouvernance (Poste CTO) :** Le poste de Directeur Technique est officiellement déclaré vacant. Fénelon LAMSASIRI assure l'intérim de la supervision technique et de l'architecture complexe. La recherche d'un profil de haut niveau pour le remplacement d'Evans est érigée en priorité stratégique.
+> **Nature de ces tâches :** Les tâches ci-dessous sont des actions préparatoires au lancement. Elles ne remplacent pas les fiches de poste ni les responsabilités permanentes.
+
+| Responsable | Action | Échéance |
+| :--- | :--- | :--- |
+| **Fénelon** | Rédiger et créer le dépliant public d'Opays Tech. | Jeudi 21 mai 2026 au plus tard |
+| **Fénelon** | Préparer le guide tarifaire interne avec des fourchettes indicatives. | Jeudi 21 mai 2026 au plus tard |
+| **Fénelon** | Rédiger le communiqué de lancement. | Jeudi 21 mai 2026 au plus tard |
+| **Fénelon** | Finaliser les statuts juridiques de l'entreprise. | Vendredi 22 mai 2026 au plus tard |
+| **Prince** | Prendre en charge le lancement en ligne. | Après validation du communiqué |
+| **Prince** | Peaufiner le communiqué avec une lecture commerciale et médiatique. | Avant diffusion |
+| **Prince** | Identifier les médias, pages ou relais capables de diffuser l'annonce. | Avant lancement |
+| **Prince** | Préparer les démarches d'enregistrement de l'entreprise dans le Grand Nord. | Avant son départ |
+| **Équipe** | Préparer les documents et ressources nécessaires à l'enregistrement. | Avant le départ de Prince |
+| **Fénelon** et **Prince** | Avancer les discussions avec Bridgesats et viser la signature du contrat. | Lundi 25 mai 2026 au plus tard |
 
 ---
 
-### 🛠️ 3. Outil de Pilotage : Opays HQ & Processus Opérationnels
-L'équipe d'associés a effectué une démonstration approfondie d'**Opays HQ**, le système d'exploitation interne connecté à la base de connaissances d'Opays Tech.
+## 💡 8. Recommandations adoptées
 
-#### Fonctionnalités Clés présentées :
-1.  **Suivi en Temps Réel :** Centralisation des flux financiers (trésorerie), des avancements de tâches et du suivi des contrats clients.
-2.  **Gestion de l'Équité (Sweat Equity) :** Visualisation transparente des actions acquises (vesting) par chaque associé pour renforcer la confiance collective.
-3.  **Agents IA Métiers :** Opays HQ intègre des agents spécialisés par pôle (Ventes, Technique, Légal). Ces agents possèdent toute la mémoire de l'entreprise (Livre Blanc, process, modèles juridiques) et peuvent :
-    *   Générer et structurer une tâche complexe en 1 clic.
-    *   Rédiger des projets de contrats de prestation personnalisés pour les clients.
-    *   Simuler des gains de temps et d'argent grâce au calculateur de ROI du Studio pour appuyer les propositions commerciales.
+### 8.1 Finaliser rapidement le cadre juridique
+La finalisation des statuts juridiques est prioritaire. L'entreprise doit disposer d'une base administrative solide avant les démarches d'enregistrement et avant l'accélération commerciale.
 
----
+### 8.2 Renforcer l'alignement théorique de l'équipe
+Chaque membre doit progressivement se mettre au même niveau de compréhension sur ce que fait Opays Tech. Il est particulièrement important que l'équipe commerciale comprenne les bases de l'intelligence artificielle, de l'automatisation, des agents IA, de l'audit d'efficience et de la souveraineté numérique.
 
-### 🗺️ 4. Stratégie de Lancement & Plan Marketing
-Pour optimiser les capitaux de départ, les associés ont validé une approche **efficace et économe (Low-Cost / High-Impact)**. Pas de dépenses superflues, mais des actions de communication très ciblées.
+Cette compréhension n'a pas pour but de transformer tout le monde en technicien, mais de permettre à chacun d'expliquer clairement la valeur d'Opays Tech, de répondre aux premières questions des prospects et de mieux convaincre sur le terrain.
 
-#### A. La Stratégie du « Double Dépliant »
-Les offres d'Opays Tech étant hautement personnalisées en fonction de la complexité des structures clientes, un tarif fixe universel est exclu. Les associés ont convenu de créer deux documents complémentaires :
-1.  **Le Dépliant Public (Externe) :** Un document synthétique expliquant de manière simple et visuelle nos produits, nos solutions d'automatisation IA et nos gains de performance. Ce support est destiné aux dirigeants de structures.
-2.  **Le Guide Tarifaire Interne (Commercial) :** Document confidentiel destiné exclusivement aux commerciaux. Ce guide établit des **fourchettes tarifaires indicatives** pour aider l'équipe commerciale dans le chiffrage rapide en rendez-vous et faciliter la prospection.
+### 8.3 Utiliser Opays HQ comme centre de travail
+Opays HQ doit devenir l'espace principal de coordination. Les tâches, documents, projets, informations clients et suivis doivent y être centralisés autant que possible afin de garder une information fiable, partagée et traçable.
 
-#### B. Campagne de Presse & Réseaux Sociaux
-*   Rédaction d'un **communiqué de presse officiel** axé sur la valeur ajoutée de nos solutions et la souveraineté numérique.
-*   Diffusion ciblée auprès de nos réseaux proches, contacts professionnels et **médias en ligne locaux à forte audience mais à budget restreint** pour optimiser le retour sur investissement.
+### 8.4 Sécuriser le premier marché Bridgesats
+Le dossier Bridgesats représente une opportunité importante pour démarrer concrètement les activités. Les discussions doivent avancer rapidement afin de finaliser les conditions, signer le contrat et lancer le travail au plus tard le lundi 25 mai 2026.
 
 ---
 
-## 📅 5. Actions Immédiates : Petites Tâches de Préparation au Lancement
-
-> [!IMPORTANT]
-> **Nature de ces tâches :** Les actions répertoriées ci-dessous constituent de petites tâches opérationnelles, administratives et commerciales temporaires, planifiées exclusivement pour préparer et assurer le succès du lancement imminent d'Opays Tech. Elles ne définissent en aucun cas les attributions et responsabilités à long terme de chaque poste ou les missions opérationnelles permanentes au sein de l'entreprise.
-
-Cette section spécifie les actions tactiques et les formalités préparatoires à réaliser à court terme par chaque associé pour sécuriser le succès opérationnel, administratif et commercial du lancement.
-
-*   **Fénelon LAMSASIRI (CEO)**
-    *   **Dépliant commercial & Guide tarifaire interne :** Rédiger et concevoir les textes du dépliant externe et du guide de fourchettes tarifaires interne. *Échéance : Jeudi 21 mai au plus tard.*
-    *   **Communiqué de lancement :** Rédiger le communiqué de presse de pré-lancement. *Échéance : Jeudi 21 mai au plus tard.*
-    *   **Statuts juridiques :** Finaliser la rédaction et l'ajustement des statuts juridiques d'Opays Tech. *Échéance : Vendredi 22 mai au plus tard.*
-    *   **Dossier Bridgesats :** Faire avancer les discussions et finaliser le projet de contrat. *Échéance : Lundi 25 mai au plus tard (avec Prince).*
-*   **Prince BAGHENI (CSO)**
-    *   **Lancement en ligne & Presse :** Prendre en charge le déploiement de la communication en ligne, peaufiner le communiqué de presse et cibler les médias en ligne partenaires à forte visibilité.
-    *   **Enregistrement de la société :** Se charger des formalités administratives et juridiques d'immatriculation d'Opays Tech lors de son prochain déplacement dans le Grand Nord.
-    *   **Contrat Bridgesats :** Mener les discussions commerciales finales et sécuriser la signature du contrat. *Échéance : Lundi 25 mai au plus tard (avec Fénelon).*
-*   **Patricia ZAMWANA & Zaina BWALE (Pôle Commercial & Administratif)**
-    *   **Fonds et ressources d'enregistrement :** Rassembler et préparer toutes les pièces justificatives, documents personnels et ressources de trésorerie nécessaires au dossier d'enregistrement d'Opays Tech, et les remettre à Prince avant son départ dans le Grand Nord.
-    *   **Alignement & Acculturation IA :** Assimiler les concepts théoriques de l'IA (RAG, agents, souveraineté) et la méthode d'audit de ROI développée par Opays Tech afin de renforcer l'impact du discours marketing sur le terrain. *Échéance : En continu.*
+## ❓ 9. Points à clarifier
+Certains points devront encore être précisés pour éviter les ambiguïtés :
+*   Confirmer la définition exacte du rôle **CSO** dans l'organisation : Chief Sales Officer, Chief Strategy Officer, Chief Security Officer ou combinaison temporaire de plusieurs responsabilités ;
+*   Préciser la liste des médias ou pages en ligne à contacter pour le lancement ;
+*   Définir les documents exacts nécessaires à l'enregistrement juridique de l'entreprise ;
+*   Préciser les conditions commerciales attendues dans le dossier **Bridgesats** ;
+*   Valider la version finale du dépliant public et du communiqué avant diffusion.
 
 ---
 
-## 💡 Recommandations de l'IA (Antigravity) pour les Associés
+## 🏁 10. Conclusion
+Cette première réunion de cadrage a permis de poser les bases opérationnelles du lancement d'Opays Tech. L'équipe dispose désormais d'une vision partagée, d'une première répartition des responsabilités, d'un outil interne de pilotage et d'une feuille de route claire pour les prochains jours.
 
-> [!TIP]
-> **Pour Fénelon LAMSASIRI et Prince BAGHENI (Négociations Bridgesats) :**  
-> L'agent IA Légal intégré dans Opays HQ est prêt à rédiger le contrat final dès que les conditions commerciales seront validées. Il est conseillé d'y annexer une simulation financière du module ROI du Studio pour sécuriser la signature le lundi 25 mai.
+La priorité immédiate est de finaliser les supports de lancement, sécuriser les démarches juridiques, préparer l'enregistrement de l'entreprise, aligner l'équipe sur le discours commercial et conclure le premier marché avec Bridgesats.
 
-> [!TIP]
-> **Pour Prince BAGHENI, Patricia ZAMWANA et Zaina BWALE (Pôle Commercial) :**  
-> Il est recommandé d'utiliser quotidiennement le module **Studio** d'Opays HQ pour saisir les audits de terrain. Cela permettra à l'IA de calculer automatiquement les fourchettes de ROI à proposer aux prospects.
-
-> [!TIP]
-> **Pour l'alignement théorique de l'ensemble des associés :**  
-> Une section d'acculturation IA est accessible dans le **Knowledge Hub** d'Opays HQ. Il est fortement recommandé à chaque associé d'y consacrer 10 minutes par jour pour maîtriser le vocabulaire technologique (RAG, agents autonomes, souveraineté numérique), atout indispensable pour le closing commercial de nos solutions.
-
----
-*Ce compte-rendu est archivé et disponible pour consultation et révision par l'ensemble des associés d'Opays Tech dans Opays HQ.*
+Le succès du lancement dépendra de trois éléments : la clarté du message, la discipline d'exécution et l'utilisation régulière d'**Opays HQ** comme base commune de travail.
