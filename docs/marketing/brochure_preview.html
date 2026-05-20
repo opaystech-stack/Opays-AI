@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Opays Tech - Visualiseur & Impression de la Brochure</title>
+  
+  <!-- Modern Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==================== VARIABLE / CONFIG GRAPHIC ==================== */
+    :root {
+      --bg-color: #080a0f;
+      --panel-bg: rgba(15, 22, 36, 0.7);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --primary-color: #3b5bdb;
+      --primary-glow: rgba(59, 91, 219, 0.4);
+      --accent-color: #1098ad;
+      --accent-glow: rgba(16, 152, 173, 0.4);
+      --success-color: #0ca678;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      
+      /* Brochure physical sizes at scale in browser */
+      --brochure-scale: 0.75;
+      --panel-w: 374.33px;
+      --panel-h: 794px;
+      
+      /* Dynamic 3D Rotations and folds */
+      --ry: 0deg;
+      --rx: -10deg;
+      --fold-left: 0deg;
+      --fold-right: 0deg;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Background glow decorations */
+    .bg-glow-1 {
+      position: fixed;
+      top: -10%;
+      right: -10%;
+      width: 50vw;
+      height: 50vw;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(112, 72, 232, 0.12) 0%, transparent 70%);
+      filter: blur(50px);
+      pointer-events: none;
+      z-index: -1;
+    }
+    .bg-glow-2 {
+      position: fixed;
+      bottom: -10%;
+      left: -10%;
+      width: 60vw;
+      height: 60vw;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(16, 152, 173, 0.08) 0%, transparent 70%);
+      filter: blur(60px);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* ==================== HEADER (GLASSMORPHISM) ==================== */
+    header {
+      background: rgba(10, 15, 26, 0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 1.2rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-family: 'Outfit', sans-serif;
+      box-shadow: 0 0 15px rgba(59, 91, 219, 0.3);
+    }
+
+    .brand-info h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: #fff;
+    }
+    .brand-info p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .tabs {
+      display: flex;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 4px;
+      border-radius: 30px;
+      border: 1px solid var(--border-color);
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 8px 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary-color), #4c6ef5);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(59, 91, 219, 0.25);
+    }
+
+    /* ==================== MAIN WORKSPACE ==================== */
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+      position: relative;
+    }
+
+    /* TABS CONTENT */
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.4s ease-out forwards;
+    }
+    
+    .tab-content.active {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ==================== INTERACTIVE 3D VIEWPORT ==================== */
+    .viewport-3d-layout {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 2rem;
+      min-height: 780px;
+    }
+
+    .viewport-container {
+      background: rgba(10, 14, 23, 0.4);
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: grab;
+      box-shadow: inset 0 0 40px rgba(0,0,0,0.4);
+    }
+    
+    .viewport-container:active {
+      cursor: grabbing;
+    }
+
+    .viewport-instructions {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(8px);
+      padding: 8px 16px;
+      border-radius: 30px;
+      border: 1px solid var(--border-color);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    }
+
+    /* ==================== 3D BROCHURE PHYSICAL SIMULATION ==================== */
+    .scene-3d {
+      width: calc(var(--panel-w) * 3);
+      height: var(--panel-h);
+      perspective: 2000px;
+      transform: scale(var(--brochure-scale));
+      transform-style: preserve-3d;
+      user-select: none;
+    }
+
+    .brochure-3d {
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transform: rotateX(var(--rx)) rotateY(var(--ry));
+      transition: transform 0.1s linear; /* Fast for drag responsiveness */
+    }
+
+    .brochure-3d.animating {
+      transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1), 
+                  --fold-left 0.8s cubic-bezier(0.25, 0.8, 0.25, 1), 
+                  --fold-right 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    /* Panels basics */
+    .panel {
+      position: absolute;
+      height: 100%;
+      transform-style: preserve-3d;
+      background-size: calc(var(--panel-w) * 3) var(--panel-h);
+      background-repeat: no-repeat;
+    }
+
+    /* 3D structure layout (nested for correct folding heirarchy) */
+    .panel-center {
+      left: var(--panel-w);
+      width: var(--panel-w);
+      transform-style: preserve-3d;
+      position: relative;
+    }
+
+    .panel-left {
+      right: 100%;
+      top: 0;
+      width: var(--panel-w);
+      transform-origin: right center;
+      transform: rotateY(var(--fold-left));
+      transition: transform 0.5s ease-in-out;
+    }
+
+    .panel-right {
+      left: 100%;
+      top: 0;
+      width: var(--panel-w);
+      transform-origin: left center;
+      transform: rotateY(var(--fold-right)) translateZ(0.2px); /* tiny offset to avoid z-fighting */
+      transition: transform 0.5s ease-in-out;
+    }
+
+    /* Front and Back Face logic */
+    .face {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: 0.5px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .face-back {
+      transform: rotateY(180deg);
+    }
+
+    /* Assign background graphics and positions */
+    .panel-left .face-front {
+      background-image: url('brochure_recto.svg');
+      background-position: 0px 0px;
+    }
+    .panel-left .face-back {
+      background-image: url('brochure_verso.svg');
+      background-position: calc(var(--panel-w) * -2) 0px; /* Panel 6 on back */
+    }
+
+    .panel-center .face-front {
+      background-image: url('brochure_recto.svg');
+      background-position: calc(var(--panel-w) * -1) 0px;
+    }
+    .panel-center .face-back {
+      background-image: url('brochure_verso.svg');
+      background-position: calc(var(--panel-w) * -1) 0px; /* Panel 5 on back */
+    }
+
+    .panel-right .face-front {
+      background-image: url('brochure_recto.svg');
+      background-position: calc(var(--panel-w) * -2) 0px;
+    }
+    .panel-right .face-back {
+      background-image: url('brochure_verso.svg');
+      background-position: 0px 0px; /* Panel 4 on back */
+    }
+
+    /* ==================== CONTROL PANEL SIDEBAR ==================== */
+    .control-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .control-card {
+      background: rgba(15, 22, 36, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 1.5rem;
+      backdrop-filter: blur(8px);
+    }
+
+    .control-card h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding-bottom: 0.5rem;
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 1.25rem;
+    }
+    
+    .control-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .control-group label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .control-group label span {
+      color: var(--accent-color);
+    }
+
+    /* Custom range input styling */
+    input[type=range] {
+      -webkit-appearance: none;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      height: 6px;
+      border-radius: 3px;
+      outline: none;
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-color), var(--success-color));
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(16, 152, 173, 0.5);
+      transition: transform 0.1s;
+    }
+
+    input[type=range]::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+
+    /* Buttons inside sidebar */
+    .btn-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .btn {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-color);
+      color: #fff;
+      padding: 10px 14px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary-color), #4c6ef5);
+      border: none;
+    }
+    
+    .btn-primary:hover {
+      box-shadow: 0 0 15px rgba(59, 91, 219, 0.4);
+      background: linear-gradient(135deg, #4c6ef5, var(--primary-color));
+    }
+
+    .btn-accent {
+      background: linear-gradient(135deg, var(--accent-color), var(--success-color));
+      border: none;
+    }
+    
+    .btn-accent:hover {
+      box-shadow: 0 0 15px rgba(16, 152, 173, 0.4);
+    }
+    
+    .btn-full {
+      grid-column: span 2;
+    }
+
+    /* Help text style */
+    .help-box {
+      background: rgba(16, 152, 173, 0.05);
+      border: 1px dashed rgba(16, 152, 173, 0.25);
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 0.78rem;
+      line-height: 1.4;
+      color: #b2f2bb;
+    }
+
+    /* ==================== PLAN D'IMPRESSION SECTION ==================== */
+    .print-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .print-guide {
+      background: rgba(59, 91, 219, 0.08);
+      border: 1px solid rgba(59, 91, 219, 0.2);
+      border-radius: 20px;
+      padding: 1.5rem;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .print-icon {
+      font-size: 2.5rem;
+      background: rgba(59, 91, 219, 0.15);
+      width: 70px;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 16px;
+      color: #74c0fc;
+      border: 1px solid rgba(59, 91, 219, 0.3);
+    }
+
+    .print-guide-text h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.2rem;
+      margin-bottom: 6px;
+      color: #fff;
+    }
+
+    .print-guide-text p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .print-guide-steps {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .step-badge {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-color);
+      padding: 6px 12px;
+      border-radius: 30px;
+      font-size: 0.78rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #e2e8f0;
+    }
+
+    .step-number {
+      background: var(--primary-color);
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      font-weight: bold;
+    }
+
+    /* Print sheets displays */
+    .print-sheets-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+      gap: 2rem;
+    }
+
+    .print-sheet-card {
+      background: rgba(15, 22, 36, 0.4);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .print-sheet-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .print-sheet-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sheet-preview {
+      background: #090b0f;
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 12px;
+      overflow: hidden;
+      aspect-ratio: 1123 / 794;
+      display: flex;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      position: relative;
+    }
+    
+    .sheet-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    /* Download tools */
+    .assets-card {
+      background: rgba(15, 22, 36, 0.4);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .assets-card h3 {
+      font-family: 'Outfit', sans-serif;
+      color: #fff;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .assets-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+    .asset-item {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border-color);
+      padding: 1rem;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s ease;
+    }
+    .asset-item:hover {
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(255,255,255,0.15);
+    }
+    .asset-meta h4 {
+      font-size: 0.85rem;
+      color: #fff;
+      font-weight: 600;
+    }
+    .asset-meta p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* ==================== FOOTER ==================== */
+    footer {
+      border-top: 1px solid var(--border-color);
+      background: rgba(7, 10, 17, 0.9);
+      padding: 1.5rem 2rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: auto;
+    }
+
+    /* ==================== PRINT MODE STYLES (@media print) ==================== */
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+        min-height: auto !important;
+      }
+      
+      header, footer, .bg-glow-1, .bg-glow-2, .viewport-3d-layout, .print-guide, .print-sheet-header, .assets-card, .tab-btn-wrapper, .tabs {
+        display: none !important;
+      }
+
+      main {
+        padding: 0 !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+      }
+
+      .tab-content {
+        display: none !important;
+      }
+
+      .tab-content#print-tab {
+        display: block !important;
+      }
+
+      .print-layout {
+        gap: 0 !important;
+        display: block !important;
+      }
+
+      .print-sheet-card {
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        page-break-after: always !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+
+      .sheet-preview {
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        width: 297mm !important; /* Standard A4 Width */
+        height: 210mm !important; /* Standard A4 Height */
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      .sheet-preview img {
+        width: 100% !important;
+        height: 100% !important;
+        display: block !important;
+      }
+      
+      @page {
+        size: A4 landscape !important;
+        margin: 0 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-glow-1"></div>
+  <div class="bg-glow-2"></div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="brand">
+      <div class="brand-logo">OP</div>
+      <div class="brand-info">
+        <h1>Opays Tech</h1>
+        <p>Garant d'Efficience Opérationnelle</p>
+      </div>
+    </div>
+    
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('view3d')">
+        <span>✨</span> Aperçu 3D Réaliste
+      </button>
+      <button class="tab-btn" onclick="switchTab('print')">
+        <span>📄</span> Plan d'Impression PDF
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN WORKSPACE -->
+  <main>
+    
+    <!-- TABS 1: 3D VIEWPORT -->
+    <div id="view3d-tab" class="tab-content active">
+      <div class="viewport-3d-layout">
+        
+        <!-- Viewport itself -->
+        <div class="viewport-container" id="viewport">
+          <div class="scene-3d" id="scene">
+            <div class="brochure-3d" id="brochure">
+              <!-- Center Panel (Panel 2 on Recto, Panel 5 on Verso) -->
+              <div class="panel panel-center">
+                <div class="face face-front"></div>
+                <div class="face face-back"></div>
+                
+                <!-- Left Panel (Panel 3 on Recto, Panel 6 on Verso) -->
+                <div class="panel panel-left" id="panelLeft">
+                  <div class="face face-front"></div>
+                  <div class="face face-back"></div>
+                </div>
+
+                <!-- Right Panel (Panel 1 on Recto, Panel 4 on Verso) -->
+                <div class="panel panel-right" id="panelRight">
+                  <div class="face face-front"></div>
+                  <div class="face face-back"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="viewport-instructions">
+            <span>🖱️</span> Glissez pour tourner dans l'espace 3D
+          </div>
+        </div>
+
+        <!-- Sidebar controls -->
+        <div class="control-sidebar">
+          
+          <!-- Folding controls -->
+          <div class="control-card">
+            <h3><span>📂</span> Plier la Brochure</h3>
+            
+            <div class="control-group">
+              <label for="foldSlider">Niveau de Pliage <span id="foldVal">0%</span></label>
+              <input type="range" id="foldSlider" min="0" max="100" value="0">
+            </div>
+
+            <div class="control-group">
+              <div class="btn-grid">
+                <button class="btn" onclick="setFold(0)">📂 Déplier</button>
+                <button class="btn" onclick="setFold(50)">🌓 Mi-plié</button>
+                <button class="btn btn-primary btn-full" onclick="setFold(100)">🔒 Fermer la brochure</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Flip / Rotate controls -->
+          <div class="control-card">
+            <h3><span>🔄</span> Rotation & Face</h3>
+            
+            <div class="control-group">
+              <div class="btn-grid">
+                <button class="btn btn-accent btn-full" onclick="flipFace()">🔁 Retourner la brochure</button>
+                <button class="btn" onclick="rotateTo('recto')">Face A (Recto)</button>
+                <button class="btn" onclick="rotateTo('verso')">Face B (Verso)</button>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label for="rotateSlider">Rotation Horizontale <span id="rotVal">0°</span></label>
+              <input type="range" id="rotateSlider" min="-180" max="180" value="0">
+            </div>
+
+            <div class="control-group">
+              <button class="btn btn-full" onclick="reset3D()">🔄 Réinitialiser la vue</button>
+            </div>
+          </div>
+
+          <!-- Explainer -->
+          <div class="control-card">
+            <h3><span>ℹ️</span> Penpot & Vecteur</h3>
+            <div class="help-box">
+              Ces fichiers SVG ont été conçus avec des balises de texte éditables. Vous pouvez les glisser-déposer directement dans <strong>Penpot</strong> ou <strong>Figma</strong> pour modifier chaque mot, alignement ou couleur à votre convenance.
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- TABS 2: PRINT LAYOUT -->
+    <div id="print-tab" class="tab-content">
+      <div class="print-layout">
+        
+        <!-- Print Manual -->
+        <div class="print-guide">
+          <div class="print-icon">🖨️</div>
+          <div class="print-guide-text">
+            <h2>Prêt pour l'impression physique ou l'export PDF</h2>
+            <p>Ce visualiseur est optimisé pour imprimer directement vos deux faces sur des pages A4 horizontales de haute qualité. Suivez ces étapes simples :</p>
+            <div class="print-guide-steps">
+              <div class="step-badge"><span class="step-number">1</span> Raccourci clavier <strong>Ctrl + P</strong> (ou Cmd + P)</div>
+              <div class="step-badge"><span class="step-number">2</span> Destination : <strong>Enregistrer au format PDF</strong> ou votre imprimante</div>
+              <div class="step-badge"><span class="step-number">3</span> Orientation : <strong>Paysage</strong></div>
+              <div class="step-badge"><span class="step-number">4</span> Marges : <strong>Aucune</strong> (ou Minima)</div>
+              <div class="step-badge"><span class="step-number">5</span> Activer : <strong>Graphiques d'arrière-plan</strong></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sheets displays -->
+        <div class="print-sheets-container">
+          
+          <!-- Face A (Recto) -->
+          <div class="print-sheet-card">
+            <div class="print-sheet-header">
+              <div class="print-sheet-title">
+                <span>📁</span> Face A : Extérieur (Recto)
+              </div>
+              <button class="btn btn-primary" onclick="window.print()">Imprimer cette face</button>
+            </div>
+            <div class="sheet-preview">
+              <img src="brochure_recto.svg" alt="Face A Recto">
+            </div>
+          </div>
+
+          <!-- Face B (Verso) -->
+          <div class="print-sheet-card">
+            <div class="print-sheet-header">
+              <div class="print-sheet-title">
+                <span>📖</span> Face B : Intérieur (Verso)
+              </div>
+              <button class="btn btn-primary" onclick="window.print()">Imprimer cette face</button>
+            </div>
+            <div class="sheet-preview">
+              <img src="brochure_verso.svg" alt="Face B Verso">
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Download links card -->
+        <div class="assets-card">
+          <h3><span>💾</span> Fichiers sources vectoriels</h3>
+          <div class="assets-list">
+            
+            <div class="asset-item">
+              <div class="asset-meta">
+                <h4>brochure_recto.svg</h4>
+                <p>Format vectoriel SVG standard • Face Extérieure</p>
+              </div>
+              <a href="brochure_recto.svg" download="brochure_recto.svg" class="btn btn-accent">Télécharger</a>
+            </div>
+
+            <div class="asset-item">
+              <div class="asset-meta">
+                <h4>brochure_verso.svg</h4>
+                <p>Format vectoriel SVG standard • Face Intérieure</p>
+              </div>
+              <a href="brochure_verso.svg" download="brochure_verso.svg" class="btn btn-accent">Télécharger</a>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    Opays Tech &copy; 2026 - Conçu localement et de manière souveraine pour Fénelon &amp; Associés
+  </footer>
+
+  <!-- SCRIPTING (3D DRAG & FOLD ANIMATIONS) -->
+  <script>
+    // Elements references
+    const foldSlider = document.getElementById('foldSlider');
+    const foldVal = document.getElementById('foldVal');
+    const rotateSlider = document.getElementById('rotateSlider');
+    const rotVal = document.getElementById('rotVal');
+    const panelLeft = document.getElementById('panelLeft');
+    const panelRight = document.getElementById('panelRight');
+    const brochure = document.getElementById('brochure');
+    const viewport = document.getElementById('viewport');
+
+    // State
+    let isDragging = false;
+    let startX = 0;
+    let startY = 0;
+    let currentRx = -10;
+    let currentRy = 0;
+    
+    // Setup initial fold values
+    let foldPercent = 0;
+
+    // Tab switcher
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+      if (tabId === 'view3d') {
+        document.querySelector('.tab-btn:nth-child(1)').classList.add('active');
+        document.getElementById('view3d-tab').classList.add('active');
+      } else {
+        document.querySelector('.tab-btn:nth-child(2)').classList.add('active');
+        document.getElementById('print-tab').classList.add('active');
+      }
+    }
+
+    // Direct folding controls
+    function setFold(percent) {
+      foldSlider.value = percent;
+      updateFold(percent);
+    }
+
+    function updateFold(percent) {
+      foldPercent = percent;
+      foldVal.innerText = `${percent}%`;
+
+      // Standard physical folding angles
+      // Left Panel folds first inward around its right border. Range: 0 to 121 degrees
+      const leftAngle = (percent / 100) * 121;
+      
+      // Right Panel folds second overlaying Left Panel around its left border. Range: 0 to -122 degrees
+      const rightAngle = (percent / 100) * -122;
+
+      // Update css custom properties or direct styles
+      document.documentElement.style.setProperty('--fold-left', `${leftAngle}deg`);
+      document.documentElement.style.setProperty('--fold-right', `${rightAngle}deg`);
+    }
+
+    // Flip brochure
+    function flipFace() {
+      // Toggle between Recto (0) and Verso (180)
+      if (Math.abs(currentRy % 360) < 90 || Math.abs(currentRy % 360) > 270) {
+        currentRy = 180;
+      } else {
+        currentRy = 0;
+      }
+      updateRotation();
+    }
+
+    function rotateTo(face) {
+      if (face === 'recto') {
+        currentRy = 0;
+      } else if (face === 'verso') {
+        currentRy = 180;
+      }
+      updateRotation();
+    }
+
+    function updateRotation() {
+      // Keep sliders in sync
+      rotateSlider.value = currentRy;
+      rotVal.innerText = `${currentRy}°`;
+      
+      // Apply to CSS variables
+      document.documentElement.style.setProperty('--ry', `${currentRy}deg`);
+      document.documentElement.style.setProperty('--rx', `${currentRx}deg`);
+    }
+
+    function reset3D() {
+      currentRx = -10;
+      currentRy = 0;
+      setFold(0);
+      updateRotation();
+    }
+
+    // Drag-to-rotate logic
+    viewport.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      startX = e.clientX;
+      startY = e.clientY;
+      brochure.classList.remove('animating');
+    });
+
+    window.addEventListener('mouseup', () => {
+      isDragging = false;
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      
+      const deltaX = e.clientX - startX;
+      const deltaY = e.clientY - startY;
+
+      // Update rotation angles relative to movements
+      currentRy += deltaX * 0.5;
+      currentRx -= deltaY * 0.5;
+
+      // Clamp X rotation to prevent flipping upside down
+      currentRx = Math.max(-60, Math.min(60, currentRx));
+
+      // Keep angles clean
+      if (currentRy > 360) currentRy -= 360;
+      if (currentRy < -360) currentRy += 360;
+
+      startX = e.clientX;
+      startY = e.clientY;
+
+      updateRotation();
+    });
+
+    // Range slider event listeners
+    foldSlider.addEventListener('input', (e) => {
+      updateFold(e.target.value);
+    });
+
+    rotateSlider.addEventListener('input', (e) => {
+      currentRy = parseInt(e.target.value);
+      updateRotation();
+    });
+
+    // Touch support for drag and rotate
+    viewport.addEventListener('touchstart', (e) => {
+      if(e.touches.length === 1) {
+        isDragging = true;
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        brochure.classList.remove('animating');
+      }
+    });
+
+    window.addEventListener('touchend', () => {
+      isDragging = false;
+    });
+
+    window.addEventListener('touchmove', (e) => {
+      if (!isDragging || e.touches.length !== 1) return;
+      
+      const deltaX = e.touches[0].clientX - startX;
+      const deltaY = e.touches[0].clientY - startY;
+
+      currentRy += deltaX * 0.5;
+      currentRx -= deltaY * 0.5;
+      currentRx = Math.max(-60, Math.min(60, currentRx));
+
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+
+      updateRotation();
+    });
+
+    // Initial setup calls
+    updateFold(0);
+    updateRotation();
+  </script>
+</body>
+</html>
