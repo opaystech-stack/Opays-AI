@@ -11,18 +11,18 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;900&display=swap" rel="stylesheet">
 
   <style>
-    /* ==================== VARIABLE / CONFIG GRAPHIC ==================== */
+    /* ==================== VARIABLE / CONFIG GRAPHIC (LIGHT THEME) ==================== */
     :root {
-      --bg-color: #080a0f;
-      --panel-bg: rgba(15, 22, 36, 0.7);
-      --border-color: rgba(255, 255, 255, 0.08);
+      --bg-color: #f1f5f9;
+      --panel-bg: rgba(255, 255, 255, 0.8);
+      --border-color: rgba(0, 0, 0, 0.08);
       --primary-color: #3b5bdb;
-      --primary-glow: rgba(59, 91, 219, 0.4);
+      --primary-glow: rgba(59, 91, 219, 0.15);
       --accent-color: #1098ad;
-      --accent-glow: rgba(16, 152, 173, 0.4);
+      --accent-glow: rgba(16, 152, 173, 0.15);
       --success-color: #0ca678;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
       
       /* Brochure physical sizes at scale in browser */
       --brochure-scale: 0.75;
@@ -52,7 +52,7 @@
       flex-direction: column;
     }
 
-    /* Background glow decorations */
+    /* Background glow decorations (Soft Light Glows) */
     .bg-glow-1 {
       position: fixed;
       top: -10%;
@@ -60,7 +60,7 @@
       width: 50vw;
       height: 50vw;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(112, 72, 232, 0.12) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(112, 72, 232, 0.05) 0%, transparent 70%);
       filter: blur(50px);
       pointer-events: none;
       z-index: -1;
@@ -72,15 +72,15 @@
       width: 60vw;
       height: 60vw;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(16, 152, 173, 0.08) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(16, 152, 173, 0.04) 0%, transparent 70%);
       filter: blur(60px);
       pointer-events: none;
       z-index: -1;
     }
 
-    /* ==================== HEADER (GLASSMORPHISM) ==================== */
+    /* ==================== HEADER (GLASSMORPHISM LIGHT) ==================== */
     header {
-      background: rgba(10, 15, 26, 0.8);
+      background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border-color);
@@ -91,6 +91,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
     }
 
     .brand {
@@ -108,8 +109,9 @@
       align-items: center;
       justify-content: center;
       font-weight: bold;
+      color: #fff;
       font-family: 'Outfit', sans-serif;
-      box-shadow: 0 0 15px rgba(59, 91, 219, 0.3);
+      box-shadow: 0 4px 15px rgba(59, 91, 219, 0.2);
     }
 
     .brand-info h1 {
@@ -117,7 +119,7 @@
       font-size: 1.25rem;
       font-weight: 700;
       letter-spacing: 0.5px;
-      color: #fff;
+      color: var(--text-main);
     }
     .brand-info p {
       font-size: 0.75rem;
@@ -128,7 +130,7 @@
 
     .tabs {
       display: flex;
-      background: rgba(255, 255, 255, 0.03);
+      background: rgba(0, 0, 0, 0.03);
       padding: 4px;
       border-radius: 30px;
       border: 1px solid var(--border-color);
@@ -152,7 +154,7 @@
     .tab-btn.active {
       background: linear-gradient(135deg, var(--primary-color), #4c6ef5);
       color: #fff;
-      box-shadow: 0 4px 12px rgba(59, 91, 219, 0.25);
+      box-shadow: 0 4px 12px rgba(59, 91, 219, 0.2);
     }
 
     /* ==================== MAIN WORKSPACE ==================== */
@@ -193,7 +195,7 @@
     }
 
     .viewport-container {
-      background: rgba(10, 14, 23, 0.4);
+      background: rgba(255, 255, 255, 0.45);
       border: 1px solid var(--border-color);
       border-radius: 24px;
       position: relative;
@@ -202,7 +204,7 @@
       justify-content: center;
       align-items: center;
       cursor: grab;
-      box-shadow: inset 0 0 40px rgba(0,0,0,0.4);
+      box-shadow: inset 0 0 40px rgba(0,0,0,0.02);
     }
     
     .viewport-container:active {
@@ -214,18 +216,17 @@
       bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(15, 23, 42, 0.8);
-      backdrop-filter: blur(8px);
+      background: rgba(255, 255, 255, 0.95);
       padding: 8px 16px;
       border-radius: 30px;
       border: 1px solid var(--border-color);
       font-size: 0.8rem;
-      color: var(--text-muted);
+      color: var(--text-main);
       pointer-events: none;
       display: flex;
       align-items: center;
       gap: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     }
 
     /* ==================== 3D BROCHURE PHYSICAL SIMULATION ==================== */
@@ -297,7 +298,7 @@
       backface-visibility: hidden;
       -webkit-backface-visibility: hidden;
       border-radius: 0.5px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
     }
 
     .face-back {
@@ -340,22 +341,23 @@
     }
 
     .control-card {
-      background: rgba(15, 22, 36, 0.6);
+      background: rgba(255, 255, 255, 0.7);
       border: 1px solid var(--border-color);
       border-radius: 20px;
       padding: 1.5rem;
       backdrop-filter: blur(8px);
+      box-shadow: 0 8px 32px rgba(31, 38, 135, 0.04);
     }
 
     .control-card h3 {
       font-family: 'Outfit', sans-serif;
       font-size: 1.1rem;
       margin-bottom: 1rem;
-      color: #fff;
+      color: var(--text-main);
       display: flex;
       align-items: center;
       gap: 8px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
       padding-bottom: 0.5rem;
     }
 
@@ -380,14 +382,14 @@
     }
 
     .control-group label span {
-      color: var(--accent-color);
+      color: var(--primary-color);
     }
 
     /* Custom range input styling */
     input[type=range] {
       -webkit-appearance: none;
       width: 100%;
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(0, 0, 0, 0.05);
       height: 6px;
       border-radius: 3px;
       outline: none;
@@ -398,9 +400,9 @@
       width: 18px;
       height: 18px;
       border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent-color), var(--success-color));
+      background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
       cursor: pointer;
-      box-shadow: 0 0 10px rgba(16, 152, 173, 0.5);
+      box-shadow: 0 2px 8px rgba(59, 91, 219, 0.3);
       transition: transform 0.1s;
     }
 
@@ -416,9 +418,9 @@
     }
 
     .btn {
-      background: rgba(255, 255, 255, 0.03);
+      background: rgba(0, 0, 0, 0.02);
       border: 1px solid var(--border-color);
-      color: #fff;
+      color: var(--text-main);
       padding: 10px 14px;
       font-size: 0.8rem;
       font-weight: 600;
@@ -432,27 +434,29 @@
     }
 
     .btn:hover {
-      background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(255, 255, 255, 0.2);
+      background: rgba(0, 0, 0, 0.06);
+      border-color: rgba(0, 0, 0, 0.15);
     }
 
     .btn-primary {
       background: linear-gradient(135deg, var(--primary-color), #4c6ef5);
       border: none;
+      color: #fff;
     }
     
     .btn-primary:hover {
-      box-shadow: 0 0 15px rgba(59, 91, 219, 0.4);
+      box-shadow: 0 4px 15px rgba(59, 91, 219, 0.3);
       background: linear-gradient(135deg, #4c6ef5, var(--primary-color));
     }
 
     .btn-accent {
       background: linear-gradient(135deg, var(--accent-color), var(--success-color));
       border: none;
+      color: #fff;
     }
     
     .btn-accent:hover {
-      box-shadow: 0 0 15px rgba(16, 152, 173, 0.4);
+      box-shadow: 0 4px 15px rgba(16, 152, 173, 0.25);
     }
     
     .btn-full {
@@ -461,13 +465,13 @@
 
     /* Help text style */
     .help-box {
-      background: rgba(16, 152, 173, 0.05);
-      border: 1px dashed rgba(16, 152, 173, 0.25);
+      background: rgba(16, 152, 173, 0.04);
+      border: 1px dashed rgba(16, 152, 173, 0.2);
       border-radius: 12px;
       padding: 12px;
       font-size: 0.78rem;
       line-height: 1.4;
-      color: #b2f2bb;
+      color: #0b7285;
     }
 
     /* ==================== PLAN D'IMPRESSION SECTION ==================== */
@@ -478,8 +482,8 @@
     }
 
     .print-guide {
-      background: rgba(59, 91, 219, 0.08);
-      border: 1px solid rgba(59, 91, 219, 0.2);
+      background: rgba(59, 91, 219, 0.04);
+      border: 1px solid rgba(59, 91, 219, 0.12);
       border-radius: 20px;
       padding: 1.5rem;
       display: grid;
@@ -490,22 +494,22 @@
 
     .print-icon {
       font-size: 2.5rem;
-      background: rgba(59, 91, 219, 0.15);
+      background: rgba(59, 91, 219, 0.08);
       width: 70px;
       height: 70px;
       display: flex;
       align-items: center;
       justify-content: center;
       border-radius: 16px;
-      color: #74c0fc;
-      border: 1px solid rgba(59, 91, 219, 0.3);
+      color: var(--primary-color);
+      border: 1px solid rgba(59, 91, 219, 0.15);
     }
 
     .print-guide-text h2 {
       font-family: 'Outfit', sans-serif;
       font-size: 1.2rem;
       margin-bottom: 6px;
-      color: #fff;
+      color: var(--text-main);
     }
 
     .print-guide-text p {
@@ -522,7 +526,7 @@
     }
 
     .step-badge {
-      background: rgba(255, 255, 255, 0.04);
+      background: rgba(0, 0, 0, 0.02);
       border: 1px solid var(--border-color);
       padding: 6px 12px;
       border-radius: 30px;
@@ -530,13 +534,14 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      color: #e2e8f0;
+      color: var(--text-main);
     }
 
     .step-number {
       background: var(--primary-color);
       width: 18px;
       height: 18px;
+      color: #fff;
       border-radius: 50%;
       display: inline-flex;
       align-items: center;
@@ -553,7 +558,7 @@
     }
 
     .print-sheet-card {
-      background: rgba(15, 22, 36, 0.4);
+      background: rgba(255, 255, 255, 0.55);
       border: 1px solid var(--border-color);
       border-radius: 20px;
       padding: 1.5rem;
@@ -572,20 +577,20 @@
       font-family: 'Outfit', sans-serif;
       font-weight: 700;
       font-size: 1rem;
-      color: #fff;
+      color: var(--text-main);
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
     .sheet-preview {
-      background: #090b0f;
-      border: 1px solid rgba(255,255,255,0.05);
+      background: #f8fafc;
+      border: 1px solid rgba(0,0,0,0.05);
       border-radius: 12px;
       overflow: hidden;
       aspect-ratio: 1123 / 794;
       display: flex;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.04);
       position: relative;
     }
     
@@ -597,7 +602,7 @@
 
     /* Download tools */
     .assets-card {
-      background: rgba(15, 22, 36, 0.4);
+      background: rgba(255, 255, 255, 0.55);
       border: 1px solid var(--border-color);
       border-radius: 20px;
       padding: 1.5rem;
@@ -605,7 +610,7 @@
     }
     .assets-card h3 {
       font-family: 'Outfit', sans-serif;
-      color: #fff;
+      color: var(--text-main);
       font-size: 1.1rem;
       margin-bottom: 1rem;
       display: flex;
@@ -618,7 +623,7 @@
       gap: 1rem;
     }
     .asset-item {
-      background: rgba(255,255,255,0.02);
+      background: rgba(0,0,0,0.01);
       border: 1px solid var(--border-color);
       padding: 1rem;
       border-radius: 12px;
@@ -628,12 +633,12 @@
       transition: all 0.2s ease;
     }
     .asset-item:hover {
-      background: rgba(255,255,255,0.05);
-      border-color: rgba(255,255,255,0.15);
+      background: rgba(0,0,0,0.03);
+      border-color: rgba(0,0,0,0.1);
     }
     .asset-meta h4 {
       font-size: 0.85rem;
-      color: #fff;
+      color: var(--text-main);
       font-weight: 600;
     }
     .asset-meta p {
@@ -645,12 +650,13 @@
     /* ==================== FOOTER ==================== */
     footer {
       border-top: 1px solid var(--border-color);
-      background: rgba(7, 10, 17, 0.9);
+      background: rgba(255, 255, 255, 0.85);
       padding: 1.5rem 2rem;
       text-align: center;
       font-size: 0.8rem;
       color: var(--text-muted);
       margin-top: auto;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.01);
     }
 
     /* ==================== PRINT MODE STYLES (@media print) ==================== */
