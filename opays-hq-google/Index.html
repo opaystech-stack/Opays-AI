@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="fr" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <title>Opays HQ — Workspace OS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brandDark: '#0A0A0A',
+            brandCard: 'rgba(20,20,20,0.75)',
+            brandCyan: '#00FFE0',
+            brandBlue: '#0055FF'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@200;400;700;800&display=swap');
+    *{box-sizing:border-box}
+    body{font-family:'Inter',sans-serif;background:#0A0A0A;color:#F3F4F6;-webkit-tap-highlight-color:transparent}
+    .glass{background:rgba(18,18,18,.82);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.06)}
+    .card{background:rgba(28,28,30,.72);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.05);box-shadow:0 8px 32px rgba(0,0,0,.35);border-radius:1.5rem;transition:border-color .25s,transform .18s}
+    .card:hover{border-color:rgba(0,255,224,.12)}
+    .card:active{transform:scale(.988)}
+    .no-sb::-webkit-scrollbar{display:none}.no-sb{-ms-overflow-style:none;scrollbar-width:none}
+    .grad-text{background:linear-gradient(135deg,#0055FF,#00FFE0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .grad-btn{background:linear-gradient(135deg,#0055FF,#00FFE0);color:#000;font-weight:800}
+    .grad-btn:hover{filter:brightness(1.1);transform:scale(1.01)}.grad-btn:active{transform:scale(.98)}
+    .input-f{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:.75rem;padding:.7rem 1rem;font-size:.75rem;outline:none;color:#fff;transition:border-color .2s}
+    .input-f:focus{border-color:#00FFE0}
+    .label-f{display:block;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:rgba(156,163,175,1);margin-bottom:4px}
+    select.input-f{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%239ca3af' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .75rem center}
+    /* Toast */
+    .toast-container{position:fixed;top:1.25rem;right:1.25rem;z-index:9999;display:flex;flex-direction:column;gap:.5rem;pointer-events:none}
+    .toast{pointer-events:auto;padding:.75rem 1.25rem;border-radius:1rem;font-size:.75rem;font-weight:600;backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.08);box-shadow:0 8px 32px rgba(0,0,0,.4);animation:toastIn .35s ease-out,toastOut .35s ease-in 3.2s forwards;max-width:360px}
+    .toast-success{background:rgba(16,185,129,.18);color:#6ee7b7;border-color:rgba(16,185,129,.25)}
+    .toast-error{background:rgba(239,68,68,.18);color:#fca5a5;border-color:rgba(239,68,68,.25)}
+    .toast-info{background:rgba(0,85,255,.18);color:#93c5fd;border-color:rgba(0,85,255,.25)}
+    @keyframes toastIn{from{opacity:0;transform:translateX(80px)}to{opacity:1;transform:translateX(0)}}
+    @keyframes toastOut{from{opacity:1}to{opacity:0;transform:translateY(-12px)}}
+    /* Calendar cells */
+    .cal-cell{display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;padding:6px 8px;border-radius:.875rem;border:1px solid rgba(255,255,255,.04);background:rgba(255,255,255,.025);min-height:4.2rem;cursor:pointer;transition:all .2s;position:relative}
+    .cal-cell:hover{background:rgba(255,255,255,.06);border-color:rgba(0,255,224,.2)}
+    .cal-cell.today{ring:2px;border-color:#00FFE0;box-shadow:0 0 12px rgba(0,255,224,.15)}
+    .cal-cell.other{opacity:.3;pointer-events:none}
+    .cal-cell.selected{background:rgba(0,85,255,.12);border-color:rgba(0,85,255,.4)}
+    .cal-dot{width:5px;height:5px;border-radius:50%;background:#00FFE0;box-shadow:0 0 6px rgba(0,255,224,.6);position:absolute;bottom:6px;right:8px}
+    /* Tabs */
+    .tab-btn{padding:.5rem 1rem;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;border-radius:.625rem;transition:all .2s;color:rgba(156,163,175,1)}
+    .tab-btn.active{background:rgba(0,85,255,.15);color:#00FFE0}
+    .tab-btn:hover:not(.active){color:#fff}
+    /* Pipeline column */
+    .pipe-col{min-height:200px}
+    /* Mobile safe area */
+    @supports(padding-bottom:env(safe-area-inset-bottom)){.mob-bar{padding-bottom:env(safe-area-inset-bottom)}}
+  </style>
+</head>
+<body class="h-full flex flex-col overflow-hidden no-sb">
+
+<!-- ═══════════════ TOASTS ═══════════════ -->
+<div id="toast-container" class="toast-container"></div>
+
+<!-- ═══════════════ ÉCRAN DE CONNEXION ═══════════════ -->
+<div id="login-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-black">
+  <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,85,255,.15)_0%,transparent_70%)]"></div>
+  <div class="glass max-w-md w-full p-10 rounded-[2.5rem] text-center space-y-8 relative z-10 shadow-2xl mx-4">
+    <div class="flex flex-col items-center gap-3">
+      <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-brandBlue to-brandCyan flex items-center justify-center text-black font-black text-2xl shadow-xl shadow-brandBlue/20 animate-pulse">⚡</div>
+      <h1 class="text-3xl font-extrabold tracking-tight font-['Outfit'] uppercase">Opays HQ</h1>
+      <p class="text-xs text-gray-400">Workspace OS — Système d'Ingénierie de l'Efficience</p>
+    </div>
+    <div class="space-y-4">
+      <button onclick="loginUser()" class="w-full py-4 rounded-2xl grad-btn text-xs uppercase tracking-widest flex items-center justify-center gap-3 shadow-xl shadow-brandCyan/10">
+        <i data-lucide="log-in" class="w-4 h-4"></i> Se connecter avec Gmail
+      </button>
+      <p class="text-[10px] text-gray-500">Connexion sécurisée via Google OAuth</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ APPLICATION PRINCIPALE ═══════════════ -->
+<div id="app-screen" class="hidden h-full flex flex-col md:flex-row overflow-hidden">
+
+  <!-- ─── SIDEBAR (desktop) ─── -->
+  <aside id="sidebar" class="hidden md:flex w-64 border-r border-white/5 bg-black/60 backdrop-blur flex-col shrink-0">
+    <div class="p-6 border-b border-white/5 flex items-center gap-2">
+      <span class="text-xl font-black font-['Outfit'] grad-text uppercase">⚡ Opays HQ</span>
+    </div>
+    <nav id="sidebar-nav" class="flex-1 p-4 space-y-8 overflow-y-auto no-sb"></nav>
+    <div class="p-4 border-t border-white/5 bg-black flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div id="user-avatar" class="w-8 h-8 rounded-lg bg-brandBlue text-white flex items-center justify-center font-bold text-xs">U</div>
+        <div class="min-w-0">
+          <p id="user-name" class="text-xs font-bold truncate">Utilisateur</p>
+          <p id="user-role" class="text-[9px] text-gray-400 uppercase font-black truncate">Rôle</p>
+        </div>
+      </div>
+      <button onclick="changeView('SETTINGS')" class="p-2 text-gray-400 hover:text-white rounded-lg transition-colors">
+        <i data-lucide="settings" class="w-4 h-4"></i>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ─── ZONE PRINCIPALE ─── -->
+  <main class="flex-1 flex flex-col overflow-hidden relative">
+
+    <!-- TOPBAR -->
+    <header class="h-14 border-b border-white/5 px-4 md:px-8 flex items-center justify-between shrink-0 bg-brandDark/40 backdrop-blur z-20">
+      <div class="flex items-center gap-3">
+        <span class="md:hidden text-lg font-black font-['Outfit'] grad-text">⚡ HQ</span>
+        <h2 id="view-title" class="hidden md:block text-sm font-bold uppercase tracking-wide">Tableau de Bord</h2>
+      </div>
+      <div class="flex items-center gap-3">
+        <!-- Sélecteur d'entité -->
+        <div class="flex bg-white/5 p-1 rounded-xl border border-white/5 text-xs">
+          <button id="btn-ent-tech" onclick="toggleEntity('TECH')" class="px-3 py-1 rounded-lg text-[9px] font-black uppercase transition-all bg-brandBlue text-white">⚡ Tech</button>
+          <button id="btn-ent-commons" onclick="toggleEntity('COMMONS')" class="px-3 py-1 rounded-lg text-[9px] font-black uppercase transition-all text-gray-400">🍃 Commons</button>
+        </div>
+        <button onclick="openModal('task')" class="px-3 py-1.5 grad-btn text-[9px] uppercase tracking-wider rounded-lg shadow shadow-brandBlue/20">+ Créer</button>
+        <button onclick="toggleGemini()" class="p-2 rounded-lg border border-white/5 hover:border-brandCyan hover:text-brandCyan transition-colors">
+          <i data-lucide="sparkles" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- SPINNER -->
+    <div id="spinner" class="absolute inset-0 bg-brandDark/85 flex items-center justify-center z-40 hidden">
+      <div class="w-10 h-10 rounded-full border-4 border-white/5 border-t-brandCyan animate-spin"></div>
+    </div>
+
+    <!-- CONTENEUR DES VUES -->
+    <div id="view-container" class="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 no-sb pb-24 md:pb-8"></div>
+
+    <!-- NAV MOBILE (Apple style) -->
+    <div id="mobile-nav" class="md:hidden fixed bottom-0 left-0 right-0 glass mob-bar border-t border-white/10 shadow-2xl z-40 flex items-center justify-around px-2 pt-2 pb-2"></div>
+  </main>
+
+  <!-- ─── ASSISTANT GEMINI ─── -->
+  <aside id="gemini-panel" class="w-80 border-l border-white/5 bg-black/80 backdrop-blur flex flex-col shrink-0 translate-x-full transition-transform duration-300 fixed right-0 top-14 bottom-0 z-30">
+    <div class="p-4 border-b border-white/5 flex items-center justify-between bg-black">
+      <div class="flex items-center gap-2 text-brandCyan"><i data-lucide="sparkles" class="w-4 h-4"></i><span class="text-xs font-bold uppercase tracking-widest">Assistant Gemini</span></div>
+      <button onclick="toggleGemini()" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
+    </div>
+    <div id="chat-msgs" class="flex-1 p-4 space-y-4 overflow-y-auto text-xs no-sb">
+      <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+        <p class="font-bold text-brandCyan mb-1">Gemini :</p>
+        <p>Bonjour ! Comment puis-je optimiser les opérations d'Opays aujourd'hui ?</p>
+      </div>
+    </div>
+    <div class="p-4 border-t border-white/5 bg-black flex gap-2">
+      <input id="chat-input" type="text" placeholder="Poser une question..." class="input-f flex-1" onkeydown="if(event.key==='Enter')sendChat()" />
+      <button onclick="sendChat()" class="p-2.5 rounded-xl bg-brandBlue text-white"><i data-lucide="send" class="w-4 h-4"></i></button>
+    </div>
+  </aside>
+</div>
+
+<!-- ═══════════════ MODAL UNIVERSEL ═══════════════ -->
+<div id="modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden" onclick="if(event.target===this)closeModal()">
+  <div class="glass max-w-lg w-full p-8 rounded-[2rem] space-y-5 relative shadow-2xl mx-4 max-h-[90vh] overflow-y-auto no-sb">
+    <div class="flex items-center justify-between border-b border-white/5 pb-4">
+      <h3 id="modal-title" class="text-sm font-bold uppercase tracking-wider">Créer</h3>
+      <button onclick="closeModal()" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+    </div>
+    <!-- Tabs -->
+    <div id="modal-tabs" class="flex gap-2 flex-wrap"></div>
+    <!-- Forms (swapped by JS) -->
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<!-- ═══════════════ JAVASCRIPT ═══════════════ -->
+<script>
+/* ───── STATE ───── */
+var S = {
+  entity:'TECH', view:'DASHBOARD',
+  user:null, settings:{}, users:[],
+  tasks:[], clients:[], expenses:[], files:[],
+  calEvents:[],
+  calYear: new Date().getFullYear(),
+  calMonth: new Date().getMonth(),
+  selectedDay: null,
+  geminiOpen:false,
+  modalType:'task'
+};
+
+var VIEWS_META = {
+  DASHBOARD:{icon:'layout-dashboard',label:'Tableau de bord',group:'Espace Général'},
+  TASKS:{icon:'check-square',label:'Mes Tâches',group:'Espace Général'},
+  CALENDAR:{icon:'calendar',label:'Calendrier',group:'Espace Général'},
+  CRM:{icon:'users',label:'CRM & Pipeline',group:'Opérations'},
+  FINANCES:{icon:'wallet',label:'Finances & Budgets',group:'Opérations'},
+  DRIVE:{icon:'folder-open',label:'Ressources & Docs',group:'Opérations'},
+  EMAIL:{icon:'mail',label:'Composer Email',group:'Opérations'},
+  SETTINGS:{icon:'settings',label:'Paramètres',group:'Système'}
+};
+
+var MONTHS_FR=['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+
+/* ───── INIT ───── */
+window.onload = function(){ lucide.createIcons(); };
+
+/* ───── TOAST SYSTEM ───── */
+function toast(msg, type){
+  type = type || 'info';
+  var c = document.getElementById('toast-container');
+  var t = document.createElement('div');
+  t.className = 'toast toast-' + type;
+  t.textContent = msg;
+  c.appendChild(t);
+  setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 3600);
+}
+
+/* ───── LOADING ───── */
+function spin(show){
+  var el = document.getElementById('spinner');
+  if(show) el.classList.remove('hidden'); else el.classList.add('hidden');
+}
+
+/* ───── BACKEND CALL WRAPPER ───── */
+function run(fnName, args, onOk, onFail){
+  var runner = google.script.run
+    .withSuccessHandler(function(res){ if(onOk) onOk(res); })
+    .withFailureHandler(function(err){
+      spin(false);
+      var msg = err && err.message ? err.message : 'Erreur inconnue';
+      toast('Erreur : ' + msg, 'error');
+      if(onFail) onFail(err);
+    });
+  // Call with correct arity
+  if(args === undefined || args === null) runner[fnName]();
+  else if(Array.isArray(args)) runner[fnName].apply(runner, args);
+  else runner[fnName](args);
+}
+
+/* ───── LOGIN ───── */
+function loginUser(){
+  spin(true);
+  run('getUserSession', null, function(user){
+    S.user = user;
+    document.getElementById('user-name').innerText = user.name;
+    document.getElementById('user-role').innerText = user.role;
+    document.getElementById('user-avatar').innerText = user.name.charAt(0).toUpperCase();
+    run('getSettings', null, function(settings){
+      S.settings = settings;
+      loadAllData();
+    });
+  });
+}
+
+/* ───── LOAD ALL DATA (sequential, with error handling) ───── */
+function loadAllData(){
+  run('getTasks', null, function(tasks){
+    S.tasks = tasks || [];
+    run('getClients', null, function(clients){
+      S.clients = clients || [];
+      run('getExpenses', null, function(expenses){
+        S.expenses = expenses || [];
+        run('getDriveDocuments', S.settings.DRIVE_FOLDER_ID || 'root', function(files){
+          S.files = files || [];
+          run('getCalendarEventsForMonth', [S.calYear, S.calMonth], function(ev){
+            S.calEvents = ev || [];
+            run('getUsers', null, function(users){
+              S.users = users || [];
+              // Ready!
+              document.getElementById('login-screen').classList.add('hidden');
+              document.getElementById('app-screen').classList.remove('hidden');
+              spin(false);
+              buildSidebar();
+              buildMobileNav();
+              render();
+              lucide.createIcons();
+            });
+          });
+        });
+      });
+    });
+  });
+}
+
+/* ───── ENTITY TOGGLE ───── */
+function toggleEntity(ent){
+  S.entity = ent;
+  var bT = document.getElementById('btn-ent-tech');
+  var bC = document.getElementById('btn-ent-commons');
+  if(ent==='TECH'){
+    bT.className='px-3 py-1 rounded-lg text-[9px] font-black uppercase transition-all bg-brandBlue text-white shadow shadow-brandBlue/20';
+    bC.className='px-3 py-1 rounded-lg text-[9px] font-black uppercase transition-all text-gray-400 hover:text-white';
+  } else {
+    bC.className='px-3 py-1 rounded-lg text-[9px] font-black uppercase transition-all bg-emerald-600 text-white shadow shadow-emerald-600/20';
+    bT.className='px-3 py-1 rounded-lg text-[9px] font-black uppercase transition-all text-gray-400 hover:text-white';
+  }
+  render();
+}
+
+/* ───── SIDEBAR BUILD ───── */
+function buildSidebar(){
+  var nav = document.getElementById('sidebar-nav');
+  var visMods = (S.settings.MODULES_VISIBLE || 'DASHBOARD,TASKS,CALENDAR,CRM,FINANCES,DRIVE,EMAIL').split(',');
+  var groups = {};
+  for(var k in VIEWS_META){
+    if(visMods.indexOf(k)===-1 && k!=='SETTINGS') continue;
+    var g = VIEWS_META[k].group;
+    if(!groups[g]) groups[g]=[];
+    groups[g].push(k);
+  }
+  var html='';
+  for(var gName in groups){
+    html+='<div class="space-y-1"><p class="text-[9px] font-black uppercase tracking-widest text-gray-500 px-3">'+gName+'</p>';
+    groups[gName].forEach(function(vk){
+      var m = VIEWS_META[vk];
+      var active = S.view===vk;
+      html+='<button data-nav="'+vk+'" onclick="changeView(\''+vk+'\')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all '+(active?'text-brandCyan bg-white/5':'text-gray-400 hover:text-white hover:bg-white/5')+'"><i data-lucide="'+m.icon+'" class="w-4 h-4"></i>'+m.label+'</button>';
+    });
+    html+='</div>';
+  }
+  nav.innerHTML = html;
+  lucide.createIcons();
+}
+
+/* ───── MOBILE NAV BUILD ───── */
+function buildMobileNav(){
+  var mobileItems = ['DASHBOARD','TASKS','CALENDAR','CRM','SETTINGS'];
+  var icons = {DASHBOARD:'layout-dashboard',TASKS:'check-square',CALENDAR:'calendar',CRM:'users',SETTINGS:'settings'};
+  var labels = {DASHBOARD:'HQ',TASKS:'Tâches',CALENDAR:'Agenda',CRM:'CRM',SETTINGS:'Admin'};
+  var nav = document.getElementById('mobile-nav');
+  var html = '';
+  mobileItems.forEach(function(k){
+    var active = S.view===k;
+    html+='<button onclick="changeView(\''+k+'\')" class="mob-btn flex flex-col items-center justify-center py-1 px-2 transition-all '+(active?'text-brandCyan':'text-gray-400')+'"><i data-lucide="'+icons[k]+'" class="w-5 h-5"></i><span class="text-[8px] font-black uppercase mt-0.5">'+labels[k]+'</span></button>';
+  });
+  nav.innerHTML = html;
+  lucide.createIcons();
+}
+
+/* ───── NAVIGATION ───── */
+function changeView(v){
+  S.view = v;
+  var title = VIEWS_META[v] ? VIEWS_META[v].label : v;
+  document.getElementById('view-title').innerText = title;
+  // Sidebar highlight
+  document.querySelectorAll('.nav-btn').forEach(function(b){
+    if(b.getAttribute('data-nav')===v) b.className='nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all text-brandCyan bg-white/5';
+    else b.className='nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all text-gray-400 hover:text-white hover:bg-white/5';
+  });
+  // Mobile highlight
+  document.querySelectorAll('.mob-btn').forEach(function(b){
+    b.className = 'mob-btn flex flex-col items-center justify-center py-1 px-2 transition-all text-gray-400';
+  });
+  // If calendar view, reload events for current month
+  if(v==='CALENDAR'){
+    spin(true);
+    run('getCalendarEventsForMonth',[S.calYear,S.calMonth],function(ev){
+      S.calEvents = ev||[];
+      spin(false);
+      render();
+    });
+    return;
+  }
+  render();
+}
+
+/* ═══════════════════════════════════════════
+   RENDER ENGINE — Dispatch to view renderers
+   ═══════════════════════════════════════════ */
+function render(){
+  var c = document.getElementById('view-container');
+  var ft = S.tasks.filter(function(t){return t.entity===S.entity});
+  var fc = S.clients.filter(function(cl){return cl.entity===S.entity});
+  var fe = S.expenses.filter(function(e){return e.entity===S.entity});
+
+  switch(S.view){
+    case 'DASHBOARD': c.innerHTML = renderDashboard(ft,fc,fe); break;
+    case 'TASKS':     c.innerHTML = renderTasks(ft); break;
+    case 'CALENDAR':  c.innerHTML = renderCalendar(); break;
+    case 'CRM':       c.innerHTML = renderCRM(fc); break;
+    case 'FINANCES':  c.innerHTML = renderFinances(fc,fe); break;
+    case 'DRIVE':     c.innerHTML = renderDrive(); break;
+    case 'EMAIL':     c.innerHTML = renderEmail(); break;
+    case 'SETTINGS':  c.innerHTML = renderSettings(); break;
+    default: c.innerHTML = '<p class="text-gray-500 text-center py-20">Vue inconnue</p>';
+  }
+  lucide.createIcons();
+}
+
+/* ─── DASHBOARD ─── */
+function renderDashboard(ft,fc,fe){
+  var rev = fc.reduce(function(a,c){return a+Number(c.budget)},0);
+  var exp = fe.reduce(function(a,e){return a+Number(e.amount)},0);
+  var urgent = ft.filter(function(t){return t.status!=='Validé'}).length;
+  return '<div class="grid grid-cols-1 sm:grid-cols-3 gap-4">'
+    + statCard('Trésorerie active',(rev-exp).toLocaleString()+' $','grad-text','brandCyan')
+    + statCard('Tâches urgentes', urgent, 'text-white','brandBlue')
+    + statCard('Partenariats actifs', fc.length, 'text-emerald-400','emerald')
+    +'</div>'
+    +'<div class="space-y-4"><h4 class="text-[10px] font-black uppercase tracking-widest text-brandCyan">Tâches Prioritaires</h4>'
+    +'<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">'
+    + ft.filter(function(t){return t.status!=='Validé'}).slice(0,6).map(function(t){
+      return '<div class="card p-5 flex items-center justify-between cursor-pointer" onclick="changeView(\'TASKS\')">'
+        +'<div class="space-y-1.5"><p class="text-xs font-bold text-white">'+esc(t.title)+'</p>'
+        +'<div class="flex items-center gap-2"><span class="text-[8px] font-black uppercase px-2 py-0.5 rounded bg-brandBlue/10 text-brandCyan">'+esc(t.priority)+'</span>'
+        +'<span class="text-[9px] text-gray-400 font-bold">'+esc(t.dueDate)+'</span>'
+        +'<span class="text-[9px] text-gray-500">'+esc(t.assignee)+'</span></div></div>'
+        +'<div class="w-8 h-8 rounded-xl bg-white/5 text-gray-400 flex items-center justify-center"><i data-lucide="chevron-right" class="w-4 h-4"></i></div></div>';
+    }).join('')
+    + (ft.length===0?'<p class="text-xs text-gray-500 italic col-span-2 text-center py-8">Aucune tâche enregistrée.</p>':'')
+    +'</div></div>';
+}
+function statCard(label,value,valClass,glow){
+  return '<div class="card p-6 relative overflow-hidden group">'
+    +'<div class="absolute -right-6 -bottom-6 w-24 h-24 bg-'+glow+'/5 rounded-full blur-xl group-hover:bg-'+glow+'/10 transition-all"></div>'
+    +'<p class="text-[9px] font-black text-gray-400 uppercase tracking-widest">'+label+'</p>'
+    +'<h3 class="text-2xl font-black mt-2 '+valClass+' font-[\'Outfit\']">'+value+'</h3></div>';
+}
+
+/* ─── TASKS ─── */
+function renderTasks(ft){
+  var groups = {
+    'À faire': ft.filter(function(t){return t.status==='À faire'}),
+    'En cours': ft.filter(function(t){return t.status==='En cours'}),
+    'Validé': ft.filter(function(t){return t.status==='Validé'})
+  };
+  var html='<div class="flex items-center justify-between mb-4"><h3 class="text-xs font-black uppercase tracking-widest text-gray-400">Tâches de l\'entité ('+ft.length+')</h3>'
+    +'<button onclick="openModal(\'task\')" class="px-3 py-1.5 grad-btn text-[9px] uppercase tracking-wider rounded-lg">+ Ajouter</button></div>';
+  html+='<div class="grid grid-cols-1 md:grid-cols-3 gap-6">';
+  for(var status in groups){
+    var color = status==='À faire'?'text-amber-400':status==='En cours'?'text-brandCyan':'text-emerald-400';
+    html+='<div class="space-y-3"><h4 class="text-[10px] font-black uppercase tracking-widest '+color+' border-b border-white/5 pb-2">'+status+' ('+groups[status].length+')</h4>';
+    groups[status].forEach(function(t){
+      html+='<div class="card p-4 space-y-2 group"><div class="flex items-center justify-between"><p class="text-xs font-bold text-white">'+esc(t.title)+'</p>'
+        +'<button onclick="removeTask(\''+t.id+'\')" class="p-1.5 text-gray-500 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button></div>'
+        +'<div class="flex items-center gap-2 flex-wrap"><span class="text-[8px] font-black uppercase px-2 py-0.5 rounded bg-brandBlue/10 text-brandCyan">'+esc(t.priority)+'</span>'
+        +'<span class="text-[9px] text-gray-400 font-bold">'+esc(t.dueDate)+'</span>'
+        +'<span class="text-[9px] text-gray-500 font-bold">'+esc(t.assignee)+'</span></div></div>';
+    });
+    if(groups[status].length===0) html+='<p class="text-[9px] text-gray-500 italic text-center py-6">Vide</p>';
+    html+='</div>';
+  }
+  html+='</div>';
+  return html;
+}
+
+/* ─── CALENDAR ─── */
+function renderCalendar(){
+  var y=S.calYear, m=S.calMonth;
+  var firstDay = new Date(y,m,1).getDay();
+  var offset = (firstDay===0)?6:firstDay-1; // Monday=0
+  var daysInMonth = new Date(y,m+1,0).getDate();
+  var prevDays = new Date(y,m,0).getDate();
+  var today = new Date();
+  var todayStr = today.getFullYear()+'-'+pad(today.getMonth()+1)+'-'+pad(today.getDate());
+
+  // Build cells
+  var cells=[];
+  for(var p=offset-1;p>=0;p--) cells.push({d:prevDays-p,cur:false});
+  for(var d=1;d<=daysInMonth;d++) cells.push({d:d,cur:true});
+  while(cells.length<42) cells.push({d:cells.length-offset-daysInMonth+1,cur:false});
+
+  // All events (tasks + calendar)
+  var allEvents = S.tasks.concat(S.calEvents);
+
+  var html='<div class="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-6">';
+
+  // --- Calendar grid ---
+  html+='<div class="card p-5 md:p-6">';
+  // Header with nav
+  html+='<div class="flex items-center justify-between mb-5">';
+  html+='<button onclick="navMonth(-1)" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-all"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>';
+  html+='<h3 class="text-sm font-black uppercase tracking-widest grad-text font-[\'Outfit\']">'+MONTHS_FR[m]+' '+y+'</h3>';
+  html+='<button onclick="navMonth(1)" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-all"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>';
+  html+='</div>';
+
+  // Day headers
+  html+='<div class="grid grid-cols-7 gap-1 text-center text-[9px] font-black uppercase tracking-widest text-gray-500 mb-2">';
+  ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'].forEach(function(d){html+='<div>'+d+'</div>';});
+  html+='</div>';
+
+  // Day cells
+  html+='<div class="grid grid-cols-7 gap-1">';
+  cells.forEach(function(cell){
+    if(!cell.cur){
+      html+='<div class="cal-cell other"><span class="text-[10px] text-gray-600">'+cell.d+'</span></div>';
+      return;
+    }
+    var dateStr = y+'-'+pad(m+1)+'-'+pad(cell.d);
+    var isToday = dateStr===todayStr;
+    var isSelected = dateStr===S.selectedDay;
+    var hasEvents = allEvents.some(function(e){return (e.dueDate===dateStr||e.date===dateStr)});
+    var cls = 'cal-cell';
+    if(isToday) cls+=' today';
+    if(isSelected) cls+=' selected';
+
+    html+='<div class="'+cls+'" onclick="selectDay(\''+dateStr+'\')">';
+    html+='<span class="text-[10px] font-bold '+(isToday?'text-brandCyan font-black':'text-gray-300')+'">'+cell.d+'</span>';
+    if(hasEvents) html+='<div class="cal-dot"></div>';
+    html+='</div>';
+  });
+  html+='</div></div>';
+
+  // --- Day details panel ---
+  html+='<div class="card p-5 md:p-6 space-y-4 flex flex-col">';
+  html+='<div class="flex items-center justify-between"><h4 class="text-xs font-black uppercase tracking-widest text-brandCyan">Détails du jour</h4>';
+  html+='<button onclick="openModal(\'event\')" class="px-3 py-1.5 text-[9px] font-black uppercase tracking-wider rounded-lg bg-white/5 border border-white/5 hover:border-brandCyan text-gray-400 hover:text-brandCyan transition-all">+ Événement</button></div>';
+  html+='<div id="day-events" class="space-y-3 flex-1 overflow-y-auto no-sb max-h-[400px]">';
+  if(S.selectedDay){
+    html += renderDayEvents(S.selectedDay, allEvents);
+  } else {
+    html+='<p class="text-xs text-gray-500 italic py-6 text-center">Sélectionnez une date sur le calendrier.</p>';
+  }
+  html+='</div></div>';
+
+  html+='</div>';
+  return html;
+}
+
+function renderDayEvents(dateStr, allEvents){
+  var dayEvents = allEvents.filter(function(e){return e.dueDate===dateStr||e.date===dateStr});
+  if(dayEvents.length===0) return '<p class="text-xs text-gray-500 italic py-6 text-center">Aucun événement pour le '+dateStr+'.</p>';
+  return dayEvents.map(function(e){
+    var isCalEvent = e.type==='calendar';
+    var timeLabel = isCalEvent?(e.isAllDay?'Journée entière':e.startTime+' — '+e.endTime):'Tâche';
+    var colorBorder = isCalEvent?'border-l-brandCyan':'border-l-brandBlue';
+    return '<div class="card p-4 border-l-4 '+colorBorder+' flex items-start justify-between">'
+      +'<div class="space-y-1"><p class="text-xs font-bold text-white">'+esc(e.title)+'</p>'
+      +'<p class="text-[9px] text-gray-400 font-bold uppercase">'+timeLabel
+      +(e.status?' • '+esc(e.status):'')+'</p>'
+      +(e.location?'<p class="text-[9px] text-gray-500">📍 '+esc(e.location)+'</p>':'')
+      +'</div>'
+      +(isCalEvent?'<button onclick="removeCalEvent(\''+e.id+'\')" class="p-1 text-gray-500 hover:text-red-400 transition-colors"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>':'')
+      +'</div>';
+  }).join('');
+}
+
+function selectDay(dateStr){
+  S.selectedDay = dateStr;
+  var allEvents = S.tasks.concat(S.calEvents);
+  var container = document.getElementById('day-events');
+  if(container){
+    container.innerHTML = renderDayEvents(dateStr, allEvents);
+    lucide.createIcons();
+  }
+}
+
+function navMonth(delta){
+  S.calMonth += delta;
+  if(S.calMonth>11){S.calMonth=0;S.calYear++}
+  if(S.calMonth<0){S.calMonth=11;S.calYear--}
+  S.selectedDay = null;
+  spin(true);
+  run('getCalendarEventsForMonth',[S.calYear,S.calMonth],function(ev){
+    S.calEvents = ev||[];
+    spin(false);
+    render();
+  });
+}
+
+/* ─── CRM & PIPELINE ─── */
+function renderCRM(fc){
+  var stages = ['Audit','Sprint','Implémentation','Retainer'];
+  var html='<div class="flex items-center justify-between mb-4"><h3 class="text-xs font-black uppercase tracking-widest text-gray-400">CRM Opays — Pipeline Forge</h3>'
+    +'<button onclick="openModal(\'client\')" class="px-3 py-1.5 grad-btn text-[9px] uppercase tracking-wider rounded-lg">+ Client</button></div>';
+  html+='<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">';
+  stages.forEach(function(status){
+    var list = fc.filter(function(c){return c.pipelineStatus===status});
+    html+='<div class="card p-5 space-y-3 pipe-col">';
+    html+='<h4 class="text-[9px] font-black uppercase tracking-widest text-brandCyan border-b border-white/5 pb-2">'+status+' ('+list.length+')</h4>';
+    html+='<div class="space-y-3">';
+    list.forEach(function(c){
+      html+='<div class="glass p-4 rounded-2xl space-y-2 group hover:border-brandCyan/30 transition-all relative">'
+        +'<p class="text-xs font-bold text-white">'+esc(c.name)+'</p>'
+        +'<p class="text-[10px] text-gray-400 font-bold">'+Number(c.budget).toLocaleString()+' $ • '+esc(c.contact)+'</p>'
+        +'<button onclick="removeClient(\''+c.id+'\')" class="absolute top-3 right-3 text-gray-500 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button></div>';
+    });
+    if(list.length===0) html+='<p class="text-[9px] text-gray-500 italic text-center py-8">Aucun élément</p>';
+    html+='</div></div>';
+  });
+  html+='</div>';
+  return html;
+}
+
+/* ─── FINANCES ─── */
+function renderFinances(fc,fe){
+  var rev = fc.reduce(function(a,c){return a+Number(c.budget)},0);
+  var exp = fe.reduce(function(a,e){return a+Number(e.amount)},0);
+  var categories = {};
+  fe.forEach(function(e){ categories[e.category] = (categories[e.category]||0)+Number(e.amount); });
+
+  var html='<div class="flex items-center justify-between mb-4"><h3 class="text-xs font-black uppercase tracking-widest text-gray-400">Finances & Budgets</h3>'
+    +'<button onclick="openModal(\'expense\')" class="px-3 py-1.5 grad-btn text-[9px] uppercase tracking-wider rounded-lg">+ Dépense</button></div>';
+  html+='<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">';
+  html+=statCard('Revenus d\'affaires','+ '+rev.toLocaleString()+' $','text-emerald-400','emerald');
+  html+=statCard('Charges d\'exploitation','- '+exp.toLocaleString()+' $','text-red-400','red');
+  html+=statCard('Trésorerie nette',(rev-exp).toLocaleString()+' $','grad-text','brandCyan');
+  html+='</div>';
+
+  html+='<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">';
+  // Expense list
+  html+='<div class="card p-6 space-y-4"><h3 class="text-xs font-black uppercase tracking-widest text-brandCyan border-b border-white/5 pb-3">Transactions</h3>';
+  html+='<div class="space-y-3 max-h-[350px] overflow-y-auto no-sb">';
+  fe.forEach(function(e){
+    html+='<div class="glass p-4 rounded-2xl flex items-center justify-between group hover:border-brandCyan/20 transition-all">'
+      +'<div><p class="text-xs font-bold text-white">'+esc(e.title)+'</p>'
+      +'<p class="text-[9px] text-gray-400 font-bold uppercase">'+esc(e.category)+' • '+esc(e.date)+'</p></div>'
+      +'<div class="flex items-center gap-3"><span class="text-xs font-black text-brandCyan">'+Number(e.amount).toLocaleString()+' $</span>'
+      +'<button onclick="removeExpense(\''+e.id+'\')" class="p-1.5 text-gray-500 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div></div>';
+  });
+  if(fe.length===0) html+='<p class="text-xs text-gray-500 italic text-center py-8">Aucune transaction enregistrée.</p>';
+  html+='</div></div>';
+
+  // Category breakdown
+  html+='<div class="card p-6 space-y-4"><h3 class="text-xs font-black uppercase tracking-widest text-brandCyan border-b border-white/5 pb-3">Répartition par Catégorie</h3>';
+  html+='<div class="space-y-3">';
+  for(var cat in categories){
+    var pct = exp>0? Math.round(categories[cat]/exp*100):0;
+    html+='<div class="space-y-1"><div class="flex items-center justify-between text-xs"><span class="text-gray-400">'+esc(cat)+'</span><span class="font-bold text-white">'+categories[cat].toLocaleString()+' $ ('+pct+'%)</span></div>'
+      +'<div class="w-full h-1.5 bg-white/5 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-brandBlue to-brandCyan rounded-full" style="width:'+pct+'%"></div></div></div>';
+  }
+  if(Object.keys(categories).length===0) html+='<p class="text-xs text-gray-500 italic text-center py-8">Pas de données.</p>';
+  html+='</div></div>';
+  html+='</div>';
+  return html;
+}
+
+/* ─── DRIVE ─── */
+function renderDrive(){
+  var iconMap={
+    'application/vnd.google-apps.document':'file-text',
+    'application/vnd.google-apps.spreadsheet':'table',
+    'application/vnd.google-apps.presentation':'presentation',
+    'application/pdf':'file',
+    'image/png':'image','image/jpeg':'image'
+  };
+  var html='<div class="card p-6 space-y-6">';
+  html+='<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-white/5 pb-4 gap-4">';
+  html+='<h3 class="text-xs font-black uppercase tracking-widest text-brandCyan">Espace Documentaire</h3>';
+  html+='<div class="flex gap-2 flex-wrap">';
+  html+='<input id="new-file-name" type="text" placeholder="Nom du document..." class="input-f w-40" />';
+  html+='<button onclick="createDoc(\'doc\')" class="px-3 py-1.5 bg-brandBlue text-white font-bold text-[10px] uppercase tracking-wider rounded-xl hover:bg-brandBlue/80 transition-all">+ Doc</button>';
+  html+='<button onclick="createDoc(\'sheet\')" class="px-3 py-1.5 bg-emerald-600 text-white font-bold text-[10px] uppercase tracking-wider rounded-xl hover:bg-emerald-500 transition-all">+ Sheet</button>';
+  html+='<button onclick="createDoc(\'slide\')" class="px-3 py-1.5 bg-amber-600 text-white font-bold text-[10px] uppercase tracking-wider rounded-xl hover:bg-amber-500 transition-all">+ Slide</button>';
+  html+='</div></div>';
+  // Upload zone
+  html+='<div class="flex items-center gap-4 border border-dashed border-white/10 rounded-2xl p-4">';
+  html+='<input id="drive-uploader" type="file" class="hidden" onchange="handleUpload(event)" />';
+  html+='<button onclick="document.getElementById(\'drive-uploader\').click()" class="px-4 py-2.5 bg-white/5 border border-white/5 rounded-xl text-xs font-bold hover:bg-white/10 transition-colors flex items-center gap-2"><i data-lucide="upload" class="w-4 h-4"></i>Importer un fichier</button>';
+  html+='<span id="upload-status" class="text-xs text-gray-500 italic">Vers Google Drive</span></div>';
+
+  html+='<div class="grid grid-cols-1 md:grid-cols-2 gap-4">';
+  S.files.forEach(function(f){
+    var ic = iconMap[f.mimeType] || 'file';
+    html+='<div class="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/5 hover:border-brandCyan/20 transition-all group">'
+      +'<div class="flex items-center gap-3 min-w-0 flex-1">'
+      +'<div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-gray-400 shrink-0"><i data-lucide="'+ic+'" class="w-5 h-5"></i></div>'
+      +'<div class="min-w-0"><a href="'+f.url+'" target="_blank" class="text-xs font-bold text-white hover:text-brandCyan hover:underline transition-colors block truncate">'+esc(f.name)+'</a>'
+      +'<p class="text-[9px] text-gray-500 font-bold uppercase truncate">MAJ : '+esc(f.lastUpdated||'')+'</p></div></div>'
+      +'<button onclick="removeFile(\''+f.id+'\')" class="p-2 text-gray-500 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all shrink-0"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div>';
+  });
+  if(S.files.length===0) html+='<p class="col-span-2 py-8 text-center text-gray-500 italic">Aucun document dans le dossier.</p>';
+  html+='</div></div>';
+  return html;
+}
+
+/* ─── EMAIL ─── */
+function renderEmail(){
+  return '<div class="card p-6 max-w-xl mx-auto space-y-6">'
+    +'<h3 class="text-xs font-black uppercase tracking-widest text-brandCyan border-b border-white/5 pb-4">Composer un e-mail</h3>'
+    +'<div class="space-y-4">'
+    +'<div><label class="label-f">Destinataire</label><input id="email-to" type="email" class="input-f" placeholder="email@exemple.com" /></div>'
+    +'<div><label class="label-f">Objet</label><input id="email-subject" type="text" class="input-f" /></div>'
+    +'<div><label class="label-f">Message</label><textarea id="email-body" rows="6" class="input-f leading-relaxed" style="border-radius:1rem;padding:1rem"></textarea></div>'
+    +'<button onclick="sendEmail()" class="w-full py-4 grad-btn text-xs uppercase tracking-widest rounded-xl">Envoyer avec Gmail</button>'
+    +'</div></div>';
+}
+
+/* ─── SETTINGS ─── */
+function renderSettings(){
+  var visMods = (S.settings.MODULES_VISIBLE||'DASHBOARD,TASKS,CALENDAR,CRM,FINANCES,DRIVE,EMAIL').split(',');
+  var allMods = ['DASHBOARD','TASKS','CALENDAR','CRM','FINANCES','DRIVE','EMAIL'];
+
+  var html='<div class="max-w-2xl mx-auto space-y-6">';
+
+  // Drive folder
+  html+='<div class="card p-6 space-y-4">';
+  html+='<h3 class="text-xs font-black uppercase tracking-widest text-brandCyan border-b border-white/5 pb-3">Google Drive</h3>';
+  html+='<div><label class="label-f">ID du dossier Drive partagé</label><input id="set-drive-id" type="text" value="'+esc(S.settings.DRIVE_FOLDER_ID||'root')+'" class="input-f" /></div>';
+  html+='<div class="flex items-center gap-4 border border-dashed border-white/10 rounded-2xl p-4">';
+  html+='<input id="settings-uploader" type="file" class="hidden" onchange="handleUpload(event)" />';
+  html+='<button onclick="document.getElementById(\'settings-uploader\').click()" class="px-4 py-2.5 bg-white/5 border border-white/5 rounded-xl text-xs font-bold hover:bg-white/10 transition-colors flex items-center gap-2"><i data-lucide="upload" class="w-4 h-4"></i> Injecter un document</button>';
+  html+='<span id="settings-upload-status" class="text-xs text-gray-500 italic">Vers Google Drive</span></div>';
+  html+='<button onclick="saveSettings()" class="w-full py-3 grad-btn text-xs uppercase tracking-widest rounded-xl">Sauvegarder</button>';
+  html+='</div>';
+
+  // Module visibility
+  html+='<div class="card p-6 space-y-4">';
+  html+='<h3 class="text-xs font-black uppercase tracking-widest text-brandCyan border-b border-white/5 pb-3">Modules Visibles</h3>';
+  html+='<div class="grid grid-cols-2 sm:grid-cols-3 gap-3">';
+  allMods.forEach(function(mod){
+    var checked = visMods.indexOf(mod)!==-1;
+    var m = VIEWS_META[mod];
+    html+='<label class="flex items-center gap-3 p-3 bg-white/5 rounded-xl cursor-pointer hover:bg-white/8 transition-colors">'
+      +'<input type="checkbox" class="mod-check accent-brandCyan w-4 h-4" data-mod="'+mod+'" '+(checked?'checked':'')+' />'
+      +'<span class="text-xs font-bold text-white">'+m.label+'</span></label>';
+  });
+  html+='</div>';
+  html+='<button onclick="saveModuleVisibility()" class="w-full py-3 bg-white/5 border border-white/5 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-white/10 transition-colors">Appliquer la visibilité</button>';
+  html+='</div>';
+
+  // User management
+  html+='<div class="card p-6 space-y-4">';
+  html+='<div class="flex items-center justify-between border-b border-white/5 pb-3"><h3 class="text-xs font-black uppercase tracking-widest text-brandCyan">Gestion des Utilisateurs</h3>'
+    +'<button onclick="openModal(\'user\')" class="px-3 py-1.5 text-[9px] font-black uppercase tracking-wider rounded-lg bg-white/5 border border-white/5 hover:border-brandCyan text-gray-400 hover:text-brandCyan transition-all">+ Ajouter</button></div>';
+  html+='<div class="space-y-3">';
+  S.users.forEach(function(u){
+    var roleColor = u.role==='CEO'?'text-brandCyan':u.role==='COO'?'text-brandBlue':'text-gray-400';
+    html+='<div class="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/5 group">'
+      +'<div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg bg-brandBlue/20 text-brandCyan flex items-center justify-center font-bold text-xs">'+esc(u.name.charAt(0))+'</div>'
+      +'<div><p class="text-xs font-bold text-white">'+esc(u.name)+'</p><p class="text-[9px] text-gray-500">'+esc(u.email)+'</p></div></div>'
+      +'<div class="flex items-center gap-3"><span class="text-[9px] font-black uppercase '+roleColor+'">'+esc(u.role)+'</span>'
+      +'<button onclick="removeUser(\''+esc(u.email)+'\')" class="p-1.5 text-gray-500 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button></div></div>';
+  });
+  if(S.users.length===0) html+='<p class="text-xs text-gray-500 italic text-center py-6">Aucun utilisateur.</p>';
+  html+='</div></div>';
+
+  html+='</div>';
+  return html;
+}
+
+/* ═══════════════════════════════════════════
+   MODAL SYSTEM — Multi-type creation forms
+   ═══════════════════════════════════════════ */
+function openModal(type){
+  S.modalType = type;
+  document.getElementById('modal').classList.remove('hidden');
+  renderModal();
+  lucide.createIcons();
+}
+function closeModal(){
+  document.getElementById('modal').classList.add('hidden');
+}
+
+function renderModal(){
+  var titles = {task:'Nouvelle Tâche',client:'Nouveau Client',expense:'Nouvelle Dépense',event:'Nouvel Événement',user:'Ajouter un Utilisateur'};
+  document.getElementById('modal-title').innerText = titles[S.modalType]||'Créer';
+
+  // Tabs (only for main creation)
+  var tabTypes = ['task','client','expense','event'];
+  var tabLabels = {task:'Tâche',client:'Client',expense:'Dépense',event:'Événement'};
+  var tabsHtml = '';
+  if(S.modalType !== 'user'){
+    tabTypes.forEach(function(t){
+      tabsHtml+='<button onclick="S.modalType=\''+t+'\';renderModal();lucide.createIcons()" class="tab-btn '+(S.modalType===t?'active':'')+'">'+tabLabels[t]+'</button>';
+    });
+  }
+  document.getElementById('modal-tabs').innerHTML = tabsHtml;
+
+  var body = document.getElementById('modal-body');
+  var today = new Date().toISOString().split('T')[0];
+
+  if(S.modalType==='task'){
+    body.innerHTML = '<div class="space-y-4">'
+      +'<div><label class="label-f">Titre</label><input id="m-task-title" class="input-f" /></div>'
+      +'<div class="grid grid-cols-2 gap-4">'
+      +'<div><label class="label-f">Assigné à</label><select id="m-task-assignee" class="input-f">'
+      + S.users.map(function(u){return '<option value="'+esc(u.name)+'">'+esc(u.name)+'</option>'}).join('')
+      +'</select></div>'
+      +'<div><label class="label-f">Date d\'échéance</label><input id="m-task-date" type="date" class="input-f" value="'+today+'" /></div></div>'
+      +'<div class="grid grid-cols-2 gap-4">'
+      +'<div><label class="label-f">Priorité</label><select id="m-task-priority" class="input-f"><option value="Haute">Haute</option><option value="Moyenne" selected>Moyenne</option><option value="Basse">Basse</option></select></div>'
+      +'<div><label class="label-f">Statut</label><select id="m-task-status" class="input-f"><option value="À faire">À faire</option><option value="En cours">En cours</option><option value="Validé">Validé</option></select></div></div>'
+      +'<button onclick="submitTask()" class="w-full py-3.5 grad-btn text-xs uppercase tracking-widest rounded-xl">Valider la Tâche</button></div>';
+  }
+  else if(S.modalType==='client'){
+    body.innerHTML = '<div class="space-y-4">'
+      +'<div><label class="label-f">Nom du client / entreprise</label><input id="m-client-name" class="input-f" /></div>'
+      +'<div class="grid grid-cols-2 gap-4">'
+      +'<div><label class="label-f">Étape Pipeline</label><select id="m-client-stage" class="input-f"><option value="Audit">Audit</option><option value="Sprint">Sprint</option><option value="Implémentation">Implémentation</option><option value="Retainer">Retainer</option></select></div>'
+      +'<div><label class="label-f">Budget ($)</label><input id="m-client-budget" type="number" class="input-f" placeholder="0" /></div></div>'
+      +'<div><label class="label-f">Contact (email)</label><input id="m-client-contact" type="email" class="input-f" placeholder="contact@entreprise.com" /></div>'
+      +'<button onclick="submitClient()" class="w-full py-3.5 grad-btn text-xs uppercase tracking-widest rounded-xl">Ajouter le Client</button></div>';
+  }
+  else if(S.modalType==='expense'){
+    body.innerHTML = '<div class="space-y-4">'
+      +'<div><label class="label-f">Libellé de la dépense</label><input id="m-exp-title" class="input-f" /></div>'
+      +'<div class="grid grid-cols-2 gap-4">'
+      +'<div><label class="label-f">Montant ($)</label><input id="m-exp-amount" type="number" class="input-f" placeholder="0" /></div>'
+      +'<div><label class="label-f">Date</label><input id="m-exp-date" type="date" class="input-f" value="'+today+'" /></div></div>'
+      +'<div><label class="label-f">Catégorie</label><select id="m-exp-cat" class="input-f"><option value="Infrastructure">Infrastructure</option><option value="Marketing">Marketing</option><option value="Salaires">Salaires</option><option value="Outils">Outils</option><option value="Déplacements">Déplacements</option><option value="Autre">Autre</option></select></div>'
+      +'<button onclick="submitExpense()" class="w-full py-3.5 grad-btn text-xs uppercase tracking-widest rounded-xl">Enregistrer la Dépense</button></div>';
+  }
+  else if(S.modalType==='event'){
+    body.innerHTML = '<div class="space-y-4">'
+      +'<div><label class="label-f">Titre de l\'événement</label><input id="m-ev-title" class="input-f" /></div>'
+      +'<div><label class="label-f">Date</label><input id="m-ev-date" type="date" class="input-f" value="'+(S.selectedDay||today)+'" /></div>'
+      +'<div class="grid grid-cols-2 gap-4">'
+      +'<div><label class="label-f">Heure début</label><input id="m-ev-start" type="time" class="input-f" value="09:00" /></div>'
+      +'<div><label class="label-f">Heure fin</label><input id="m-ev-end" type="time" class="input-f" value="10:00" /></div></div>'
+      +'<div><label class="label-f">Lieu (optionnel)</label><input id="m-ev-location" class="input-f" /></div>'
+      +'<div><label class="label-f">Description (optionnel)</label><textarea id="m-ev-desc" rows="3" class="input-f" style="border-radius:1rem;padding:.75rem 1rem"></textarea></div>'
+      +'<div class="flex items-center gap-3"><input id="m-ev-allday" type="checkbox" class="accent-brandCyan w-4 h-4" /><label class="text-xs font-bold text-gray-300">Journée entière</label></div>'
+      +'<button onclick="submitEvent()" class="w-full py-3.5 grad-btn text-xs uppercase tracking-widest rounded-xl">Créer l\'Événement</button></div>';
+  }
+  else if(S.modalType==='user'){
+    body.innerHTML = '<div class="space-y-4">'
+      +'<div><label class="label-f">Adresse Gmail</label><input id="m-user-email" type="email" class="input-f" placeholder="nom@gmail.com" /></div>'
+      +'<div><label class="label-f">Nom complet</label><input id="m-user-name" class="input-f" /></div>'
+      +'<div><label class="label-f">Rôle</label><select id="m-user-role" class="input-f"><option value="CEO">CEO</option><option value="COO">COO</option><option value="Opérations">Opérations</option><option value="Design">Design</option><option value="Développeur">Développeur</option><option value="Collaborator" selected>Collaborateur</option></select></div>'
+      +'<button onclick="submitUser()" class="w-full py-3.5 grad-btn text-xs uppercase tracking-widest rounded-xl">Ajouter l\'Utilisateur</button></div>';
+  }
+}
+
+/* ═══════════════════════════════════════════
+   SUBMIT HANDLERS — Create records
+   ═══════════════════════════════════════════ */
+
+function submitTask(){
+  var title = val('m-task-title');
+  var date = val('m-task-date');
+  if(!title||!date){toast('Remplissez le titre et la date.','error');return}
+  spin(true);
+  var task = {entity:S.entity, title:title, assignee:val('m-task-assignee'), dueDate:date, priority:val('m-task-priority'), status:val('m-task-status')};
+  run('saveTask', task, function(id){
+    task.id = id;
+    S.tasks.push(task);
+    closeModal(); spin(false); render();
+    toast('Tâche créée avec succès !','success');
+  });
+}
+
+function submitClient(){
+  var name = val('m-client-name');
+  if(!name){toast('Entrez le nom du client.','error');return}
+  spin(true);
+  var client = {entity:S.entity, name:name, pipelineStatus:val('m-client-stage'), budget:val('m-client-budget')||'0', contact:val('m-client-contact')||''};
+  run('saveClient', client, function(id){
+    client.id = id;
+    S.clients.push(client);
+    closeModal(); spin(false); render();
+    toast('Client ajouté au pipeline !','success');
+  });
+}
+
+function submitExpense(){
+  var title = val('m-exp-title');
+  var amount = val('m-exp-amount');
+  if(!title||!amount){toast('Remplissez le libellé et le montant.','error');return}
+  spin(true);
+  var exp = {entity:S.entity, title:title, amount:Number(amount), date:val('m-exp-date'), category:val('m-exp-cat')};
+  run('saveExpense', exp, function(id){
+    exp.id = id;
+    S.expenses.push(exp);
+    closeModal(); spin(false); render();
+    toast('Dépense enregistrée !','success');
+  });
+}
+
+function submitEvent(){
+  var title = val('m-ev-title');
+  var date = val('m-ev-date');
+  if(!title||!date){toast('Remplissez le titre et la date.','error');return}
+  spin(true);
+  var evData = {
+    title:title, date:date,
+    startTime:val('m-ev-start')||'09:00', endTime:val('m-ev-end')||'10:00',
+    location:val('m-ev-location')||'', description:val('m-ev-desc')||'',
+    allDay:document.getElementById('m-ev-allday').checked
+  };
+  run('createCalendarEvent', evData, function(ev){
+    S.calEvents.push(ev);
+    closeModal(); spin(false); render();
+    toast('Événement créé dans Google Agenda !','success');
+  });
+}
+
+function submitUser(){
+  var email = val('m-user-email');
+  var name = val('m-user-name');
+  if(!email||!name){toast('Remplissez l\'email et le nom.','error');return}
+  spin(true);
+  var user = {email:email, name:name, role:val('m-user-role'), status:'Active'};
+  run('saveUser', user, function(){
+    S.users.push(user);
+    closeModal(); spin(false); render();
+    toast('Utilisateur ajouté !','success');
+  });
+}
+
+/* ═══════════════════════════════════════════
+   DELETE HANDLERS
+   ═══════════════════════════════════════════ */
+function removeTask(id){
+  if(!confirm('Supprimer cette tâche ?')) return;
+  spin(true);
+  run('deleteTask', id, function(ok){
+    if(ok) S.tasks = S.tasks.filter(function(t){return t.id!==id});
+    spin(false); render();
+    toast('Tâche supprimée.','success');
+  });
+}
+function removeClient(id){
+  if(!confirm('Supprimer ce client ?')) return;
+  spin(true);
+  run('deleteClient', id, function(ok){
+    if(ok) S.clients = S.clients.filter(function(c){return c.id!==id});
+    spin(false); render();
+    toast('Client supprimé.','success');
+  });
+}
+function removeExpense(id){
+  if(!confirm('Supprimer cette dépense ?')) return;
+  spin(true);
+  run('deleteExpense', id, function(ok){
+    if(ok) S.expenses = S.expenses.filter(function(e){return e.id!==id});
+    spin(false); render();
+    toast('Dépense supprimée.','success');
+  });
+}
+function removeFile(id){
+  if(!confirm('Mettre ce fichier à la corbeille ?')) return;
+  spin(true);
+  run('deleteDriveFile', id, function(ok){
+    if(ok) S.files = S.files.filter(function(f){return f.id!==id});
+    spin(false); render();
+    toast('Fichier supprimé.','success');
+  });
+}
+function removeUser(email){
+  if(!confirm('Supprimer cet utilisateur ?')) return;
+  spin(true);
+  run('deleteUser', email, function(ok){
+    if(ok) S.users = S.users.filter(function(u){return u.email!==email});
+    spin(false); render();
+    toast('Utilisateur supprimé.','success');
+  });
+}
+function removeCalEvent(id){
+  if(!confirm('Supprimer cet événement du calendrier ?')) return;
+  spin(true);
+  run('deleteCalendarEvent', id, function(ok){
+    if(ok) S.calEvents = S.calEvents.filter(function(e){return e.id!==id});
+    spin(false); render();
+    toast('Événement supprimé.','success');
+  });
+}
+
+/* ═══════════════════════════════════════════
+   DRIVE & FILE ACTIONS
+   ═══════════════════════════════════════════ */
+function createDoc(type){
+  var name = val('new-file-name');
+  if(!name){toast('Entrez un nom pour le document.','error');return}
+  spin(true);
+  run('createNewGoogleFile', [S.settings.DRIVE_FOLDER_ID||'root', name, type], function(file){
+    S.files.push(file);
+    spin(false); render();
+    toast('Document "'+name+'" créé !','success');
+  });
+}
+
+function handleUpload(e){
+  var file = e.target.files[0];
+  if(!file) return;
+  var statusEl = document.getElementById('upload-status') || document.getElementById('settings-upload-status');
+  if(statusEl) statusEl.innerText = 'Envoi de : '+file.name+'...';
+  var reader = new FileReader();
+  reader.onload = function(evt){
+    spin(true);
+    run('uploadFileToDrive', [S.settings.DRIVE_FOLDER_ID||'root', evt.target.result, file.name, file.type], function(f){
+      S.files.push(f);
+      if(statusEl) statusEl.innerText = 'Fichier envoyé ✓';
+      spin(false); render();
+      toast('Fichier "'+file.name+'" uploadé !','success');
+    });
+  };
+  reader.readAsDataURL(file);
+}
+
+/* ═══════════════════════════════════════════
+   SETTINGS ACTIONS
+   ═══════════════════════════════════════════ */
+function saveSettings(){
+  var driveId = val('set-drive-id');
+  spin(true);
+  run('saveSetting', ['DRIVE_FOLDER_ID', driveId], function(){
+    S.settings.DRIVE_FOLDER_ID = driveId;
+    spin(false);
+    toast('Configuration Drive sauvegardée !','success');
+  });
+}
+
+function saveModuleVisibility(){
+  var checks = document.querySelectorAll('.mod-check');
+  var mods = [];
+  checks.forEach(function(c){ if(c.checked) mods.push(c.getAttribute('data-mod')); });
+  var value = mods.join(',');
+  spin(true);
+  run('saveSetting', ['MODULES_VISIBLE', value], function(){
+    S.settings.MODULES_VISIBLE = value;
+    buildSidebar();
+    buildMobileNav();
+    spin(false);
+    toast('Visibilité des modules mise à jour !','success');
+  });
+}
+
+/* ═══════════════════════════════════════════
+   EMAIL
+   ═══════════════════════════════════════════ */
+function sendEmail(){
+  var to=val('email-to'),subj=val('email-subject'),body=val('email-body');
+  if(!to||!subj||!body){toast('Remplissez tous les champs.','error');return}
+  spin(true);
+  run('sendGmailEmail',[to,subj,body],function(){
+    spin(false);
+    toast('Email envoyé via Gmail !','success');
+    document.getElementById('email-to').value='';
+    document.getElementById('email-subject').value='';
+    document.getElementById('email-body').value='';
+  });
+}
+
+/* ═══════════════════════════════════════════
+   GEMINI ASSISTANT
+   ═══════════════════════════════════════════ */
+function toggleGemini(){
+  var p = document.getElementById('gemini-panel');
+  S.geminiOpen = !S.geminiOpen;
+  if(S.geminiOpen) p.classList.remove('translate-x-full');
+  else p.classList.add('translate-x-full');
+}
+
+function sendChat(){
+  var input = val('chat-input');
+  if(!input) return;
+  var list = document.getElementById('chat-msgs');
+  list.innerHTML+='<div class="bg-white/10 p-3 rounded-2xl border border-white/5 text-right"><p class="font-bold text-brandBlue mb-1">Moi :</p><p>'+esc(input)+'</p></div>';
+  document.getElementById('chat-input').value='';
+
+  setTimeout(function(){
+    var resp = generateGeminiResponse(input);
+    list.innerHTML+='<div class="bg-white/5 p-3 rounded-2xl border border-brandCyan/20"><p class="font-bold text-brandCyan mb-1">Gemini :</p><p>'+resp+'</p></div>';
+    list.scrollTop = list.scrollHeight;
+  }, 600);
+}
+
+function generateGeminiResponse(q){
+  var ql = q.toLowerCase();
+  var ft = S.tasks.filter(function(t){return t.entity===S.entity});
+  var fc = S.clients.filter(function(c){return c.entity===S.entity});
+  var fe = S.expenses.filter(function(e){return e.entity===S.entity});
+  var rev = fc.reduce(function(a,c){return a+Number(c.budget)},0);
+  var exp = fe.reduce(function(a,e){return a+Number(e.amount)},0);
+
+  if(ql.includes('tâche')||ql.includes('tache')||ql.includes('task')){
+    if(ft.length===0) return 'Aucune tâche enregistrée pour <b>'+S.entity+'</b>. Créez-en une avec le bouton + Créer.';
+    return 'Voici les <b>'+ft.length+' tâches</b> sur <b>'+S.entity+'</b> :<br>'
+      +ft.map(function(t){return '• <b>'+esc(t.title)+'</b> ('+esc(t.status)+', '+esc(t.priority)+')'}).join('<br>');
+  }
+  if(ql.includes('client')||ql.includes('crm')||ql.includes('pipeline')){
+    if(fc.length===0) return 'Aucun client dans le pipeline <b>'+S.entity+'</b>.';
+    return '<b>'+fc.length+' clients</b> dans le pipeline :<br>'
+      +fc.map(function(c){return '• <b>'+esc(c.name)+'</b> — '+esc(c.pipelineStatus)+' ('+Number(c.budget).toLocaleString()+' $)'}).join('<br>');
+  }
+  if(ql.includes('finance')||ql.includes('budget')||ql.includes('dépense')||ql.includes('depense')||ql.includes('argent')){
+    return 'Synthèse financière <b>'+S.entity+'</b> :<br>• Revenus : <b>'+rev.toLocaleString()+' $</b><br>• Dépenses : <b>'+exp.toLocaleString()+' $</b><br>• Solde net : <b>'+(rev-exp).toLocaleString()+' $</b>';
+  }
+  if(ql.includes('équipe')||ql.includes('equipe')||ql.includes('user')||ql.includes('utilisateur')){
+    return '<b>'+S.users.length+' membres</b> dans l\'équipe :<br>'
+      +S.users.map(function(u){return '• <b>'+esc(u.name)+'</b> — '+esc(u.role)}).join('<br>');
+  }
+  if(ql.includes('agenda')||ql.includes('calendrier')||ql.includes('événement')||ql.includes('evenement')){
+    return '<b>'+S.calEvents.length+' événements</b> ce mois-ci dans votre Google Agenda. Consultez l\'onglet Calendrier pour les détails.';
+  }
+  if(ql.includes('résumé')||ql.includes('resume')||ql.includes('synthèse')||ql.includes('synthese')||ql.includes('dashboard')){
+    return 'Résumé <b>'+S.entity+'</b> :<br>• '+ft.length+' tâches ('+ft.filter(function(t){return t.status!=='Validé'}).length+' en cours)<br>• '+fc.length+' clients ('+rev.toLocaleString()+' $ en pipeline)<br>• '+fe.length+' dépenses ('+exp.toLocaleString()+' $)<br>• Solde net : <b>'+(rev-exp).toLocaleString()+' $</b>';
+  }
+  return 'Je suis l\'assistant Opays HQ pour l\'entité <b>'+S.entity+'</b>. Posez-moi des questions sur : <b>tâches, clients, finances, équipe, agenda</b> ou demandez un <b>résumé</b>.';
+}
+
+/* ═══════════════════════════════════════════
+   UTILITY FUNCTIONS
+   ═══════════════════════════════════════════ */
+function val(id){var el=document.getElementById(id);return el?el.value.trim():''}
+function esc(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function pad(n){return n<10?'0'+n:''+n}
+
+</script>
+</body>
+</html>
