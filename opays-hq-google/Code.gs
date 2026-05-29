@@ -10,6 +10,21 @@
  * ====================================================================
  */
 
+
+/**
+ * Récupère le classeur Google Sheet servant de base de données.
+ * Utilise l'ID du classeur pour garantir le fonctionnement en mode Web App standalone ou lié.
+ */
+function getDatabase() {
+  const SPREADSHEET_ID = "1j1v9ugMRk09NvtzLOCvu-YyWBeqaQ73BbZX21E2EAtM";
+  try {
+    return SpreadsheetApp.openById(SPREADSHEET_ID);
+  } catch (e) {
+    // Repli de secours sur le classeur actif si l'ID pose problème
+    return SpreadsheetApp.getActiveSpreadsheet();
+  }
+}
+
 /* ─────────────────── INITIALISATION ─────────────────── */
 
 /**
@@ -32,7 +47,7 @@ function doGet(e) {
  * Initialise les feuilles de calcul de la base de données si inexistantes
  */
 function initDatabase() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = getDatabase();
   
   const schema = {
     'Users': [
@@ -81,7 +96,7 @@ function getUserSession() {
   try {
     initDatabase();
     const email = Session.getActiveUser().getEmail() || "lamsa.fenelon@gmail.com";
-    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const ss = getDatabase();
     const sheet = ss.getSheetByName('Users');
     const data = sheet.getDataRange().getValues();
     
@@ -112,7 +127,7 @@ function getUserSession() {
  */
 function getUsers() {
   try {
-    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const ss = getDatabase();
     const sheet = ss.getSheetByName('Users');
     const data = sheet.getDataRange().getValues();
     let users = [];
@@ -136,7 +151,7 @@ function getUsers() {
  */
 function saveUser(user) {
   try {
-    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const ss = getDatabase();
     const sheet = ss.getSheetByName('Users');
     const data = sheet.getDataRange().getValues();
     
@@ -159,7 +174,7 @@ function saveUser(user) {
  */
 function deleteUser(email) {
   try {
-    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const ss = getDatabase();
     const sheet = ss.getSheetByName('Users');
     const data = sheet.getDataRange().getValues();
     for (let i = 1; i < data.length; i++) {
@@ -182,7 +197,7 @@ function deleteUser(email) {
  */
 function getSettings() {
   try {
-    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const ss = getDatabase();
     const sheet = ss.getSheetByName('Settings');
     const data = sheet.getDataRange().getValues();
     let settings = {};
@@ -201,7 +216,7 @@ function getSettings() {
  */
 function saveSetting(key, value) {
   try {
-    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const ss = getDatabase();
     const sheet = ss.getSheetByName('Settings');
     const data = sheet.getDataRange().getValues();
     let found = false;
@@ -230,7 +245,7 @@ function saveSetting(key, value) {
  */
 function getTasks(entity) {
   try {
-    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const ss = getDatabase();
     const sheet = ss.getSheetByName('Tasks');
     const data = sheet.getDataRange().getValues();
     let tasks = [];
@@ -267,7 +282,7 @@ function getTasks(entity) {
  */
 function saveTask(task) {
   try {
-    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const ss = getDatabase();
     const sheet = ss.getSheetByName('Tasks');
     const data = sheet.getDataRange().getValues();
     
@@ -298,7 +313,7 @@ function saveTask(task) {
  */
 function deleteTask(id) {
   try {
-    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const ss = getDatabase();
     const sheet = ss.getSheetByName('Tasks');
     const data = sheet.getDataRange().getValues();
     for (let i = 1; i < data.length; i++) {
@@ -438,7 +453,7 @@ function deleteCalendarEvent(eventId) {
  */
 function getClients(entity) {
   try {
-    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const ss = getDatabase();
     const sheet = ss.getSheetByName('Clients');
     const data = sheet.getDataRange().getValues();
     let clients = [];
@@ -466,7 +481,7 @@ function getClients(entity) {
  */
 function saveClient(client) {
   try {
-    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const ss = getDatabase();
     const sheet = ss.getSheetByName('Clients');
     const data = sheet.getDataRange().getValues();
     
@@ -494,7 +509,7 @@ function saveClient(client) {
  */
 function deleteClient(id) {
   try {
-    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const ss = getDatabase();
     const sheet = ss.getSheetByName('Clients');
     const data = sheet.getDataRange().getValues();
     for (let i = 1; i < data.length; i++) {
@@ -517,7 +532,7 @@ function deleteClient(id) {
  */
 function getExpenses(entity) {
   try {
-    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const ss = getDatabase();
     const sheet = ss.getSheetByName('Expenses');
     const data = sheet.getDataRange().getValues();
     let expenses = [];
@@ -552,7 +567,7 @@ function getExpenses(entity) {
  */
 function saveExpense(exp) {
   try {
-    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const ss = getDatabase();
     const sheet = ss.getSheetByName('Expenses');
     const data = sheet.getDataRange().getValues();
     if (exp.id) {
@@ -579,7 +594,7 @@ function saveExpense(exp) {
  */
 function deleteExpense(id) {
   try {
-    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const ss = getDatabase();
     const sheet = ss.getSheetByName('Expenses');
     const data = sheet.getDataRange().getValues();
     for (let i = 1; i < data.length; i++) {
