@@ -680,8 +680,9 @@ function createNewGoogleFile(folderId, name, type) {
       let slide = SlidesApp.create(name);
       file = DriveApp.getFileById(slide.getId());
     }
-    folder.addFile(file);
-    DriveApp.getRootFolder().removeFile(file);
+    if (folder.getId() !== DriveApp.getRootFolder().getId()) {
+      file.moveTo(folder);
+    }
     return {
       id: file.getId(),
       name: file.getName(),

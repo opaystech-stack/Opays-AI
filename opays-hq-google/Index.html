@@ -25,10 +25,20 @@
     *{box-sizing:border-box}
     body{font-family:'Inter',sans-serif;background:#0A0A0A;color:#F3F4F6;-webkit-tap-highlight-color:transparent}
     .glass{background:rgba(18,18,18,.82);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.06)}
-    .card{background:rgba(28,28,30,.72);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.05);box-shadow:0 8px 32px rgba(0,0,0,.35);border-radius:1.5rem;transition:border-color .25s,transform .18s}
+    .card{background:rgba(28,28,30,.72);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.05);box-shadow:0 8px 32px rgba(0,0,0,.35);border-radius:1.5rem;transition:border-color .25s}
     .card:hover{border-color:rgba(0,255,224,.12)}
-    .card:active{transform:scale(.988)}
+    .card-btn{transition:transform .15s}
+    .card-btn:active{transform:scale(.97)}
     .no-sb::-webkit-scrollbar{display:none}.no-sb{-ms-overflow-style:none;scrollbar-width:none}
+    
+    /* Elegant Custom Scrollbar */
+    ::-webkit-scrollbar{width:6px;height:6px}
+    ::-webkit-scrollbar-track{background:rgba(255,255,255,.01);border-radius:3px}
+    ::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:3px;transition:background .2s}
+    ::-webkit-scrollbar-thumb:hover{background:rgba(0,255,224,.35)}
+    
+    /* Smooth iOS Scroll */
+    .overflow-y-auto{-webkit-overflow-scrolling:touch}
     .grad-text{background:linear-gradient(135deg,#0055FF,#00FFE0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
     .grad-btn{background:linear-gradient(135deg,#0055FF,#00FFE0);color:#000;font-weight:800}
     .grad-btn:hover{filter:brightness(1.1);transform:scale(1.01)}.grad-btn:active{transform:scale(.98)}
@@ -135,7 +145,7 @@
     </div>
 
     <!-- CONTENEUR DES VUES -->
-    <div id="view-container" class="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 no-sb pb-24 md:pb-8"></div>
+    <div id="view-container" class="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 pb-24 md:pb-8"></div>
 
     <!-- NAV MOBILE (Apple style) -->
     <div id="mobile-nav" class="md:hidden fixed bottom-0 left-0 right-0 glass mob-bar border-t border-white/10 shadow-2xl z-40 flex items-center justify-around px-2 pt-2 pb-2"></div>
@@ -147,7 +157,7 @@
       <div class="flex items-center gap-2 text-brandCyan"><i data-lucide="sparkles" class="w-4 h-4"></i><span class="text-xs font-bold uppercase tracking-widest">Assistant Gemini</span></div>
       <button onclick="toggleGemini()" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
     </div>
-    <div id="chat-msgs" class="flex-1 p-4 space-y-4 overflow-y-auto text-xs no-sb">
+    <div id="chat-msgs" class="flex-1 p-4 space-y-4 overflow-y-auto text-xs">
       <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
         <p class="font-bold text-brandCyan mb-1">Gemini :</p>
         <p>Bonjour ! Comment puis-je optimiser les opérations d'Opays aujourd'hui ?</p>
@@ -162,7 +172,7 @@
 
 <!-- ═══════════════ MODAL UNIVERSEL ═══════════════ -->
 <div id="modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden" onclick="if(event.target===this)closeModal()">
-  <div class="glass max-w-lg w-full p-8 rounded-[2rem] space-y-5 relative shadow-2xl mx-4 max-h-[90vh] overflow-y-auto no-sb">
+  <div class="glass max-w-lg w-full p-8 rounded-[2rem] space-y-5 relative shadow-2xl mx-4 max-h-[90vh] overflow-y-auto">
     <div class="flex items-center justify-between border-b border-white/5 pb-4">
       <h3 id="modal-title" class="text-sm font-bold uppercase tracking-wider">Créer</h3>
       <button onclick="closeModal()" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
@@ -503,10 +513,18 @@ function renderCalendar(){
   html+='</div></div>';
 
   // --- Day details panel ---
+  var detailTitle = "Détails du jour";
+  if(S.selectedDay){
+    var pDate = S.selectedDay.split('-');
+    detailTitle = "Détails du " + parseInt(pDate[2]) + " " + MONTHS_FR[parseInt(pDate[1])-1];
+  }
   html+='<div class="card p-5 md:p-6 space-y-4 flex flex-col">';
-  html+='<div class="flex items-center justify-between"><h4 class="text-xs font-black uppercase tracking-widest text-brandCyan">Détails du jour</h4>';
-  html+='<button onclick="openModal(\'event\')" class="px-3 py-1.5 text-[9px] font-black uppercase tracking-wider rounded-lg bg-white/5 border border-white/5 hover:border-brandCyan text-gray-400 hover:text-brandCyan transition-all">+ Événement</button></div>';
-  html+='<div id="day-events" class="space-y-3 flex-1 overflow-y-auto no-sb max-h-[400px]">';
+  html+='<div class="flex items-center justify-between"><h4 id="detail-header-title" class="text-xs font-black uppercase tracking-widest text-brandCyan">'+detailTitle+'</h4>';
+  html+='<div class="flex gap-2">';
+  html+='<button onclick="openModal(\'task\')" class="px-2.5 py-1.5 text-[9px] font-black uppercase tracking-wider rounded-lg bg-white/5 border border-white/5 hover:border-brandCyan text-gray-400 hover:text-brandCyan transition-all">+ Tâche</button>';
+  html+='<button onclick="openModal(\'event\')" class="px-2.5 py-1.5 text-[9px] font-black uppercase tracking-wider rounded-lg bg-white/5 border border-white/5 hover:border-brandCyan text-gray-400 hover:text-brandCyan transition-all">+ Événement</button>';
+  html+='</div></div>';
+  html+='<div id="day-events" class="space-y-3 flex-1 overflow-y-auto max-h-[400px]">';
   if(S.selectedDay){
     html += renderDayEvents(S.selectedDay, allEvents);
   } else {
@@ -543,6 +561,11 @@ function selectDay(dateStr){
   if(container){
     container.innerHTML = renderDayEvents(dateStr, allEvents);
     lucide.createIcons();
+  }
+  var hEl = document.getElementById('detail-header-title');
+  if(hEl){
+    var pDate = dateStr.split('-');
+    hEl.innerText = "Détails du " + parseInt(pDate[2]) + " " + MONTHS_FR[parseInt(pDate[1])-1];
   }
 }
 
@@ -601,7 +624,7 @@ function renderFinances(fc,fe){
   html+='<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">';
   // Expense list
   html+='<div class="card p-6 space-y-4"><h3 class="text-xs font-black uppercase tracking-widest text-brandCyan border-b border-white/5 pb-3">Transactions</h3>';
-  html+='<div class="space-y-3 max-h-[350px] overflow-y-auto no-sb">';
+  html+='<div class="space-y-3 max-h-[350px] overflow-y-auto">';
   fe.forEach(function(e){
     html+='<div class="glass p-4 rounded-2xl flex items-center justify-between group hover:border-brandCyan/20 transition-all">'
       +'<div><p class="text-xs font-bold text-white">'+esc(e.title)+'</p>'
@@ -653,12 +676,12 @@ function renderDrive(){
   html+='<div class="grid grid-cols-1 md:grid-cols-2 gap-4">';
   S.files.forEach(function(f){
     var ic = iconMap[f.mimeType] || 'file';
-    html+='<div class="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/5 hover:border-brandCyan/20 transition-all group">'
-      +'<div class="flex items-center gap-3 min-w-0 flex-1">'
+    html+='<div class="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/5 hover:border-brandCyan/25 hover:bg-white/8 transition-all group">'
+      +'<a href="'+f.url+'" target="_blank" class="flex items-center gap-3 min-w-0 flex-1 hover:text-brandCyan">'
       +'<div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-gray-400 shrink-0"><i data-lucide="'+ic+'" class="w-5 h-5"></i></div>'
-      +'<div class="min-w-0"><a href="'+f.url+'" target="_blank" class="text-xs font-bold text-white hover:text-brandCyan hover:underline transition-colors block truncate">'+esc(f.name)+'</a>'
-      +'<p class="text-[9px] text-gray-500 font-bold uppercase truncate">MAJ : '+esc(f.lastUpdated||'')+'</p></div></div>'
-      +'<button onclick="removeFile(\''+f.id+'\')" class="p-2 text-gray-500 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all shrink-0"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div>';
+      +'<div class="min-w-0"><span class="text-xs font-bold text-white group-hover:text-brandCyan transition-colors block truncate">'+esc(f.name)+'</span>'
+      +'<p class="text-[9px] text-gray-500 font-bold uppercase truncate">MAJ : '+esc(f.lastUpdated||'')+'</p></div></a>'
+      +'<button onclick="removeFile(\''+f.id+'\')" class="p-2 text-gray-500 hover:text-red-400 md:opacity-0 group-hover:opacity-100 transition-all shrink-0"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div>';
   });
   if(S.files.length===0) html+='<p class="col-span-2 py-8 text-center text-gray-500 italic">Aucun document dans le dossier.</p>';
   html+='</div></div>';
@@ -768,7 +791,7 @@ function renderModal(){
       +'<div><label class="label-f">Assigné à</label><select id="m-task-assignee" class="input-f">'
       + S.users.map(function(u){return '<option value="'+esc(u.name)+'">'+esc(u.name)+'</option>'}).join('')
       +'</select></div>'
-      +'<div><label class="label-f">Date d\'échéance</label><input id="m-task-date" type="date" class="input-f" value="'+today+'" /></div></div>'
+      +'<div><label class="label-f">Date d\'échéance</label><input id="m-task-date" type="date" class="input-f" value="'+(S.selectedDay||today)+'" /></div></div>'
       +'<div class="grid grid-cols-2 gap-4">'
       +'<div><label class="label-f">Priorité</label><select id="m-task-priority" class="input-f"><option value="Haute">Haute</option><option value="Moyenne" selected>Moyenne</option><option value="Basse">Basse</option></select></div>'
       +'<div><label class="label-f">Statut</label><select id="m-task-status" class="input-f"><option value="À faire">À faire</option><option value="En cours">En cours</option><option value="Validé">Validé</option></select></div></div>'
