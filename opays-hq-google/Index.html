@@ -691,12 +691,26 @@ function renderDrive(){
 /* ─── EMAIL ─── */
 function renderEmail(){
   return '<div class="card p-6 max-w-xl mx-auto space-y-6">'
-    +'<h3 class="text-xs font-black uppercase tracking-widest text-brandCyan border-b border-white/5 pb-4">Composer un e-mail</h3>'
+    +'<div class="flex items-center justify-between border-b border-white/5 pb-4">'
+    +'<h3 class="text-xs font-black uppercase tracking-widest text-brandCyan">Composer un e-mail</h3>'
+    +'<span class="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-brandBlue/10 text-brandCyan">Gmail Connecté</span>'
+    +'</div>'
+    
+    // --- Assistant IA Rédaction Section ---
+    +'<div class="glass p-5 rounded-2xl border border-brandCyan/15 space-y-3 bg-brandCyan/[0.01]">'
+    +'<div class="flex items-center gap-2 text-brandCyan"><i data-lucide="sparkles" class="w-4 h-4"></i><span class="text-[10px] font-black uppercase tracking-widest">Assistant de Rédaction IA</span></div>'
+    +'<p class="text-[10px] text-gray-400 leading-relaxed">Décrivez l\'e-mail que vous voulez générer (ex : "Relance de Bridgesat pour facture", "Introduction de nos offres Forge", "Rapport de tâches").</p>'
+    +'<div class="flex gap-2">'
+    +'<input id="email-ai-prompt" type="text" placeholder="Sujet ou contexte du mail à générer..." class="input-f flex-1" onkeydown="if(event.key===\'Enter\')generateAIEmail()" />'
+    +'<button onclick="generateAIEmail()" class="px-4 py-2.5 rounded-xl bg-brandBlue hover:bg-brandBlue/80 text-white font-bold text-xs flex items-center gap-1.5 transition-all shrink-0"><i data-lucide="cpu" class="w-3.5 h-3.5"></i>Rédiger</button>'
+    +'</div></div>'
+    
+    // --- Classic Form ---
     +'<div class="space-y-4">'
-    +'<div><label class="label-f">Destinataire</label><input id="email-to" type="email" class="input-f" placeholder="email@exemple.com" /></div>'
-    +'<div><label class="label-f">Objet</label><input id="email-subject" type="text" class="input-f" /></div>'
-    +'<div><label class="label-f">Message</label><textarea id="email-body" rows="6" class="input-f leading-relaxed" style="border-radius:1rem;padding:1rem"></textarea></div>'
-    +'<button onclick="sendEmail()" class="w-full py-4 grad-btn text-xs uppercase tracking-widest rounded-xl">Envoyer avec Gmail</button>'
+    +'<div><label class="label-f">Destinataire</label><input id="email-to" type="email" class="input-f" placeholder="destinataire@exemple.com" /></div>'
+    +'<div><label class="label-f">Objet</label><input id="email-subject" type="text" class="input-f" placeholder="Sujet de l\'e-mail" /></div>'
+    +'<div><label class="label-f">Message</label><textarea id="email-body" rows="8" class="input-f leading-relaxed" placeholder="Contenu du message rédigé..." style="border-radius:1rem;padding:1rem"></textarea></div>'
+    +'<button onclick="sendEmail()" class="w-full py-4 grad-btn text-xs uppercase tracking-widest rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-brandBlue/10"><i data-lucide="send" class="w-4 h-4"></i>Envoyer avec Gmail</button>'
     +'</div></div>';
 }
 
@@ -1044,6 +1058,113 @@ function sendEmail(){
     document.getElementById('email-subject').value='';
     document.getElementById('email-body').value='';
   });
+}
+
+function generateAIEmail(){
+  var prompt = val('email-ai-prompt');
+  if(!prompt){toast('Décrivez d\'abord ce que vous souhaitez générer.','error');return}
+  spin(true);
+  setTimeout(function(){
+    var res = composeAIEmailDraft(prompt);
+    document.getElementById('email-subject').value = res.subject;
+    document.getElementById('email-body').value = res.body;
+    if(res.to) document.getElementById('email-to').value = res.to;
+    spin(false);
+    toast('E-mail rédigé par l\'IA ! Révisez-le avant envoi.','success');
+  }, 700);
+}
+
+function composeAIEmailDraft(q){
+  var ql = q.toLowerCase();
+  var ft = S.tasks.filter(function(t){return t.entity===S.entity});
+  var fc = S.clients.filter(function(c){return c.entity===S.entity});
+  var fe = S.expenses.filter(function(e){return e.entity===S.entity});
+  
+  var subject = "Suivi de collaboration — " + (S.entity==='TECH'?'Opays Tech':'Opays Commons');
+  var body = "";
+  var to = "";
+  
+  if(ql.includes('relance') || ql.includes('facture') || ql.includes('paiement') || ql.includes('solde')){
+    var targetClient = null;
+    for(var cl of fc){
+      if(ql.includes(cl.name.toLowerCase())){ targetClient = cl; break; }
+    }
+    if(!targetClient && fc.length > 0) targetClient = fc[0];
+    
+    var clientName = targetClient ? targetClient.name : "[Nom du Client]";
+    var budget = targetClient ? Number(targetClient.budget) : 2500;
+    to = targetClient ? targetClient.contact : "contact@client.com";
+    
+    subject = "Rappel amical : Suivi de facturation — " + (S.entity==='TECH'?'Opays Tech':'Opays Commons');
+    body = "Bonjour" + (targetClient ? " l'équipe de " + clientName : "") + ",\n\n"
+      + "J'espère que vous allez bien.\n\n"
+      + "Je me permets de vous contacter concernant notre collaboration active dans le cadre du programme "
+      + (S.entity==='TECH'?'Opays Forge':'Opays Commons') + ".\n\n"
+      + "Sauf erreur de notre part, la facture relative à notre dernière étape d'accompagnement (d'un montant de " + budget.toLocaleString() + " USD) est arrivée à échéance.\n\n"
+      + "Pourriez-vous nous indiquer si le règlement a pu être initié par votre service comptabilité, ou s'il vous manque des éléments (RIB, détails de facturation) pour y procéder ?\n\n"
+      + "Nous restons disponibles si vous avez des questions.\n\n"
+      + "Excellente journée,\n\n"
+      + "Cordialement,\n\n"
+      + S.user.name + "\n"
+      + (S.entity==='TECH'?'CEO, Opays Tech':'Directeur, Opays Commons') + "\n"
+      + S.user.email;
+  }
+  else if(ql.includes('présentation') || ql.includes('pitch') || ql.includes('offre') || ql.includes('intro') || ql.includes('forge')){
+    var clientName = "[Partenaire]";
+    for(var cl of fc){
+      if(ql.includes(cl.name.toLowerCase())){ clientName = cl.name; to = cl.contact; break; }
+    }
+    if(S.entity==='TECH'){
+      subject = "Propulsez vos opérations avec l'Ingénierie de l'Efficience — Opays Tech";
+      body = "Bonjour " + clientName + ",\n\n"
+        + "Je suis " + S.user.name + ", CEO d'Opays Tech.\n\n"
+        + "Opays Tech est un cabinet d'ingénierie de l'efficience. Notre rôle est simple : simplifier, coordonner et automatiser les opérations de votre organisation en éliminant les frictions internes grâce à des solutions intelligentes et des architectures de données connectées.\n\n"
+        + "Nous avons conçu l'approche \"Opays Forge\" pour réaliser un diagnostic complet de vos blocages réels, automatiser vos flux critiques (validations, CRM, factures), et intégrer des assistants IA parfaitement formés sur vos connaissances internes.\n\n"
+        + "Seriez-vous disponible pour un échange rapide de 15 minutes la semaine prochaine afin d'évaluer le potentiel d'optimisation de vos opérations ?\n\n"
+        + "Cordialement,\n\n"
+        + S.user.name + "\n"
+        + "CEO, Opays Tech\n"
+        + S.user.email;
+    } else {
+      subject = "Collaboration & Impact : Initiatives Opays Commons";
+      body = "Bonjour " + clientName + ",\n\n"
+        + "Je vous contacte au nom de l'écosystème d'utilité publique Opays Commons.\n\n"
+        + "Notre pôle de recherche et de développement ouvert est dédié à l'accessibilité technologique, à la formation académique pratique et à la souveraineté numérique locale.\n\n"
+        + "Nous serions ravis de collaborer avec votre organisation sur des projets communautaires d'intérêt général pour renforcer les compétences numériques territoriales et soutenir des innovations partagées.\n\n"
+        + "Dans l'attente d'échanger sur ces opportunités,\n\n"
+        + "Bien cordialement,\n\n"
+        + S.user.name + "\n"
+        + "Opays Commons R&D\n"
+        + S.user.email;
+    }
+  }
+  else if(ql.includes('projet') || ql.includes('suivi') || ql.includes('tâche') || ql.includes('tache') || ql.includes('sprint')){
+    var pendingTasks = ft.filter(function(t){return t.status!=='Validé'});
+    var tasksListStr = pendingTasks.map(function(t){return "- " + t.title + " (Assigné à : " + t.assignee + ")"}).slice(0,4).join('\n');
+    
+    subject = "Point d'étape opérationnel — " + (S.entity==='TECH'?'Opays Tech':'Opays Commons');
+    body = "Bonjour l'équipe,\n\n"
+      + "Voici un point de situation rapide concernant notre plan d'action en cours pour " + (S.entity==='TECH'?'Opays Tech':'Opays Commons') + ".\n\n"
+      + "Voici les tâches prioritaires en phase d'exécution :\n"
+      + (tasksListStr || "- Aucun sprint actif en cours.") + "\n\n"
+      + "Merci à chacun de veiller au respect des échéances et de notifier son avancement directement dans le Workspace OS.\n\n"
+      + "Restant à votre écoute pour toute validation urgente,\n\n"
+      + "Bien cordialement,\n\n"
+      + S.user.name + "\n"
+      + S.user.email;
+  }
+  else {
+    subject = "Suivi de projet — " + (S.entity==='TECH'?'Opays Tech':'Opays Commons');
+    body = "Bonjour,\n\n"
+      + "Faisant suite à nos récents échanges concernant notre activité " + (S.entity==='TECH'?'Opays Forge':'Opays Commons') + ", je vous adresse cet e-mail pour " + q.toLowerCase() + ".\n\n"
+      + "[Rédigez ici les détails complémentaires de votre message...]\n\n"
+      + "Nous restons à votre entière disposition pour planifier un appel de suivi.\n\n"
+      + "Excellente journée,\n\n"
+      + "Cordialement,\n\n"
+      + S.user.name + "\n"
+      + S.user.email;
+  }
+  return {subject: subject, body: body, to: to};
 }
 
 /* ═══════════════════════════════════════════
