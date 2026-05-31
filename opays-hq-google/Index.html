@@ -190,7 +190,12 @@
 var S = {
   entity:'TECH', view:'DASHBOARD',
   user:null, settings:{}, users:[],
-  tasks:[], clients:[], expenses:[], files:[],
+  links:{},
+  tasks:[], clients:[], expenses:[], files:[], emails:[],
+  selectedEmailId:null,
+  selectedEmail:null,
+  emailMode:'reply',
+  emailDraft:{to:'',subject:'',body:''},
   calEvents:[],
   calYear: new Date().getFullYear(),
   calMonth: new Date().getMonth(),
@@ -213,7 +218,7 @@ var VIEWS_META = {
 var MONTHS_FR=['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
 
 /* ───── INIT ───── */
-window.onload = function(){ lucide.createIcons(); };
+window.onload = function(){ bootApp(); };
 
 /* ───── TOAST SYSTEM ───── */
 function toast(msg, type){
@@ -244,8 +249,68 @@ function run(fnName, args, onOk, onFail){
     });
   // Call with correct arity
   if(args === undefined || args === null) runner[fnName]();
-  else if(Array.isArray(args)) runner[fnName].apply(runner, args);
+  else if(Array.isArray(args)) runner[fnName](...args);
   else runner[fnName](args);
+}
+
+function runAsync(fnName, args){
+  return new Promise(function(resolve, reject){
+    var runner = google.script.run
+      .withSuccessHandler(function(res){ resolve(res); })
+      .withFailureHandler(function(err){ reject(err); });
+    if(args === undefined || args === null) runner[fnName]();
+    else if(Array.isArray(args)) runner[fnName](...args);
+    else runner[fnName](args);
+  });
+}
+
+function persistUiState(){
+  try {
+    localStorage.setItem('opays_hq_ui', JSON.stringify({
+      entity: S.entity,
+      view: S.view,
+      selectedDay: S.selectedDay,
+      emailMode: S.emailMode,
+      selectedEmailId: S.selectedEmailId,
+      emailDraft: S.emailDraft
+    }));
+    if(S.user) localStorage.setItem('opays_hq_user', JSON.stringify(S.user));
+  } catch(e) {
+    // no-op
+  }
+}
+
+function hydrateUiState(){
+  try {
+    var raw = localStorage.getItem('opays_hq_ui');
+    if(raw){
+      var ui = JSON.parse(raw);
+      if(ui.entity) S.entity = ui.entity;
+      if(ui.view) S.view = ui.view;
+      if(ui.selectedDay) S.selectedDay = ui.selectedDay;
+      if(ui.emailMode) S.emailMode = ui.emailMode;
+      if(ui.selectedEmailId) S.selectedEmailId = ui.selectedEmailId;
+      if(ui.emailDraft) S.emailDraft = ui.emailDraft;
+    }
+    var u = localStorage.getItem('opays_hq_user');
+    if(u) S.user = JSON.parse(u);
+  } catch(e) {
+    // no-op
+  }
+}
+
+function updateUserHeader(){
+  if(!S.user) return;
+  document.getElementById('user-name').innerText = S.user.name || 'Utilisateur';
+  document.getElementById('user-role').innerText = S.user.role || 'Rôle';
+  document.getElementById('user-avatar').innerText = (S.user.name || 'U').charAt(0).toUpperCase();
+}
+
+function bootApp(){
+  lucide.createIcons();
+  hydrateUiState();
+  if(S.user) updateUserHeader();
+  autoLogin();
 }
 
 /* ───── LOGIN ───── */
@@ -253,9 +318,8 @@ function loginUser(){
   spin(true);
   run('getUserSession', null, function(user){
     S.user = user;
-    document.getElementById('user-name').innerText = user.name;
-    document.getElementById('user-role').innerText = user.role;
-    document.getElementById('user-avatar').innerText = user.name.charAt(0).toUpperCase();
+    updateUserHeader();
+    persistUiState();
     run('getSettings', null, function(settings){
       S.settings = settings;
       loadAllData();
@@ -263,33 +327,43 @@ function loginUser(){
   });
 }
 
+function autoLogin(){
+  loginUser();
+}
+
 /* ───── LOAD ALL DATA (sequential, with error handling) ───── */
 function loadAllData(){
-  run('getTasks', null, function(tasks){
-    S.tasks = tasks || [];
-    run('getClients', null, function(clients){
-      S.clients = clients || [];
-      run('getExpenses', null, function(expenses){
-        S.expenses = expenses || [];
-        run('getDriveDocuments', S.settings.DRIVE_FOLDER_ID || 'root', function(files){
-          S.files = files || [];
-          run('getCalendarEventsForMonth', [S.calYear, S.calMonth], function(ev){
-            S.calEvents = ev || [];
-            run('getUsers', null, function(users){
-              S.users = users || [];
-              // Ready!
-              document.getElementById('login-screen').classList.add('hidden');
-              document.getElementById('app-screen').classList.remove('hidden');
-              spin(false);
-              buildSidebar();
-              buildMobileNav();
-              render();
-              lucide.createIcons();
-            });
-          });
-        });
-      });
-    });
+  Promise.all([
+    runAsync('getTasks', null).catch(function(){ return []; }),
+    runAsync('getClients', null).catch(function(){ return []; }),
+    runAsync('getExpenses', null).catch(function(){ return []; }),
+    runAsync('getDriveDocuments', [S.user && S.user.driveFolderId ? S.user.driveFolderId : (S.settings.DRIVE_FOLDER_ID || 'root')]).catch(function(){ return []; }),
+    runAsync('getCalendarEventsForMonth', [S.calYear, S.calMonth]).catch(function(){ return []; }),
+    runAsync('getUsers', null).catch(function(){ return []; }),
+    runAsync('getWorkspaceLinks', null).catch(function(){ return {}; })
+  ]).then(function(results){
+    S.tasks = results[0] || [];
+    S.clients = results[1] || [];
+    S.expenses = results[2] || [];
+    S.files = results[3] || [];
+    S.calEvents = results[4] || [];
+    S.users = results[5] || [];
+    S.links = results[6] || {};
+    document.getElementById('login-screen').classList.add('hidden');
+    document.getElementById('app-screen').classList.remove('hidden');
+    spin(false);
+    buildSidebar();
+    buildMobileNav();
+    if(S.view === 'EMAIL'){
+      refreshEmails();
+    } else {
+      render();
+    }
+    persistUiState();
+    lucide.createIcons();
+  }).catch(function(err){
+    spin(false);
+    toast('Connexion impossible : ' + (err && err.message ? err.message : 'erreur serveur'), 'error');
   });
 }
 
@@ -305,6 +379,7 @@ function toggleEntity(ent){
     bC.className='px-3 py-1 rounded-lg text-[9px] font-black uppercase transition-all bg-emerald-600 text-white shadow shadow-emerald-600/20';
     bT.className='px-3 py-1 rounded-lg text-[9px] font-black uppercase transition-all text-gray-400 hover:text-white';
   }
+  persistUiState();
   render();
 }
 
@@ -335,15 +410,37 @@ function buildSidebar(){
 
 /* ───── MOBILE NAV BUILD ───── */
 function buildMobileNav(){
-  var mobileItems = ['DASHBOARD','TASKS','CALENDAR','CRM','SETTINGS'];
-  var icons = {DASHBOARD:'layout-dashboard',TASKS:'check-square',CALENDAR:'calendar',CRM:'users',SETTINGS:'settings'};
-  var labels = {DASHBOARD:'HQ',TASKS:'Tâches',CALENDAR:'Agenda',CRM:'CRM',SETTINGS:'Admin'};
+  var visible = (S.settings.MODULES_VISIBLE || 'DASHBOARD,TASKS,CALENDAR,CRM,FINANCES,DRIVE,EMAIL').split(',');
+  var mobileItems = ['DASHBOARD','TASKS','CALENDAR','CRM','FINANCES','DRIVE','EMAIL','SETTINGS'].filter(function(k){
+    return visible.indexOf(k) !== -1 || k === 'SETTINGS';
+  });
+  var icons = {
+    DASHBOARD:'layout-dashboard',
+    TASKS:'check-square',
+    CALENDAR:'calendar',
+    CRM:'users',
+    FINANCES:'wallet',
+    DRIVE:'folder-open',
+    EMAIL:'mail',
+    SETTINGS:'settings'
+  };
+  var labels = {
+    DASHBOARD:'HQ',
+    TASKS:'Tâches',
+    CALENDAR:'Agenda',
+    CRM:'CRM',
+    FINANCES:'Finance',
+    DRIVE:'Docs',
+    EMAIL:'Mail',
+    SETTINGS:'Admin'
+  };
   var nav = document.getElementById('mobile-nav');
   var html = '';
   mobileItems.forEach(function(k){
     var active = S.view===k;
-    html+='<button onclick="changeView(\''+k+'\')" class="mob-btn flex flex-col items-center justify-center py-1 px-2 transition-all '+(active?'text-brandCyan':'text-gray-400')+'"><i data-lucide="'+icons[k]+'" class="w-5 h-5"></i><span class="text-[8px] font-black uppercase mt-0.5">'+labels[k]+'</span></button>';
+    html+='<button onclick="changeView(\''+k+'\')" class="mob-btn flex flex-col items-center justify-center gap-0.5 py-1.5 px-1 transition-all '+(active?'text-brandCyan':'text-gray-400')+'"><i data-lucide="'+icons[k]+'" class="w-5 h-5"></i><span class="text-[8px] font-black uppercase leading-none">'+labels[k]+'</span></button>';
   });
+  nav.className = 'md:hidden fixed bottom-0 left-0 right-0 glass mob-bar border-t border-white/10 shadow-2xl z-40 grid grid-cols-4 gap-1 px-2 pt-2 pb-2';
   nav.innerHTML = html;
   lucide.createIcons();
 }
@@ -358,10 +455,8 @@ function changeView(v){
     if(b.getAttribute('data-nav')===v) b.className='nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all text-brandCyan bg-white/5';
     else b.className='nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all text-gray-400 hover:text-white hover:bg-white/5';
   });
-  // Mobile highlight
-  document.querySelectorAll('.mob-btn').forEach(function(b){
-    b.className = 'mob-btn flex flex-col items-center justify-center py-1 px-2 transition-all text-gray-400';
-  });
+  buildMobileNav();
+  persistUiState();
   // If calendar view, reload events for current month
   if(v==='CALENDAR'){
     spin(true);
@@ -369,6 +464,22 @@ function changeView(v){
       S.calEvents = ev||[];
       spin(false);
       render();
+    });
+    return;
+  }
+  // If email view, load recent emails
+  if(v==='EMAIL'){
+    spin(true);
+    run('getRecentGmailEmails', null, function(emails){
+      S.emails = emails || [];
+      if(!S.selectedEmailId && S.emails.length>0) {
+        S.selectedEmailId = S.emails[0].threadId || S.emails[0].id;
+      }
+      spin(false);
+      render();
+      if(S.selectedEmailId){
+        selectEmail(S.selectedEmailId, true);
+      }
     });
     return;
   }
@@ -398,15 +509,54 @@ function render(){
   lucide.createIcons();
 }
 
+function getClientValue(client){
+  return Number(client.invoiceAmount || client.budget || 0);
+}
+
+function getBillingStatus(client){
+  if(client.billingStatus){
+    return normalizeBillingStatus(client.billingStatus);
+  }
+  if(client.paidAmount && Number(client.paidAmount) > 0) return 'Payé';
+  if(client.invoiceAmount || client.budget) return 'Facturé';
+  return 'À facturer';
+}
+
+function isRevenueAcquired(client){
+  return getBillingStatus(client) === 'Payé';
+}
+
+function isRevenueInProgress(client){
+  var status = getBillingStatus(client);
+  return status === 'Facturé' || status === 'En cours';
+}
+
+function getFinanceSummary(fc, fe){
+  var acquired = 0;
+  var inProgress = 0;
+  fc.forEach(function(c){
+    var amount = getClientValue(c);
+    if(isRevenueAcquired(c)) acquired += amount;
+    else if(isRevenueInProgress(c)) inProgress += amount;
+  });
+  var expenses = fe.reduce(function(a,e){return a+Number(e.amount)},0);
+  return {
+    acquired: acquired,
+    inProgress: inProgress,
+    expenses: expenses,
+    net: acquired - expenses
+  };
+}
+
 /* ─── DASHBOARD ─── */
 function renderDashboard(ft,fc,fe){
-  var rev = fc.reduce(function(a,c){return a+Number(c.budget)},0);
-  var exp = fe.reduce(function(a,e){return a+Number(e.amount)},0);
+  var finance = getFinanceSummary(fc, fe);
   var urgent = ft.filter(function(t){return t.status!=='Validé'}).length;
-  return '<div class="grid grid-cols-1 sm:grid-cols-3 gap-4">'
-    + statCard('Trésorerie active',(rev-exp).toLocaleString()+' $','grad-text','brandCyan')
-    + statCard('Tâches urgentes', urgent, 'text-white','brandBlue')
-    + statCard('Partenariats actifs', fc.length, 'text-emerald-400','emerald')
+  return '<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">'
+    + statCard('Revenus acquis', finance.acquired.toLocaleString()+' $','text-emerald-400','emerald')
+    + statCard('Revenus en cours', finance.inProgress.toLocaleString()+' $','text-brandCyan','brandBlue')
+    + statCard('Tâches urgentes', urgent, 'text-white','brandCyan')
+    + statCard('Solde net', finance.net.toLocaleString()+' $','grad-text','brandCyan')
     +'</div>'
     +'<div class="space-y-4"><h4 class="text-[10px] font-black uppercase tracking-widest text-brandCyan">Tâches Prioritaires</h4>'
     +'<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">'
@@ -556,6 +706,7 @@ function renderDayEvents(dateStr, allEvents){
 
 function selectDay(dateStr){
   S.selectedDay = dateStr;
+  persistUiState();
   var allEvents = S.tasks.concat(S.calEvents);
   var container = document.getElementById('day-events');
   if(container){
@@ -574,6 +725,7 @@ function navMonth(delta){
   if(S.calMonth>11){S.calMonth=0;S.calYear++}
   if(S.calMonth<0){S.calMonth=11;S.calYear--}
   S.selectedDay = null;
+  persistUiState();
   spin(true);
   run('getCalendarEventsForMonth',[S.calYear,S.calMonth],function(ev){
     S.calEvents = ev||[];
@@ -594,9 +746,15 @@ function renderCRM(fc){
     html+='<h4 class="text-[9px] font-black uppercase tracking-widest text-brandCyan border-b border-white/5 pb-2">'+status+' ('+list.length+')</h4>';
     html+='<div class="space-y-3">';
     list.forEach(function(c){
+      var billing = getBillingStatus(c);
+      var amount = getClientValue(c);
       html+='<div class="glass p-4 rounded-2xl space-y-2 group hover:border-brandCyan/30 transition-all relative">'
         +'<p class="text-xs font-bold text-white">'+esc(c.name)+'</p>'
-        +'<p class="text-[10px] text-gray-400 font-bold">'+Number(c.budget).toLocaleString()+' $ • '+esc(c.contact)+'</p>'
+        +'<p class="text-[10px] text-gray-400 font-bold">'+amount.toLocaleString()+' $ • '+esc(c.contact)+'</p>'
+        +'<div class="flex flex-wrap gap-2 pt-1">'
+        +'<span class="text-[8px] font-black uppercase px-2 py-0.5 rounded bg-brandBlue/10 text-brandCyan">'+esc(billing)+'</span>'
+        +'<span class="text-[8px] font-black uppercase px-2 py-0.5 rounded bg-white/5 text-gray-400">'+esc(c.pipelineStatus)+'</span>'
+        +'</div>'
         +'<button onclick="removeClient(\''+c.id+'\')" class="absolute top-3 right-3 text-gray-500 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button></div>';
     });
     if(list.length===0) html+='<p class="text-[9px] text-gray-500 italic text-center py-8">Aucun élément</p>';
@@ -608,22 +766,48 @@ function renderCRM(fc){
 
 /* ─── FINANCES ─── */
 function renderFinances(fc,fe){
-  var rev = fc.reduce(function(a,c){return a+Number(c.budget)},0);
-  var exp = fe.reduce(function(a,e){return a+Number(e.amount)},0);
+  var summary = getFinanceSummary(fc, fe);
+  var acquiredClients = fc.filter(function(c){return isRevenueAcquired(c);});
+  var pendingClients = fc.filter(function(c){return isRevenueInProgress(c);});
   var categories = {};
   fe.forEach(function(e){ categories[e.category] = (categories[e.category]||0)+Number(e.amount); });
 
   var html='<div class="flex items-center justify-between mb-4"><h3 class="text-xs font-black uppercase tracking-widest text-gray-400">Finances & Budgets</h3>'
     +'<button onclick="openModal(\'expense\')" class="px-3 py-1.5 grad-btn text-[9px] uppercase tracking-wider rounded-lg">+ Dépense</button></div>';
-  html+='<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">';
-  html+=statCard('Revenus d\'affaires','+ '+rev.toLocaleString()+' $','text-emerald-400','emerald');
-  html+=statCard('Charges d\'exploitation','- '+exp.toLocaleString()+' $','text-red-400','red');
-  html+=statCard('Trésorerie nette',(rev-exp).toLocaleString()+' $','grad-text','brandCyan');
+  html+='<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">';
+  html+=statCard('Revenus acquis','+ '+summary.acquired.toLocaleString()+' $','text-emerald-400','emerald');
+  html+=statCard('Revenus en cours','+ '+summary.inProgress.toLocaleString()+' $','text-brandCyan','brandBlue');
+  html+=statCard('Charges d\'exploitation','- '+summary.expenses.toLocaleString()+' $','text-red-400','red');
+  html+=statCard('Trésorerie nette',summary.net.toLocaleString()+' $','grad-text','brandCyan');
   html+='</div>';
 
-  html+='<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">';
+  html+='<div class="grid grid-cols-1 xl:grid-cols-3 gap-6">';
+  html+='<div class="card p-6 space-y-4"><h3 class="text-xs font-black uppercase tracking-widest text-brandCyan border-b border-white/5 pb-3">Revenus acquis</h3>';
+  html+='<div class="space-y-3 max-h-[350px] overflow-y-auto">';
+  acquiredClients.forEach(function(c){
+    html+='<div class="glass p-4 rounded-2xl flex items-center justify-between group hover:border-brandCyan/20 transition-all">'
+      +'<div><p class="text-xs font-bold text-white">'+esc(c.name)+'</p>'
+      +'<p class="text-[9px] text-gray-400 font-bold uppercase">'+esc(getBillingStatus(c))+' • '+esc(c.pipelineStatus)+'</p></div>'
+      +'<div class="flex items-center gap-3"><span class="text-xs font-black text-emerald-400">'+getClientValue(c).toLocaleString()+' $</span>'
+      +'<button onclick="removeClient(\''+c.id+'\')" class="p-1.5 text-gray-500 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div></div>';
+  });
+  if(acquiredClients.length===0) html+='<p class="text-xs text-gray-500 italic text-center py-8">Aucun revenu acquis.</p>';
+  html+='</div></div>';
+
+  html+='<div class="card p-6 space-y-4"><h3 class="text-xs font-black uppercase tracking-widest text-brandCyan border-b border-white/5 pb-3">Revenus en cours</h3>';
+  html+='<div class="space-y-3 max-h-[350px] overflow-y-auto">';
+  pendingClients.forEach(function(c){
+    html+='<div class="glass p-4 rounded-2xl flex items-center justify-between group hover:border-brandCyan/20 transition-all">'
+      +'<div><p class="text-xs font-bold text-white">'+esc(c.name)+'</p>'
+      +'<p class="text-[9px] text-gray-400 font-bold uppercase">'+esc(getBillingStatus(c))+' • '+esc(c.pipelineStatus)+'</p></div>'
+      +'<div class="flex items-center gap-3"><span class="text-xs font-black text-brandCyan">'+getClientValue(c).toLocaleString()+' $</span>'
+      +'<button onclick="removeClient(\''+c.id+'\')" class="p-1.5 text-gray-500 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div></div>';
+  });
+  if(pendingClients.length===0) html+='<p class="text-xs text-gray-500 italic text-center py-8">Aucun revenu en cours.</p>';
+  html+='</div></div>';
+
   // Expense list
-  html+='<div class="card p-6 space-y-4"><h3 class="text-xs font-black uppercase tracking-widest text-brandCyan border-b border-white/5 pb-3">Transactions</h3>';
+  html+='<div class="card p-6 space-y-4"><h3 class="text-xs font-black uppercase tracking-widest text-brandCyan border-b border-white/5 pb-3">Dépenses & Catégories</h3>';
   html+='<div class="space-y-3 max-h-[350px] overflow-y-auto">';
   fe.forEach(function(e){
     html+='<div class="glass p-4 rounded-2xl flex items-center justify-between group hover:border-brandCyan/20 transition-all">'
@@ -633,13 +817,10 @@ function renderFinances(fc,fe){
       +'<button onclick="removeExpense(\''+e.id+'\')" class="p-1.5 text-gray-500 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div></div>';
   });
   if(fe.length===0) html+='<p class="text-xs text-gray-500 italic text-center py-8">Aucune transaction enregistrée.</p>';
-  html+='</div></div>';
-
-  // Category breakdown
-  html+='<div class="card p-6 space-y-4"><h3 class="text-xs font-black uppercase tracking-widest text-brandCyan border-b border-white/5 pb-3">Répartition par Catégorie</h3>';
+  html+='<h4 class="pt-2 text-[9px] font-black uppercase tracking-widest text-gray-500">Répartition par Catégorie</h4>';
   html+='<div class="space-y-3">';
   for(var cat in categories){
-    var pct = exp>0? Math.round(categories[cat]/exp*100):0;
+    var pct = summary.expenses>0? Math.round(categories[cat]/summary.expenses*100):0;
     html+='<div class="space-y-1"><div class="flex items-center justify-between text-xs"><span class="text-gray-400">'+esc(cat)+'</span><span class="font-bold text-white">'+categories[cat].toLocaleString()+' $ ('+pct+'%)</span></div>'
       +'<div class="w-full h-1.5 bg-white/5 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-brandBlue to-brandCyan rounded-full" style="width:'+pct+'%"></div></div></div>';
   }
@@ -676,12 +857,12 @@ function renderDrive(){
   html+='<div class="grid grid-cols-1 md:grid-cols-2 gap-4">';
   S.files.forEach(function(f){
     var ic = iconMap[f.mimeType] || 'file';
-    html+='<div class="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/5 hover:border-brandCyan/25 hover:bg-white/8 transition-all group">'
-      +'<a href="'+f.url+'" target="_blank" class="flex items-center gap-3 min-w-0 flex-1 hover:text-brandCyan">'
+    html+='<div class="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/5 hover:border-brandCyan/25 hover:bg-white/10 transition-all group cursor-pointer" onclick="window.open(\''+f.url+'\', \'_blank\')">'
+      +'<div class="flex items-center gap-3 min-w-0 flex-1 hover:text-brandCyan">'
       +'<div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-gray-400 shrink-0"><i data-lucide="'+ic+'" class="w-5 h-5"></i></div>'
       +'<div class="min-w-0"><span class="text-xs font-bold text-white group-hover:text-brandCyan transition-colors block truncate">'+esc(f.name)+'</span>'
-      +'<p class="text-[9px] text-gray-500 font-bold uppercase truncate">MAJ : '+esc(f.lastUpdated||'')+'</p></div></a>'
-      +'<button onclick="removeFile(\''+f.id+'\')" class="p-2 text-gray-500 hover:text-red-400 md:opacity-0 group-hover:opacity-100 transition-all shrink-0"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div>';
+      +'<p class="text-[9px] text-gray-500 font-bold uppercase truncate">MAJ : '+esc(f.lastUpdated||'')+'</p></div></div>'
+      +'<button onclick="event.stopPropagation(); removeFile(\''+f.id+'\')" class="p-2 z-10 text-gray-500 hover:text-red-400 md:opacity-0 group-hover:opacity-100 transition-all shrink-0"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div>';
   });
   if(S.files.length===0) html+='<p class="col-span-2 py-8 text-center text-gray-500 italic">Aucun document dans le dossier.</p>';
   html+='</div></div>';
@@ -690,28 +871,82 @@ function renderDrive(){
 
 /* ─── EMAIL ─── */
 function renderEmail(){
-  return '<div class="card p-6 max-w-xl mx-auto space-y-6">'
-    +'<div class="flex items-center justify-between border-b border-white/5 pb-4">'
-    +'<h3 class="text-xs font-black uppercase tracking-widest text-brandCyan">Composer un e-mail</h3>'
-    +'<span class="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-brandBlue/10 text-brandCyan">Gmail Connecté</span>'
-    +'</div>'
-    
-    // --- Assistant IA Rédaction Section ---
-    +'<div class="glass p-5 rounded-2xl border border-brandCyan/15 space-y-3 bg-brandCyan/[0.01]">'
-    +'<div class="flex items-center gap-2 text-brandCyan"><i data-lucide="sparkles" class="w-4 h-4"></i><span class="text-[10px] font-black uppercase tracking-widest">Assistant de Rédaction IA</span></div>'
-    +'<p class="text-[10px] text-gray-400 leading-relaxed">Décrivez l\'e-mail que vous voulez générer (ex : "Relance de Bridgesat pour facture", "Introduction de nos offres Forge", "Rapport de tâches").</p>'
-    +'<div class="flex gap-2">'
-    +'<input id="email-ai-prompt" type="text" placeholder="Sujet ou contexte du mail à générer..." class="input-f flex-1" onkeydown="if(event.key===\'Enter\')generateAIEmail()" />'
-    +'<button onclick="generateAIEmail()" class="px-4 py-2.5 rounded-xl bg-brandBlue hover:bg-brandBlue/80 text-white font-bold text-xs flex items-center gap-1.5 transition-all shrink-0"><i data-lucide="cpu" class="w-3.5 h-3.5"></i>Rédiger</button>'
-    +'</div></div>'
-    
-    // --- Classic Form ---
-    +'<div class="space-y-4">'
-    +'<div><label class="label-f">Destinataire</label><input id="email-to" type="email" class="input-f" placeholder="destinataire@exemple.com" /></div>'
-    +'<div><label class="label-f">Objet</label><input id="email-subject" type="text" class="input-f" placeholder="Sujet de l\'e-mail" /></div>'
-    +'<div><label class="label-f">Message</label><textarea id="email-body" rows="8" class="input-f leading-relaxed" placeholder="Contenu du message rédigé..." style="border-radius:1rem;padding:1rem"></textarea></div>'
-    +'<button onclick="sendEmail()" class="w-full py-4 grad-btn text-xs uppercase tracking-widest rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-brandBlue/10"><i data-lucide="send" class="w-4 h-4"></i>Envoyer avec Gmail</button>'
-    +'</div></div>';
+  var selected = S.selectedEmail;
+  var html = '<div class="grid grid-cols-1 xl:grid-cols-[360px_1fr] gap-6 min-h-[72vh]">';
+
+  html += '<div class="card flex flex-col min-h-[72vh] overflow-hidden">';
+  html += '<div class="p-4 border-b border-white/5 flex items-center justify-between shrink-0 bg-white/5"><div><h3 class="text-xs font-black uppercase tracking-widest text-brandCyan">Boîte de réception</h3><p class="text-[9px] text-gray-500 uppercase font-black mt-1">Connectée au compte Gmail actif</p></div><button onclick="refreshEmails()" class="text-gray-400 hover:text-white transition-colors" title="Actualiser"><i data-lucide="refresh-cw" class="w-4 h-4"></i></button></div>';
+  html += '<div class="flex-1 overflow-y-auto p-3 space-y-2">';
+  if(S.emails && S.emails.length > 0) {
+    S.emails.forEach(function(em){
+      var active = S.selectedEmailId === (em.threadId || em.id);
+      html += '<div class="p-4 bg-black/40 border rounded-2xl cursor-pointer transition-all group '+(active?'border-brandCyan/40 bg-white/5':'border-white/5 hover:bg-white/5 hover:border-brandCyan/25')+'" onclick="selectEmail(\''+(em.threadId || em.id)+'\')">';
+      html += '<div class="flex justify-between items-start gap-2 mb-1.5"><span class="text-[10px] font-bold '+(active?'text-brandCyan':'text-white')+' truncate pr-2">'+esc(em.fromName || em.from || 'Expéditeur')+'</span><span class="text-[8px] font-black uppercase text-gray-500 whitespace-nowrap pt-0.5">'+esc((em.date || '').split(" ")[0])+'</span></div>';
+      html += '<p class="text-xs font-bold '+(active?'text-brandCyan':'text-white')+' truncate transition-colors">'+esc(em.subject)+'</p>';
+      html += '<p class="text-[10px] text-gray-400 line-clamp-2 mt-1.5 leading-relaxed">'+esc(em.snippet || em.bodyPreview || '')+'</p>';
+      html += '<div class="flex items-center justify-between mt-2"><span class="text-[8px] font-black uppercase text-gray-500">'+(em.messageCount || 1)+' messages</span><button onclick="event.stopPropagation(); window.open(\''+em.url+'\', \'_blank\')" class="text-[8px] font-black uppercase text-gray-500 hover:text-brandCyan transition-colors">Ouvrir Gmail</button></div>';
+      html += '</div>';
+    });
+  } else {
+    html += '<div class="flex flex-col items-center justify-center h-40 text-center space-y-2"><i data-lucide="inbox" class="w-8 h-8 text-gray-600"></i><p class="text-xs text-gray-500 italic">Aucun message récent.</p></div>';
+  }
+  html += '</div></div>';
+
+  html += '<div class="card flex flex-col min-h-[72vh] overflow-hidden">';
+  html += '<div class="p-4 border-b border-white/5 flex items-center justify-between shrink-0 bg-white/5">';
+  html += '<div><h3 class="text-xs font-black uppercase tracking-widest text-white">Copilote Gmail</h3><p class="text-[9px] text-gray-500 uppercase font-black mt-1">'+(S.emailMode==='reply' ? 'Réponse au fil sélectionné' : 'Nouveau message')+'</p></div>';
+  html += '<div class="flex items-center gap-2">';
+  html += '<button onclick="setNewEmailMode()" class="px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-wider bg-white/5 text-gray-400 hover:text-white hover:bg-white/10 transition-all">Nouveau</button>';
+  html += '<button onclick="refreshEmails()" class="px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-wider bg-white/5 text-gray-400 hover:text-white hover:bg-white/10 transition-all">Rafraîchir</button>';
+  html += '</div></div>';
+
+  html += '<div class="flex-1 overflow-y-auto p-4 md:p-6 space-y-6">';
+
+  if(selected){
+    html += '<div class="glass p-5 rounded-2xl border border-brandCyan/15 space-y-3 bg-[radial-gradient(ellipse_at_top_right,rgba(0,255,224,0.05),transparent)]">';
+    html += '<div class="flex items-center justify-between gap-4"><div><div class="flex items-center gap-2 text-brandCyan"><i data-lucide="mail-open" class="w-4 h-4"></i><span class="text-[10px] font-black uppercase tracking-widest">Message sélectionné</span></div><p class="text-xs font-bold text-white mt-2">'+esc(selected.subject)+'</p></div><button onclick="window.open(\''+selected.url+'\', \'_blank\')" class="px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-wider bg-brandBlue text-white hover:brightness-110 transition-all">Ouvrir Gmail</button></div>';
+    html += '<div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-[10px] text-gray-400 font-bold">';
+    html += '<div><span class="text-gray-500 uppercase">De</span><br>'+esc(selected.fromName || selected.from || '')+'<br><span class="text-gray-500">'+esc(selected.fromEmail || '')+'</span></div>';
+    html += '<div><span class="text-gray-500 uppercase">Date</span><br>'+esc(selected.date || '')+'</div>';
+    html += '<div><span class="text-gray-500 uppercase">Messages</span><br>'+esc(String(selected.messageCount || 1))+'</div>';
+    html += '</div>';
+    html += '<div class="space-y-3 pt-2">';
+    if(selected.messages && selected.messages.length){
+      selected.messages.forEach(function(msg, idx){
+        html += '<div class="rounded-2xl border border-white/5 bg-black/30 p-4">';
+        html += '<div class="flex items-center justify-between gap-3 mb-3"><p class="text-[10px] font-black uppercase tracking-widest '+(idx === selected.messages.length - 1 ? 'text-brandCyan' : 'text-gray-500')+'">'+esc(msg.fromName || msg.from || 'Expéditeur')+'</p><span class="text-[9px] font-black uppercase text-gray-500">'+esc(msg.date || '')+'</span></div>';
+        html += '<pre class="whitespace-pre-wrap text-[11px] leading-relaxed text-gray-300 font-sans">'+esc(msg.body || msg.snippet || '')+'</pre>';
+        html += '</div>';
+      });
+    } else {
+      html += '<div class="rounded-2xl border border-white/5 bg-black/30 p-4"><pre class="whitespace-pre-wrap text-[11px] leading-relaxed text-gray-300 font-sans">'+esc(selected.body || selected.snippet || 'Aucun contenu disponible.')+'</pre></div>';
+    }
+    html += '</div></div>';
+  } else {
+    html += '<div class="flex flex-col items-center justify-center py-12 text-center space-y-2 rounded-2xl border border-dashed border-white/10 bg-white/5"><i data-lucide="sparkles" class="w-8 h-8 text-gray-600"></i><p class="text-xs text-gray-500 italic">Sélectionnez un message pour afficher le contenu.</p></div>';
+  }
+
+  html += '<div class="grid grid-cols-1 xl:grid-cols-2 gap-6">';
+  html += '<div class="glass p-5 rounded-2xl border border-brandCyan/15 space-y-3">';
+  html += '<div class="flex items-center gap-2 text-brandCyan"><i data-lucide="sparkles" class="w-4 h-4"></i><span class="text-[10px] font-black uppercase tracking-widest">Copilote IA</span></div>';
+  html += '<input id="email-ai-prompt" type="text" placeholder="Ex: répondre en restant cordial et précis" class="input-f bg-black/50" onkeydown="if(event.key===\'Enter\')generateAIEmail()" />';
+  html += '<button onclick="generateAIEmail()" class="px-4 py-2.5 rounded-xl bg-brandCyan text-black font-black text-[10px] uppercase tracking-wider hover:brightness-110 flex items-center gap-1.5 transition-all shrink-0"><i data-lucide="cpu" class="w-3.5 h-3.5"></i>Proposer une réponse</button>';
+  html += '</div>';
+
+  html += '<div class="glass p-5 rounded-2xl border border-white/10 space-y-4">';
+  html += '<div class="flex items-center justify-between gap-3"><div class="flex items-center gap-2 text-white"><i data-lucide="edit-3" class="w-4 h-4"></i><span class="text-[10px] font-black uppercase tracking-widest">'+(S.emailMode==='reply' ? 'Brouillon de réponse' : 'Nouveau message')+'</span></div><span class="text-[9px] font-black uppercase text-gray-500">'+(S.selectedEmailId && S.emailMode==='reply' ? 'Réponse Gmail' : 'Email manuel')+'</span></div>';
+  html += '<div><label class="label-f">Destinataire</label><input id="email-to" type="email" class="input-f bg-black/40" placeholder="destinataire@exemple.com" value="'+esc(S.emailDraft.to || '')+'" oninput="updateEmailDraft(\'to\', this.value)" /></div>';
+  html += '<div><label class="label-f">Objet</label><input id="email-subject" type="text" class="input-f bg-black/40" placeholder="Sujet de l\'e-mail" value="'+esc(S.emailDraft.subject || '')+'" oninput="updateEmailDraft(\'subject\', this.value)" /></div>';
+  html += '<div><label class="label-f">Message</label><textarea id="email-body" rows="10" class="input-f bg-black/40 leading-relaxed min-h-[220px] resize-y" placeholder="Contenu du message..." style="border-radius:1rem;padding:1rem" oninput="updateEmailDraft(\'body\', this.value)">'+esc(S.emailDraft.body || '')+'</textarea></div>';
+  html += '<div class="flex gap-3">';
+  html += '<button onclick="generateAIEmail()" class="flex-1 py-4 bg-white/5 border border-white/5 hover:border-brandCyan text-gray-300 hover:text-brandCyan text-xs uppercase tracking-widest rounded-xl transition-all">Rédiger avec IA</button>';
+  html += '<button onclick="sendEmail()" class="flex-[1.2] py-4 grad-btn text-xs uppercase tracking-widest rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-brandBlue/10 hover:shadow-brandBlue/20 transition-all"><i data-lucide="send" class="w-4 h-4"></i>'+(S.emailMode==='reply' && S.selectedEmailId ? 'Répondre au fil' : 'Envoyer l\'e-mail')+'</button>';
+  html += '</div>';
+  html += '</div>';
+  html += '</div>';
+
+  html += '</div></div>';
+  return html;
 }
 
 /* ─── SETTINGS ─── */
@@ -725,6 +960,10 @@ function renderSettings(){
   html+='<div class="card p-6 space-y-4">';
   html+='<h3 class="text-xs font-black uppercase tracking-widest text-brandCyan border-b border-white/5 pb-3">Google Drive</h3>';
   html+='<div><label class="label-f">ID du dossier Drive partagé</label><input id="set-drive-id" type="text" value="'+esc(S.settings.DRIVE_FOLDER_ID||'root')+'" class="input-f" /></div>';
+  html+='<div class="flex flex-wrap gap-2">';
+  html+='<button onclick="openWorkspaceLink(\'drive\')" class="px-3 py-2 rounded-xl bg-white/5 border border-white/5 text-xs font-bold hover:bg-white/10 transition-colors">Ouvrir mon Drive</button>';
+  html+='<button onclick="openWorkspaceLink(\'database\')" class="px-3 py-2 rounded-xl bg-brandBlue/20 border border-brandBlue/30 text-xs font-bold text-brandCyan hover:bg-brandBlue/30 transition-colors">Voir la base de données</button>';
+  html+='</div>';
   html+='<div class="flex items-center gap-4 border border-dashed border-white/10 rounded-2xl p-4">';
   html+='<input id="settings-uploader" type="file" class="hidden" onchange="handleUpload(event)" />';
   html+='<button onclick="document.getElementById(\'settings-uploader\').click()" class="px-4 py-2.5 bg-white/5 border border-white/5 rounded-xl text-xs font-bold hover:bg-white/10 transition-colors flex items-center gap-2"><i data-lucide="upload" class="w-4 h-4"></i> Injecter un document</button>';
@@ -818,6 +1057,14 @@ function renderModal(){
       +'<div><label class="label-f">Étape Pipeline</label><select id="m-client-stage" class="input-f"><option value="Audit">Audit</option><option value="Sprint">Sprint</option><option value="Implémentation">Implémentation</option><option value="Retainer">Retainer</option></select></div>'
       +'<div><label class="label-f">Budget ($)</label><input id="m-client-budget" type="number" class="input-f" placeholder="0" /></div></div>'
       +'<div><label class="label-f">Contact (email)</label><input id="m-client-contact" type="email" class="input-f" placeholder="contact@entreprise.com" /></div>'
+      +'<div class="grid grid-cols-2 gap-4">'
+      +'<div><label class="label-f">Montant facturé ($)</label><input id="m-client-invoice" type="number" class="input-f" placeholder="0" /></div>'
+      +'<div><label class="label-f">Statut paiement</label><select id="m-client-billing" class="input-f"><option value="À facturer">À facturer</option><option value="Facturé" selected>Facturé</option><option value="En cours">En cours</option><option value="Payé">Payé</option></select></div></div>'
+      +'<div class="grid grid-cols-2 gap-4">'
+      +'<div><label class="label-f">Montant payé ($)</label><input id="m-client-paid" type="number" class="input-f" placeholder="0" /></div>'
+      +'<div><label class="label-f">Date facture</label><input id="m-client-invoice-date" type="date" class="input-f" value="'+today+'" /></div></div>'
+      +'<div><label class="label-f">Date d\'échéance</label><input id="m-client-due-date" type="date" class="input-f" /></div>'
+      +'<div><label class="label-f">Notes</label><textarea id="m-client-notes" rows="3" class="input-f" style="border-radius:1rem;padding:.75rem 1rem"></textarea></div>'
       +'<button onclick="submitClient()" class="w-full py-3.5 grad-btn text-xs uppercase tracking-widest rounded-xl">Ajouter le Client</button></div>';
   }
   else if(S.modalType==='expense'){
@@ -846,6 +1093,7 @@ function renderModal(){
       +'<div><label class="label-f">Adresse Gmail</label><input id="m-user-email" type="email" class="input-f" placeholder="nom@gmail.com" /></div>'
       +'<div><label class="label-f">Nom complet</label><input id="m-user-name" class="input-f" /></div>'
       +'<div><label class="label-f">Rôle</label><select id="m-user-role" class="input-f"><option value="CEO">CEO</option><option value="COO">COO</option><option value="Opérations">Opérations</option><option value="Design">Design</option><option value="Développeur">Développeur</option><option value="Collaborator" selected>Collaborateur</option></select></div>'
+      +'<div><label class="label-f">Dossier Drive (optionnel)</label><input id="m-user-drive" class="input-f" placeholder="ID du dossier Drive" /></div>'
       +'<button onclick="submitUser()" class="w-full py-3.5 grad-btn text-xs uppercase tracking-widest rounded-xl">Ajouter l\'Utilisateur</button></div>';
   }
 }
@@ -872,7 +1120,19 @@ function submitClient(){
   var name = val('m-client-name');
   if(!name){toast('Entrez le nom du client.','error');return}
   spin(true);
-  var client = {entity:S.entity, name:name, pipelineStatus:val('m-client-stage'), budget:val('m-client-budget')||'0', contact:val('m-client-contact')||''};
+  var client = {
+    entity:S.entity,
+    name:name,
+    pipelineStatus:val('m-client-stage'),
+    budget:val('m-client-budget')||'0',
+    contact:val('m-client-contact')||'',
+    invoiceAmount:val('m-client-invoice')||val('m-client-budget')||'0',
+    billingStatus:val('m-client-billing')||'Facturé',
+    paidAmount:val('m-client-paid')||'0',
+    invoiceDate:val('m-client-invoice-date')||'',
+    dueDate:val('m-client-due-date')||'',
+    notes:val('m-client-notes')||''
+  };
   run('saveClient', client, function(id){
     client.id = id;
     S.clients.push(client);
@@ -918,7 +1178,7 @@ function submitUser(){
   var name = val('m-user-name');
   if(!email||!name){toast('Remplissez l\'email et le nom.','error');return}
   spin(true);
-  var user = {email:email, name:name, role:val('m-user-role'), status:'Active'};
+  var user = {email:email, name:name, role:val('m-user-role'), status:'Active', driveFolderId:val('m-user-drive')||''};
   run('saveUser', user, function(){
     S.users.push(user);
     closeModal(); spin(false); render();
@@ -991,7 +1251,7 @@ function createDoc(type){
   var name = val('new-file-name');
   if(!name){toast('Entrez un nom pour le document.','error');return}
   spin(true);
-  run('createNewGoogleFile', [S.settings.DRIVE_FOLDER_ID||'root', name, type], function(file){
+  run('createNewGoogleFile', [S.user && S.user.driveFolderId ? S.user.driveFolderId : (S.settings.DRIVE_FOLDER_ID||'root'), name, type], function(file){
     S.files.push(file);
     spin(false); render();
     toast('Document "'+name+'" créé !','success');
@@ -1006,7 +1266,7 @@ function handleUpload(e){
   var reader = new FileReader();
   reader.onload = function(evt){
     spin(true);
-    run('uploadFileToDrive', [S.settings.DRIVE_FOLDER_ID||'root', evt.target.result, file.name, file.type], function(f){
+    run('uploadFileToDrive', [S.user && S.user.driveFolderId ? S.user.driveFolderId : (S.settings.DRIVE_FOLDER_ID||'root'), evt.target.result, file.name, file.type], function(f){
       S.files.push(f);
       if(statusEl) statusEl.innerText = 'Fichier envoyé ✓';
       spin(false); render();
@@ -1047,16 +1307,95 @@ function saveModuleVisibility(){
 /* ═══════════════════════════════════════════
    EMAIL
    ═══════════════════════════════════════════ */
+function updateEmailDraft(field, value){
+  S.emailDraft[field] = value;
+  persistUiState();
+}
+
+function setNewEmailMode(){
+  S.emailMode = 'new';
+  S.selectedEmailId = null;
+  S.selectedEmail = null;
+  S.emailDraft = {to:'',subject:'',body:''};
+  persistUiState();
+  render();
+}
+
+function refreshEmails(){
+  spin(true);
+  run('getRecentGmailEmails', null, function(emails){
+    S.emails = emails || [];
+    if(!S.selectedEmailId && S.emails.length > 0) {
+      S.selectedEmailId = S.emails[0].threadId || S.emails[0].id;
+      S.selectedEmail = null;
+    }
+    if(S.selectedEmailId && !S.emails.some(function(em){ return (em.threadId || em.id) === S.selectedEmailId; })) {
+      S.selectedEmailId = S.emails.length ? (S.emails[0].threadId || S.emails[0].id) : null;
+      S.selectedEmail = null;
+    }
+    spin(false);
+    render();
+    if(S.selectedEmailId && !S.selectedEmail){
+      selectEmail(S.selectedEmailId, true);
+    }
+  });
+}
+
+function selectEmail(threadId, silent){
+  if(!threadId) return;
+  S.selectedEmailId = threadId;
+  S.emailMode = 'reply';
+  persistUiState();
+  if(!silent) spin(true);
+  run('getGmailThread', threadId, function(thread){
+    S.selectedEmail = thread;
+    if(thread){
+      S.emailDraft = {
+        to: thread.fromEmail || extractEmailAddress(thread.from || ''),
+        subject: thread.subject && thread.subject.toLowerCase().indexOf('re:')===0 ? thread.subject : 'Re: ' + (thread.subject || ''),
+        body: ''
+      };
+    }
+    spin(false);
+    render();
+    persistUiState();
+  });
+}
+
+function extractEmailAddress(value){
+  var raw = String(value || '');
+  var match = raw.match(/<([^>]+)>/);
+  return match && match[1] ? match[1].trim() : raw.trim();
+}
+
 function sendEmail(){
-  var to=val('email-to'),subj=val('email-subject'),body=val('email-body');
+  var to = val('email-to');
+  var subj = val('email-subject');
+  var body = val('email-body');
+  if(S.emailMode === 'reply' && S.selectedEmailId){
+    if(!body){toast('Rédigez une réponse avant l’envoi.','error');return}
+    spin(true);
+    run('replyToGmailThread', [S.selectedEmailId, body], function(){
+      spin(false);
+      toast('Réponse envoyée dans Gmail !','success');
+      if(S.selectedEmail){
+        S.emailDraft.body = '';
+      } else {
+        S.emailDraft = {to:'',subject:'',body:''};
+      }
+      persistUiState();
+      render();
+    });
+    return;
+  }
   if(!to||!subj||!body){toast('Remplissez tous les champs.','error');return}
   spin(true);
   run('sendGmailEmail',[to,subj,body],function(){
     spin(false);
     toast('Email envoyé via Gmail !','success');
-    document.getElementById('email-to').value='';
-    document.getElementById('email-subject').value='';
-    document.getElementById('email-body').value='';
+    S.emailDraft = {to:'',subject:'',body:''};
+    persistUiState();
+    render();
   });
 }
 
@@ -1065,13 +1404,36 @@ function generateAIEmail(){
   if(!prompt){toast('Décrivez d\'abord ce que vous souhaitez générer.','error');return}
   spin(true);
   setTimeout(function(){
-    var res = composeAIEmailDraft(prompt);
-    document.getElementById('email-subject').value = res.subject;
-    document.getElementById('email-body').value = res.body;
-    if(res.to) document.getElementById('email-to').value = res.to;
+    var res;
+    if(S.emailMode === 'reply' && S.selectedEmail){
+      res = composeAIReplyDraft(S.selectedEmail, prompt);
+    } else {
+      res = composeAIEmailDraft(prompt);
+    }
+    S.emailDraft.to = res.to || S.emailDraft.to || '';
+    S.emailDraft.subject = res.subject || S.emailDraft.subject || '';
+    S.emailDraft.body = res.body || '';
+    persistUiState();
+    render();
     spin(false);
     toast('E-mail rédigé par l\'IA ! Révisez-le avant envoi.','success');
   }, 700);
+}
+
+function composeAIReplyDraft(email, prompt){
+  var subject = email && email.subject ? (email.subject.toLowerCase().indexOf('re:')===0 ? email.subject : 'Re: ' + email.subject) : 'Re: Message';
+  var fromName = email && (email.fromName || email.from || 'l’expéditeur');
+  var fromEmail = email && (email.fromEmail || extractEmailAddress(email.from || ''));
+  var body = 'Bonjour ' + fromName + ',\n\n'
+    + 'Merci pour votre message. ' + (prompt ? 'Conformément à votre demande, voici une réponse rédigée avec l’assistance de l’IA.' : 'Je prends bien note de votre retour.') + '\n\n'
+    + 'Je reviens vers vous rapidement avec les éléments nécessaires.\n\n'
+    + 'Bien cordialement,\n\n'
+    + (S.user && S.user.name ? S.user.name : 'Opays HQ');
+  return {
+    to: fromEmail,
+    subject: subject,
+    body: body
+  };
 }
 
 function composeAIEmailDraft(q){
@@ -1092,7 +1454,7 @@ function composeAIEmailDraft(q){
     if(!targetClient && fc.length > 0) targetClient = fc[0];
     
     var clientName = targetClient ? targetClient.name : "[Nom du Client]";
-    var budget = targetClient ? Number(targetClient.budget) : 2500;
+    var budget = targetClient ? getClientValue(targetClient) : 2500;
     to = targetClient ? targetClient.contact : "contact@client.com";
     
     subject = "Rappel amical : Suivi de facturation — " + (S.entity==='TECH'?'Opays Tech':'Opays Commons');
@@ -1196,8 +1558,7 @@ function generateGeminiResponse(q){
   var ft = S.tasks.filter(function(t){return t.entity===S.entity});
   var fc = S.clients.filter(function(c){return c.entity===S.entity});
   var fe = S.expenses.filter(function(e){return e.entity===S.entity});
-  var rev = fc.reduce(function(a,c){return a+Number(c.budget)},0);
-  var exp = fe.reduce(function(a,e){return a+Number(e.amount)},0);
+  var finance = getFinanceSummary(fc, fe);
 
   if(ql.includes('tâche')||ql.includes('tache')||ql.includes('task')){
     if(ft.length===0) return 'Aucune tâche enregistrée pour <b>'+S.entity+'</b>. Créez-en une avec le bouton + Créer.';
@@ -1210,7 +1571,7 @@ function generateGeminiResponse(q){
       +fc.map(function(c){return '• <b>'+esc(c.name)+'</b> — '+esc(c.pipelineStatus)+' ('+Number(c.budget).toLocaleString()+' $)'}).join('<br>');
   }
   if(ql.includes('finance')||ql.includes('budget')||ql.includes('dépense')||ql.includes('depense')||ql.includes('argent')){
-    return 'Synthèse financière <b>'+S.entity+'</b> :<br>• Revenus : <b>'+rev.toLocaleString()+' $</b><br>• Dépenses : <b>'+exp.toLocaleString()+' $</b><br>• Solde net : <b>'+(rev-exp).toLocaleString()+' $</b>';
+    return 'Synthèse financière <b>'+S.entity+'</b> :<br>• Revenus acquis : <b>'+finance.acquired.toLocaleString()+' $</b><br>• Revenus en cours : <b>'+finance.inProgress.toLocaleString()+' $</b><br>• Dépenses : <b>'+finance.expenses.toLocaleString()+' $</b><br>• Solde net : <b>'+finance.net.toLocaleString()+' $</b>';
   }
   if(ql.includes('équipe')||ql.includes('equipe')||ql.includes('user')||ql.includes('utilisateur')){
     return '<b>'+S.users.length+' membres</b> dans l\'équipe :<br>'
@@ -1220,7 +1581,7 @@ function generateGeminiResponse(q){
     return '<b>'+S.calEvents.length+' événements</b> ce mois-ci dans votre Google Agenda. Consultez l\'onglet Calendrier pour les détails.';
   }
   if(ql.includes('résumé')||ql.includes('resume')||ql.includes('synthèse')||ql.includes('synthese')||ql.includes('dashboard')){
-    return 'Résumé <b>'+S.entity+'</b> :<br>• '+ft.length+' tâches ('+ft.filter(function(t){return t.status!=='Validé'}).length+' en cours)<br>• '+fc.length+' clients ('+rev.toLocaleString()+' $ en pipeline)<br>• '+fe.length+' dépenses ('+exp.toLocaleString()+' $)<br>• Solde net : <b>'+(rev-exp).toLocaleString()+' $</b>';
+    return 'Résumé <b>'+S.entity+'</b> :<br>• '+ft.length+' tâches ('+ft.filter(function(t){return t.status!=='Validé'}).length+' en cours)<br>• '+fc.length+' clients ('+finance.acquired.toLocaleString()+' $ acquis, '+finance.inProgress.toLocaleString()+' $ en cours)<br>• '+fe.length+' dépenses ('+finance.expenses.toLocaleString()+' $)<br>• Solde net : <b>'+finance.net.toLocaleString()+' $</b>';
   }
   return 'Je suis l\'assistant Opays HQ pour l\'entité <b>'+S.entity+'</b>. Posez-moi des questions sur : <b>tâches, clients, finances, équipe, agenda</b> ou demandez un <b>résumé</b>.';
 }
@@ -1228,6 +1589,24 @@ function generateGeminiResponse(q){
 /* ═══════════════════════════════════════════
    UTILITY FUNCTIONS
    ═══════════════════════════════════════════ */
+function normalizeBillingStatus(value){
+  var raw = String(value || '').trim().toLowerCase();
+  if(!raw) return 'À facturer';
+  if(['payé','paye','réglé','regle','encaissé','encaisse','paid','settled'].indexOf(raw) !== -1) return 'Payé';
+  if(['facturé','facture','facturé(e)','en attente','pending','partiel','partielle','partial'].indexOf(raw) !== -1) return 'Facturé';
+  if(['en cours','cours'].indexOf(raw) !== -1) return 'En cours';
+  return value;
+}
+
+function openWorkspaceLink(type){
+  var url = '';
+  if(type === 'database') url = S.links.databaseUrl || '';
+  else if(type === 'drive') url = S.links.driveUrl || 'https://drive.google.com/drive/my-drive';
+  else if(type === 'gmail') url = S.links.gmailUrl || 'https://mail.google.com/';
+  if(!url){ toast('Lien indisponible pour le moment.', 'error'); return; }
+  window.open(url, '_blank');
+}
+
 function val(id){var el=document.getElementById(id);return el?el.value.trim():''}
 function esc(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 function pad(n){return n<10?'0'+n:''+n}

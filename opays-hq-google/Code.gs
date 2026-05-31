@@ -25,6 +25,55 @@ function getDatabase() {
   }
 }
 
+/**
+ * Retourne l'URL de la base Google Sheet.
+ */
+function getDatabaseUrl() {
+  try {
+    return getDatabase().getUrl();
+  } catch (e) {
+    Logger.log("Erreur getDatabaseUrl: " + e.toString());
+    return "";
+  }
+}
+
+/**
+ * Retourne des liens utiles du workspace.
+ */
+function getWorkspaceLinks() {
+  return {
+    databaseUrl: getDatabaseUrl(),
+    driveUrl: "https://drive.google.com/drive/my-drive",
+    gmailUrl: "https://mail.google.com/"
+  };
+}
+
+function ensureHeaders(sheet, headers) {
+  sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
+}
+
+function parseEmailAddress(value) {
+  const raw = String(value || "");
+  const match = raw.match(/<([^>]+)>/);
+  return (match && match[1]) ? match[1].trim() : raw.trim();
+}
+
+function parseDisplayName(value) {
+  const raw = String(value || "").trim();
+  if (!raw) return "";
+  const match = raw.match(/^(.+?)\s*<[^>]+>$/);
+  return (match && match[1]) ? match[1].trim() : raw;
+}
+
+function normalizeBillingStatus(value) {
+  const raw = String(value || "").trim().toLowerCase();
+  if (!raw) return "À facturer";
+  if (["payé", "paye", "réglé", "regle", "encaissé", "encaisse", "paid", "settled"].indexOf(raw) !== -1) return "Payé";
+  if (["facturé", "facture", "en attente", "pending", "partiel", "partielle", "partial"].indexOf(raw) !== -1) return "Facturé";
+  if (["en cours", "cours"].indexOf(raw) !== -1) return "En cours";
+  return value;
+}
+
 /* ─────────────────── INITIALISATION ─────────────────── */
 
 /**
@@ -51,7 +100,7 @@ function initDatabase() {
   
   const schema = {
     'Users': [
-      ['Email', 'Name', 'Role', 'Status'],
+      ['Email', 'Name', 'Role', 'Status', 'DriveFolderId'],
       ['lamsa.fenelon@gmail.com', 'Fénelon Lamsasiri', 'CEO', 'Active'],
       ['princebagh@gmail.com', 'Prince Bagheni', 'COO', 'Active'],
       ['patriciazamwana@gmail.com', 'Patricia Zamwana', 'Opérations', 'Active'],
@@ -61,7 +110,7 @@ function initDatabase() {
       ['Id', 'Entity', 'Title', 'Assignee', 'DueDate', 'Priority', 'Status']
     ],
     'Clients': [
-      ['Id', 'Entity', 'Name', 'PipelineStatus', 'Budget', 'Contact']
+      ['Id', 'Entity', 'Name', 'PipelineStatus', 'Budget', 'Contact', 'InvoiceAmount', 'BillingStatus', 'PaidAmount', 'InvoiceDate', 'DueDate', 'Notes']
     ],
     'Expenses': [
       ['Id', 'Entity', 'Title', 'Amount', 'Date', 'Category']
@@ -82,6 +131,8 @@ function initDatabase() {
            .setValues(schema[sheetName]);
       sheet.setFrozenRows(1);
       sheet.getRange(1, 1, 1, schema[sheetName][0].length).setFontWeight("bold");
+    } else {
+      ensureHeaders(sheet, schema[sheetName][0]);
     }
   }
   return "Database Ready";
@@ -95,23 +146,26 @@ function initDatabase() {
 function getUserSession() {
   try {
     initDatabase();
-    const email = Session.getActiveUser().getEmail() || "lamsa.fenelon@gmail.com";
+    const email = Session.getActiveUser().getEmail() || "";
     const ss = getDatabase();
     const sheet = ss.getSheetByName('Users');
     const data = sheet.getDataRange().getValues();
+    const fallbackEmail = data[1] && data[1][0] ? String(data[1][0]) : "lamsa.fenelon@gmail.com";
     
     let user = {
-      email: email,
-      name: email.split('@')[0],
+      email: email || fallbackEmail,
+      name: (email || fallbackEmail).split('@')[0],
       role: 'Collaborator',
-      status: 'Active'
+      status: 'Active',
+      driveFolderId: ''
     };
     
     for (let i = 1; i < data.length; i++) {
-      if (data[i][0].toLowerCase() === email.toLowerCase()) {
+      if (String(data[i][0]).toLowerCase() === String(user.email).toLowerCase()) {
         user.name = data[i][1];
         user.role = data[i][2];
         user.status = data[i][3];
+        user.driveFolderId = data[i][4] || '';
         break;
       }
     }
@@ -136,7 +190,8 @@ function getUsers() {
         email: data[i][0],
         name: data[i][1],
         role: data[i][2],
-        status: data[i][3]
+        status: data[i][3],
+        driveFolderId: data[i][4] || ''
       });
     }
     return users;
@@ -157,11 +212,16 @@ function saveUser(user) {
     
     for (let i = 1; i < data.length; i++) {
       if (data[i][0].toLowerCase() === user.email.toLowerCase()) {
-        sheet.getRange(i + 1, 2, 1, 3).setValues([[user.name, user.role, user.status]]);
+        sheet.getRange(i + 1, 2, 1, 4).setValues([[
+          user.name,
+          user.role,
+          user.status,
+          user.driveFolderId || data[i][4] || ''
+        ]]);
         return user.email;
       }
     }
-    sheet.appendRow([user.email, user.name, user.role, user.status]);
+    sheet.appendRow([user.email, user.name, user.role, user.status, user.driveFolderId || '']);
     return user.email;
   } catch (err) {
     Logger.log("Erreur saveUser: " + err.toString());
@@ -465,7 +525,13 @@ function getClients(entity) {
           name: data[i][2],
           pipelineStatus: data[i][3],
           budget: data[i][4],
-          contact: data[i][5]
+          contact: data[i][5],
+          invoiceAmount: data[i][6] || data[i][4] || 0,
+          billingStatus: data[i][7] || 'À facturer',
+          paidAmount: data[i][8] || 0,
+          invoiceDate: data[i][9] || '',
+          dueDate: data[i][10] || '',
+          notes: data[i][11] || ''
         });
       }
     }
@@ -488,15 +554,40 @@ function saveClient(client) {
     if (client.id) {
       for (let i = 1; i < data.length; i++) {
         if (data[i][0] === client.id) {
-          sheet.getRange(i + 1, 2, 1, 5).setValues([
-            [client.entity, client.name, client.pipelineStatus, client.budget, client.contact]
+          sheet.getRange(i + 1, 2, 1, 11).setValues([
+            [
+              client.entity,
+              client.name,
+              client.pipelineStatus,
+              client.budget,
+              client.contact,
+              client.invoiceAmount || client.budget || 0,
+              client.billingStatus || 'À facturer',
+              client.paidAmount || 0,
+              client.invoiceDate || '',
+              client.dueDate || '',
+              client.notes || ''
+            ]
           ]);
           return client.id;
         }
       }
     }
     const newId = "C-" + (data.length);
-    sheet.appendRow([newId, client.entity, client.name, client.pipelineStatus, client.budget, client.contact]);
+    sheet.appendRow([
+      newId,
+      client.entity,
+      client.name,
+      client.pipelineStatus,
+      client.budget,
+      client.contact,
+      client.invoiceAmount || client.budget || 0,
+      client.billingStatus || 'À facturer',
+      client.paidAmount || 0,
+      client.invoiceDate || '',
+      client.dueDate || '',
+      client.notes || ''
+    ]);
     return newId;
   } catch (err) {
     Logger.log("Erreur saveClient: " + err.toString());
@@ -726,5 +817,104 @@ function sendGmailEmail(to, subject, body) {
   } catch (err) {
     Logger.log("Erreur sendGmailEmail: " + err.toString());
     throw new Error("Impossible d'envoyer l'email : " + err.message);
+  }
+}
+
+/**
+ * Récupère les derniers e-mails de la boîte de réception de l'utilisateur.
+ */
+function getRecentGmailEmails() {
+  try {
+    const threads = GmailApp.getInboxThreads(0, 15);
+    let emails = [];
+    
+    for (let i = 0; i < threads.length; i++) {
+      let t = threads[i];
+      let firstMsg = t.getMessages()[0];
+      if (firstMsg) {
+        let dateStr = '';
+        try {
+          dateStr = Utilities.formatDate(firstMsg.getDate(), Session.getScriptTimeZone(), "yyyy-MM-dd HH:mm");
+        } catch(e) {
+          dateStr = firstMsg.getDate().toLocaleDateString();
+        }
+        
+        emails.push({
+          id: t.getId(),
+          threadId: t.getId(),
+          subject: t.getFirstMessageSubject() || "(Sans objet)",
+          from: firstMsg.getFrom(),
+          fromEmail: parseEmailAddress(firstMsg.getFrom()),
+          fromName: parseDisplayName(firstMsg.getFrom()),
+          snippet: t.getMessages()[t.getMessageCount()-1].getSnippet() || "",
+          bodyPreview: firstMsg.getPlainBody ? firstMsg.getPlainBody().slice(0, 1200) : "",
+          date: dateStr,
+          messageCount: t.getMessageCount(),
+          url: "https://mail.google.com/mail/u/0/#inbox/" + t.getId()
+        });
+      }
+    }
+    return emails;
+  } catch (err) {
+    Logger.log("Erreur getRecentGmailEmails: " + err.toString());
+    return [];
+  }
+}
+
+/**
+ * Récupère le contenu complet d'un fil Gmail.
+ */
+function getGmailThread(threadId) {
+  try {
+    const thread = GmailApp.getThreadById(threadId);
+    if (!thread) return null;
+    const messages = thread.getMessages().map(function(msg) {
+      return {
+        id: msg.getId(),
+        from: msg.getFrom(),
+        fromEmail: parseEmailAddress(msg.getFrom()),
+        fromName: parseDisplayName(msg.getFrom()),
+        to: msg.getTo(),
+        cc: msg.getCc ? msg.getCc() : '',
+        subject: msg.getSubject(),
+        date: Utilities.formatDate(msg.getDate(), Session.getScriptTimeZone(), "yyyy-MM-dd HH:mm"),
+        body: msg.getPlainBody ? msg.getPlainBody() : msg.getBody ? msg.getBody() : '',
+        snippet: msg.getSnippet ? msg.getSnippet() : ''
+      };
+    });
+    const lastMsg = messages.length ? messages[messages.length - 1] : null;
+    return {
+      id: thread.getId(),
+      subject: thread.getFirstMessageSubject() || (lastMsg && lastMsg.subject) || '(Sans objet)',
+      messageCount: messages.length,
+      messages: messages,
+      from: lastMsg ? lastMsg.from : '',
+      fromEmail: lastMsg ? lastMsg.fromEmail : '',
+      fromName: lastMsg ? lastMsg.fromName : '',
+      date: lastMsg ? lastMsg.date : '',
+      body: lastMsg ? lastMsg.body : '',
+      snippet: lastMsg ? lastMsg.snippet : '',
+      url: "https://mail.google.com/mail/u/0/#inbox/" + thread.getId()
+    };
+  } catch (err) {
+    Logger.log("Erreur getGmailThread: " + err.toString());
+    return null;
+  }
+}
+
+/**
+ * Répond à un fil Gmail depuis l'application.
+ */
+function replyToGmailThread(threadId, body) {
+  try {
+    const thread = GmailApp.getThreadById(threadId);
+    if (!thread) throw new Error("Fil Gmail introuvable");
+    thread.reply(body, {
+      name: "Opays HQ — Platform"
+    });
+    return true;
+  } catch (err) {
+    Logger.log("Erreur replyToGmailThread: " + err.toString());
+    throw new Error("Impossible de répondre au fil Gmail : " + err.message);
   }
 }
