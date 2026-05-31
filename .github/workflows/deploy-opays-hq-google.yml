@@ -1,0 +1,55 @@
+name: Deploy Opays HQ Google Apps Script
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "opays-hq-google/**"
+      - ".github/workflows/deploy-opays-hq-google.yml"
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    defaults:
+      run:
+        working-directory: opays-hq-google
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install clasp
+        run: npm install -g @google/clasp@^3
+
+      - name: Restore clasp credentials
+        env:
+          CLASP_RC_JSON: ${{ secrets.CLASP_RC_JSON }}
+        run: |
+          if [ -z "$CLASP_RC_JSON" ]; then
+            echo "Missing secret: CLASP_RC_JSON"
+            exit 1
+          fi
+          printf '%s' "$CLASP_RC_JSON" > "$HOME/.clasprc.json"
+
+      - name: Push source to Apps Script
+        run: clasp push --force
+
+      - name: Update existing web app deployment
+        env:
+          CLASP_DEPLOYMENT_ID: ${{ secrets.CLASP_DEPLOYMENT_ID }}
+        run: |
+          if [ -z "$CLASP_DEPLOYMENT_ID" ]; then
+            echo "Missing secret: CLASP_DEPLOYMENT_ID"
+            exit 1
+          fi
+          clasp update-deployment "$CLASP_DEPLOYMENT_ID" -d "Auto deploy from GitHub Actions"
