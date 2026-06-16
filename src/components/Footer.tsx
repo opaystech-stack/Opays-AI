@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import logoIcon from "@/assets/opays-icon.png";
+import logoIcon from "/logo-opays.svg";
 import { SERVICE_CATALOG } from "@/content/services/catalog";
 
 type NavTo = Parameters<typeof Link>[0]["to"];
@@ -34,7 +34,6 @@ export function Footer() {
                 loading="lazy"
                 decoding="async"
                 className="h-7 w-7"
-                style={{ mixBlendMode: "screen" }}
               />
               <span className="font-display text-sm font-semibold">
                 OPAYS <span className="text-gradient">TECH</span>
@@ -88,17 +87,26 @@ export function Footer() {
             </h3>
             <ul className="mt-4 space-y-2 text-sm">
               <li>
-                <Link to="/mentions-legales" className="text-muted-foreground transition-colors hover:text-foreground">
+                <Link
+                  to="/mentions-legales"
+                  className="text-muted-foreground transition-colors hover:text-foreground"
+                >
                   Mentions légales
                 </Link>
               </li>
               <li>
-                <Link to="/confidentialite" className="text-muted-foreground transition-colors hover:text-foreground">
+                <Link
+                  to="/confidentialite"
+                  className="text-muted-foreground transition-colors hover:text-foreground"
+                >
                   Politique de confidentialité
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="text-muted-foreground transition-colors hover:text-foreground">
+                <Link
+                  to="/contact"
+                  className="text-muted-foreground transition-colors hover:text-foreground"
+                >
                   Nous contacter
                 </Link>
               </li>

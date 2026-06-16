@@ -13,11 +13,7 @@
 import { describe, it, expect } from "vitest";
 
 import { buildPageMeta } from "@/lib/seo/meta";
-import {
-  addPublicRouteToSitemap,
-  buildSitemapXml,
-  PROTOTYPE_PATHS,
-} from "@/lib/seo/sitemap";
+import { addPublicRouteToSitemap, buildSitemapXml, PROTOTYPE_PATHS } from "@/lib/seo/sitemap";
 import type { PublicRoute } from "@/lib/seo/meta";
 import { EXTERNAL_PROJECTS } from "@/content/externalProjects";
 import { resolveExternalLink } from "@/content/rules/externalLinks";
@@ -26,9 +22,7 @@ describe("Métadonnées de page — conformité bloquante (Requirement 12.3)", (
   const validDescription = "D".repeat(80); // 50..160 caractères : conforme.
 
   it("Requirement 12.3 : un titre vide fait échouer la construction", () => {
-    expect(() =>
-      buildPageMeta({ path: "/x", title: "", description: validDescription }),
-    ).toThrow();
+    expect(() => buildPageMeta({ path: "/x", title: "", description: validDescription })).toThrow();
   });
 
   it("Requirement 12.3 : un titre de plus de 60 caractères fait échouer la construction", () => {

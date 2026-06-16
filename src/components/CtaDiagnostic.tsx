@@ -46,8 +46,7 @@ const SIZE_CLASSES: Record<CtaSize, string> = {
 const VARIANT_CLASSES: Record<CtaVariant, string> = {
   primary:
     "bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-[var(--shadow-neon)] hover:shadow-[var(--shadow-glow)] hover:scale-[1.02]",
-  secondary:
-    "glass text-foreground hover:border-primary/50",
+  secondary: "glass text-foreground hover:border-primary/50",
 };
 
 const UNAVAILABLE_MESSAGE =
@@ -100,10 +99,7 @@ export function CtaDiagnostic({
       >
         {label}
         {showIcon && (
-          <ArrowRight
-            size={16}
-            className="transition-transform group-hover:translate-x-1"
-          />
+          <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
         )}
       </motion.button>
 

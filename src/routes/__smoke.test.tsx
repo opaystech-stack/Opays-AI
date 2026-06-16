@@ -41,6 +41,8 @@ import userEvent from "@testing-library/user-event";
 
 import { Navbar } from "@/components/Navbar";
 import { Route as IndexRoute } from "./_public.index";
+import { Route as RootRoute } from "./__root";
+const DefaultNotFound = RootRoute.options.notFoundComponent as import("@tanstack/react-router").NotFoundRouteComponent;
 import { PUBLIC_PAGES } from "@/content/navigation";
 import {
   PUBLIC_ROUTES,
@@ -53,11 +55,7 @@ import {
   DESCRIPTION_MAX,
   type PageHead,
 } from "@/lib/seo/meta";
-import {
-  buildSitemapXml,
-  buildRobotsTxt,
-  PROTOTYPE_PATHS,
-} from "@/lib/seo/sitemap";
+import { buildSitemapXml, buildRobotsTxt, PROTOTYPE_PATHS } from "@/lib/seo/sitemap";
 
 /** Budget de temps généreux pour la transition de navigation (Req. 1.3, 10.3). */
 const NAV_TIME_BUDGET_MS = 2000;
@@ -124,6 +122,7 @@ async function renderAppNav(initialPath = "/") {
   const router = createRouter({
     routeTree: rootRoute.addChildren(childRoutes),
     history: createMemoryHistory({ initialEntries: [initialPath] }),
+    defaultNotFoundComponent: DefaultNotFound,
   });
 
   const { container } = render(<RouterProvider router={router} />);
@@ -169,9 +168,7 @@ describe("Smoke — navigation client sans rechargement (Req. 1.7, 1.3, 10.3)", 
 
       // Le contenu a bien été échangé : la cible est rendue…
       expect(target).toBeInTheDocument();
-      expect(screen.getByTestId("route-content").getAttribute("data-path")).toBe(
-        page.path,
-      );
+      expect(screen.getByTestId("route-content").getAttribute("data-path")).toBe(page.path);
 
       // Requirement 1.7 : navigation côté client. L'URL du document n'a pas été
       // remplacée par un chargement complet (history en mémoire), et la
@@ -187,17 +184,13 @@ describe("Smoke — navigation client sans rechargement (Req. 1.7, 1.3, 10.3)", 
     const user = userEvent.setup();
     await renderAppNav("/methode");
 
-    expect(screen.getByTestId("route-content").getAttribute("data-path")).toBe(
-      "/methode",
-    );
+    expect(screen.getByTestId("route-content").getAttribute("data-path")).toBe("/methode");
 
     const hrefBefore = window.location.href;
     await user.click(screen.getByRole("link", { name: "Accueil" }));
 
     await screen.findByText("Contenu de la page : Accueil");
-    expect(screen.getByTestId("route-content").getAttribute("data-path")).toBe(
-      "/",
-    );
+    expect(screen.getByTestId("route-content").getAttribute("data-path")).toBe("/");
     expect(window.location.href).toBe(hrefBefore);
   });
 });
@@ -229,6 +222,7 @@ describe("Smoke — message clé de la Page_Accueil visible avant effets (Req. 1
     const router = createRouter({
       routeTree: rootRoute.addChildren([contactRoute]),
       history: createMemoryHistory({ initialEntries: ["/"] }),
+      defaultNotFoundComponent: DefaultNotFound,
     });
 
     const result = render(<RouterProvider router={router} />);
@@ -250,13 +244,11 @@ describe("Smoke — message clé de la Page_Accueil visible avant effets (Req. 1
     const { container } = await renderHome();
     const text = container.textContent ?? "";
 
-    // Désignation explicite du Public_Cible (PME en croissance).
-    expect(text).toContain("Pour les PME en croissance");
+    // Désignation explicite du Public_Cible.
+    expect(text).toContain("Pour les organisations opérationnelles en RDC");
 
     // Titre clé (proposition de valeur) présent dès le rendu, avant tout effet.
-    expect(
-      screen.getByRole("heading", { name: /gagnez en efficience/i }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /gagnez en efficience/i })).toBeInTheDocument();
   });
 });
 
@@ -270,8 +262,7 @@ describe("Smoke — génération des métadonnées par page (Req. 12.1, 12.2, 12
   /** Récupère la meta `description` d'un en-tête de page. */
   function descriptionOf(head: PageHead): string | undefined {
     const tag = head.meta.find(
-      (m): m is { name: string; content: string } =>
-        "name" in m && m.name === "description",
+      (m): m is { name: string; content: string } => "name" in m && m.name === "description",
     );
     return tag?.content;
   }

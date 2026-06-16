@@ -117,39 +117,43 @@ describe("CtaDiagnostic", () => {
   });
 
   // Property 20: Action principale unique et présente — Validates: Requirements 10.2, 10.5
-  it("Property 20: pour toute combinaison de props, rend exactement une action principale (le CTA), au libellé/cible invariants", async () => {
-    const { label, target } = resolveCta();
+  it(
+    "Property 20: pour toute combinaison de props, rend exactement une action principale (le CTA), au libellé/cible invariants",
+    async () => {
+      const { label, target } = resolveCta();
 
-    await fc.assert(
-      fc.asyncProperty(
-        fc.record({
-          variant: fc.option(fc.constantFrom("primary", "secondary"), { nil: undefined }),
-          size: fc.option(fc.constantFrom("sm", "md", "lg"), { nil: undefined }),
-          showIcon: fc.option(fc.boolean(), { nil: undefined }),
-          fullWidth: fc.option(fc.boolean(), { nil: undefined }),
-        }),
-        async (props) => {
-          const { button } = await renderCta(props as CtaDiagnosticProps);
+      await fc.assert(
+        fc.asyncProperty(
+          fc.record({
+            variant: fc.option(fc.constantFrom("primary", "secondary"), { nil: undefined }),
+            size: fc.option(fc.constantFrom("sm", "md", "lg"), { nil: undefined }),
+            showIcon: fc.option(fc.boolean(), { nil: undefined }),
+            fullWidth: fc.option(fc.boolean(), { nil: undefined }),
+          }),
+          async (props) => {
+            const { button } = await renderCta(props as CtaDiagnosticProps);
 
-          // Présence : au moins une occurrence du CTA.
-          // Unicité : exactement un bouton (l'action principale) est rendu.
-          const buttons = screen.getAllByRole("button");
-          expect(buttons).toHaveLength(1);
+            // Présence : au moins une occurrence du CTA.
+            // Unicité : exactement un bouton (l'action principale) est rendu.
+            const buttons = screen.getAllByRole("button");
+            expect(buttons).toHaveLength(1);
 
-          // Invariant de libellé : strictement identique (texte et casse) à la
-          // constante unique CTA_DIAGNOSTIC, indépendamment des props visuelles.
-          expect(button.textContent?.trim()).toBe(label);
-          expect(label).toBe(CTA_DIAGNOSTIC.label);
+            // Invariant de libellé : strictement identique (texte et casse) à la
+            // constante unique CTA_DIAGNOSTIC, indépendamment des props visuelles.
+            expect(button.textContent?.trim()).toBe(label);
+            expect(label).toBe(CTA_DIAGNOSTIC.label);
 
-          // Invariant de cible : l'action principale vise la Page_Contact.
-          expect(target).toBe("/contact");
+            // Invariant de cible : l'action principale vise la Page_Contact.
+            expect(target).toBe("/contact");
 
-          cleanup();
-        },
-      ),
-      { numRuns: NUM_RUNS },
-    );
-  }, PBT_TIMEOUT);
+            cleanup();
+          },
+        ),
+        { numRuns: NUM_RUNS },
+      );
+    },
+    PBT_TIMEOUT,
+  );
 
   // Best-effort : confirme que l'activation tente la navigation vers /contact et
   // que, dans tous les cas, le contexte (le CTA) reste présent sur la page —

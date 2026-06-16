@@ -25,7 +25,7 @@
     "opays:readiness": "node scripts/opays-cli.mjs readiness"
   },
   "dependencies": {
-    "@cloudflare/vite-plugin": "^1.25.5",
+    "@cloudflare/vite-plugin": "^1.40.2",
     "@hookform/resolvers": "^5.2.2",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-alert-dialog": "^1.1.15",
@@ -98,10 +98,13 @@
     "fast-check": "^3.23.2",
     "globals": "^15.15.0",
     "jsdom": "^26.1.0",
+    "playwright": "^1.61.0",
     "prettier": "^3.7.3",
+    "sharp": "^0.35.1",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.56.1",
-    "vite": "^7.3.1",
-    "vitest": "^3.2.4"
+    "vite": "^7.3.5",
+    "vite-node": "^6.0.0",
+    "vitest": "^4.1.9"
   }
 }

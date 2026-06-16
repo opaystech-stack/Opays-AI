@@ -1,3 +1,7 @@
+# Hermes session artefacts
+.audit/
+.hermes/
+
 # Logs
 logs
 *.log

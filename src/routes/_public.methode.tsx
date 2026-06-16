@@ -121,8 +121,8 @@ function MethodePage() {
           className="mt-16 flex flex-col items-center gap-4 text-center"
         >
           <p className="max-w-2xl text-lg text-muted-foreground">
-            Envie de voir cette méthode appliquée à vos opérations ? Commencez par
-            la première étape.
+            Envie de voir cette méthode appliquée à vos opérations ? Commencez par la première
+            étape.
           </p>
           <CtaDiagnostic size="lg" />
         </motion.div>

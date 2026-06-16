@@ -49,24 +49,21 @@ const validResumeArb: fc.Arbitrary<ResumeOffre> = fc.record({
 });
 
 /** Resume_Offre dont au moins une ligne est invalide. */
-const invalidResumeArb: fc.Arbitrary<ResumeOffre> = validResumeArb.chain(
-  (base) =>
-    fc
-      .uniqueArray(fc.constantFrom(...RESUME_KEYS), {
-        minLength: 1,
-        maxLength: RESUME_KEYS.length,
-      })
-      .chain((keysToCorrupt) =>
-        fc
-          .tuple(...keysToCorrupt.map(() => invalidLineArb))
-          .map((badValues) => {
-            const corrupted: ResumeOffre = { ...base };
-            keysToCorrupt.forEach((key, i) => {
-              corrupted[key] = badValues[i];
-            });
-            return corrupted;
-          }),
-      ),
+const invalidResumeArb: fc.Arbitrary<ResumeOffre> = validResumeArb.chain((base) =>
+  fc
+    .uniqueArray(fc.constantFrom(...RESUME_KEYS), {
+      minLength: 1,
+      maxLength: RESUME_KEYS.length,
+    })
+    .chain((keysToCorrupt) =>
+      fc.tuple(...keysToCorrupt.map(() => invalidLineArb)).map((badValues) => {
+        const corrupted: ResumeOffre = { ...base };
+        keysToCorrupt.forEach((key, i) => {
+          corrupted[key] = badValues[i];
+        });
+        return corrupted;
+      }),
+    ),
 );
 
 /** Génère une offre, paramétrée par l'arbitraire de son Resume_Offre. */
@@ -74,18 +71,18 @@ function offerArb(resumeArb: fc.Arbitrary<ResumeOffre>): fc.Arbitrary<Offer> {
   return fc.record({
     tier: fc.constantFrom(...TIERS),
     order: fc.integer({ min: -50, max: 50 }),
-    title: fc.string({ minLength: 1, maxLength: 60 }).map((s) =>
-      s.trim().length === 0 ? "Palier" : s,
-    ),
-    description: fc.string({ minLength: 1, maxLength: 120 }).map((s) =>
-      s.trim().length === 0 ? "Description" : s,
-    ),
+    title: fc
+      .string({ minLength: 1, maxLength: 60 })
+      .map((s) => (s.trim().length === 0 ? "Palier" : s)),
+    description: fc
+      .string({ minLength: 1, maxLength: 120 })
+      .map((s) => (s.trim().length === 0 ? "Description" : s)),
     recommended: fc.boolean(),
     isEntryPoint: fc.boolean(),
     deliverables: fc.array(
-      fc.string({ minLength: 1, maxLength: 80 }).map((s) =>
-        s.trim().length === 0 ? "Livrable" : s,
-      ),
+      fc
+        .string({ minLength: 1, maxLength: 80 })
+        .map((s) => (s.trim().length === 0 ? "Livrable" : s)),
       { minLength: 1, maxLength: 6 },
     ),
     resume: resumeArb,
@@ -94,7 +91,8 @@ function offerArb(resumeArb: fc.Arbitrary<ResumeOffre>): fc.Arbitrary<Offer> {
 
 /** Tri stable des offres par ordre croissant d'engagement. */
 function sortedByOrder(offers: Offer[]): Offer[] {
-  return offers.map((o, i) => [o, i] as const)
+  return offers
+    .map((o, i) => [o, i] as const)
     .sort((a, b) => a[0].order - b[0].order || a[1] - b[1])
     .map(([o]) => o);
 }
@@ -111,33 +109,28 @@ describe("selectRenderableOffers", () => {
   // Property 3: Paliers ordonnés et complets — Validates: Requirements 3.1
   it("Property 3: renvoie tous les paliers à résumé valide, triés par engagement croissant, chacun avec titre, description et livrables non vides", () => {
     fc.assert(
-      fc.property(
-        fc.array(offerArb(validResumeArb), { maxLength: 10 }),
-        (offers) => {
-          const { renderable, omitted } = selectRenderableOffers(offers);
+      fc.property(fc.array(offerArb(validResumeArb), { maxLength: 10 }), (offers) => {
+        const { renderable, omitted } = selectRenderableOffers(offers);
 
-          // Tous les paliers sont valides : aucun n'est omis.
-          expect(omitted).toEqual([]);
-          expect(renderable).toHaveLength(offers.length);
+        // Tous les paliers sont valides : aucun n'est omis.
+        expect(omitted).toEqual([]);
+        expect(renderable).toHaveLength(offers.length);
 
-          // Triés par ordre croissant d'engagement.
-          for (let i = 1; i < renderable.length; i++) {
-            expect(renderable[i - 1].order).toBeLessThanOrEqual(
-              renderable[i].order,
-            );
-          }
+        // Triés par ordre croissant d'engagement.
+        for (let i = 1; i < renderable.length; i++) {
+          expect(renderable[i - 1].order).toBeLessThanOrEqual(renderable[i].order);
+        }
 
-          // Chaque palier rendu expose titre, description et livrables non vides.
-          for (const offer of renderable) {
-            expect(typeof offer.title).toBe("string");
-            expect(offer.title.length).toBeGreaterThan(0);
-            expect(typeof offer.description).toBe("string");
-            expect(offer.description.length).toBeGreaterThan(0);
-            expect(Array.isArray(offer.deliverables)).toBe(true);
-            expect(offer.deliverables.length).toBeGreaterThan(0);
-          }
-        },
-      ),
+        // Chaque palier rendu expose titre, description et livrables non vides.
+        for (const offer of renderable) {
+          expect(typeof offer.title).toBe("string");
+          expect(offer.title.length).toBeGreaterThan(0);
+          expect(typeof offer.description).toBe("string");
+          expect(offer.description.length).toBeGreaterThan(0);
+          expect(Array.isArray(offer.deliverables)).toBe(true);
+          expect(offer.deliverables.length).toBeGreaterThan(0);
+        }
+      }),
       { numRuns: NUM_RUNS },
     );
   });
@@ -146,19 +139,12 @@ describe("selectRenderableOffers", () => {
   it("Property 9: conserve exactement les offres au résumé valide et omet exactement celles au résumé incomplet, sans altérer les offres conservées", () => {
     fc.assert(
       fc.property(
-        fc.array(
-          fc.oneof(offerArb(validResumeArb), offerArb(invalidResumeArb)),
-          { maxLength: 12 },
-        ),
+        fc.array(fc.oneof(offerArb(validResumeArb), offerArb(invalidResumeArb)), { maxLength: 12 }),
         (offers) => {
           const { renderable, omitted } = selectRenderableOffers(offers);
 
-          const expectedRenderable = offers.filter(
-            (o) => validateResumeOffre(o.resume).ok,
-          );
-          const expectedOmitted = offers.filter(
-            (o) => !validateResumeOffre(o.resume).ok,
-          );
+          const expectedRenderable = offers.filter((o) => validateResumeOffre(o.resume).ok);
+          const expectedOmitted = offers.filter((o) => !validateResumeOffre(o.resume).ok);
 
           // Partition exacte : autant conservés que d'offres valides.
           expect(renderable).toHaveLength(expectedRenderable.length);

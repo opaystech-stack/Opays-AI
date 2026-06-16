@@ -56,9 +56,7 @@ const availableUrlArb: fc.Arbitrary<string> = fc.oneof(
 );
 
 /** Chantier_Externe paramétré par l'arbitraire de son URL. */
-function projectArb(
-  urlArb: fc.Arbitrary<string | null>,
-): fc.Arbitrary<ExternalProject> {
+function projectArb(urlArb: fc.Arbitrary<string | null>): fc.Arbitrary<ExternalProject> {
   return fc.record({
     id: fc.constantFrom<ExternalProject["id"]>("audit-ia", "opays-commons"),
     label: fc
@@ -73,25 +71,22 @@ describe("resolveExternalLink", () => {
   // Validates: Requirements 13.4
   it("Property 32: ne rend aucun lien lorsque l'URL est absente ou invalide, et rend un lien externe ssi l'URL est absolue valide", () => {
     fc.assert(
-      fc.property(
-        projectArb(fc.oneof(unavailableUrlArb, availableUrlArb)),
-        (project) => {
-          const resolved = resolveExternalLink(project);
+      fc.property(projectArb(fc.oneof(unavailableUrlArb, availableUrlArb)), (project) => {
+        const resolved = resolveExternalLink(project);
 
-          if (isValidAbsoluteUrl(project.url)) {
-            // Chantier disponible => lien externe portant l'URL normalisée.
-            expect(resolved.visible).toBe(true);
-            if (resolved.visible) {
-              expect(resolved.url).toBe(project.url.trim());
-              expect(resolved.label).toBe(project.label);
-              expect(resolved.external).toBe(true);
-            }
-          } else {
-            // Chantier non disponible => aucun lien rendu (13.4).
-            expect(resolved).toEqual({ visible: false });
+        if (isValidAbsoluteUrl(project.url)) {
+          // Chantier disponible => lien externe portant l'URL normalisée.
+          expect(resolved.visible).toBe(true);
+          if (resolved.visible) {
+            expect(resolved.url).toBe(project.url.trim());
+            expect(resolved.label).toBe(project.label);
+            expect(resolved.external).toBe(true);
           }
-        },
-      ),
+        } else {
+          // Chantier non disponible => aucun lien rendu (13.4).
+          expect(resolved).toEqual({ visible: false });
+        }
+      }),
       { numRuns: NUM_RUNS },
     );
   });

@@ -37,9 +37,12 @@ import {
   createRouter,
   Outlet,
   RouterProvider,
+  type NotFoundRouteComponent,
 } from "@tanstack/react-router";
 import { render, screen, cleanup, within } from "@testing-library/react";
 import { Route as OffresRoute } from "./_public.offres";
+import { Route as RootRoute } from "./__root";
+const DefaultNotFound = RootRoute.options.notFoundComponent as NotFoundRouteComponent;
 import { OFFERS, type OfferTier } from "@/content/offers";
 import { selectRenderableOffers } from "@/content/rules/offers";
 import { resolveCta } from "@/content/rules/cta";
@@ -55,9 +58,7 @@ const PBT_TIMEOUT = 60_000;
 const PageOffres = OffresRoute.options.component as ComponentType;
 
 // Paliers effectivement rendus (résumés valides), source de la variation fc.
-const RENDERABLE_TIERS: OfferTier[] = selectRenderableOffers(OFFERS).renderable.map(
-  (o) => o.tier,
-);
+const RENDERABLE_TIERS: OfferTier[] = selectRenderableOffers(OFFERS).renderable.map((o) => o.tier);
 
 /**
  * Détecteur de montant / unité monétaire. On vise les symboles et codes ISO
@@ -65,8 +66,7 @@ const RENDERABLE_TIERS: OfferTier[] = selectRenderableOffers(OFFERS).renderable.
  * « prix » et « tarif », qui apparaissent légitimement dans la promesse
  * éditoriale « sans prix avant la compréhension du besoin ».
  */
-const CURRENCY_PATTERN =
-  /[€$£¥]|\b(?:eur|usd|gbp|chf|cad|euros?|dollars?)\b/i;
+const CURRENCY_PATTERN = /[€$£¥]|\b(?:eur|usd|gbp|chf|cad|euros?|dollars?)\b/i;
 
 /** Marqueur de Palier recommandé (badge capitalisé). */
 const RECOMMENDED_MARKER = /Recommandé/;
@@ -123,6 +123,7 @@ async function renderOffresPage() {
   const router = createRouter({
     routeTree: rootRoute.addChildren([contactRoute]),
     history: createMemoryHistory({ initialEntries: ["/"] }),
+    defaultNotFoundComponent: DefaultNotFound,
   });
 
   const { container } = render(<RouterProvider router={router} />);
@@ -145,11 +146,11 @@ function countMatches(text: string, re: RegExp): number {
 
 describe("Page_Offres — rendu des Paliers", () => {
   // Property 4: Absence de montant tarifaire — Validates: Requirements 3.2
-  it("Property 4: pour toute offre rendue, ni la page ni la carte du Palier ne contiennent de montant ou d'unité monétaire", async () => {
-    await fc.assert(
-      fc.asyncProperty(
-        fc.constantFrom(...RENDERABLE_TIERS),
-        async (tier) => {
+  it(
+    "Property 4: pour toute offre rendue, ni la page ni la carte du Palier ne contiennent de montant ou d'unité monétaire",
+    async () => {
+      await fc.assert(
+        fc.asyncProperty(fc.constantFrom(...RENDERABLE_TIERS), async (tier) => {
           const { container, articles } = await renderOffresPage();
 
           // Invariant global : aucune trace monétaire sur l'ensemble de la page.
@@ -160,31 +161,28 @@ describe("Page_Offres — rendu des Paliers", () => {
           expect(CURRENCY_PATTERN.test(card.textContent ?? "")).toBe(false);
 
           cleanup();
-        },
-      ),
-      { numRuns: NUM_RUNS },
-    );
-  }, PBT_TIMEOUT);
+        }),
+        { numRuns: NUM_RUNS },
+      );
+    },
+    PBT_TIMEOUT,
+  );
 
   // Property 5: Unicité et placement des marqueurs de palier
   // Validates: Requirements 3.3, 3.4
-  it("Property 5: « Recommandé » n'est présent que sur le Palier_Systeme et « Porte d'entrée » que sur le Palier_Diagnostic, exactement une fois chacun", async () => {
-    await fc.assert(
-      fc.asyncProperty(
-        fc.constantFrom(...RENDERABLE_TIERS),
-        async (tier) => {
+  it(
+    "Property 5: « Recommandé » n'est présent que sur le Palier_Systeme et « Porte d'entrée » que sur le Palier_Diagnostic, exactement une fois chacun",
+    async () => {
+      await fc.assert(
+        fc.asyncProperty(fc.constantFrom(...RENDERABLE_TIERS), async (tier) => {
           const { container, articles } = await renderOffresPage();
           const offer = OFFERS.find((o) => o.tier === tier)!;
           const card = cardForTier(articles, tier);
 
           // Placement : le marqueur n'apparaît sur la carte que si l'Offre le
           // porte (Recommandé ⇔ Palier_Systeme, Porte d'entrée ⇔ Palier_Diagnostic).
-          expect(RECOMMENDED_MARKER.test(card.textContent ?? "")).toBe(
-            offer.recommended,
-          );
-          expect(ENTRY_MARKER.test(card.textContent ?? "")).toBe(
-            offer.isEntryPoint,
-          );
+          expect(RECOMMENDED_MARKER.test(card.textContent ?? "")).toBe(offer.recommended);
+          expect(ENTRY_MARKER.test(card.textContent ?? "")).toBe(offer.isEntryPoint);
 
           // Unicité : chaque marqueur apparaît exactement une fois sur la page.
           const pageText = container.textContent ?? "";
@@ -192,20 +190,21 @@ describe("Page_Offres — rendu des Paliers", () => {
           expect(countMatches(pageText, /Porte d['’]entrée/g)).toBe(1);
 
           cleanup();
-        },
-      ),
-      { numRuns: NUM_RUNS },
-    );
-  }, PBT_TIMEOUT);
+        }),
+        { numRuns: NUM_RUNS },
+      );
+    },
+    PBT_TIMEOUT,
+  );
 
   // Property 6: CTA présent dans chaque palier — Validates: Requirements 3.5
-  it("Property 6: pour toute offre rendue, la carte du Palier contient exactement une occurrence activable du CTA_Diagnostic", async () => {
-    const { label } = resolveCta();
+  it(
+    "Property 6: pour toute offre rendue, la carte du Palier contient exactement une occurrence activable du CTA_Diagnostic",
+    async () => {
+      const { label } = resolveCta();
 
-    await fc.assert(
-      fc.asyncProperty(
-        fc.constantFrom(...RENDERABLE_TIERS),
-        async (tier) => {
+      await fc.assert(
+        fc.asyncProperty(fc.constantFrom(...RENDERABLE_TIERS), async (tier) => {
           const { articles } = await renderOffresPage();
 
           // Invariant global : chaque carte de Palier porte un CTA activable.
@@ -223,9 +222,10 @@ describe("Page_Offres — rendu des Paliers", () => {
           expect(label).toBe(CTA_DIAGNOSTIC.label);
 
           cleanup();
-        },
-      ),
-      { numRuns: NUM_RUNS },
-    );
-  }, PBT_TIMEOUT);
+        }),
+        { numRuns: NUM_RUNS },
+      );
+    },
+    PBT_TIMEOUT,
+  );
 });

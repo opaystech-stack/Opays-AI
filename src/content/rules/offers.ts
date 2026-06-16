@@ -43,9 +43,7 @@ export interface SelectRenderableOffersResult {
  * @param offers Liste des Paliers candidats (typiquement `OFFERS`).
  * @returns Les Paliers à rendre, triés, et la liste des Paliers omis avec motif.
  */
-export function selectRenderableOffers(
-  offers: Offer[],
-): SelectRenderableOffersResult {
+export function selectRenderableOffers(offers: Offer[]): SelectRenderableOffersResult {
   const renderable: Offer[] = [];
   const omitted: OmittedOffer[] = [];
 

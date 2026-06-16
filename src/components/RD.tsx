@@ -18,18 +18,18 @@ export function RD() {
               title="L’intelligence adaptée au contexte."
             />
             <p className="mt-6 text-lg text-muted-foreground leading-relaxed">
-              Opays Tech n'est pas seulement un intégrateur ; nous sommes un laboratoire d'innovation. 
-              Notre pôle R&D travaille quotidiennement sur l'adaptation des technologies d'IA aux 
-              environnements les plus complexes.
+              Opays Tech n'est pas seulement un intégrateur ; nous sommes un laboratoire
+              d'innovation. Notre pôle R&D travaille quotidiennement sur l'adaptation des
+              technologies d'IA aux environnements les plus complexes.
             </p>
-            
+
             <div className="mt-10 space-y-8">
-              <Feature 
+              <Feature
                 icon={Cpu}
                 title="Ingénierie Edge & Déploiement Privé"
                 text="Développement de modèles ultra-optimisés capables de s’exécuter en circuit fermé sur vos propres serveurs, garantissant une latence zéro et une confidentialité totale."
               />
-              <Feature 
+              <Feature
                 icon={Globe}
                 title="Fine-Tuning & Alignement Cognitif"
                 text="Spécialisation des modèles open-source sur vos terminologies expertes et votre jargon métier pour créer un assistant qui comprend réellement votre écosystème."
@@ -52,11 +52,11 @@ export function RD() {
                     key={i}
                     initial={{ scale: 0.8, opacity: 0 }}
                     animate={{ scale: 2, opacity: [0, 0.1, 0] }}
-                    transition={{ 
-                      duration: 4, 
-                      repeat: Infinity, 
+                    transition={{
+                      duration: 4,
+                      repeat: Infinity,
                       delay: i * 1.3,
-                      ease: "easeOut"
+                      ease: "easeOut",
                     }}
                     className="absolute h-40 w-40 rounded-full border border-primary/40"
                   />
@@ -64,43 +64,53 @@ export function RD() {
               </div>
 
               <div className="relative h-full w-full rounded-2xl bg-black/40 border border-white/5 overflow-hidden flex items-center justify-center group shadow-2xl">
-                 <motion.div 
-                   animate={{ rotate: 360 }}
-                   transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                   className="absolute h-[150%] w-[150%] opacity-20"
-                   style={{ 
-                     background: "conic-gradient(from 0deg, transparent, var(--neon-cyan), transparent 30%)" 
-                   }}
-                 />
-                 
-                 <div className="relative z-10 text-center p-6">
-                    <motion.div
-                      animate={{ y: [0, -10, 0] }}
-                      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                    >
-                      <Beaker size={80} className="text-primary mb-4 mx-auto drop-shadow-[0_0_15px_rgba(0,186,255,0.5)]" />
-                    </motion.div>
-                    <div className="text-3xl font-bold text-white mb-2 tracking-tight">R&D Lab</div>
-                    <div className="flex items-center justify-center gap-2">
-                      <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
-                      <span className="text-[10px] text-muted-foreground font-mono uppercase tracking-[0.2em]">Active Innovation Cycle</span>
-                    </div>
-                 </div>
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                  className="absolute h-[150%] w-[150%] opacity-20"
+                  style={{
+                    background:
+                      "conic-gradient(from 0deg, transparent, var(--neon-cyan), transparent 30%)",
+                  }}
+                />
 
-                 {/* Particle effects */}
-                 {[...Array(6)].map((_, i) => (
-                   <motion.div
-                     key={i}
-                     initial={{ x: Math.random() * 200 - 100, y: Math.random() * 200 - 100, opacity: 0 }}
-                     animate={{ 
-                       x: [null, Math.random() * 200 - 100], 
-                       y: [null, Math.random() * 200 - 100],
-                       opacity: [0, 0.5, 0] 
-                     }}
-                     transition={{ duration: 5 + Math.random() * 5, repeat: Infinity }}
-                     className="absolute h-1 w-1 bg-primary rounded-full blur-[1px]"
-                   />
-                 ))}
+                <div className="relative z-10 text-center p-6">
+                  <motion.div
+                    animate={{ y: [0, -10, 0] }}
+                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                  >
+                    <Beaker
+                      size={80}
+                      className="text-primary mb-4 mx-auto drop-shadow-[0_0_15px_rgba(0,186,255,0.5)]"
+                    />
+                  </motion.div>
+                  <div className="text-3xl font-bold text-white mb-2 tracking-tight">R&D Lab</div>
+                  <div className="flex items-center justify-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+                    <span className="text-[10px] text-muted-foreground font-mono uppercase tracking-[0.2em]">
+                      Active Innovation Cycle
+                    </span>
+                  </div>
+                </div>
+
+                {/* Particle effects */}
+                {[...Array(6)].map((_, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{
+                      x: Math.random() * 200 - 100,
+                      y: Math.random() * 200 - 100,
+                      opacity: 0,
+                    }}
+                    animate={{
+                      x: [null, Math.random() * 200 - 100],
+                      y: [null, Math.random() * 200 - 100],
+                      opacity: [0, 0.5, 0],
+                    }}
+                    transition={{ duration: 5 + Math.random() * 5, repeat: Infinity }}
+                    className="absolute h-1 w-1 bg-primary rounded-full blur-[1px]"
+                  />
+                ))}
               </div>
             </div>
           </motion.div>
@@ -110,7 +120,7 @@ export function RD() {
   );
 }
 
-function Feature({ icon: Icon, title, text }: { icon: any, title: string, text: string }) {
+function Feature({ icon: Icon, title, text }: { icon: any; title: string; text: string }) {
   return (
     <div className="flex gap-4">
       <div className="shrink-0 h-10 w-10 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center">

@@ -43,10 +43,7 @@ function isValidAbsoluteUrl(url: string | null): url is string {
   }
 }
 
-const idArb: fc.Arbitrary<ExternalProjectId> = fc.constantFrom(
-  "audit-ia",
-  "opays-commons",
-);
+const idArb: fc.Arbitrary<ExternalProjectId> = fc.constantFrom("audit-ia", "opays-commons");
 
 const labelArb: fc.Arbitrary<string> = fc
   .string({ minLength: 1, maxLength: 60 })
@@ -76,9 +73,7 @@ const invalidUrlArb: fc.Arbitrary<string | null> = fc.oneof(
   fc.string({ maxLength: 24 }).filter((s) => !isValidAbsoluteUrl(s)),
 );
 
-function projectArb(
-  urlArb: fc.Arbitrary<string | null>,
-): fc.Arbitrary<ExternalProject> {
+function projectArb(urlArb: fc.Arbitrary<string | null>): fc.Arbitrary<ExternalProject> {
   return fc.record({
     id: idArb,
     label: labelArb,
@@ -90,51 +85,46 @@ describe("ExternalLink", () => {
   // Property 31: Rendu sécurisé des liens externes — Validates: Requirements 13.3
   it("Property 31: une URL valide produit un lien nouvel onglet sécurisé et signalé ; une URL invalide ne produit aucun rendu", () => {
     fc.assert(
-      fc.property(
-        fc.oneof(projectArb(validUrlArb), projectArb(invalidUrlArb)),
-        (project) => {
-          const { container, unmount } = render(
-            <ExternalLink project={project} />,
-          );
+      fc.property(fc.oneof(projectArb(validUrlArb), projectArb(invalidUrlArb)), (project) => {
+        const { container, unmount } = render(<ExternalLink project={project} />);
 
-          try {
-            const anchor = container.querySelector("a");
+        try {
+          const anchor = container.querySelector("a");
 
-            if (isValidAbsoluteUrl(project.url)) {
-              // Lien visible : ancre présente.
-              expect(anchor).not.toBeNull();
+          if (isValidAbsoluteUrl(project.url)) {
+            // Lien visible : ancre présente.
+            expect(anchor).not.toBeNull();
 
-              // Ouverture dans un nouvel onglet.
-              expect(anchor!.getAttribute("target")).toBe("_blank");
+            // Ouverture dans un nouvel onglet.
+            expect(anchor!.getAttribute("target")).toBe("_blank");
 
-              // Sécurisation de l'ouverture (noopener + noreferrer).
-              const rel = anchor!.getAttribute("rel") ?? "";
-              expect(rel).toContain("noopener");
-              expect(rel).toContain("noreferrer");
+            // Sécurisation de l'ouverture (noopener + noreferrer).
+            const rel = anchor!.getAttribute("rel") ?? "";
+            expect(rel).toContain("noopener");
+            expect(rel).toContain("noreferrer");
 
-              // href pointe sur l'URL résolue.
-              expect(anchor!.getAttribute("href")).toBe(project.url!.trim());
+            // href pointe sur l'URL résolue.
+            expect(anchor!.getAttribute("href")).toBe(project.url!.trim());
 
-              // Signalement visuel d'un lien externe : icône dédiée (svg
-              // décoratif) + libellé accessible explicite.
-              const icon = anchor!.querySelector("svg");
-              expect(icon).not.toBeNull();
-              expect(icon!.getAttribute("aria-hidden")).toBe("true");
+            // Signalement visuel d'un lien externe : icône dédiée (svg
+            // décoratif) + libellé accessible explicite.
+            const icon = anchor!.querySelector("svg");
+            expect(icon).not.toBeNull();
+            expect(icon!.getAttribute("aria-hidden")).toBe("true");
 
-              const srOnly = anchor!.querySelector(".sr-only");
-              expect(srOnly).not.toBeNull();
-              expect(srOnly!.textContent ?? "").toMatch(/lien externe/i);
-            } else {
-              // URL absente ou invalide : aucun lien n'est rendu.
-              expect(anchor).toBeNull();
-              expect(container).toBeEmptyDOMElement();
-            }
-          } finally {
-            unmount();
-            cleanup();
+            const srOnly = anchor!.querySelector(".sr-only");
+            expect(srOnly).not.toBeNull();
+            expect(srOnly!.textContent ?? "").toMatch(/lien externe/i);
+          } else {
+            // URL absente ou invalide : aucun lien n'est rendu.
+            expect(anchor).toBeNull();
+            expect(container).toBeEmptyDOMElement();
           }
-        },
-      ),
+        } finally {
+          unmount();
+          cleanup();
+        }
+      }),
       { numRuns: NUM_RUNS },
     );
   });

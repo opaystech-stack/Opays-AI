@@ -84,9 +84,9 @@ function SovereigntyHero() {
             L'IA chez vous, sous votre contrôle.
           </h1>
           <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-            Vous voulez tirer parti de l'IA sans confier vos données ni vos
-            savoirs à des plateformes que vous ne maîtrisez pas. Nous concevons
-            une efficience souveraine, ancrée sur votre terrain.
+            Vous voulez tirer parti de l'IA sans confier vos données ni vos savoirs à des
+            plateformes que vous ne maîtrisez pas. Nous concevons une efficience souveraine, ancrée
+            sur votre terrain.
           </p>
 
           {/* Message_Pivot reproduit à l'exact (Requirement 9.3). */}
@@ -96,10 +96,7 @@ function SovereigntyHero() {
             </p>
             <p className="mt-3 text-sm text-muted-foreground">
               Ce principe guide chacun de nos choix.{" "}
-              <Link
-                to="/"
-                className="font-semibold text-[color:var(--neon-cyan)] hover:underline"
-              >
+              <Link to="/" className="font-semibold text-[color:var(--neon-cyan)] hover:underline">
                 Revenir à l'accueil
               </Link>{" "}
               pour en comprendre la promesse.
@@ -127,15 +124,11 @@ function LocalAiSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <SectionHeader
-              eyebrow="IA locale"
-              title="Une IA qui s'exécute chez vous."
-            />
+            <SectionHeader eyebrow="IA locale" title="Une IA qui s'exécute chez vous." />
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-              Nous déployons vos modèles en circuit fermé, sur vos propres
-              serveurs. Votre IA reste opérée « sans dépendre d'infrastructures
-              que vous ne contrôlez pas ». Vos données ne quittent jamais votre
-              périmètre.
+              Nous déployons vos modèles en circuit fermé, sur vos propres serveurs. Votre IA reste
+              opérée « sans dépendre d'infrastructures que vous ne contrôlez pas ». Vos données ne
+              quittent jamais votre périmètre.
             </p>
 
             <div className="mt-10 space-y-8">
@@ -146,8 +139,8 @@ function LocalAiSection() {
               />
               <Feature
                 icon={MapPin}
-                title="Ancrage français et terrain"
-                text="Nous partons de votre réalité opérationnelle, en français, au plus près de vos équipes. La souveraineté se vit aussi dans la proximité."
+                title="Ancrage RDC et terrain"
+                text="Nous partons de votre réalité opérationnelle en RDC, au plus près de vos équipes et en fonction de vos contraintes locales. La souveraineté se vit aussi dans la proximité."
               />
             </div>
           </motion.div>
@@ -260,9 +253,9 @@ function ResearchSection() {
               title="Un laboratoire, pas seulement un intégrateur."
             />
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-              Notre pôle recherche adapte les modèles open source à votre métier,
-              optimise leur exécution locale et durcit leur gouvernance. La
-              recherche nourrit directement vos systèmes.
+              Notre pôle recherche adapte les modèles open source à votre métier, optimise leur
+              exécution locale et durcit leur gouvernance. La recherche nourrit directement vos
+              systèmes.
             </p>
 
             <div className="mt-10 rounded-2xl glass p-6">
@@ -278,9 +271,9 @@ function ResearchSection() {
                 </div>
               </div>
               <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-                Fénelon Lamsasiri dirige la recherche d'Opays Tech comme Lead
-                R&amp;D : il oriente nos travaux sur l'IA locale, la souveraineté
-                et l'alignement des modèles sur votre contexte.
+                Fénelon Lamsasiri dirige la recherche d'Opays Tech comme Lead R&amp;D : il oriente
+                nos travaux sur l'IA locale, la souveraineté et l'alignement des modèles sur votre
+                contexte.
               </p>
             </div>
           </motion.div>
@@ -312,9 +305,7 @@ function ResearchSection() {
                     className="mx-auto mb-4 text-primary drop-shadow-[0_0_15px_rgba(0,186,255,0.5)]"
                   />
                 </motion.div>
-                <div className="mb-2 text-2xl font-bold tracking-tight text-white">
-                  R&amp;D Lab
-                </div>
+                <div className="mb-2 text-2xl font-bold tracking-tight text-white">R&amp;D Lab</div>
                 <div className="flex items-center justify-center gap-2">
                   <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary" />
                   <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
@@ -348,8 +339,8 @@ function ClosingCta() {
             Prêt à reprendre le contrôle de votre IA ?
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
-            Évaluons ensemble votre besoin de souveraineté et le périmètre d'une
-            transformation adaptée à votre terrain.
+            Évaluons ensemble votre besoin de souveraineté et le périmètre d'une transformation
+            adaptée à votre terrain.
           </p>
           <div className="mt-8 flex justify-center">
             <CtaDiagnostic size="lg" />
@@ -361,15 +352,7 @@ function ClosingCta() {
 }
 
 /** Bloc de mise en avant réutilisé : icône néon + titre + texte. */
-function Feature({
-  icon: Icon,
-  title,
-  text,
-}: {
-  icon: typeof Cpu;
-  title: string;
-  text: string;
-}) {
+function Feature({ icon: Icon, title, text }: { icon: typeof Cpu; title: string; text: string }) {
   return (
     <div className="flex gap-4">
       <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-primary/20 bg-primary/10">

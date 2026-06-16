@@ -35,9 +35,7 @@ describe("resolveCta", () => {
         fc.integer({ min: 1, max: 20 }),
         (currentPath, usageCount) => {
           // Appels répétés/indépendants, comme autant d'occurrences du CTA.
-          const resolutions = Array.from({ length: usageCount }, () =>
-            resolveCta(),
-          );
+          const resolutions = Array.from({ length: usageCount }, () => resolveCta());
 
           for (const cta of resolutions) {
             // Libellé strictement identique (texte et casse) à la constante unique.
@@ -56,9 +54,7 @@ describe("resolveCta", () => {
           }
 
           // La cible (`/contact`) est bien une page publique du site.
-          expect(PUBLIC_PAGES.some((p) => p.path === EXPECTED.target)).toBe(
-            true,
-          );
+          expect(PUBLIC_PAGES.some((p) => p.path === EXPECTED.target)).toBe(true);
 
           // L'usage courant n'altère pas la résolution : invariant indépendant
           // de la page d'où le CTA est rendu.

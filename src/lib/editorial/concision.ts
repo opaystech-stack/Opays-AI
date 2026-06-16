@@ -45,10 +45,7 @@ export function averageSentenceLength(block: string): number {
   const sentences = splitIntoSentences(block);
   if (sentences.length === 0) return 0;
 
-  const totalWords = sentences.reduce(
-    (sum, sentence) => sum + countWords(sentence),
-    0,
-  );
+  const totalWords = sentences.reduce((sum, sentence) => sum + countWords(sentence), 0);
 
   return totalWords / sentences.length;
 }

@@ -22,8 +22,14 @@ function ServicesPage() {
   return (
     <>
       <section className="relative overflow-hidden pt-32 pb-12">
-        <div className="pointer-events-none absolute inset-0 -z-10 grid-bg opacity-40" aria-hidden="true" />
-        <div className="pointer-events-none absolute inset-0 -z-10 bg-[var(--gradient-hero)]" aria-hidden="true" />
+        <div
+          className="pointer-events-none absolute inset-0 -z-10 grid-bg opacity-40"
+          aria-hidden="true"
+        />
+        <div
+          className="pointer-events-none absolute inset-0 -z-10 bg-[var(--gradient-hero)]"
+          aria-hidden="true"
+        />
         <Container>
           <SectionTitle
             eyebrow="Nos services"
@@ -55,10 +61,15 @@ function ServicesPage() {
                       <Icon size={22} className="text-primary" />
                     </div>
                     <h2 className="text-lg font-semibold">{s.label}</h2>
-                    <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">{s.tagline}</p>
+                    <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">
+                      {s.tagline}
+                    </p>
                     <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-primary">
                       Découvrir
-                      <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+                      <ArrowRight
+                        size={14}
+                        className="transition-transform group-hover:translate-x-1"
+                      />
                     </span>
                   </Link>
                 </motion.div>

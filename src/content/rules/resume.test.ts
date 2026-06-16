@@ -10,11 +10,7 @@
 
 import fc from "fast-check";
 import type { ResumeOffre } from "../offers";
-import {
-  RESUME_LINE_MAX,
-  orderedResumeLines,
-  validateResumeOffre,
-} from "./resume";
+import { RESUME_LINE_MAX, orderedResumeLines, validateResumeOffre } from "./resume";
 
 const NUM_RUNS = 100;
 
@@ -38,26 +34,20 @@ type LineKey = (typeof EXPECTED_ORDER)[number];
 const nonSpaceChar = fc.char().filter((c) => c.trim().length === 1);
 
 /** Une suite d'espacements variés, susceptible d'être entièrement supprimée par trim. */
-const whitespace = fc.stringOf(
-  fc.constantFrom(" ", "\t", "\n", "\r", "\f", "\u00a0"),
-  { maxLength: 4 },
-);
+const whitespace = fc.stringOf(fc.constantFrom(" ", "\t", "\n", "\r", "\f", "\u00a0"), {
+  maxLength: 4,
+});
 
 /** Un cœur de texte sans espacement, de longueur contrôlée. */
 function coreOfLength(min: number, max: number): fc.Arbitrary<string> {
-  return fc
-    .array(nonSpaceChar, { minLength: min, maxLength: max })
-    .map((chars) => chars.join(""));
+  return fc.array(nonSpaceChar, { minLength: min, maxLength: max }).map((chars) => chars.join(""));
 }
 
 /**
  * Ligne dont la longueur normalisée (après trim) est nulle : vide ou
  * uniquement composée d'espacements => INVALIDE (empty-line).
  */
-const emptyLine: fc.Arbitrary<string> = fc.oneof(
-  fc.constant(""),
-  whitespace,
-);
+const emptyLine: fc.Arbitrary<string> = fc.oneof(fc.constant(""), whitespace);
 
 /**
  * Ligne dont la longueur normalisée est dans [1, 280] => VALIDE.

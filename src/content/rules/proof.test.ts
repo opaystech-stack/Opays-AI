@@ -57,9 +57,7 @@ const CLIENT_IDENTIFIERS = [
 ];
 
 /** Libellé anonyme : tiré du pool générique, jamais un identifiant client. */
-const anonymousLabelArb: fc.Arbitrary<string> = fc.constantFrom(
-  ...ANONYMOUS_LABELS,
-);
+const anonymousLabelArb: fc.Arbitrary<string> = fc.constantFrom(...ANONYMOUS_LABELS);
 
 /** Unité non vide (%, h, x…). */
 const unitArb: fc.Arbitrary<string> = fc.constantFrom("%", "h", "x", "j", "pts");
@@ -93,9 +91,7 @@ const outOfBoundsValueArb: fc.Arbitrary<number> = fc.oneof(
 );
 
 /** Métrique éligible : sourcée ET valeur strictement dans les bornes. */
-function eligibleMetricArb(
-  category: MetricCategory,
-): fc.Arbitrary<ProofMetric> {
+function eligibleMetricArb(category: MetricCategory): fc.Arbitrary<ProofMetric> {
   return fc.record({
     category: fc.constant(category),
     value: inBoundsValueArb,
@@ -176,10 +172,7 @@ describe("selectRenderableMetrics", () => {
       fc.property(
         // On mêle entrées quelconques et entrées garantissant une couverture,
         // pour exercer à la fois la branche vide et la branche non vide.
-        fc.oneof(
-          fc.array(anyMetricArb, { maxLength: 12 }),
-          coverableMetricsArb,
-        ),
+        fc.oneof(fc.array(anyMetricArb, { maxLength: 12 }), coverableMetricsArb),
         (metrics) => {
           const result = selectRenderableMetrics(metrics);
 
@@ -236,10 +229,7 @@ describe("selectRenderableMetrics", () => {
   it("Property 15: la sortie ne contient aucun nom de client et ne fabrique aucun contenu (sous-ensemble par référence de l'entrée)", () => {
     fc.assert(
       fc.property(
-        fc.oneof(
-          fc.array(anyMetricArb, { maxLength: 12 }),
-          coverableMetricsArb,
-        ),
+        fc.oneof(fc.array(anyMetricArb, { maxLength: 12 }), coverableMetricsArb),
         (metrics) => {
           const result = selectRenderableMetrics(metrics);
 

@@ -36,7 +36,7 @@ export const DESCRIPTION_MAX = 160;
 export const DEFAULT_OG_IMAGE = `${SITE_ORIGIN}/opays-og.png`;
 
 /** Logo officiel d'Opays Tech (URL absolue), utilisé par le JSON-LD. */
-export const ORGANIZATION_LOGO = `${SITE_ORIGIN}/opays-logo.png`;
+export const ORGANIZATION_LOGO = `${SITE_ORIGIN}/logo-opays.svg`;
 
 /** Raison sociale / nom de marque d'Opays Tech. */
 export const ORGANIZATION_NAME = "Opays Tech";
@@ -53,7 +53,7 @@ export const ORGANIZATION_SLOGAN = "Ingénierie de l'efficience par l'IA";
 
 /** Description de marque, alignée sur le contenu public du site (pas de donnée nominative). */
 export const ORGANIZATION_DESCRIPTION =
-  "Opays Tech, cabinet d'ingénierie de l'efficience, aide les PME en croissance à " +
+  "Opays Tech, cabinet d'ingénierie de l'efficience, aide les organisations opérationnelles en RDC à " +
   "structurer leurs processus grâce à l'IA locale et souveraine.";
 
 /** Entrée de métadonnées fournie à `buildPageMeta`. */
@@ -227,7 +227,7 @@ export const PUBLIC_ROUTES: PublicRoute[] = [
     path: "/",
     title: "Opays Tech — Ingénierie de l'efficience par l'IA",
     description:
-      "Opays Tech aide les PME en croissance à structurer leurs processus grâce à l'IA locale et souveraine, sans dépendre d'infrastructures que vous ne contrôlez pas.",
+      "Opays Tech aide les organisations opérationnelles en RDC à structurer leurs processus avec l'IA locale et souveraine, sous leur contrôle.",
     changefreq: "weekly",
     priority: 1,
   },

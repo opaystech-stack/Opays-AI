@@ -26,6 +26,7 @@
 
 import { describe, it, expect, beforeAll } from "vitest";
 import type { ComponentType } from "react";
+import type { NotFoundRouteComponent } from "@tanstack/react-router";
 import {
   createMemoryHistory,
   createRootRoute,
@@ -34,13 +35,7 @@ import {
   Outlet,
   RouterProvider,
 } from "@tanstack/react-router";
-import {
-  render,
-  screen,
-  cleanup,
-  within,
-  type RenderResult,
-} from "@testing-library/react";
+import { render, screen, cleanup, within, type RenderResult } from "@testing-library/react";
 
 import { PUBLIC_PAGES } from "@/content/navigation";
 import { selectRenderableProducts } from "@/content/rules/saas";
@@ -96,7 +91,10 @@ beforeAll(() => {
  * dans l'`<Outlet/>` de la racine.
  */
 function renderAt(path: string): RenderResult {
-  const rootRoute = createRootRoute({ component: () => <Outlet /> });
+  const rootRoute = createRootRoute({
+    component: () => <Outlet />,
+    notFoundComponent: RootRoute.options.notFoundComponent as NotFoundRouteComponent,
+  });
   const children = PUBLIC_PAGES.map((page) =>
     createRoute({
       getParentRoute: () => rootRoute,
@@ -117,7 +115,10 @@ function renderAt(path: string): RenderResult {
  * routes légales cibles sont enregistrées afin que les liens se résolvent.
  */
 function renderFooter(): RenderResult {
-  const rootRoute = createRootRoute({ component: () => <Footer /> });
+  const rootRoute = createRootRoute({
+    component: () => <Footer />,
+    notFoundComponent: RootRoute.options.notFoundComponent as NotFoundRouteComponent,
+  });
   const legalRoutes = ["/mentions-legales", "/confidentialite"].map((path) =>
     createRoute({
       getParentRoute: () => rootRoute,
@@ -138,39 +139,31 @@ describe("Structure multi-pages — pages distinctes et URL directes", () => {
     const paths = PUBLIC_PAGES.map((p) => p.path);
     expect(paths).toHaveLength(6);
     expect(new Set(paths).size).toBe(6);
-    expect(paths).toEqual([
-      "/",
-      "/methode",
-      "/offres",
-      "/saas",
-      "/souverainete-rd",
-      "/contact",
-    ]);
+    expect(paths).toEqual(["/", "/methode", "/offres", "/saas", "/souverainete-rd", "/contact"]);
   });
 
   // Requirement 1.4 : ouvrir directement une URL affiche la page correspondante.
   it.each([
-    ["/", /Pour les PME en croissance/],
+    ["/", /Pour les organisations opérationnelles en RDC/],
     ["/methode", /Des phases concrètes, des livrables, des délais\./],
     ["/offres", /Trois paliers d'efficience/],
     ["/saas", /Opays Nexus/],
     ["/souverainete-rd", /L'IA chez vous, sous votre contrôle\./],
     ["/contact", /Réservez votre Diagnostic gratuit\./],
-  ])(
-    "Requirement 1.4 : l'URL directe %s rend sa page dédiée",
-    async (path, marker) => {
-      renderAt(path as string);
-      expect(await screen.findByText(marker as RegExp)).toBeInTheDocument();
-      cleanup();
-    },
-  );
+  ])("Requirement 1.4 : l'URL directe %s rend sa page dédiée", async (path, marker) => {
+    renderAt(path as string);
+    expect(await screen.findByText(marker as RegExp)).toBeInTheDocument();
+    cleanup();
+  });
 
   // Requirement 1.5 : une URL inconnue rend la page 404 avec retour à l'accueil.
   it("Requirement 1.5 : une URL inconnue affiche la page introuvable et un lien retour accueil", async () => {
-    const NotFound = RootRoute.options.notFoundComponent as ComponentType;
+    const NotFound = RootRoute.options.notFoundComponent as NotFoundRouteComponent;
     expect(NotFound).toBeTypeOf("function");
 
-    const rootRoute = createRootRoute({ notFoundComponent: NotFound });
+    const rootRoute = createRootRoute({
+      notFoundComponent: NotFound as NotFoundRouteComponent,
+    });
     const indexRoute = createRoute({
       getParentRoute: () => rootRoute,
       path: "/",
@@ -191,33 +184,35 @@ describe("Structure multi-pages — pages distinctes et URL directes", () => {
 });
 
 describe("Page_Accueil — above-the-fold et public cible unique", () => {
-  // Requirement 2.1 : désignation explicite du Public_Cible (PME en croissance).
-  it("Requirement 2.1 : désigne explicitement les PME en croissance", async () => {
+  // Requirement 2.1 : désignation explicite du Public_Cible.
+  it("Requirement 2.1 : désigne explicitement les organisations opérationnelles en RDC", async () => {
     renderAt("/");
-    expect(await screen.findByText(/Pour les PME en croissance/)).toBeInTheDocument();
+    expect(
+      await screen.findByText(/Pour les organisations opérationnelles en RDC/),
+    ).toBeInTheDocument();
   });
 
   // Requirements 2.2, 2.5 : Message_Pivot reproduit exactement.
   it("Requirements 2.2, 2.5 : reproduit exactement le Message_Pivot du glossaire", async () => {
     const { container } = renderAt("/");
-    await screen.findByText(/Pour les PME en croissance/);
+    await screen.findByText(/Pour les organisations opérationnelles en RDC/);
     expect(container.textContent).toContain(MESSAGE_PIVOT);
   });
 
   // Requirement 2.4 : trois axes différenciants énoncés explicitement.
-  it("Requirement 2.4 : énonce les trois axes — souveraineté, IA locale, ancrage français et terrain", async () => {
+  it("Requirement 2.4 : énonce les trois axes — souveraineté, IA locale, ancrage RDC et terrain", async () => {
     renderAt("/");
     expect(await screen.findByText("Souveraineté")).toBeInTheDocument();
     expect(screen.getByText("IA locale")).toBeInTheDocument();
-    expect(screen.getByText("Ancrage français et terrain")).toBeInTheDocument();
+    expect(screen.getByText("Ancrage RDC et terrain")).toBeInTheDocument();
   });
 
   // Requirement 2.3 : public cible unique, sans liste de secteurs d'activité.
   it("Requirement 2.3 : présente un public unique sans liste sectorielle", async () => {
     const { container } = renderAt("/");
-    await screen.findByText(/Pour les PME en croissance/);
+    await screen.findByText(/Pour les organisations opérationnelles en RDC/);
     // Une seule désignation de public, et aucune segmentation par secteurs.
-    expect(screen.getByText(/Pour les PME en croissance/)).toBeInTheDocument();
+    expect(screen.getByText(/Pour les organisations opérationnelles en RDC/)).toBeInTheDocument();
     expect(container.textContent ?? "").not.toMatch(/secteur/i);
   });
 });
@@ -299,7 +294,7 @@ describe("Page_Souverainete_RD — IA locale, transformation et R&D", () => {
     expect(container.textContent).toContain(
       "sans dépendre d'infrastructures que vous ne contrôlez pas",
     );
-    expect(screen.getByText("Ancrage français et terrain")).toBeInTheDocument();
+    expect(screen.getByText("Ancrage RDC et terrain")).toBeInTheDocument();
   });
 
   // Requirement 9.2 : patrimoine cognitif propriétaire, élément du Palier_Transformation.
@@ -345,8 +340,9 @@ describe("Footer — liens légaux (Requirement 12.7)", () => {
       "href",
       "/mentions-legales",
     );
-    expect(
-      screen.getByRole("link", { name: "Politique de confidentialité" }),
-    ).toHaveAttribute("href", "/confidentialite");
+    expect(screen.getByRole("link", { name: "Politique de confidentialité" })).toHaveAttribute(
+      "href",
+      "/confidentialite",
+    );
   });
 });

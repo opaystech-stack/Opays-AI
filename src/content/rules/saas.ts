@@ -72,10 +72,7 @@ function hasValidAccessUrl(accessUrl: string | null): accessUrl is string {
  */
 export function selectRenderableProducts(products: SaasProduct[]): SaasProduct[] {
   return products
-    .filter(
-      (product) =>
-        hasValidName(product.name) && hasValidDescription(product.description),
-    )
+    .filter((product) => hasValidName(product.name) && hasValidDescription(product.description))
     .slice(0, PRODUCTS_MAX);
 }
 

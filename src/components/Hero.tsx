@@ -21,7 +21,9 @@ export function Hero() {
 
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1]">
             L'IA au service de votre <br />
-            <span className="text-gradient text-4xl md:text-5xl lg:text-6xl">performance réelle.</span>
+            <span className="text-gradient text-4xl md:text-5xl lg:text-6xl">
+              performance réelle.
+            </span>
             <br />
             <span className="text-foreground/90 text-2xl md:text-3xl lg:text-4xl font-semibold block mt-4">
               Robuste. Locale. Souveraine.
@@ -29,7 +31,9 @@ export function Hero() {
           </h1>
 
           <p className="mt-6 text-lg text-muted-foreground max-w-xl leading-relaxed">
-            Nous aidons les entreprises à stabiliser et automatiser leurs opérations quotidiennes. Nous identifions vos goulots d'étranglement pour simplifier vos processus et bâtir des systèmes fiables qui protègent durablement votre savoir-faire.
+            Nous aidons les entreprises à stabiliser et automatiser leurs opérations quotidiennes.
+            Nous identifions vos goulots d'étranglement pour simplifier vos processus et bâtir des
+            systèmes fiables qui protègent durablement votre savoir-faire.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-4">

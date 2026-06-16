@@ -26,8 +26,5 @@ function isNonEmpty(value: string): boolean {
  * @returns Les fiches rendables, dans leur ordre d'origine.
  */
 export function selectRenderableMembers(members: TeamMember[]): TeamMember[] {
-  return members.filter(
-    (member) =>
-      isNonEmpty(member.fullName) && member.roles.some(isNonEmpty),
-  );
+  return members.filter((member) => isNonEmpty(member.fullName) && member.roles.some(isNonEmpty));
 }

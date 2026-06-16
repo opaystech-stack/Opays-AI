@@ -83,9 +83,7 @@ export function findForbiddenTerms(
     const needle = normalize(term);
     if (needle.length === 0) continue;
 
-    const pattern = /\s/.test(needle)
-      ? escapeRegExp(needle)
-      : `\\b${escapeRegExp(needle)}\\b`;
+    const pattern = /\s/.test(needle) ? escapeRegExp(needle) : `\\b${escapeRegExp(needle)}\\b`;
 
     if (new RegExp(pattern, "u").test(haystack)) {
       found.add(needle);
@@ -98,9 +96,6 @@ export function findForbiddenTerms(
 /**
  * Indique si un contenu est exempt de tout terme de jargon interdit.
  */
-export function isJargonFree(
-  content: string,
-  terms: readonly string[] = FORBIDDEN_TERMS,
-): boolean {
+export function isJargonFree(content: string, terms: readonly string[] = FORBIDDEN_TERMS): boolean {
   return findForbiddenTerms(content, terms).length === 0;
 }

@@ -100,10 +100,7 @@ export function relativeLuminance(color: Rgb): number {
  * Accepte des couleurs sous forme {@link Rgb} ou de chaîne (hex, rgb, rgba).
  * Renvoie `null` si l'une des couleurs ne peut pas être interprétée.
  */
-export function contrastRatio(
-  foreground: Rgb | string,
-  background: Rgb | string,
-): number | null {
+export function contrastRatio(foreground: Rgb | string, background: Rgb | string): number | null {
   const fg = typeof foreground === "string" ? parseColor(foreground) : foreground;
   const bg = typeof background === "string" ? parseColor(background) : background;
 

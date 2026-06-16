@@ -15,11 +15,7 @@
 
 import fc from "fast-check";
 import { describe, it, expect } from "vitest";
-import {
-  averageSentenceLength,
-  isConcise,
-  MAX_AVERAGE_SENTENCE_LENGTH,
-} from "./concision";
+import { averageSentenceLength, isConcise, MAX_AVERAGE_SENTENCE_LENGTH } from "./concision";
 
 const NUM_RUNS = 100;
 
@@ -67,16 +63,12 @@ describe("averageSentenceLength / isConcise", () => {
 
   it("Property 22: isConcise est vrai si et seulement si la moyenne est <= au seuil", () => {
     fc.assert(
-      fc.property(
-        blockArb,
-        fc.integer({ min: 1, max: 60 }),
-        ([block], threshold) => {
-          const average = averageSentenceLength(block);
-          expect(isConcise(block, threshold)).toBe(average <= threshold);
-          // Cohérence avec le seuil par défaut (25 mots).
-          expect(isConcise(block)).toBe(average <= MAX_AVERAGE_SENTENCE_LENGTH);
-        },
-      ),
+      fc.property(blockArb, fc.integer({ min: 1, max: 60 }), ([block], threshold) => {
+        const average = averageSentenceLength(block);
+        expect(isConcise(block, threshold)).toBe(average <= threshold);
+        // Cohérence avec le seuil par défaut (25 mots).
+        expect(isConcise(block)).toBe(average <= MAX_AVERAGE_SENTENCE_LENGTH);
+      }),
       { numRuns: NUM_RUNS },
     );
   });
@@ -87,13 +79,10 @@ describe("averageSentenceLength / isConcise", () => {
       .map((words) => words.join(" "));
 
     fc.assert(
-      fc.property(
-        fc.array(shortSentenceArb, { minLength: 1, maxLength: 8 }),
-        (sentences) => {
-          const block = sentences.join(". ") + ".";
-          expect(isConcise(block)).toBe(true);
-        },
-      ),
+      fc.property(fc.array(shortSentenceArb, { minLength: 1, maxLength: 8 }), (sentences) => {
+        const block = sentences.join(". ") + ".";
+        expect(isConcise(block)).toBe(true);
+      }),
       { numRuns: NUM_RUNS },
     );
   });

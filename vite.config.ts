@@ -96,7 +96,13 @@ export default defineConfig({
     // d'icônes lucide, données de démo), sortent ainsi du bundle initial des
     // pages publiques (Requirements 15.1, 15.2). La définition de route reste
     // dans l'arbre (head/noindex préservés), seul le rendu est différé.
-    TanStackRouterVite({ autoCodeSplitting: true }),
+    TanStackRouterVite({
+      autoCodeSplitting: true,
+      // Les tests Property-Based sur les routes publiques vivent à côté des
+      // fichiers de route. On les ignore explicitement pour éviter les warnings
+      // "route non exportée" lors du build (Flow Opays — validation verte).
+      routeFileIgnorePattern: "\\.test\\.tsx?$",
+    }),
     compassApiDevPlugin(),
     react(),
     tailwindcss(),

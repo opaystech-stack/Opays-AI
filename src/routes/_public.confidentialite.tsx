@@ -228,8 +228,8 @@ function PrivacyBody() {
               </Link>
               . Une preuve d'identité pourra vous être demandée. Si vous estimez, après nous avoir
               contactés, que vos droits ne sont pas respectés, vous pouvez introduire une
-              réclamation auprès de l'autorité de contrôle compétente (en France, la CNIL —
-              www.cnil.fr).
+              réclamation auprès de l'autorité de contrôle compétente (en RDC, l'APDP —
+              https://apdp-rdc.org/).
             </p>
           </PrivacySection>
 

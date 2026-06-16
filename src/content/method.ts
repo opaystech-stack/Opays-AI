@@ -11,11 +11,7 @@
 
 export type TimeUnit = "jours" | "semaines";
 
-export type MethodCategory =
-  | "terrain"
-  | "frictions"
-  | "construction"
-  | "mise-en-service";
+export type MethodCategory = "terrain" | "frictions" | "construction" | "mise-en-service";
 
 export interface MethodPhase {
   id: string;

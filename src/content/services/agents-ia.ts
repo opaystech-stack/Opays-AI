@@ -1,11 +1,4 @@
-import {
-  Bot,
-  BrainCircuit,
-  Gauge,
-  Layers,
-  ShieldCheck,
-  TrendingUp,
-} from "lucide-react";
+import { Bot, BrainCircuit, Gauge, Layers, ShieldCheck, TrendingUp } from "lucide-react";
 import type { ServiceContent } from "@/components/marketing/ServicePage";
 import { MOMENT_NOW } from "./_shared";
 
@@ -22,7 +15,7 @@ export const AGENTS_IA: ServiceContent = {
     highlight: "qui ne s'arrêtent jamais.",
     lead: "Pendant que vous lisez ces lignes, vos concurrents commencent à déployer des agents qui travaillent sans pause, sans congé et sans démission.",
     paragraphs: [
-      "Les agents IA ne relèvent plus de la fiction. Ils existent, ils produisent, et ils transforment des organisations entières dans le plus grand silence. La plupart des PME pensent encore que l'IA, « c'est pour plus tard ».",
+      "Les agents IA ne relèvent plus de la fiction. Ils existent, ils produisent, et ils transforment des organisations entières dans le plus grand silence. La plupart des organisations opérationnelles en RDC pensent encore que l'IA, « c'est pour plus tard ».",
       "Le retard accumulé aujourd'hui deviendra très difficile à combler d'ici deux ans. Plus tard, c'est souvent trop tard.",
     ],
     ctaLabel: "Réserver mon diagnostic gratuit",
@@ -32,10 +25,26 @@ export const AGENTS_IA: ServiceContent = {
     title: "Ce qui se joue vraiment dans votre marché",
     lead: "Quelques repères que beaucoup de dirigeants découvrent une fois leurs indicateurs analysés de près.",
     stats: [
-      { value: "73 %", label: "des entreprises qui adoptent l'IA agentique obtiennent un avantage compétitif décisif en moins de 12 mois." },
-      { value: "× 40", label: "de productivité possible sur des tâches cognitives confiées à un agent IA bien conçu." },
-      { value: "82 %", label: "des entreprises sans stratégie IA d'ici 2027 perdraient des parts de marché significatives (Gartner)." },
-      { value: "5 ans", label: "d'avance estimée pour qui adopte l'IA agentique maintenant, face à ceux qui attendent." },
+      {
+        value: "73 %",
+        label:
+          "des entreprises qui adoptent l'IA agentique obtiennent un avantage compétitif décisif en moins de 12 mois.",
+      },
+      {
+        value: "× 40",
+        label:
+          "de productivité possible sur des tâches cognitives confiées à un agent IA bien conçu.",
+      },
+      {
+        value: "82 %",
+        label:
+          "des entreprises sans stratégie IA d'ici 2027 perdraient des parts de marché significatives (Gartner).",
+      },
+      {
+        value: "5 ans",
+        label:
+          "d'avance estimée pour qui adopte l'IA agentique maintenant, face à ceux qui attendent.",
+      },
     ],
     consequencesTitle: "Concrètement, pour vous",
     consequences: [
@@ -53,12 +62,36 @@ export const AGENTS_IA: ServiceContent = {
     title: "Des agents utiles, fiables et sous contrôle",
     lead: "Nous déployons des agents IA qui exécutent un travail réel, intégrés à vos outils et maîtrisables de bout en bout.",
     pillars: [
-      { icon: Bot, title: "Agents qui agissent", text: "Au-delà de la conversation, nos agents exécutent des tâches concrètes : recherche, analyse, rédaction, mise à jour de vos systèmes." },
-      { icon: BrainCircuit, title: "Mémoire et raisonnement", text: "Mémoire long terme persistante et planification multi-étapes, pour traiter des cas métier complexes plutôt que de simples FAQ." },
-      { icon: Layers, title: "Branchés à votre stack", text: "Connexion à vos API, bases de données, CRM et sources externes, sans réinventer votre socle existant." },
-      { icon: ShieldCheck, title: "Garde-fous intégrés", text: "Contrôles, validations et limites claires encadrent chaque action de l'agent, exécutable localement si nécessaire." },
-      { icon: Gauge, title: "Amélioration continue", text: "Les agents apprennent de l'usage et gagnent en précision, sous votre supervision, au fil des semaines." },
-      { icon: TrendingUp, title: "Valeur mesurable", text: "Nous priorisons les cas d'usage à fort retour, pour transformer l'activité plutôt que faire de simples économies." },
+      {
+        icon: Bot,
+        title: "Agents qui agissent",
+        text: "Au-delà de la conversation, nos agents exécutent des tâches concrètes : recherche, analyse, rédaction, mise à jour de vos systèmes.",
+      },
+      {
+        icon: BrainCircuit,
+        title: "Mémoire et raisonnement",
+        text: "Mémoire long terme persistante et planification multi-étapes, pour traiter des cas métier complexes plutôt que de simples FAQ.",
+      },
+      {
+        icon: Layers,
+        title: "Branchés à votre stack",
+        text: "Connexion à vos API, bases de données, CRM et sources externes, sans réinventer votre socle existant.",
+      },
+      {
+        icon: ShieldCheck,
+        title: "Garde-fous intégrés",
+        text: "Contrôles, validations et limites claires encadrent chaque action de l'agent, exécutable localement si nécessaire.",
+      },
+      {
+        icon: Gauge,
+        title: "Amélioration continue",
+        text: "Les agents apprennent de l'usage et gagnent en précision, sous votre supervision, au fil des semaines.",
+      },
+      {
+        icon: TrendingUp,
+        title: "Valeur mesurable",
+        text: "Nous priorisons les cas d'usage à fort retour, pour transformer l'activité plutôt que faire de simples économies.",
+      },
     ],
   },
   comparison: {
@@ -68,14 +101,26 @@ export const AGENTS_IA: ServiceContent = {
     badLabel: "Chatbot classique",
     goodLabel: "Agent IA Opays Tech",
     rows: [
-      { criterion: "Type d'interaction", bad: "réponses scriptées", good: "conversation complète et contextuelle" },
-      { criterion: "Capacité à agir", bad: "se limite à répondre", good: "exécute des tâches concrètes" },
+      {
+        criterion: "Type d'interaction",
+        bad: "réponses scriptées",
+        good: "conversation complète et contextuelle",
+      },
+      {
+        criterion: "Capacité à agir",
+        bad: "se limite à répondre",
+        good: "exécute des tâches concrètes",
+      },
       { criterion: "Mémoire", bad: "limitée à la session", good: "long terme, persistante" },
       { criterion: "Outils mobilisés", bad: "aucun", good: "API, bases de données, CRM, web" },
       { criterion: "Raisonnement", bad: "statique", good: "planification multi-étapes" },
       { criterion: "Apprentissage", bad: "figé", good: "amélioration continue" },
       { criterion: "Cas d'usage", bad: "FAQ basique", good: "processus métier complexes" },
-      { criterion: "Valeur générée", bad: "économies modestes", good: "transformation de l'activité" },
+      {
+        criterion: "Valeur générée",
+        bad: "économies modestes",
+        good: "transformation de l'activité",
+      },
     ],
   },
   method: {
@@ -83,11 +128,31 @@ export const AGENTS_IA: ServiceContent = {
     title: "Cinq étapes. Aucune surprise. Que des résultats.",
     lead: "Pas de jargon, pas de dépassement, pas de retard caché. Chaque étape a un livrable clair.",
     steps: [
-      { title: "Cas d'usage", duration: "1 semaine", text: "Identification des processus à fort potentiel d'automatisation par agent, étude de faisabilité technique et estimation de l'impact business." },
-      { title: "Architecture", duration: "1 à 2 semaines", text: "Conception de l'agent, de ses connexions à vos outils et de ses garde-fous, validée avant tout développement." },
-      { title: "Développement", duration: "3 à 8 semaines", text: "Construction de l'agent, intégration à votre stack et aux sources de données, itérations sur cas réels." },
-      { title: "Tests et garde-fous", duration: "2 semaines", text: "Mise à l'épreuve sur scénarios sensibles, contrôles de sécurité, limites d'action et procédures de repli." },
-      { title: "Déploiement", duration: "en continu", text: "Mise en production progressive, supervision des performances et extension graduelle du périmètre couvert." },
+      {
+        title: "Cas d'usage",
+        duration: "1 semaine",
+        text: "Identification des processus à fort potentiel d'automatisation par agent, étude de faisabilité technique et estimation de l'impact business.",
+      },
+      {
+        title: "Architecture",
+        duration: "1 à 2 semaines",
+        text: "Conception de l'agent, de ses connexions à vos outils et de ses garde-fous, validée avant tout développement.",
+      },
+      {
+        title: "Développement",
+        duration: "3 à 8 semaines",
+        text: "Construction de l'agent, intégration à votre stack et aux sources de données, itérations sur cas réels.",
+      },
+      {
+        title: "Tests et garde-fous",
+        duration: "2 semaines",
+        text: "Mise à l'épreuve sur scénarios sensibles, contrôles de sécurité, limites d'action et procédures de repli.",
+      },
+      {
+        title: "Déploiement",
+        duration: "en continu",
+        text: "Mise en production progressive, supervision des performances et extension graduelle du périmètre couvert.",
+      },
     ],
   },
   timeline: {
@@ -155,12 +220,30 @@ export const AGENTS_IA: ServiceContent = {
     eyebrow: "Vos questions",
     title: "« Oui, mais… » — nos réponses",
     items: [
-      { q: "Quelle est la différence entre un agent IA et un chatbot ?", a: "Un chatbot répond à des questions selon des scénarios figés. Un agent IA raisonne, garde une mémoire, mobilise vos outils et exécute des tâches complètes de bout en bout. L'un informe, l'autre agit à votre place sur des processus réels." },
-      { q: "Combien coûte un agent IA ?", a: "Selon la complexité, la conception se situe généralement entre 10 000 et 100 000 $ et plus. Les coûts d'exploitation varient de quelques centaines à quelques milliers de dollars par mois selon le volume. Le retour se mesure souvent en 3 à 9 mois sur les bons cas d'usage." },
-      { q: "Les agents IA peuvent-ils commettre des erreurs graves ?", a: "Nous encadrons chaque agent par des garde-fous, des validations et des limites d'action claires. Sur les décisions sensibles, l'humain reste dans la boucle et l'agent échoue proprement plutôt que d'agir à l'aveugle." },
-      { q: "Mes données servent-elles à entraîner l'IA ?", a: "Non. Vos données restent les vôtres et ne sont pas utilisées pour entraîner des modèles tiers. Nous privilégions des architectures cloisonnées, exécutables localement lorsque la souveraineté l'exige." },
-      { q: "Par quel cas d'usage commencer ?", a: "Les meilleurs points de départ sont les processus à la fois répétitifs, coûteux en temps cognitif et bien documentés : veille, analyse, rédaction, qualification. Nous les identifions ensemble lors du cadrage initial." },
-      { q: "Et si la technologie évolue ? Mon agent deviendra-t-il obsolète ?", a: "Nous concevons des agents modulaires, dont les modèles et les briques se remplacent sans tout reconstruire. Votre agent suit l'évolution de l'IA plutôt que de la subir." },
+      {
+        q: "Quelle est la différence entre un agent IA et un chatbot ?",
+        a: "Un chatbot répond à des questions selon des scénarios figés. Un agent IA raisonne, garde une mémoire, mobilise vos outils et exécute des tâches complètes de bout en bout. L'un informe, l'autre agit à votre place sur des processus réels.",
+      },
+      {
+        q: "Combien coûte un agent IA ?",
+        a: "Selon la complexité, la conception se situe généralement entre 10 000 et 100 000 $ et plus. Les coûts d'exploitation varient de quelques centaines à quelques milliers de dollars par mois selon le volume. Le retour se mesure souvent en 3 à 9 mois sur les bons cas d'usage.",
+      },
+      {
+        q: "Les agents IA peuvent-ils commettre des erreurs graves ?",
+        a: "Nous encadrons chaque agent par des garde-fous, des validations et des limites d'action claires. Sur les décisions sensibles, l'humain reste dans la boucle et l'agent échoue proprement plutôt que d'agir à l'aveugle.",
+      },
+      {
+        q: "Mes données servent-elles à entraîner l'IA ?",
+        a: "Non. Vos données restent les vôtres et ne sont pas utilisées pour entraîner des modèles tiers. Nous privilégions des architectures cloisonnées, exécutables localement lorsque la souveraineté l'exige.",
+      },
+      {
+        q: "Par quel cas d'usage commencer ?",
+        a: "Les meilleurs points de départ sont les processus à la fois répétitifs, coûteux en temps cognitif et bien documentés : veille, analyse, rédaction, qualification. Nous les identifions ensemble lors du cadrage initial.",
+      },
+      {
+        q: "Et si la technologie évolue ? Mon agent deviendra-t-il obsolète ?",
+        a: "Nous concevons des agents modulaires, dont les modèles et les briques se remplacent sans tout reconstruire. Votre agent suit l'évolution de l'IA plutôt que de la subir.",
+      },
     ],
   },
   finalCta: MOMENT_NOW,

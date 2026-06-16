@@ -4,10 +4,7 @@ import { ArrowUpRight, Boxes, PackageOpen } from "lucide-react";
 import { SectionHeader } from "@/components/Approche";
 import { CtaDiagnostic } from "@/components/CtaDiagnostic";
 import { SAAS_PRODUCTS, type SaasProduct } from "@/content/saas";
-import {
-  resolveProductAction,
-  selectRenderableProducts,
-} from "@/content/rules/saas";
+import { resolveProductAction, selectRenderableProducts } from "@/content/rules/saas";
 
 /**
  * Page_SaaS — produits SaaS développés par Opays.
@@ -49,11 +46,7 @@ function SaasPage() {
           ) : (
             <div className="grid gap-6 md:grid-cols-2">
               {products.map((product, index) => (
-                <ProductCard
-                  key={product.name}
-                  product={product}
-                  index={index}
-                />
+                <ProductCard key={product.name} product={product} index={index} />
               ))}
             </div>
           )}
@@ -70,8 +63,8 @@ function SaasPage() {
               Un produit à déployer dans votre organisation&nbsp;?
             </h2>
             <p className="max-w-2xl text-sm text-muted-foreground md:text-base">
-              Partons de votre terrain. Un diagnostic gratuit clarifie l'usage le
-              plus utile pour vos équipes.
+              Partons de votre terrain. Un diagnostic gratuit clarifie l'usage le plus utile pour
+              vos équipes.
             </p>
             <CtaDiagnostic size="lg" />
           </motion.div>
@@ -98,13 +91,7 @@ function SaasHero() {
 }
 
 /** Carte d'un Produit_SaaS avec son action résolue (lien d'accès ou CTA). */
-function ProductCard({
-  product,
-  index,
-}: {
-  product: SaasProduct;
-  index: number;
-}) {
+function ProductCard({ product, index }: { product: SaasProduct; index: number }) {
   const action = resolveProductAction(product);
 
   return (
@@ -171,8 +158,8 @@ function EmptyState() {
         Aucun produit à présenter pour le moment.
       </h2>
       <p className="max-w-xl text-sm text-muted-foreground">
-        Nos produits SaaS arrivent. En attendant, échangeons sur votre besoin
-        lors d'un diagnostic gratuit.
+        Nos produits SaaS arrivent. En attendant, échangeons sur votre besoin lors d'un diagnostic
+        gratuit.
       </p>
     </motion.div>
   );

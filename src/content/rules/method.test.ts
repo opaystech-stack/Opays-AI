@@ -11,11 +11,7 @@
 
 import fc from "fast-check";
 import { describe, expect, it } from "vitest";
-import {
-  REQUIRED_CATEGORIES,
-  coversRequiredCategories,
-  selectRenderablePhases,
-} from "./method";
+import { REQUIRED_CATEGORIES, coversRequiredCategories, selectRenderablePhases } from "./method";
 import type { MethodCategory, MethodPhase, TimeUnit } from "../method";
 
 const NUM_RUNS = 100;
@@ -27,10 +23,7 @@ const categoryArb: fc.Arbitrary<MethodCategory> = fc.constantFrom(
   "mise-en-service",
 );
 
-const timeUnitArb: fc.Arbitrary<TimeUnit> = fc.constantFrom(
-  "jours",
-  "semaines",
-);
+const timeUnitArb: fc.Arbitrary<TimeUnit> = fc.constantFrom("jours", "semaines");
 
 /** Durée : soit absente (null), soit explicite. */
 const durationArb = fc.option(
@@ -61,9 +54,7 @@ const phasesArb = fc.array(phaseArb, { maxLength: 12 });
 
 /** Réplique locale du critère de complétude attendu par la spécification. */
 function isComplete(phase: MethodPhase): boolean {
-  const hasDeliverable = phase.deliverables.some(
-    (d) => d.trim().length > 0,
-  );
+  const hasDeliverable = phase.deliverables.some((d) => d.trim().length > 0);
   return hasDeliverable && phase.duration !== null;
 }
 
@@ -133,9 +124,7 @@ describe("selectRenderablePhases / coversRequiredCategories", () => {
     fc.assert(
       fc.property(coveringPhasesArb, (phases) => {
         expect(coversRequiredCategories(phases)).toBe(true);
-        expect(new Set(phases.map((p) => p.category)).size).toBeGreaterThanOrEqual(
-          4,
-        );
+        expect(new Set(phases.map((p) => p.category)).size).toBeGreaterThanOrEqual(4);
       }),
       { numRuns: NUM_RUNS },
     );

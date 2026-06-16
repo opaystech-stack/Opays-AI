@@ -17,12 +17,7 @@
 
 import fc from "fast-check";
 import { describe, it, expect } from "vitest";
-import {
-  contrastRatio,
-  meetsContrast,
-  WCAG_AA_NORMAL,
-  type Rgb,
-} from "./contrast";
+import { contrastRatio, meetsContrast, WCAG_AA_NORMAL, type Rgb } from "./contrast";
 
 const NUM_RUNS = 100;
 const EPS = 1e-9;

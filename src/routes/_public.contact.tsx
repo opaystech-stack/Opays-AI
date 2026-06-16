@@ -92,9 +92,8 @@ function ContactHero() {
             Réservez votre Diagnostic gratuit.
           </h1>
           <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-            Décrivez-nous votre réalité en quelques lignes. Nous revenons vers
-            vous avec une première lecture de vos enjeux et les prochaines étapes
-            concrètes, sans engagement.
+            Décrivez-nous votre réalité en quelques lignes. Nous revenons vers vous avec une
+            première lecture de vos enjeux et les prochaines étapes concrètes, sans engagement.
           </p>
 
           <ul className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-6">

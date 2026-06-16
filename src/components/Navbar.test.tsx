@@ -38,10 +38,7 @@ import {
 import { render, screen, cleanup } from "@testing-library/react";
 import { Navbar } from "./Navbar";
 import { PUBLIC_PAGES } from "@/content/navigation";
-import {
-  resolveExternalLink,
-  type ResolvedExternalLink,
-} from "@/content/rules/externalLinks";
+import { resolveExternalLink, type ResolvedExternalLink } from "@/content/rules/externalLinks";
 import type { ExternalProject } from "@/content/externalProjects";
 
 const NUM_RUNS = 100;
@@ -104,12 +101,8 @@ function navElement(container: HTMLElement): HTMLElement {
  * Entrées internes de la table de navigation : ancres du `<nav>` sans
  * `target="_blank"` (les liens externes en sont exclus).
  */
-function internalNavEntries(
-  container: HTMLElement,
-): { href: string | null; label: string }[] {
-  const links = Array.from(
-    navElement(container).querySelectorAll('a:not([target="_blank"])'),
-  );
+function internalNavEntries(container: HTMLElement): { href: string | null; label: string }[] {
+  const links = Array.from(navElement(container).querySelectorAll('a:not([target="_blank"])'));
   return links.map((a) => ({
     href: a.getAttribute("href"),
     label: (a.textContent ?? "").trim(),
@@ -118,122 +111,127 @@ function internalNavEntries(
 
 describe("Navbar — Navigation_Principale", () => {
   // Property 1: Couverture des liens de navigation — Validates: Requirements 1.2
-  it("Property 1: rend, pour chaque page publique, un lien activable menant à son URL dédiée", async () => {
-    await fc.assert(
-      fc.asyncProperty(
-        // Le chemin courant ne doit pas changer la couverture des liens.
-        fc.constantFrom(...PUBLIC_PATHS),
-        async (currentPath) => {
-          const { container } = await renderNavbar(currentPath);
+  it(
+    "Property 1: rend, pour chaque page publique, un lien activable menant à son URL dédiée",
+    async () => {
+      await fc.assert(
+        fc.asyncProperty(
+          // Le chemin courant ne doit pas changer la couverture des liens.
+          fc.constantFrom(...PUBLIC_PATHS),
+          async (currentPath) => {
+            const { container } = await renderNavbar(currentPath);
 
-          const entries = internalNavEntries(container);
+            const entries = internalNavEntries(container);
 
-          // Exactement une entrée interne par page publique, ni plus ni moins.
-          expect(entries).toHaveLength(PUBLIC_PAGES.length);
+            // Exactement une entrée interne par page publique, ni plus ni moins.
+            expect(entries).toHaveLength(PUBLIC_PAGES.length);
 
-          // Pour chaque page : un lien activable (ancre avec href) portant son
-          // libellé et menant à son URL dédiée.
-          for (const page of PUBLIC_PAGES) {
-            const match = entries.find((e) => e.href === page.path);
-            expect(match, `lien manquant pour ${page.path}`).toBeDefined();
-            expect(match?.label).toBe(page.label);
-          }
+            // Pour chaque page : un lien activable (ancre avec href) portant son
+            // libellé et menant à son URL dédiée.
+            for (const page of PUBLIC_PAGES) {
+              const match = entries.find((e) => e.href === page.path);
+              expect(match, `lien manquant pour ${page.path}`).toBeDefined();
+              expect(match?.label).toBe(page.label);
+            }
 
-          cleanup();
-        },
-      ),
-      { numRuns: NUM_RUNS },
-    );
-  }, PBT_TIMEOUT);
+            cleanup();
+          },
+        ),
+        { numRuns: NUM_RUNS },
+      );
+    },
+    PBT_TIMEOUT,
+  );
 
   // Property 2: Unicité de l'état actif de navigation — Validates: Requirements 1.6
-  it("Property 2: pour tout chemin de page publique courant, exactement un lien de navigation porte aria-current=\"page\" (celui de la page courante)", async () => {
-    await fc.assert(
-      fc.asyncProperty(fc.constantFrom(...PUBLIC_PATHS), async (currentPath) => {
-        const { container } = await renderNavbar(currentPath);
+  it(
+    'Property 2: pour tout chemin de page publique courant, exactement un lien de navigation porte aria-current="page" (celui de la page courante)',
+    async () => {
+      await fc.assert(
+        fc.asyncProperty(fc.constantFrom(...PUBLIC_PATHS), async (currentPath) => {
+          const { container } = await renderNavbar(currentPath);
 
-        // État actif marqué par aria-current="page" sur les liens du <nav>.
-        const active = Array.from(
-          navElement(container).querySelectorAll('a[aria-current="page"]'),
-        );
+          // État actif marqué par aria-current="page" sur les liens du <nav>.
+          const active = Array.from(
+            navElement(container).querySelectorAll('a[aria-current="page"]'),
+          );
 
-        // Exactement un lien actif.
-        expect(active).toHaveLength(1);
+          // Exactement un lien actif.
+          expect(active).toHaveLength(1);
 
-        // C'est bien le lien de la page courante.
-        const current = PUBLIC_PAGES.find((p) => p.path === currentPath)!;
-        expect(active[0].getAttribute("href")).toBe(currentPath);
-        expect((active[0].textContent ?? "").trim()).toBe(current.label);
+          // C'est bien le lien de la page courante.
+          const current = PUBLIC_PAGES.find((p) => p.path === currentPath)!;
+          expect(active[0].getAttribute("href")).toBe(currentPath);
+          expect((active[0].textContent ?? "").trim()).toBe(current.label);
 
-        // Tous les autres liens internes sont dans l'état par défaut.
-        const others = internalNavEntries(container).filter(
-          (e) => e.href !== currentPath,
-        );
-        expect(others).toHaveLength(PUBLIC_PAGES.length - 1);
+          // Tous les autres liens internes sont dans l'état par défaut.
+          const others = internalNavEntries(container).filter((e) => e.href !== currentPath);
+          expect(others).toHaveLength(PUBLIC_PAGES.length - 1);
 
-        cleanup();
-      }),
-      { numRuns: NUM_RUNS },
-    );
-  }, PBT_TIMEOUT);
+          cleanup();
+        }),
+        { numRuns: NUM_RUNS },
+      );
+    },
+    PBT_TIMEOUT,
+  );
 
   // Property 30: Invariance de la navigation face au registre externe
   // Validates: Requirements 13.2
-  it("Property 30: la table de la Navigation_Principale est exactement PUBLIC_PAGES et reste disjointe de toute variation du registre des Chantier_Externe", async () => {
-    /** URL : absente, vide, valide absolue, ou non analysable. */
-    const urlArb: fc.Arbitrary<string | null> = fc.oneof(
-      fc.constant(null),
-      fc.constantFrom("", "   ", "pas-une-url", "ftp://x", "/relatif"),
-      fc.webUrl(),
-    );
+  it(
+    "Property 30: la table de la Navigation_Principale est exactement PUBLIC_PAGES et reste disjointe de toute variation du registre des Chantier_Externe",
+    async () => {
+      /** URL : absente, vide, valide absolue, ou non analysable. */
+      const urlArb: fc.Arbitrary<string | null> = fc.oneof(
+        fc.constant(null),
+        fc.constantFrom("", "   ", "pas-une-url", "ftp://x", "/relatif"),
+        fc.webUrl(),
+      );
 
-    /** Registre arbitraire de Chantier_Externe (ajout/retrait/URL renseignée). */
-    const externalRegistryArb: fc.Arbitrary<ExternalProject[]> = fc.array(
-      fc.record({
-        id: fc.constantFrom<ExternalProject["id"]>("audit-ia", "opays-commons"),
-        // Libellé externe préfixé pour éviter toute collision fortuite avec un
-        // libellé de page publique.
-        label: fc
-          .string({ minLength: 1, maxLength: 40 })
-          .map((s) => `Chantier ${s.trim() || "externe"}`),
-        url: urlArb,
-      }),
-      { maxLength: 6 },
-    );
+      /** Registre arbitraire de Chantier_Externe (ajout/retrait/URL renseignée). */
+      const externalRegistryArb: fc.Arbitrary<ExternalProject[]> = fc.array(
+        fc.record({
+          id: fc.constantFrom<ExternalProject["id"]>("audit-ia", "opays-commons"),
+          // Libellé externe préfixé pour éviter toute collision fortuite avec un
+          // libellé de page publique.
+          label: fc
+            .string({ minLength: 1, maxLength: 40 })
+            .map((s) => `Chantier ${s.trim() || "externe"}`),
+          url: urlArb,
+        }),
+        { maxLength: 6 },
+      );
 
-    await fc.assert(
-      fc.asyncProperty(
-        fc.constantFrom(...PUBLIC_PATHS),
-        externalRegistryArb,
-        async (currentPath, registry) => {
-          const { container } = await renderNavbar(currentPath);
+      await fc.assert(
+        fc.asyncProperty(
+          fc.constantFrom(...PUBLIC_PATHS),
+          externalRegistryArb,
+          async (currentPath, registry) => {
+            const { container } = await renderNavbar(currentPath);
 
-          // La table de navigation rendue est exactement PUBLIC_PAGES, quel que
-          // soit le chemin courant : elle ne dépend pas du registre externe.
-          const entries = internalNavEntries(container);
-          expect(entries).toEqual(
-            PUBLIC_PAGES.map((p) => ({ href: p.path, label: p.label })),
-          );
+            // La table de navigation rendue est exactement PUBLIC_PAGES, quel que
+            // soit le chemin courant : elle ne dépend pas du registre externe.
+            const entries = internalNavEntries(container);
+            expect(entries).toEqual(PUBLIC_PAGES.map((p) => ({ href: p.path, label: p.label })));
 
-          // Résolution du registre généré via la MÊME logique pure que la Navbar.
-          const visibleExternals = registry
-            .map(resolveExternalLink)
-            .filter(
-              (l): l is Extract<ResolvedExternalLink, { visible: true }> =>
-                l.visible,
-            );
+            // Résolution du registre généré via la MÊME logique pure que la Navbar.
+            const visibleExternals = registry
+              .map(resolveExternalLink)
+              .filter((l): l is Extract<ResolvedExternalLink, { visible: true }> => l.visible);
 
-          // Aucun lien externe (même renseigné) n'intègre la table de navigation :
-          // les entrées de la Navigation_Principale restent inchangées.
-          for (const ext of visibleExternals) {
-            expect(entries.some((e) => e.href === ext.url)).toBe(false);
-            expect(PUBLIC_PATHS.includes(ext.url)).toBe(false);
-          }
+            // Aucun lien externe (même renseigné) n'intègre la table de navigation :
+            // les entrées de la Navigation_Principale restent inchangées.
+            for (const ext of visibleExternals) {
+              expect(entries.some((e) => e.href === ext.url)).toBe(false);
+              expect(PUBLIC_PATHS.includes(ext.url)).toBe(false);
+            }
 
-          cleanup();
-        },
-      ),
-      { numRuns: NUM_RUNS },
-    );
-  }, PBT_TIMEOUT);
+            cleanup();
+          },
+        ),
+        { numRuns: NUM_RUNS },
+      );
+    },
+    PBT_TIMEOUT,
+  );
 });

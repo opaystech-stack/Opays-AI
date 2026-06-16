@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { ExternalLink as ExternalLinkIcon, Menu, X } from "lucide-react";
-import logoIcon from "@/assets/opays-icon.png";
+import logoIcon from "/logo-opays.svg";
 import { PUBLIC_PAGES } from "@/content/navigation";
 import { EXTERNAL_PROJECTS } from "@/content/externalProjects";
 import { resolveCta } from "@/content/rules/cta";
@@ -24,12 +24,8 @@ const externalLinks = EXTERNAL_PROJECTS.map(resolveExternalLink).filter(
 const linkBase =
   "text-[13px] font-medium transition-colors relative after:absolute after:left-0 after:-bottom-1 after:h-px after:bg-primary after:transition-all";
 
-/** Liste affichée : pages publiques + lien Services. */
-const NAV_LINKS: { path: string; label: string }[] = [
-  ...PUBLIC_PAGES.slice(0, 1),
-  { path: "/services", label: "Services" },
-  ...PUBLIC_PAGES.slice(1),
-];
+/** Liste affichée : pages publiques uniquement (source unique de vérité). */
+const NAV_LINKS: { path: string; label: string }[] = PUBLIC_PAGES;
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
@@ -48,7 +44,6 @@ export function Navbar() {
               height={24}
               decoding="async"
               className="h-6 w-6 object-contain bg-transparent transition-transform group-hover:scale-110"
-              style={{ mixBlendMode: "screen" }}
             />
             <span className="font-display text-sm font-semibold tracking-tight">
               OPAYS <span className="text-gradient">TECH</span>

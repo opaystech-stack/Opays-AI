@@ -1,14 +1,7 @@
 import { useState, type ComponentType } from "react";
 import { motion } from "framer-motion";
 import { Link } from "@tanstack/react-router";
-import {
-  ArrowRight,
-  Check,
-  ChevronDown,
-  Clock,
-  Phone,
-  X,
-} from "lucide-react";
+import { ArrowRight, Check, ChevronDown, Clock, Phone, X } from "lucide-react";
 
 /**
  * Bibliothèque de sections marketing réutilisables (gabarit de page service).
@@ -33,8 +26,7 @@ export function Container({
   className?: string;
   size?: "default" | "narrow" | "wide";
 }) {
-  const max =
-    size === "narrow" ? "max-w-3xl" : size === "wide" ? "max-w-7xl" : "max-w-6xl";
+  const max = size === "narrow" ? "max-w-3xl" : size === "wide" ? "max-w-7xl" : "max-w-6xl";
   return <div className={`mx-auto ${max} px-6 ${className}`}>{children}</div>;
 }
 
@@ -107,8 +99,14 @@ export interface ServiceHeroData {
 export function ServiceHero({ data }: { data: ServiceHeroData }) {
   return (
     <section className="relative overflow-hidden pt-32 pb-16 md:pb-24">
-      <div className="pointer-events-none absolute inset-0 -z-10 grid-bg opacity-40" aria-hidden="true" />
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-[var(--gradient-hero)]" aria-hidden="true" />
+      <div
+        className="pointer-events-none absolute inset-0 -z-10 grid-bg opacity-40"
+        aria-hidden="true"
+      />
+      <div
+        className="pointer-events-none absolute inset-0 -z-10 bg-[var(--gradient-hero)]"
+        aria-hidden="true"
+      />
       <Container>
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -445,7 +443,10 @@ export function Faq({ data }: { data: FaqData }) {
           {data.items.slice(0, 4).map((item, i) => {
             const isOpen = open === i;
             return (
-              <div key={i} className="overflow-hidden rounded-2xl border border-border/60 bg-card/30">
+              <div
+                key={i}
+                className="overflow-hidden rounded-2xl border border-border/60 bg-card/30"
+              >
                 <button
                   type="button"
                   onClick={() => setOpen(isOpen ? null : i)}
@@ -488,13 +489,18 @@ export interface FinalCtaData {
 export function FinalCta({ data }: { data: FinalCtaData }) {
   return (
     <Section className="relative overflow-hidden border-t border-border/50">
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-[var(--gradient-hero)] opacity-60" aria-hidden="true" />
+      <div
+        className="pointer-events-none absolute inset-0 -z-10 bg-[var(--gradient-hero)] opacity-60"
+        aria-hidden="true"
+      />
       <Container size="narrow">
         <div className="flex flex-col items-center gap-6 text-center">
           <Eyebrow>{data.eyebrow}</Eyebrow>
           <h2 className="text-3xl font-bold leading-tight md:text-4xl">{data.title}</h2>
           {data.scarcity && (
-            <p className="max-w-2xl text-base leading-relaxed text-muted-foreground">{data.scarcity}</p>
+            <p className="max-w-2xl text-base leading-relaxed text-muted-foreground">
+              {data.scarcity}
+            </p>
           )}
           <Link
             to="/contact"

@@ -17,53 +17,69 @@ const faqData: FAQCategory[] = [
     title: "OPAYS TECH vs Outils Publics (ex: ChatGPT)",
     items: [
       {
-        question: "Pourquoi faire appel à OPAYS TECH alors que mes équipes utilisent déjà ChatGPT ?",
-        answer: "ChatGPT est un excellent assistant généraliste, mais il n'est pas connecté à vos bases de données, ne connaît pas vos processus internes et ne peut pas automatiser vos flux de travail. Nos solutions s'intègrent directement au cœur de votre entreprise pour exécuter vos processus métiers de bout en bout, tout en garantissant la sécurité totale de vos données d'entreprise."
+        question:
+          "Pourquoi faire appel à OPAYS TECH alors que mes équipes utilisent déjà ChatGPT ?",
+        answer:
+          "ChatGPT est un excellent assistant généraliste, mais il n'est pas connecté à vos bases de données, ne connaît pas vos processus internes et ne peut pas automatiser vos flux de travail. Nos solutions s'intègrent directement au cœur de votre entreprise pour exécuter vos processus métiers de bout en bout, tout en garantissant la sécurité totale de vos données d'entreprise.",
       },
       {
         question: "Vos solutions sont-elles plus compliquées à utiliser qu'un outil grand public ?",
-        answer: "Non, au contraire. Nous concevons nos systèmes de \"l'infrastructure à l'usage\". Vos équipes n'ont pas besoin d'apprendre à \"prompter\" ou d'avoir des connaissances techniques. Les solutions que nous livrons s'intègrent naturellement dans leurs habitudes quotidiennes avec des interfaces intuitives."
-      }
-    ]
+        answer:
+          "Non, au contraire. Nous concevons nos systèmes de \"l'infrastructure à l'usage\". Vos équipes n'ont pas besoin d'apprendre à \"prompter\" ou d'avoir des connaissances techniques. Les solutions que nous livrons s'intègrent naturellement dans leurs habitudes quotidiennes avec des interfaces intuitives.",
+      },
+    ],
   },
   {
     title: "Implémentation & Intégration",
     items: [
       {
         question: "Dois-je changer tous mes logiciels actuels pour intégrer votre IA ?",
-        answer: "Absolument pas. Nos solutions sont conçues pour s'interconnecter de manière transparente avec vos outils existants (ERP, CRM, messageries, bases de données). L'IA vient se brancher à votre infrastructure technologique actuelle sans perturber vos opérations."
+        answer:
+          "Absolument pas. Nos solutions sont conçues pour s'interconnecter de manière transparente avec vos outils existants (ERP, CRM, messageries, bases de données). L'IA vient se brancher à votre infrastructure technologique actuelle sans perturber vos opérations.",
       },
       {
         question: "Combien de temps faut-il pour déployer une solution IA chez nous ?",
-        answer: "Cela dépend de la complexité de vos processus. Nous commençons toujours par identifier vos plus gros goulots d'étranglement pour déployer rapidement une première solution ciblée (souvent en quelques semaines), avant d'étendre progressivement l'automatisation à d'autres secteurs."
-      }
-    ]
+        answer:
+          "Cela dépend de la complexité de vos processus. Nous commençons toujours par identifier vos plus gros goulots d'étranglement pour déployer rapidement une première solution ciblée (souvent en quelques semaines), avant d'étendre progressivement l'automatisation à d'autres secteurs.",
+      },
+    ],
   },
   {
     title: "Sécurité & Souveraineté",
     items: [
       {
         question: "Nos données d'entreprise vont-elles servir à entraîner d'autres IA publiques ?",
-        answer: "Jamais. C'est la différence fondamentale avec les versions grand public. Nous privilégions des architectures souveraines. Vos données restent strictement confidentielles dans votre environnement sécurisé (cloud privé ou sur site) et n'en sortent sous aucun prétexte."
-      }
-    ]
+        answer:
+          "Jamais. C'est la différence fondamentale avec les versions grand public. Nous privilégions des architectures souveraines. Vos données restent strictement confidentielles dans votre environnement sécurisé (cloud privé ou sur site) et n'en sortent sous aucun prétexte.",
+      },
+    ],
   },
   {
     title: "Impact & Rentabilité",
     items: [
       {
         question: "Est-ce que l'IA va remplacer mes employés ?",
-        answer: "Non. Notre objectif est de réduire la \"fatigue opérationnelle\" de vos collaborateurs. Nous automatisons les tâches répétitives, fastidieuses et sans valeur ajoutée, pour que vos équipes puissent se concentrer sur l'analyse, la relation client et la prise de décision stratégique."
+        answer:
+          'Non. Notre objectif est de réduire la "fatigue opérationnelle" de vos collaborateurs. Nous automatisons les tâches répétitives, fastidieuses et sans valeur ajoutée, pour que vos équipes puissent se concentrer sur l\'analyse, la relation client et la prise de décision stratégique.',
       },
       {
         question: "Comment mesure-t-on le retour sur investissement (ROI) ?",
-        answer: "Le ROI est très concret : il se mesure par le temps gagné par vos équipes, la diminution drastique des erreurs manuelles et l'accélération de vos délais de traitement. L'amélioration de la performance est généralement mesurable dès le premier mois d'utilisation."
-      }
-    ]
-  }
+        answer:
+          "Le ROI est très concret : il se mesure par le temps gagné par vos équipes, la diminution drastique des erreurs manuelles et l'accélération de vos délais de traitement. L'amélioration de la performance est généralement mesurable dès le premier mois d'utilisation.",
+      },
+    ],
+  },
 ];
 
-function FAQAccordionItem({ item, isOpen, onClick }: { item: FAQItem; isOpen: boolean; onClick: () => void }) {
+function FAQAccordionItem({
+  item,
+  isOpen,
+  onClick,
+}: {
+  item: FAQItem;
+  isOpen: boolean;
+  onClick: () => void;
+}) {
   return (
     <div className="border border-white/10 rounded-2xl bg-black/20 backdrop-blur-sm overflow-hidden transition-all hover:border-white/20">
       <button
@@ -83,9 +99,7 @@ function FAQAccordionItem({ item, isOpen, onClick }: { item: FAQItem; isOpen: bo
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
           >
-            <div className="px-6 pb-6 text-muted-foreground leading-relaxed">
-              {item.answer}
-            </div>
+            <div className="px-6 pb-6 text-muted-foreground leading-relaxed">{item.answer}</div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -112,14 +126,15 @@ export function FAQ() {
             Questions <span className="text-gradient">Fréquentes</span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Tout ce que vous devez savoir sur l'intégration de l'IA au cœur de votre entreprise avec OPAYS TECH.
+            Tout ce que vous devez savoir sur l'intégration de l'IA au cœur de votre entreprise avec
+            OPAYS TECH.
           </p>
         </div>
 
         <div className="space-y-12">
           {faqData.map((category, catIndex) => (
-            <div 
-              key={catIndex} 
+            <div
+              key={catIndex}
               className="p-8 rounded-3xl border border-[color:var(--neon-cyan)]/30 bg-[color:var(--neon-cyan)]/5 backdrop-blur-sm space-y-6 shadow-[var(--shadow-neon)] transition-all hover:border-[color:var(--neon-cyan)]/60"
             >
               <h3 className="text-2xl font-bold text-white flex items-center gap-3">

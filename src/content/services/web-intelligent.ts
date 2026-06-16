@@ -1,11 +1,4 @@
-import {
-  Gauge,
-  Languages,
-  Search,
-  Smartphone,
-  ShieldCheck,
-  TrendingUp,
-} from "lucide-react";
+import { Gauge, Languages, Search, Smartphone, ShieldCheck, TrendingUp } from "lucide-react";
 import type { ServiceContent } from "@/components/marketing/ServicePage";
 import { MOMENT_NOW } from "./_shared";
 
@@ -33,7 +26,10 @@ export const WEB_INTELLIGENT: ServiceContent = {
     title: "Ce que votre site vous coûte vraiment",
     lead: "Quelques repères de marché que la plupart des dirigeants découvrent en regardant leurs analytics de près.",
     stats: [
-      { value: "53 %", label: "des visiteurs quittent un site qui met plus de trois secondes à charger." },
+      {
+        value: "53 %",
+        label: "des visiteurs quittent un site qui met plus de trois secondes à charger.",
+      },
       { value: "75 %", label: "jugent votre crédibilité d'après le design de votre site." },
       { value: "68 %", label: "des expériences en ligne commencent sur un moteur de recherche." },
       { value: "61 %", label: "de conversions perdues sur les sites mal optimisés pour mobile." },
@@ -54,12 +50,36 @@ export const WEB_INTELLIGENT: ServiceContent = {
     title: "Un site rapide, visible et taillé pour convertir",
     lead: "Nous construisons un actif web performant, maîtrisable par vos équipes et pérenne dans le temps.",
     pillars: [
-      { icon: Gauge, title: "Vitesse extrême", text: "Un chargement sous 1,5 seconde, parce que chaque seconde gagnée retient des visiteurs et améliore vos conversions." },
-      { icon: Search, title: "Visible sur Google", text: "Architecture et contenus optimisés pour viser le top 10 sur vos mots-clés stratégiques, plutôt que de rester invisible." },
-      { icon: TrendingUp, title: "Pensé pour convertir", text: "Parcours et appels à l'action conçus pour transformer le trafic en demandes, avec des taux visés de 3 à 8 % et plus." },
-      { icon: Smartphone, title: "Mobile natif", text: "Une expérience fluide sur smartphone, là où la majorité de votre audience vous découvre désormais." },
-      { icon: ShieldCheck, title: "Sécurisé et maîtrisé", text: "Protection avancée, surveillance continue et interface simple pour mettre à jour le site en toute autonomie." },
-      { icon: Languages, title: "Bilingue et pérenne", text: "Site bilingue FR/EN et architecture modulaire, prête à évoluer sans refonte tous les deux ou trois ans." },
+      {
+        icon: Gauge,
+        title: "Vitesse extrême",
+        text: "Un chargement sous 1,5 seconde, parce que chaque seconde gagnée retient des visiteurs et améliore vos conversions.",
+      },
+      {
+        icon: Search,
+        title: "Visible sur Google",
+        text: "Architecture et contenus optimisés pour viser le top 10 sur vos mots-clés stratégiques, plutôt que de rester invisible.",
+      },
+      {
+        icon: TrendingUp,
+        title: "Pensé pour convertir",
+        text: "Parcours et appels à l'action conçus pour transformer le trafic en demandes, avec des taux visés de 3 à 8 % et plus.",
+      },
+      {
+        icon: Smartphone,
+        title: "Mobile natif",
+        text: "Une expérience fluide sur smartphone, là où la majorité de votre audience vous découvre désormais.",
+      },
+      {
+        icon: ShieldCheck,
+        title: "Sécurisé et maîtrisé",
+        text: "Protection avancée, surveillance continue et interface simple pour mettre à jour le site en toute autonomie.",
+      },
+      {
+        icon: Languages,
+        title: "Bilingue et pérenne",
+        text: "Site bilingue FR/EN et architecture modulaire, prête à évoluer sans refonte tous les deux ou trois ans.",
+      },
     ],
   },
   comparison: {
@@ -70,13 +90,29 @@ export const WEB_INTELLIGENT: ServiceContent = {
     goodLabel: "Web intelligent Opays Tech",
     rows: [
       { criterion: "Vitesse de chargement", bad: "5 à 8 secondes", good: "moins de 1,5 seconde" },
-      { criterion: "Position sur Google", bad: "page 5 ou inexistante", good: "top 10 visé sur vos mots-clés" },
+      {
+        criterion: "Position sur Google",
+        bad: "page 5 ou inexistante",
+        good: "top 10 visé sur vos mots-clés",
+      },
       { criterion: "Taux de conversion", bad: "0,5 à 1,5 %", good: "3 à 8 % et au-delà" },
       { criterion: "Expérience mobile", bad: "approximative", good: "native et fluide" },
-      { criterion: "Mises à jour", bad: "cauchemar technique", good: "interface simple, autonomie totale" },
-      { criterion: "Sécurité", bad: "failles régulières", good: "protection avancée et surveillance 24/7" },
+      {
+        criterion: "Mises à jour",
+        bad: "cauchemar technique",
+        good: "interface simple, autonomie totale",
+      },
+      {
+        criterion: "Sécurité",
+        bad: "failles régulières",
+        good: "protection avancée et surveillance 24/7",
+      },
       { criterion: "Multilingue FR/EN", bad: "souvent absent", good: "intégré nativement" },
-      { criterion: "Évolutivité", bad: "refonte tous les 2 à 3 ans", good: "architecture pérenne et modulaire" },
+      {
+        criterion: "Évolutivité",
+        bad: "refonte tous les 2 à 3 ans",
+        good: "architecture pérenne et modulaire",
+      },
     ],
   },
   method: {
@@ -84,11 +120,31 @@ export const WEB_INTELLIGENT: ServiceContent = {
     title: "Cinq étapes. Aucune surprise. Que des résultats.",
     lead: "Pas de jargon, pas de dépassement, pas de retard caché. Chaque étape a un livrable clair.",
     steps: [
-      { title: "Audit", duration: "1 semaine", text: "Analyse de votre marché, de vos concurrents et de votre cible, puis document de stratégie avec arborescence, mots-clés et plan d'action." },
-      { title: "Design", duration: "2 semaines", text: "Conception des maquettes et de l'identité visuelle, centrées sur la clarté, la confiance et la conversion, validées avant développement." },
-      { title: "Développement", duration: "3 à 6 semaines", text: "Construction d'un site rapide, sécurisé et modulaire, avec intégration de vos contenus et de vos outils." },
-      { title: "Tests et référencement", duration: "1 semaine", text: "Optimisation technique, tests sur appareils réels et préparation SEO pour un lancement propre et visible." },
-      { title: "Lancement", duration: "+ 90 jours de suivi", text: "Mise en ligne accompagnée, mesure des performances et ajustements pendant les trois premiers mois." },
+      {
+        title: "Audit",
+        duration: "1 semaine",
+        text: "Analyse de votre marché, de vos concurrents et de votre cible, puis document de stratégie avec arborescence, mots-clés et plan d'action.",
+      },
+      {
+        title: "Design",
+        duration: "2 semaines",
+        text: "Conception des maquettes et de l'identité visuelle, centrées sur la clarté, la confiance et la conversion, validées avant développement.",
+      },
+      {
+        title: "Développement",
+        duration: "3 à 6 semaines",
+        text: "Construction d'un site rapide, sécurisé et modulaire, avec intégration de vos contenus et de vos outils.",
+      },
+      {
+        title: "Tests et référencement",
+        duration: "1 semaine",
+        text: "Optimisation technique, tests sur appareils réels et préparation SEO pour un lancement propre et visible.",
+      },
+      {
+        title: "Lancement",
+        duration: "+ 90 jours de suivi",
+        text: "Mise en ligne accompagnée, mesure des performances et ajustements pendant les trois premiers mois.",
+      },
     ],
   },
   timeline: {
@@ -156,12 +212,30 @@ export const WEB_INTELLIGENT: ServiceContent = {
     eyebrow: "Vos questions",
     title: "« Oui, mais… » — nos réponses",
     items: [
-      { q: "Combien coûte un site web professionnel ?", a: "C'est un investissement, pas une dépense. La majorité de nos clients l'amortissent entre le quatrième et le septième mois ; au-delà, c'est du chiffre d'affaires supplémentaire chaque mois. Des paiements échelonnés sont possibles." },
-      { q: "On a déjà un site, faut-il vraiment tout refaire ?", a: "Pas systématiquement. Nous commençons par un audit : si une optimisation ciblée suffit, nous le disons. Mais quand la performance, le référencement et la sécurité plafonnent, une refonte coûte moins cher que l'inaction." },
-      { q: "Combien de temps prend la création d'un site ?", a: "En général de six à dix semaines entre l'audit et la mise en ligne, selon l'ampleur du contenu, les fonctionnalités et le nombre de pages à produire." },
-      { q: "Et après le lancement, sommes-nous livrés à nous-mêmes ?", a: "Non. Nous assurons un suivi de 90 jours après la mise en ligne, et l'interface est pensée pour que vous mettiez le site à jour en toute autonomie, sans dépendre de nous au quotidien." },
-      { q: "Proposez-vous des sites bilingues FR/EN ?", a: "Oui, le bilinguisme FR/EN est intégré nativement à l'architecture, avec un référencement pensé pour chaque langue plutôt qu'une traduction posée par-dessus." },
-      { q: "Quelles technologies utilisez-vous ?", a: "Des technologies web modernes, rapides et pérennes, choisies pour la performance, la sécurité et la maîtrise dans le temps — y compris en exécution locale lorsque la souveraineté l'exige." },
+      {
+        q: "Combien coûte un site web professionnel ?",
+        a: "C'est un investissement, pas une dépense. La majorité de nos clients l'amortissent entre le quatrième et le septième mois ; au-delà, c'est du chiffre d'affaires supplémentaire chaque mois. Des paiements échelonnés sont possibles.",
+      },
+      {
+        q: "On a déjà un site, faut-il vraiment tout refaire ?",
+        a: "Pas systématiquement. Nous commençons par un audit : si une optimisation ciblée suffit, nous le disons. Mais quand la performance, le référencement et la sécurité plafonnent, une refonte coûte moins cher que l'inaction.",
+      },
+      {
+        q: "Combien de temps prend la création d'un site ?",
+        a: "En général de six à dix semaines entre l'audit et la mise en ligne, selon l'ampleur du contenu, les fonctionnalités et le nombre de pages à produire.",
+      },
+      {
+        q: "Et après le lancement, sommes-nous livrés à nous-mêmes ?",
+        a: "Non. Nous assurons un suivi de 90 jours après la mise en ligne, et l'interface est pensée pour que vous mettiez le site à jour en toute autonomie, sans dépendre de nous au quotidien.",
+      },
+      {
+        q: "Proposez-vous des sites bilingues FR/EN ?",
+        a: "Oui, le bilinguisme FR/EN est intégré nativement à l'architecture, avec un référencement pensé pour chaque langue plutôt qu'une traduction posée par-dessus.",
+      },
+      {
+        q: "Quelles technologies utilisez-vous ?",
+        a: "Des technologies web modernes, rapides et pérennes, choisies pour la performance, la sécurité et la maîtrise dans le temps — y compris en exécution locale lorsque la souveraineté l'exige.",
+      },
     ],
   },
   finalCta: MOMENT_NOW,

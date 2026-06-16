@@ -14,11 +14,7 @@
 import fc from "fast-check";
 import { describe, it, expect } from "vitest";
 import type { SaasProduct } from "../saas";
-import {
-  selectRenderableProducts,
-  resolveProductAction,
-  PRODUCTS_MAX,
-} from "./saas";
+import { selectRenderableProducts, resolveProductAction, PRODUCTS_MAX } from "./saas";
 
 const NUM_RUNS = 100;
 
@@ -56,16 +52,12 @@ function isValidAccessUrl(accessUrl: string | null): accessUrl is string {
 
 /** Caractères non blancs : la longueur brute égale la longueur après trim. */
 const nonBlankChar = fc.constantFrom(
-  ..."abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.,;:!?()éèàùçÉÀ".split(
-    "",
-  ),
+  ..."abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.,;:!?()éèàùçÉÀ".split(""),
 );
 
 /** Chaîne dont la longueur après trim est comprise dans [min, max] inclus. */
 function textOfTrimmedLength(min: number, max: number): fc.Arbitrary<string> {
-  return fc
-    .array(nonBlankChar, { minLength: min, maxLength: max })
-    .map((chars) => chars.join(""));
+  return fc.array(nonBlankChar, { minLength: min, maxLength: max }).map((chars) => chars.join(""));
 }
 
 /** Suite uniquement blanche (vide après trim). */
@@ -129,32 +121,27 @@ describe("selectRenderableProducts", () => {
   // Validates: Requirements 8.1, 8.2
   it("Property 17: ne conserve que les produits valides (nom 1..60, description 40..300) et plafonne à 12", () => {
     fc.assert(
-      fc.property(
-        fc.array(anyProductArb, { maxLength: 20 }),
-        (products) => {
-          const result = selectRenderableProducts(products);
+      fc.property(fc.array(anyProductArb, { maxLength: 20 }), (products) => {
+        const result = selectRenderableProducts(products);
 
-          // Plafond de cardinalité (8.1) : au plus 12 produits.
-          expect(result.length).toBeLessThanOrEqual(PRODUCTS_MAX);
+        // Plafond de cardinalité (8.1) : au plus 12 produits.
+        expect(result.length).toBeLessThanOrEqual(PRODUCTS_MAX);
 
-          // Chaque produit conservé respecte les bornes de longueur (8.2).
-          for (const product of result) {
-            expect(isValidProduct(product)).toBe(true);
-          }
+        // Chaque produit conservé respecte les bornes de longueur (8.2).
+        for (const product of result) {
+          expect(isValidProduct(product)).toBe(true);
+        }
 
-          // Sélection exacte : les produits valides dans l'ordre d'entrée,
-          // tronqués à 12, sans altération (mêmes références).
-          const expected = products
-            .filter(isValidProduct)
-            .slice(0, PRODUCTS_MAX);
-          expect(result).toEqual(expected);
+        // Sélection exacte : les produits valides dans l'ordre d'entrée,
+        // tronqués à 12, sans altération (mêmes références).
+        const expected = products.filter(isValidProduct).slice(0, PRODUCTS_MAX);
+        expect(result).toEqual(expected);
 
-          // Aucun produit invalide ne survit à la sélection.
-          for (const product of result) {
-            expect(products).toContain(product);
-          }
-        },
-      ),
+        // Aucun produit invalide ne survit à la sélection.
+        for (const product of result) {
+          expect(products).toContain(product);
+        }
+      }),
       { numRuns: NUM_RUNS },
     );
   });
@@ -163,26 +150,23 @@ describe("selectRenderableProducts", () => {
   // Validates: Requirements 8.4, 8.6
   it("Property 18: renvoie un lien d'accès si et seulement si l'URL est valide, sinon le CTA_Diagnostic", () => {
     fc.assert(
-      fc.property(
-        productArb(validNameArb, validDescriptionArb),
-        (product) => {
-          const action = resolveProductAction(product);
+      fc.property(productArb(validNameArb, validDescriptionArb), (product) => {
+        const action = resolveProductAction(product);
 
-          // Au moins une action est toujours disponible (8.4).
-          expect(["access", "cta"]).toContain(action.kind);
+        // Au moins une action est toujours disponible (8.4).
+        expect(["access", "cta"]).toContain(action.kind);
 
-          if (isValidAccessUrl(product.accessUrl)) {
-            // URL valide => lien d'accès portant l'URL normalisée (8.4).
-            expect(action).toEqual({
-              kind: "access",
-              url: product.accessUrl.trim(),
-            });
-          } else {
-            // URL absente ou invalide => repli sur le CTA_Diagnostic (8.6).
-            expect(action).toEqual({ kind: "cta" });
-          }
-        },
-      ),
+        if (isValidAccessUrl(product.accessUrl)) {
+          // URL valide => lien d'accès portant l'URL normalisée (8.4).
+          expect(action).toEqual({
+            kind: "access",
+            url: product.accessUrl.trim(),
+          });
+        } else {
+          // URL absente ou invalide => repli sur le CTA_Diagnostic (8.6).
+          expect(action).toEqual({ kind: "cta" });
+        }
+      }),
       { numRuns: NUM_RUNS },
     );
   });

@@ -20,10 +20,7 @@ const NUM_RUNS = 100;
 
 /** Une fiche est rendable ssi nom non vide ET au moins un rôle non vide (après trim). */
 function isRenderable(member: TeamMember): boolean {
-  return (
-    member.fullName.trim().length > 0 &&
-    member.roles.some((role) => role.trim().length > 0)
-  );
+  return member.fullName.trim().length > 0 && member.roles.some((role) => role.trim().length > 0);
 }
 
 /**

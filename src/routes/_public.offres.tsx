@@ -3,10 +3,7 @@ import { motion } from "framer-motion";
 import { Check, DoorOpen, Sparkles, AlertTriangle } from "lucide-react";
 import { OFFERS, type Offer } from "@/content/offers";
 import { selectRenderableOffers } from "@/content/rules/offers";
-import {
-  orderedResumeLines,
-  type ResumeLineKey,
-} from "@/content/rules/resume";
+import { orderedResumeLines, type ResumeLineKey } from "@/content/rules/resume";
 import { SectionHeader } from "@/components/Approche";
 import { CtaDiagnostic } from "@/components/CtaDiagnostic";
 
@@ -79,8 +76,8 @@ function PageOffres() {
           >
             <AlertTriangle size={16} className="mt-0.5 shrink-0 text-[color:var(--neon-cyan)]" />
             <span>
-              Certaines offres sont temporairement masquées : leur résumé est
-              incomplet et sera publié une fois finalisé.
+              Certaines offres sont temporairement masquées : leur résumé est incomplet et sera
+              publié une fois finalisé.
             </span>
           </p>
         )}
@@ -100,9 +97,7 @@ function OfferCard({ offer, index }: { offer: Offer; index: number }) {
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.5, delay: index * 0.12 }}
       className={`group relative flex h-full flex-col rounded-2xl glass p-8 transition-all hover:-translate-y-1 ${
-        offer.recommended
-          ? "border-primary/50 ring-1 ring-primary/30"
-          : "hover:border-primary/40"
+        offer.recommended ? "border-primary/50 ring-1 ring-primary/30" : "hover:border-primary/40"
       }`}
     >
       {/* Halo néon : décoratif, sous le contenu, sans nuire à la lisibilité. */}
@@ -129,14 +124,12 @@ function OfferCard({ offer, index }: { offer: Offer; index: number }) {
         </div>
 
         <h3 className="text-2xl font-bold leading-tight">{offer.title}</h3>
-        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-          {offer.description}
-        </p>
+        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{offer.description}</p>
 
         {offer.isEntryPoint && (
           <p className="mt-3 text-sm font-medium text-[color:var(--neon-cyan)]">
-            Première étape recommandée du parcours : commencez ici pour situer
-            vos priorités avant tout engagement.
+            Première étape recommandée du parcours : commencez ici pour situer vos priorités avant
+            tout engagement.
           </p>
         )}
 
@@ -148,10 +141,7 @@ function OfferCard({ offer, index }: { offer: Offer; index: number }) {
           <ul className="space-y-2">
             {offer.deliverables.map((deliverable) => (
               <li key={deliverable} className="flex items-start gap-2 text-sm">
-                <Check
-                  size={16}
-                  className="mt-0.5 shrink-0 text-[color:var(--neon-cyan)]"
-                />
+                <Check size={16} className="mt-0.5 shrink-0 text-[color:var(--neon-cyan)]" />
                 <span className="text-foreground/90">{deliverable}</span>
               </li>
             ))}
@@ -165,9 +155,7 @@ function OfferCard({ offer, index }: { offer: Offer; index: number }) {
               <dt className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
                 {RESUME_LINE_LABELS[key]}
               </dt>
-              <dd className="mt-1 text-sm leading-relaxed text-foreground/90">
-                {text}
-              </dd>
+              <dd className="mt-1 text-sm leading-relaxed text-foreground/90">{text}</dd>
             </div>
           ))}
         </dl>

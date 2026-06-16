@@ -15,12 +15,7 @@
 
 import fc from "fast-check";
 import { describe, it, expect } from "vitest";
-import {
-  FORBIDDEN_TERMS,
-  findForbiddenTerms,
-  isJargonFree,
-  normalize,
-} from "./jargon";
+import { FORBIDDEN_TERMS, findForbiddenTerms, isJargonFree, normalize } from "./jargon";
 
 const NUM_RUNS = 100;
 
@@ -47,9 +42,7 @@ const cleanTextArb: fc.Arbitrary<string> = fc
   .array(cleanWordArb, { maxLength: 30 })
   .map((words) => words.join(" "));
 
-const forbiddenTermArb: fc.Arbitrary<string> = fc.constantFrom(
-  ...FORBIDDEN_TERMS,
-);
+const forbiddenTermArb: fc.Arbitrary<string> = fc.constantFrom(...FORBIDDEN_TERMS);
 
 /** Retire les diacritiques combinants (comme le fait normalize). */
 function stripDiacritics(value: string): string {
@@ -62,10 +55,7 @@ function stripDiacritics(value: string): string {
  */
 function variantArb(term: string): fc.Arbitrary<string> {
   return fc
-    .tuple(
-      fc.array(fc.boolean(), { minLength: term.length, maxLength: term.length }),
-      fc.boolean(),
-    )
+    .tuple(fc.array(fc.boolean(), { minLength: term.length, maxLength: term.length }), fc.boolean())
     .map(([uppercaseFlags, stripAccents]) => {
       const cased = [...term]
         .map((ch, i) => (uppercaseFlags[i] ? ch.toUpperCase() : ch.toLowerCase()))

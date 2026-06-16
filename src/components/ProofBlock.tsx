@@ -21,7 +21,10 @@ import { selectRenderableMetrics } from "../content/rules/proof";
  */
 
 /** Icône associée à chaque catégorie de métrique (signal de lecture rapide). */
-const CATEGORY_ICON: Record<MetricCategory, ComponentType<{ size?: number; className?: string }>> = {
+const CATEGORY_ICON: Record<
+  MetricCategory,
+  ComponentType<{ size?: number; className?: string }>
+> = {
   "temps-gagne": Clock,
   "erreurs-evitees": ShieldCheck,
   roi: TrendingUp,

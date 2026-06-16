@@ -48,7 +48,9 @@ describe("CtaDiagnostic — gestion de l'indisponibilité de la cible", () => {
     expect(alert).toHaveTextContent(/momentanément indisponible/i);
 
     // Contexte préservé : le bouton (et donc la page courante) reste présent.
-    expect(screen.getByRole("button", { name: new RegExp(CTA_DIAGNOSTIC.label) })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: new RegExp(CTA_DIAGNOSTIC.label) }),
+    ).toBeInTheDocument();
   });
 
   // Activation nominale : navigation vers /contact, aucun message d'erreur.
@@ -58,9 +60,7 @@ describe("CtaDiagnostic — gestion de l'indisponibilité de la cible", () => {
     render(<CtaDiagnostic />);
     fireEvent.click(screen.getByRole("button", { name: new RegExp(CTA_DIAGNOSTIC.label) }));
 
-    await waitFor(() =>
-      expect(navigateMock).toHaveBeenCalledWith({ to: CTA_DIAGNOSTIC.target }),
-    );
+    await waitFor(() => expect(navigateMock).toHaveBeenCalledWith({ to: CTA_DIAGNOSTIC.target }));
     expect(screen.queryByRole("alert")).toBeNull();
   });
 });

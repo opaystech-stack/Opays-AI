@@ -27,9 +27,7 @@ export const REQUIRED_CATEGORIES: readonly MethodCategory[] = [
 
 /** Vrai si la phase porte au moins un livrable au libellé non vide (après trim). */
 function hasNonEmptyDeliverable(phase: MethodPhase): boolean {
-  return phase.deliverables.some(
-    (deliverable) => deliverable.trim().length > 0,
-  );
+  return phase.deliverables.some((deliverable) => deliverable.trim().length > 0);
 }
 
 /** Vrai si la phase dispose d'une durée indicative explicite. */

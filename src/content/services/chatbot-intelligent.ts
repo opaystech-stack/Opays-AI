@@ -34,9 +34,21 @@ export const CHATBOT_INTELLIGENT: ServiceContent = {
     lead: "Quelques repères de marché que la plupart des dirigeants découvrent en regardant leurs statistiques de près.",
     stats: [
       { value: "78 %", label: "des clients attendent une réponse en moins de dix minutes." },
-      { value: "67 %", label: "des conversations clients pourraient être traitées par un chatbot, libérant vos équipes pour les cas complexes." },
-      { value: "55 %", label: "des leads se perdent simplement parce que personne n'est disponible pour répondre tout de suite." },
-      { value: "× 5", label: "de leads qualifiés en plus sur les sites équipés d'un chatbot intelligent face à un site classique." },
+      {
+        value: "67 %",
+        label:
+          "des conversations clients pourraient être traitées par un chatbot, libérant vos équipes pour les cas complexes.",
+      },
+      {
+        value: "55 %",
+        label:
+          "des leads se perdent simplement parce que personne n'est disponible pour répondre tout de suite.",
+      },
+      {
+        value: "× 5",
+        label:
+          "de leads qualifiés en plus sur les sites équipés d'un chatbot intelligent face à un site classique.",
+      },
     ],
     consequencesTitle: "Concrètement, pour vous",
     consequences: [
@@ -54,12 +66,36 @@ export const CHATBOT_INTELLIGENT: ServiceContent = {
     title: "Un chatbot qui vend, qualifie et soulage vos équipes",
     lead: "Nous concevons un assistant disponible en permanence, intégré à vos outils et maîtrisé de bout en bout.",
     pillars: [
-      { icon: Clock, title: "Disponible 24/7", text: "Réponses en moins de deux secondes, jour et nuit, toute l'année, sans jamais laisser un message sans suite." },
-      { icon: Globe, title: "Plus de 50 langues", text: "Votre audience est servie dans sa langue, ouvrant une expansion multilingue sans nouveaux recrutements." },
-      { icon: Target, title: "Qualification automatique", text: "Le bot score les prospects, prend des rendez-vous et transmet à vos commerciaux des leads déjà préparés." },
-      { icon: MessagesSquare, title: "Branché à vos canaux", text: "Site, messageries et applications métier : un même assistant connecté à votre CRM, votre catalogue et votre agenda." },
-      { icon: Sparkles, title: "Qualité constante", text: "Une réponse fiable et homogène à chaque échange, sans variation d'humeur ni baisse de régime." },
-      { icon: InfinityIcon, title: "Capacité illimitée", text: "Des milliers de conversations simultanées, là où un agent humain n'en mène qu'une seule à la fois." },
+      {
+        icon: Clock,
+        title: "Disponible 24/7",
+        text: "Réponses en moins de deux secondes, jour et nuit, toute l'année, sans jamais laisser un message sans suite.",
+      },
+      {
+        icon: Globe,
+        title: "Plus de 50 langues",
+        text: "Votre audience est servie dans sa langue, ouvrant une expansion multilingue sans nouveaux recrutements.",
+      },
+      {
+        icon: Target,
+        title: "Qualification automatique",
+        text: "Le bot score les prospects, prend des rendez-vous et transmet à vos commerciaux des leads déjà préparés.",
+      },
+      {
+        icon: MessagesSquare,
+        title: "Branché à vos canaux",
+        text: "Site, messageries et applications métier : un même assistant connecté à votre CRM, votre catalogue et votre agenda.",
+      },
+      {
+        icon: Sparkles,
+        title: "Qualité constante",
+        text: "Une réponse fiable et homogène à chaque échange, sans variation d'humeur ni baisse de régime.",
+      },
+      {
+        icon: InfinityIcon,
+        title: "Capacité illimitée",
+        text: "Des milliers de conversations simultanées, là où un agent humain n'en mène qu'une seule à la fois.",
+      },
     ],
   },
   comparison: {
@@ -69,14 +105,34 @@ export const CHATBOT_INTELLIGENT: ServiceContent = {
     badLabel: "Service client traditionnel",
     goodLabel: "Chatbot intelligent Opays Tech",
     rows: [
-      { criterion: "Disponibilité", bad: "heures de bureau seulement", good: "24h/24, 7j/7, toute l'année" },
-      { criterion: "Temps de réponse", bad: "de plusieurs heures à plusieurs jours", good: "moins de deux secondes" },
-      { criterion: "Coût mensuel", bad: "3 000 à 5 000 $ pour un employé", good: "forfait à partir de 200 $/mois" },
+      {
+        criterion: "Disponibilité",
+        bad: "heures de bureau seulement",
+        good: "24h/24, 7j/7, toute l'année",
+      },
+      {
+        criterion: "Temps de réponse",
+        bad: "de plusieurs heures à plusieurs jours",
+        good: "moins de deux secondes",
+      },
+      {
+        criterion: "Coût mensuel",
+        bad: "3 000 à 5 000 $ pour un employé",
+        good: "forfait à partir de 200 $/mois",
+      },
       { criterion: "Capacité simultanée", bad: "une conversation par personne", good: "illimitée" },
       { criterion: "Langues prises en charge", bad: "1 à 2 langues", good: "plus de 50 langues" },
-      { criterion: "Qualité de service", bad: "variable selon l'humeur", good: "constante, en permanence" },
+      {
+        criterion: "Qualité de service",
+        bad: "variable selon l'humeur",
+        good: "constante, en permanence",
+      },
       { criterion: "Qualification des leads", bad: "manuelle", good: "automatique, avec scoring" },
-      { criterion: "Évolution", bad: "formation continue à prévoir", good: "apprentissage permanent" },
+      {
+        criterion: "Évolution",
+        bad: "formation continue à prévoir",
+        good: "apprentissage permanent",
+      },
     ],
   },
   method: {
@@ -84,11 +140,31 @@ export const CHATBOT_INTELLIGENT: ServiceContent = {
     title: "Cinq étapes. Aucune surprise. Que des résultats.",
     lead: "Pas de jargon, pas de dépassement, pas de retard caché. Chaque étape a un livrable clair.",
     steps: [
-      { title: "Audit des besoins", duration: "3 à 5 jours", text: "Analyse de vos cas d'usage, de vos questions fréquentes et de vos objectifs commerciaux, puis définition du périmètre et des intégrations." },
-      { title: "Conception", duration: "1 semaine", text: "Conception des parcours de conversation, du ton et des scénarios clés, validés avec vous avant tout entraînement." },
-      { title: "Entraînement IA", duration: "1 à 2 semaines", text: "Le bot apprend de vos contenus et de vos données métier pour répondre avec précision et dans votre voix de marque." },
-      { title: "Intégrations", duration: "1 semaine", text: "Connexion à votre CRM, votre catalogue, votre agenda et vos canaux de discussion, avec tests sur cas réels." },
-      { title: "Lancement", duration: "en continu", text: "Mise en ligne, supervision des conversations et ajustements réguliers pour gagner en précision et en naturel." },
+      {
+        title: "Audit des besoins",
+        duration: "3 à 5 jours",
+        text: "Analyse de vos cas d'usage, de vos questions fréquentes et de vos objectifs commerciaux, puis définition du périmètre et des intégrations.",
+      },
+      {
+        title: "Conception",
+        duration: "1 semaine",
+        text: "Conception des parcours de conversation, du ton et des scénarios clés, validés avec vous avant tout entraînement.",
+      },
+      {
+        title: "Entraînement IA",
+        duration: "1 à 2 semaines",
+        text: "Le bot apprend de vos contenus et de vos données métier pour répondre avec précision et dans votre voix de marque.",
+      },
+      {
+        title: "Intégrations",
+        duration: "1 semaine",
+        text: "Connexion à votre CRM, votre catalogue, votre agenda et vos canaux de discussion, avec tests sur cas réels.",
+      },
+      {
+        title: "Lancement",
+        duration: "en continu",
+        text: "Mise en ligne, supervision des conversations et ajustements réguliers pour gagner en précision et en naturel.",
+      },
     ],
   },
   timeline: {
@@ -156,12 +232,30 @@ export const CHATBOT_INTELLIGENT: ServiceContent = {
     eyebrow: "Vos questions",
     title: "« Oui, mais… » — nos réponses",
     items: [
-      { q: "Le chatbot va-t-il remplacer mes employés ?", a: "Non, il les libère. Le bot absorbe 60 à 80 % des demandes répétitives ; vos équipes se concentrent sur les cas complexes à forte valeur. Résultat : satisfaction client en hausse et charge mentale en baisse." },
-      { q: "Le chatbot comprend-il vraiment les questions complexes ?", a: "Oui. Il raisonne sur le contexte, garde le fil de la conversation et s'appuie sur vos contenus et vos données. Pour les cas vraiment spécifiques, il transmet proprement à un humain avec l'historique complet." },
-      { q: "Que se passe-t-il s'il ne sait pas répondre ?", a: "Plutôt que d'inventer, il le reconnaît, propose une alternative et bascule vers votre équipe ou un formulaire de contact. Chaque échec devient une donnée d'apprentissage pour la suite." },
-      { q: "Combien de temps pour mettre en place un chatbot ?", a: "Comptez généralement de trois à cinq semaines entre l'audit des besoins et la mise en ligne, selon le nombre de cas d'usage et d'intégrations à connecter." },
-      { q: "Sur quels canaux peut-il être déployé ?", a: "Votre site, vos messageries et la plupart des applications de discussion. Un même assistant peut couvrir plusieurs canaux avec une expérience cohérente." },
-      { q: "Mes données et celles de mes clients sont-elles protégées ?", a: "Oui. Nous privilégions des architectures cloisonnées et conformes, exécutables localement si la souveraineté l'exige. Vos données ne servent pas à entraîner des modèles tiers." },
+      {
+        q: "Le chatbot va-t-il remplacer mes employés ?",
+        a: "Non, il les libère. Le bot absorbe 60 à 80 % des demandes répétitives ; vos équipes se concentrent sur les cas complexes à forte valeur. Résultat : satisfaction client en hausse et charge mentale en baisse.",
+      },
+      {
+        q: "Le chatbot comprend-il vraiment les questions complexes ?",
+        a: "Oui. Il raisonne sur le contexte, garde le fil de la conversation et s'appuie sur vos contenus et vos données. Pour les cas vraiment spécifiques, il transmet proprement à un humain avec l'historique complet.",
+      },
+      {
+        q: "Que se passe-t-il s'il ne sait pas répondre ?",
+        a: "Plutôt que d'inventer, il le reconnaît, propose une alternative et bascule vers votre équipe ou un formulaire de contact. Chaque échec devient une donnée d'apprentissage pour la suite.",
+      },
+      {
+        q: "Combien de temps pour mettre en place un chatbot ?",
+        a: "Comptez généralement de trois à cinq semaines entre l'audit des besoins et la mise en ligne, selon le nombre de cas d'usage et d'intégrations à connecter.",
+      },
+      {
+        q: "Sur quels canaux peut-il être déployé ?",
+        a: "Votre site, vos messageries et la plupart des applications de discussion. Un même assistant peut couvrir plusieurs canaux avec une expérience cohérente.",
+      },
+      {
+        q: "Mes données et celles de mes clients sont-elles protégées ?",
+        a: "Oui. Nous privilégions des architectures cloisonnées et conformes, exécutables localement si la souveraineté l'exige. Vos données ne servent pas à entraîner des modèles tiers.",
+      },
     ],
   },
   finalCta: MOMENT_NOW,

@@ -1,11 +1,4 @@
-import {
-  Compass,
-  FileSearch,
-  Map,
-  ShieldAlert,
-  Target,
-  Wallet,
-} from "lucide-react";
+import { Compass, FileSearch, Map, ShieldAlert, Target, Wallet } from "lucide-react";
 import type { ServiceContent } from "@/components/marketing/ServicePage";
 import { MOMENT_NOW } from "./_shared";
 
@@ -33,10 +26,26 @@ export const CONSULTATION_WEB_IA: ServiceContent = {
     title: "Pourquoi tant de projets digitaux échouent",
     lead: "Quelques repères de marché que la plupart des dirigeants découvrent une fois le projet engagé.",
     stats: [
-      { value: "67 %", label: "des projets digitaux échouent par manque de stratégie en amont, et non pour un problème technique." },
-      { value: "78 %", label: "des entreprises qui investissent dans l'IA sans audit préalable n'obtiennent aucun retour mesurable." },
-      { value: "× 3", label: "le surcoût moyen d'un projet web ou IA mal cadré face à un projet bien planifié dès le départ." },
-      { value: "18 mois", label: "de retard typique pour une entreprise qui investit dans la mauvaise solution avant de pivoter." },
+      {
+        value: "67 %",
+        label:
+          "des projets digitaux échouent par manque de stratégie en amont, et non pour un problème technique.",
+      },
+      {
+        value: "78 %",
+        label:
+          "des entreprises qui investissent dans l'IA sans audit préalable n'obtiennent aucun retour mesurable.",
+      },
+      {
+        value: "× 3",
+        label:
+          "le surcoût moyen d'un projet web ou IA mal cadré face à un projet bien planifié dès le départ.",
+      },
+      {
+        value: "18 mois",
+        label:
+          "de retard typique pour une entreprise qui investit dans la mauvaise solution avant de pivoter.",
+      },
     ],
     consequencesTitle: "Concrètement, pour vous",
     consequences: [
@@ -54,12 +63,36 @@ export const CONSULTATION_WEB_IA: ServiceContent = {
     title: "De la clarté avant le moindre euro engagé",
     lead: "Nous vous apportons une vision indépendante, fondée sur l'expérience, pour décider juste et investir au bon endroit.",
     pillars: [
-      { icon: Compass, title: "Vision stratégique", text: "Une lecture claire de votre situation et de vos options, fondée sur la donnée et l'expérience plutôt que sur l'intuition." },
-      { icon: Map, title: "Roadmap phasée", text: "Une feuille de route hiérarchisée qui sépare l'urgent de l'important et séquence le projet par jalons réalistes." },
-      { icon: Wallet, title: "Budget cadré", text: "Un chiffrage précis avec scénarios, pour piloter la dépense au lieu de l'estimer au doigt mouillé." },
-      { icon: ShieldAlert, title: "Risques anticipés", text: "Les pièges techniques et organisationnels identifiés en amont, plutôt que découverts une fois le budget engagé." },
-      { icon: Target, title: "Choix d'outils objectif", text: "Une recommandation fondée sur vos besoins réels, et non sur la publicité ou les avis du moment." },
-      { icon: FileSearch, title: "Indépendance assumée", text: "Nous pouvons vous conseiller de ne pas lancer un projet : c'est ce qui garantit l'honnêteté de notre regard." },
+      {
+        icon: Compass,
+        title: "Vision stratégique",
+        text: "Une lecture claire de votre situation et de vos options, fondée sur la donnée et l'expérience plutôt que sur l'intuition.",
+      },
+      {
+        icon: Map,
+        title: "Roadmap phasée",
+        text: "Une feuille de route hiérarchisée qui sépare l'urgent de l'important et séquence le projet par jalons réalistes.",
+      },
+      {
+        icon: Wallet,
+        title: "Budget cadré",
+        text: "Un chiffrage précis avec scénarios, pour piloter la dépense au lieu de l'estimer au doigt mouillé.",
+      },
+      {
+        icon: ShieldAlert,
+        title: "Risques anticipés",
+        text: "Les pièges techniques et organisationnels identifiés en amont, plutôt que découverts une fois le budget engagé.",
+      },
+      {
+        icon: Target,
+        title: "Choix d'outils objectif",
+        text: "Une recommandation fondée sur vos besoins réels, et non sur la publicité ou les avis du moment.",
+      },
+      {
+        icon: FileSearch,
+        title: "Indépendance assumée",
+        text: "Nous pouvons vous conseiller de ne pas lancer un projet : c'est ce qui garantit l'honnêteté de notre regard.",
+      },
     ],
   },
   comparison: {
@@ -69,14 +102,46 @@ export const CONSULTATION_WEB_IA: ServiceContent = {
     badLabel: "Décider seul",
     goodLabel: "Avec la consultation Opays Tech",
     rows: [
-      { criterion: "Vision stratégique", bad: "floue, basée sur l'intuition", good: "claire, fondée sur la donnée et l'expérience" },
-      { criterion: "Choix d'outils", bad: "selon publicités et avis", good: "selon une analyse experte de vos besoins" },
-      { criterion: "Budget alloué", bad: "estimation au doigt mouillé", good: "cadrage précis avec scénarios" },
-      { criterion: "Priorités", bad: "tout urgent, tout important", good: "roadmap claire et phasée" },
-      { criterion: "Détection des risques", bad: "découverts en cours de projet", good: "identifiés et anticipés en amont" },
-      { criterion: "Compétences mobilisées", bad: "vos seules ressources internes", good: "plus de dix ans d'expérience cumulée" },
-      { criterion: "Délai de décision", bad: "plusieurs mois d'hésitation", good: "décision éclairée en une semaine" },
-      { criterion: "Coût total du projet", bad: "jusqu'à +200 % du budget initial", good: "respect du budget cadré" },
+      {
+        criterion: "Vision stratégique",
+        bad: "floue, basée sur l'intuition",
+        good: "claire, fondée sur la donnée et l'expérience",
+      },
+      {
+        criterion: "Choix d'outils",
+        bad: "selon publicités et avis",
+        good: "selon une analyse experte de vos besoins",
+      },
+      {
+        criterion: "Budget alloué",
+        bad: "estimation au doigt mouillé",
+        good: "cadrage précis avec scénarios",
+      },
+      {
+        criterion: "Priorités",
+        bad: "tout urgent, tout important",
+        good: "roadmap claire et phasée",
+      },
+      {
+        criterion: "Détection des risques",
+        bad: "découverts en cours de projet",
+        good: "identifiés et anticipés en amont",
+      },
+      {
+        criterion: "Compétences mobilisées",
+        bad: "vos seules ressources internes",
+        good: "plus de dix ans d'expérience cumulée",
+      },
+      {
+        criterion: "Délai de décision",
+        bad: "plusieurs mois d'hésitation",
+        good: "décision éclairée en une semaine",
+      },
+      {
+        criterion: "Coût total du projet",
+        bad: "jusqu'à +200 % du budget initial",
+        good: "respect du budget cadré",
+      },
     ],
   },
   method: {
@@ -84,11 +149,31 @@ export const CONSULTATION_WEB_IA: ServiceContent = {
     title: "Cinq étapes. Aucune surprise. Que des résultats.",
     lead: "Pas de jargon, pas de dépassement, pas de retard caché. Chaque étape a un livrable clair.",
     steps: [
-      { title: "Appel découverte", duration: "30 min, gratuit", text: "Un premier échange pour comprendre votre contexte, vos enjeux et vos objectifs, et décider ensemble si une consultation approfondie a du sens." },
-      { title: "Audit préparatoire", duration: "3 à 5 jours", text: "Analyse de votre existant, de votre marché et des options envisagées, pour arriver à la session avec une vue complète." },
-      { title: "Session stratégique", duration: "2 à 4 heures", text: "Un travail dense en commun : priorités, scénarios, choix d'outils et premières décisions actionnables." },
-      { title: "Livrable détaillé", duration: "1 semaine", text: "Une feuille de route écrite avec recommandations, budget cadré, risques anticipés et plan d'action phasé." },
-      { title: "Suivi", duration: "30 jours", text: "Un accompagnement post-consultation pour répondre à vos questions et sécuriser le démarrage de l'exécution." },
+      {
+        title: "Appel découverte",
+        duration: "30 min, gratuit",
+        text: "Un premier échange pour comprendre votre contexte, vos enjeux et vos objectifs, et décider ensemble si une consultation approfondie a du sens.",
+      },
+      {
+        title: "Audit préparatoire",
+        duration: "3 à 5 jours",
+        text: "Analyse de votre existant, de votre marché et des options envisagées, pour arriver à la session avec une vue complète.",
+      },
+      {
+        title: "Session stratégique",
+        duration: "2 à 4 heures",
+        text: "Un travail dense en commun : priorités, scénarios, choix d'outils et premières décisions actionnables.",
+      },
+      {
+        title: "Livrable détaillé",
+        duration: "1 semaine",
+        text: "Une feuille de route écrite avec recommandations, budget cadré, risques anticipés et plan d'action phasé.",
+      },
+      {
+        title: "Suivi",
+        duration: "30 jours",
+        text: "Un accompagnement post-consultation pour répondre à vos questions et sécuriser le démarrage de l'exécution.",
+      },
     ],
   },
   timeline: {
@@ -135,10 +220,10 @@ export const CONSULTATION_WEB_IA: ServiceContent = {
   },
   caseStudy: {
     eyebrow: "Étude de cas",
-    title: "PME de services B2B, 25 collaborateurs",
+    title: "Services professionnels, 25 collaborateurs",
     profileTitle: "Profil client",
     profile:
-      "Entreprise de services B2B de 25 collaborateurs, en pleine évaluation d'un projet de refonte digitale. Trois prestataires en lice, avec des propositions entre 45 000 et 95 000 $.",
+      "Entreprise de services B2B de 25 collaborateurs en RDC, en pleine évaluation d'un projet de refonte digitale. Trois prestataires en lice, avec des propositions entre 45 000 et 95 000 $.",
     actionsTitle: "Ce que nous avons fait",
     actions:
       "Consultation stratégique de deux jours : audit complet, analyse des trois propositions, mise au jour des risques cachés et recommandation d'une approche phasée différente, avec une roadmap sur 18 mois au budget optimisé.",
@@ -150,18 +235,36 @@ export const CONSULTATION_WEB_IA: ServiceContent = {
     ],
     quote:
       "On allait signer une proposition à 75 000 $ qui ne répondait pas vraiment à nos besoins. La consultation nous a fait comprendre qu'on prenait le problème à l'envers. On a refait toute la stratégie, économisé un budget énorme et obtenu de meilleurs résultats.",
-    author: "Dirigeant, PME de services B2B",
+    author: "Dirigeant, services professionnels en RDC",
   },
   faq: {
     eyebrow: "Vos questions",
     title: "« Oui, mais… » — nos réponses",
     items: [
-      { q: "Pourquoi payer une consultation quand des prestataires offrent des audits gratuits ?", a: "Un audit « gratuit » a un objectif : vous vendre une solution. C'est légitime, mais ce n'est pas neutre. Notre consultation est payante précisément pour garantir notre indépendance : nous pouvons vous recommander de ne pas lancer un projet, ou de travailler avec un autre prestataire." },
-      { q: "Combien coûte une consultation ?", a: "Selon l'ampleur, elle se situe généralement entre 1 500 et 5 000 $. C'est sans commune mesure avec les dizaines de milliers d'euros qu'une décision mal orientée peut coûter." },
-      { q: "Allez-vous forcément essayer de me vendre vos services ?", a: "Non. La consultation est un livrable en soi : une stratégie claire que vous restez libre d'exécuter avec qui vous voulez. Notre indépendance est précisément ce qui fait sa valeur." },
-      { q: "Combien de temps prend la consultation complète ?", a: "Comptez environ deux semaines entre l'appel découverte et le livrable détaillé, dont une session stratégique de deux à quatre heures et un audit préparatoire de quelques jours." },
-      { q: "À qui s'adresse cette consultation ?", a: "Aux dirigeants et équipes qui s'apprêtent à investir dans un projet web ou IA et veulent sécuriser leur décision avant d'engager un budget significatif." },
-      { q: "Que contient exactement le livrable final ?", a: "Une feuille de route écrite : recommandations priorisées, budget cadré avec scénarios, risques anticipés et plan d'action phasé, prêt à exécuter par vos soins ou par un prestataire de votre choix." },
+      {
+        q: "Pourquoi payer une consultation quand des prestataires offrent des audits gratuits ?",
+        a: "Un audit « gratuit » a un objectif : vous vendre une solution. C'est légitime, mais ce n'est pas neutre. Notre consultation est payante précisément pour garantir notre indépendance : nous pouvons vous recommander de ne pas lancer un projet, ou de travailler avec un autre prestataire.",
+      },
+      {
+        q: "Combien coûte une consultation ?",
+        a: "Selon l'ampleur, elle se situe généralement entre 1 500 et 5 000 $. C'est sans commune mesure avec les dizaines de milliers d'euros qu'une décision mal orientée peut coûter.",
+      },
+      {
+        q: "Allez-vous forcément essayer de me vendre vos services ?",
+        a: "Non. La consultation est un livrable en soi : une stratégie claire que vous restez libre d'exécuter avec qui vous voulez. Notre indépendance est précisément ce qui fait sa valeur.",
+      },
+      {
+        q: "Combien de temps prend la consultation complète ?",
+        a: "Comptez environ deux semaines entre l'appel découverte et le livrable détaillé, dont une session stratégique de deux à quatre heures et un audit préparatoire de quelques jours.",
+      },
+      {
+        q: "À qui s'adresse cette consultation ?",
+        a: "Aux dirigeants et équipes qui s'apprêtent à investir dans un projet web ou IA et veulent sécuriser leur décision avant d'engager un budget significatif.",
+      },
+      {
+        q: "Que contient exactement le livrable final ?",
+        a: "Une feuille de route écrite : recommandations priorisées, budget cadré avec scénarios, risques anticipés et plan d'action phasé, prêt à exécuter par vos soins ou par un prestataire de votre choix.",
+      },
     ],
   },
   finalCta: MOMENT_NOW,

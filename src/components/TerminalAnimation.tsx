@@ -3,13 +3,18 @@ import { useEffect, useState } from "react";
 type Line = { text: string; tone?: "prompt" | "ok" | "muted" | "accent" };
 
 const SCRIPT: Line[] = [
-  { text: "> Initializing workspace environment...", tone: "prompt" },
-  { text: "> Loading organizational data patterns...", tone: "prompt" },
-  { text: "> [OK] Patterns recognized. Identifying friction points.", tone: "ok" },
-  { text: "> Compiling automation modules...", tone: "prompt" },
-  { text: "> [OK] Modules ready.", tone: "ok" },
-  { text: "> _opays / build / deploy", tone: "accent" },
+  { text: "> Initialisation de l'environnement Opays...", tone: "prompt" },
+  { text: "> Chargement des processus opérationnels...", tone: "prompt" },
+  { text: "> [OK] Frictions identifiées.", tone: "ok" },
+  { text: "> Compilation des modules d'automatisation...", tone: "prompt" },
+  { text: "> [OK] Modules prêts.", tone: "ok" },
+  { text: "> _opays / construire / déployer", tone: "accent" },
 ];
+
+const LOOP_PAUSE_MS = 10_000;
+const TYPE_MS = 28;
+const LINE_PAUSE_MS = 320;
+const INITIAL_DELAY_MS = 400;
 
 export function TerminalAnimation() {
   const [lines, setLines] = useState<{ text: string; tone?: Line["tone"] }[]>([]);
@@ -21,19 +26,19 @@ export function TerminalAnimation() {
   // typewriter
   useEffect(() => {
     if (idx >= SCRIPT.length) {
-      const t = setTimeout(() => setDone(true), 400);
+      const t = setTimeout(() => setDone(true), INITIAL_DELAY_MS);
       return () => clearTimeout(t);
     }
     const target = SCRIPT[idx].text;
     if (current.length < target.length) {
-      const t = setTimeout(() => setCurrent(target.slice(0, current.length + 1)), 22);
+      const t = setTimeout(() => setCurrent(target.slice(0, current.length + 1)), TYPE_MS);
       return () => clearTimeout(t);
     }
     const t = setTimeout(() => {
       setLines((l) => [...l, { text: target, tone: SCRIPT[idx].tone }]);
       setCurrent("");
       setIdx((i) => i + 1);
-    }, 280);
+    }, LINE_PAUSE_MS);
     return () => clearTimeout(t);
   }, [current, idx]);
 
@@ -41,7 +46,7 @@ export function TerminalAnimation() {
   useEffect(() => {
     if (!done) return;
     if (scan >= 100) return;
-    const t = setTimeout(() => setScan((s) => Math.min(100, s + 4)), 40);
+    const t = setTimeout(() => setScan((s) => Math.min(100, s + 3)), 42);
     return () => clearTimeout(t);
   }, [done, scan]);
 
@@ -54,16 +59,20 @@ export function TerminalAnimation() {
       setIdx(0);
       setDone(false);
       setScan(0);
-    }, 6000);
+    }, LOOP_PAUSE_MS);
     return () => clearTimeout(t);
   }, [scan]);
 
   const toneClass = (tone?: Line["tone"]) => {
     switch (tone) {
-      case "ok": return "text-[color:var(--success)]";
-      case "accent": return "text-[color:var(--neon-cyan)]";
-      case "muted": return "text-muted-foreground";
-      default: return "text-[color:var(--terminal-foreground)]";
+      case "ok":
+        return "text-[color:var(--success)]";
+      case "accent":
+        return "text-[color:var(--neon-cyan)]";
+      case "muted":
+        return "text-muted-foreground";
+      default:
+        return "text-[color:var(--terminal-foreground)]";
     }
   };
 
@@ -78,15 +87,15 @@ export function TerminalAnimation() {
           <span className="h-3 w-3 rounded-full bg-red-500/80" />
           <span className="h-3 w-3 rounded-full bg-yellow-500/80" />
           <span className="h-3 w-3 rounded-full bg-green-500/80" />
-          <span className="ml-3 font-mono text-xs text-muted-foreground">
-            opays-tech-terminal
-          </span>
+          <span className="ml-3 font-mono text-xs text-muted-foreground">opays-tech-terminal</span>
         </div>
 
         {/* body */}
         <div className="font-mono text-[13px] leading-relaxed p-5 min-h-[340px]">
           {lines.map((l, i) => (
-            <div key={i} className={toneClass(l.tone)}>{l.text}</div>
+            <div key={i} className={toneClass(l.tone)}>
+              {l.text}
+            </div>
           ))}
           {idx < SCRIPT.length && (
             <div className={toneClass(SCRIPT[idx].tone)}>

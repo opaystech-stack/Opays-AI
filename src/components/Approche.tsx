@@ -1,10 +1,26 @@
 import { motion } from "framer-motion";
 
 const steps = [
-  { n: "01", title: "Lecture du terrain", text: "Nous observons comment le travail circule réellement dans votre entreprise, pas seulement comment il est censé circuler." },
-  { n: "02", title: "Cartographie des frictions", text: "Nous repérons les pertes de temps, les doublons, les interruptions et les tâches qui consomment l'énergie des équipes." },
-  { n: "03", title: "Construction de la solution", text: "Nous concevons un système adapté à vos outils, à votre rythme et à vos contraintes concrètes." },
-  { n: "04", title: "Mise en service", text: "Nous testons, ajustons et suivons la solution pour qu'elle reste utile dans le temps." },
+  {
+    n: "01",
+    title: "Lecture du terrain",
+    text: "Nous observons comment le travail circule réellement dans votre entreprise, pas seulement comment il est censé circuler.",
+  },
+  {
+    n: "02",
+    title: "Cartographie des frictions",
+    text: "Nous repérons les pertes de temps, les doublons, les interruptions et les tâches qui consomment l'énergie des équipes.",
+  },
+  {
+    n: "03",
+    title: "Construction de la solution",
+    text: "Nous concevons un système adapté à vos outils, à votre rythme et à vos contraintes concrètes.",
+  },
+  {
+    n: "04",
+    title: "Mise en service",
+    text: "Nous testons, ajustons et suivons la solution pour qu'elle reste utile dans le temps.",
+  },
 ];
 
 export function Approche() {
@@ -30,8 +46,10 @@ export function Approche() {
               <div className="font-mono text-xs text-[color:var(--neon-cyan)] mb-4">{s.n}</div>
               <h3 className="text-lg font-semibold mb-2">{s.title}</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">{s.text}</p>
-              <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
-                   style={{ boxShadow: "var(--shadow-neon)" }} />
+              <div
+                className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
+                style={{ boxShadow: "var(--shadow-neon)" }}
+              />
             </motion.div>
           ))}
         </div>
@@ -45,7 +63,10 @@ export function Approche() {
         >
           <p className="text-sm text-muted-foreground">
             Vous souhaitez comprendre la théorie derrière notre pratique ?{" "}
-            <a href="/livre-blanc.html" className="text-[color:var(--neon-cyan)] font-semibold hover:underline">
+            <a
+              href="/livre-blanc.html"
+              className="text-[color:var(--neon-cyan)] font-semibold hover:underline"
+            >
               Lire le Livre Blanc complet →
             </a>
           </p>
@@ -55,7 +76,15 @@ export function Approche() {
   );
 }
 
-export function SectionHeader({ eyebrow, title, subtitle }: { eyebrow: string; title: string; subtitle?: string }) {
+export function SectionHeader({
+  eyebrow,
+  title,
+  subtitle,
+}: {
+  eyebrow: string;
+  title: string;
+  subtitle?: string;
+}) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}

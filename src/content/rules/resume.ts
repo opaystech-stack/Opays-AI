@@ -75,8 +75,6 @@ export function validateResumeOffre(resume: ResumeOffre): ResumeValidation {
  * Le texte renvoyé est la valeur brute de chaque ligne (non normalisée),
  * afin de préserver le contenu éditorial tel que défini dans la source.
  */
-export function orderedResumeLines(
-  resume: ResumeOffre,
-): { key: ResumeLineKey; text: string }[] {
+export function orderedResumeLines(resume: ResumeOffre): { key: ResumeLineKey; text: string }[] {
   return RESUME_LINE_ORDER.map((key) => ({ key, text: resume[key] }));
 }

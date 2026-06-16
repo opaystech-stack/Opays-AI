@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Opays Tech">
+  <defs>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="14" result="blur"/>
+      <feFlood flood-color="#3b82f6" result="color"/>
+      <feComposite in="color" in2="blur" operator="in" result="glow"/>
+      <feMerge>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#d4af37"/>
+      <stop offset="100%" stop-color="#b8860b"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Fond carré doré arrondi -->
+  <rect width="512" height="512" rx="96" fill="url(#bgGradient)"/>
+
+  <!-- Anneau bleu foncé ouvert (environ 270°) -->
+  <path d="M 352 128 A 160 160 0 1 0 352 384"
+        fill="none"
+        stroke="#001f4d"
+        stroke-width="60"
+        stroke-linecap="butt"/>
+
+  <!-- Lettre T stylisée bleu électrique + pixels -->
+  <g filter="url(#glow)" fill="#2563eb">
+    <path d="
+      M 150 195
+      L 348 179
+      L 372 203
+      L 340 224
+      L 264 230
+      L 190 375
+      L 134 375
+      L 210 230
+      L 150 220
+      Z
+    " />
+    <rect x="385" y="170" width="32" height="32" rx="4"/>
+    <rect x="420" y="202" width="26" height="26" rx="4"/>
+    <rect x="446" y="234" width="22" height="22" rx="4"/>
+  </g>
+</svg>
