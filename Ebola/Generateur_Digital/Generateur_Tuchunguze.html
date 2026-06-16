@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TUCHUNGUZE II — Générateur d'Affiches Digitales</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,700;0,800;0,900;1,700;1,800;1,900&family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="html2canvas.min.js"></script>
+
+    <style>
+        /* ===================================================================
+           VARIABLES & RESET
+           =================================================================== */
+        :root {
+            --tc-red: #E63946;
+            --tc-red-dark: #C62828;
+            --tc-navy: #0B1121;
+            --tc-navy-light: #1a2744;
+            --tc-white: #FFFFFF;
+            --tc-cyan: #00B4D8;
+            --tc-yellow: #FFC107;
+            --tc-violet: #6C3483;
+            --tc-blue-deep: #1B2A4A;
+            --tc-green: #27AE60;
+            --sidebar-bg: #0f172a;
+            --sidebar-border: #334155;
+            --sidebar-input-bg: #1e293b;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body { height: 100%; overflow: hidden; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1e293b;
+            color: #f8fafc;
+            display: grid;
+            grid-template-columns: 480px 1fr;
+            gap: 20px;
+            padding: 20px;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* ===================================================================
+           SIDEBAR
+           =================================================================== */
+        .sidebar {
+            background: var(--sidebar-bg);
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            overflow-y: auto;
+            height: 100%;
+            border: 1px solid var(--sidebar-border);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .sidebar::-webkit-scrollbar { width: 8px; }
+        .sidebar::-webkit-scrollbar-thumb { background-color: #475569; border-radius: 4px; }
+        .sidebar::-webkit-scrollbar-track { background: transparent; }
+
+        .top-brand {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid var(--tc-red);
+            padding-bottom: 16px;
+        }
+        .top-brand h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 900;
+            color: var(--tc-white);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .top-brand h1 em { font-style: normal; color: var(--tc-red); }
+        .version-badge {
+            background: var(--tc-red);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-section {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--sidebar-border);
+            border-radius: 10px;
+            padding: 18px;
+        }
+        .section-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--tc-red);
+            font-weight: 800;
+            margin-bottom: 14px;
+            letter-spacing: 1.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-title::before {
+            content: '';
+            width: 10px;
+            height: 10px;
+            background: var(--tc-red);
+            display: inline-block;
+            border-radius: 2px;
+        }
+
+        .form-group { margin-bottom: 14px; }
+        .form-group:last-child { margin-bottom: 0; }
+        .form-row { display: flex; gap: 12px; }
+        .form-row > * { flex: 1; min-width: 0; }
+
+        label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #cbd5e1;
+        }
+        input[type="text"], input[type="file"], input[type="color"], select, textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #475569;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            background: var(--sidebar-input-bg);
+            color: white;
+            transition: border-color 0.2s;
+        }
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--tc-red);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(230,57,70,0.2);
+        }
+        textarea { resize: vertical; min-height: 60px; }
+        input[type="color"] { padding: 4px; height: 38px; cursor: pointer; }
+
+        .color-row { display: flex; gap: 8px; align-items: flex-end; }
+        .color-row .form-group { flex: 1; }
+
+        .btn-export {
+            background: var(--tc-red);
+            color: white;
+            border: none;
+            padding: 18px;
+            width: 100%;
+            border-radius: 8px;
+            font-weight: 900;
+            font-size: 1rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+        .btn-export:hover {
+            background: var(--tc-red-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(230,57,70,0.4);
+        }
+
+        .model-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+        }
+        .model-btn {
+            background: var(--sidebar-input-bg);
+            border: 2px solid transparent;
+            border-radius: 6px;
+            padding: 8px 6px;
+            color: #cbd5e1;
+            font-size: 0.72rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            text-align: center;
+            line-height: 1.3;
+        }
+        .model-btn:hover { border-color: var(--tc-red); color: white; }
+        .model-btn.active {
+            border-color: var(--tc-red);
+            background: rgba(230,57,70,0.15);
+            color: var(--tc-red);
+        }
+        .model-btn .emoji { font-size: 1.1rem; display: block; margin-bottom: 3px; }
+
+        .dynamic-fields { display: flex; flex-direction: column; gap: 12px; }
+
+        /* ===================================================================
+           WORKSPACE + ARTBOARD
+           =================================================================== */
+        .workspace {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            background: #020617;
+            border-radius: 12px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+            padding: 30px;
+        }
+        .artboard-wrapper {
+            transform: scale(0.5);
+            transform-origin: top center;
+            margin-bottom: -540px;
+            transition: transform 0.3s;
+        }
+
+        /* ===================================================================
+           ARTBOARD 1080x1080
+           =================================================================== */
+        .artboard {
+            width: 1080px;
+            height: 1080px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 40px 80px rgba(11, 17, 33, 0.15);
+            background: var(--tc-white);
+        }
+
+        /* Layers de fond */
+        .ab-bg-photo {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover; background-position: center;
+            z-index: 1;
+        }
+        .ab-bg-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 2;
+        }
+
+        /* Liseré tricolore RDC (bord droit) */
+        .ab-rdc-stripe {
+            position: absolute; top: 0; right: 0; width: 15px; height: 100%;
+            z-index: 50;
+            display: flex; flex-direction: column;
+        }
+        .ab-rdc-stripe div { flex: 1; }
+        .ab-rdc-stripe .s1 { background: var(--tc-cyan); }
+        .ab-rdc-stripe .s2 { background: var(--tc-yellow); }
+        .ab-rdc-stripe .s3 { background: var(--tc-red); }
+
+        /* Logo haut centre */
+        .ab-logo-top {
+            position: absolute; top: 30px; left: 50%; transform: translateX(-50%);
+            z-index: 40;
+            display: flex; align-items: center; gap: 14px;
+        }
+        .ab-logo-top img {
+            height: 70px;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+        }
+        .ab-logo-top .project-name {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            font-size: 22px;
+            color: var(--tc-navy);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Capsule sponsors bas */
+        .ab-sponsors-pill {
+            position: absolute; bottom: 25px; left: 50px; right: 65px;
+            z-index: 40;
+            background: white;
+            border-radius: 50px;
+            padding: 12px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+            border: 1px solid rgba(0,0,0,0.08);
+        }
+        .ab-sponsors-pill img {
+            height: 40px;
+            max-width: 100px;
+            object-fit: contain;
+        }
+        .ab-sponsors-pill .pill-sep {
+            width: 1px;
+            height: 30px;
+            background: #e2e8f0;
+        }
+        .ab-sponsors-pill .pill-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 9px;
+            font-weight: 700;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+        }
+
+        /* Zone contenu dynamique */
+        .ab-content {
+            position: absolute;
+            top: 120px;
+            left: 0;
+            right: 15px;
+            bottom: 100px;
+            z-index: 30;
+            padding: 20px 60px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===================================================================
+           TYPOGRAPHIES ARTBOARD
+           =================================================================== */
+        .t-supertitle {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--tc-red);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 12px;
+        }
+        .t-headline {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 72px;
+            font-weight: 900;
+            color: var(--tc-navy);
+            text-transform: uppercase;
+            line-height: 1.05;
+            word-wrap: break-word;
+        }
+        .t-body {
+            font-family: 'Inter', sans-serif;
+            font-size: 22px;
+            font-weight: 400;
+            color: #334155;
+            line-height: 1.5;
+        }
+        .t-accent {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            color: var(--tc-red);
+        }
+
+        /* ===================================================================
+           TEMPLATES SPECIFIQUES
+           =================================================================== */
+
+        /* M1: Alerte Rumeur */
+        .tpl-m1 { display: flex; flex-direction: column; height: 100%; }
+        .tpl-m1 .rumeur-badge {
+            display: inline-flex; align-items: center; gap: 10px;
+            background: rgba(230,57,70,0.1); border: 2px solid var(--tc-red);
+            border-radius: 50px; padding: 8px 24px; margin-bottom: 20px; align-self: flex-start;
+        }
+        .tpl-m1 .rumeur-badge span {
+            font-family: 'Montserrat', sans-serif; font-weight: 800;
+            font-size: 14px; color: var(--tc-red); text-transform: uppercase; letter-spacing: 2px;
+        }
+        .tpl-m1 .rumeur-box {
+            background: #F8FAFC; border-left: 8px solid var(--tc-red);
+            border: 1px solid #E2E8F0; border-left: 8px solid var(--tc-red);
+            border-radius: 0 12px 12px 0; padding: 28px 32px; margin: 16px 0;
+            position: relative;
+        }
+        .tpl-m1 .rumeur-box::before {
+            content: '❌'; position: absolute; top: -14px; left: -14px;
+            font-size: 28px; background: white; border: 1px solid #E2E8F0; border-radius: 50%;
+            width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .tpl-m1 .rumeur-text {
+            font-family: 'Inter', sans-serif; font-size: 24px; font-weight: 600;
+            color: var(--tc-navy); font-style: italic; line-height: 1.4;
+        }
+        .tpl-m1 .stamp {
+            position: absolute; top: 50%; right: 60px; transform: translateY(-50%) rotate(-15deg) scale(0.9);
+            font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 110px;
+            text-transform: uppercase; border: 8px solid; border-radius: 20px;
+            padding: 10px 40px; opacity: 0.85; z-index: 35; background: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        .tpl-m1 .stamp.faux { color: #EF5350; border-color: #EF5350; }
+        .tpl-m1 .stamp.vrai { color: var(--tc-green); border-color: var(--tc-green); }
+        .tpl-m1 .explication-box {
+            background: #F0FDF4; border: 1px solid #DCFCE7; border-left: 8px solid var(--tc-green);
+            border-radius: 0 12px 12px 0; padding: 24px 32px; margin-top: auto;
+        }
+        .tpl-m1 .explication-box .check-title {
+            font-family: 'Montserrat', sans-serif; font-weight: 800;
+            font-size: 16px; color: var(--tc-green); text-transform: uppercase;
+            margin-bottom: 8px; display: flex; align-items: center; gap: 8px;
+        }
+        .tpl-m1 .explication-text {
+            font-family: 'Inter', sans-serif; font-size: 20px;
+            color: #166534; line-height: 1.5;
+        }
+
+        /* M2: Témoignage */
+        .tpl-m2 { display: flex; flex-direction: column; justify-content: flex-end; height: 100%; }
+        .tpl-m2 .quote-marks {
+            font-family: Georgia, serif; font-size: 200px; color: var(--tc-red);
+            opacity: 0.12; line-height: 0.5; margin-bottom: -20px;
+        }
+        .tpl-m2 .quote-text {
+            font-family: 'Montserrat', sans-serif; font-size: 38px; font-weight: 800;
+            color: var(--tc-navy); line-height: 1.35; font-style: italic;
+            border-left: 6px solid var(--tc-red); padding-left: 24px;
+            margin-bottom: 24px; max-width: 900px;
+        }
+        .tpl-m2 .author-badge {
+            display: inline-flex; align-items: center; gap: 14px;
+            background: var(--tc-red); color: white;
+            padding: 14px 28px; border-radius: 50px;
+            font-family: 'Montserrat', sans-serif; font-weight: 800;
+            font-size: 16px; text-transform: uppercase; letter-spacing: 1px;
+            box-shadow: 0 8px 20px rgba(230,57,70,0.2); align-self: flex-start;
+        }
+        .tpl-m2 .author-badge .role {
+            font-weight: 500; font-size: 13px; opacity: 0.9;
+        }
+
+        /* M3: Alerte Urgente */
+        .tpl-m3 {
+            display: flex; flex-direction: column; justify-content: center;
+            align-items: center; text-align: center; height: 100%; gap: 24px;
+        }
+        .tpl-m3 .alert-icon {
+            width: 90px; height: 90px;
+            background: white; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 48px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            animation: pulse-alert 2s infinite;
+        }
+        @keyframes pulse-alert {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.4); }
+            50% { box-shadow: 0 0 0 20px rgba(255,255,255,0); }
+        }
+        .tpl-m3 .alert-headline {
+            font-family: 'Montserrat', sans-serif; font-size: 80px; font-weight: 900;
+            color: white; text-transform: uppercase; line-height: 1.0;
+            text-shadow: 0 8px 30px rgba(0,0,0,0.4); max-width: 900px;
+        }
+        .tpl-m3 .alert-sub {
+            font-family: 'Inter', sans-serif; font-size: 22px; color: white;
+            max-width: 750px; line-height: 1.5;
+        }
+        .tpl-m3 .num-vert-box {
+            background: white; color: var(--tc-red); border-radius: 16px;
+            padding: 20px 50px; display: flex; align-items: center; gap: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .tpl-m3 .num-vert-box .phone-icon { font-size: 32px; }
+        .tpl-m3 .num-vert-box .num-label {
+            font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1px; color: #999;
+        }
+        .tpl-m3 .num-vert-box .num-value {
+            font-family: 'Montserrat', sans-serif; font-size: 36px; font-weight: 900;
+        }
+
+        /* M4: Mesures Barrières */
+        .tpl-m4 { display: flex; flex-direction: column; height: 100%; }
+        .tpl-m4 .measures-grid {
+            display: flex; gap: 20px; flex: 1; margin-top: 20px; align-items: stretch;
+        }
+        .tpl-m4 .measure-card {
+            flex: 1; background: white; border-radius: 20px;
+            padding: 30px 20px; display: flex; flex-direction: column;
+            align-items: center; text-align: center; gap: 16px;
+            border: 1px solid #E2E8F0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        .tpl-m4 .measure-card .step-num {
+            width: 60px; height: 60px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 28px;
+            color: white; flex-shrink: 0;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        .tpl-m4 .measure-card:nth-child(1) .step-num { background: var(--tc-cyan); }
+        .tpl-m4 .measure-card:nth-child(2) .step-num { background: var(--tc-yellow); color: var(--tc-navy); }
+        .tpl-m4 .measure-card:nth-child(3) .step-num { background: var(--tc-red); }
+        .tpl-m4 .measure-card .step-icon { font-size: 52px; margin: 8px 0; }
+        .tpl-m4 .measure-card .step-title {
+            font-family: 'Montserrat', sans-serif; font-weight: 800;
+            font-size: 22px; color: var(--tc-navy); text-transform: uppercase;
+        }
+        .tpl-m4 .measure-card .step-desc {
+            font-family: 'Inter', sans-serif; font-size: 16px;
+            color: #475569; line-height: 1.4;
+        }
+
+        /* M5: Événement/Conférence */
+        .tpl-m5 {
+            display: flex; flex-direction: column; justify-content: flex-end;
+            height: 100%; gap: 20px;
+        }
+        .tpl-m5 .event-super {
+            font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700;
+            color: var(--tc-red); text-transform: uppercase; letter-spacing: 5px;
+        }
+        .tpl-m5 .event-title {
+            font-family: 'Montserrat', sans-serif; font-size: 68px; font-weight: 900;
+            color: var(--tc-navy); text-transform: uppercase; line-height: 1.05;
+            max-width: 850px;
+        }
+        .tpl-m5 .event-details-bar {
+            display: flex; gap: 0; background: white;
+            border-radius: 12px; overflow: hidden; border: 1px solid #E2E8F0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        .tpl-m5 .event-detail-item {
+            flex: 1; padding: 18px 20px; display: flex; flex-direction: column;
+            gap: 4px; border-right: 1px solid #E2E8F0;
+        }
+        .tpl-m5 .event-detail-item:last-child { border-right: none; }
+        .tpl-m5 .event-detail-item .dl {
+            font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700;
+            color: var(--tc-red); text-transform: uppercase; letter-spacing: 1px;
+        }
+        .tpl-m5 .event-detail-item .dv {
+            font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 800;
+            color: var(--tc-navy); text-transform: uppercase;
+        }
+        .tpl-m5 .speaker-row {
+            display: flex; align-items: center; gap: 16px;
+        }
+        .tpl-m5 .speaker-avatar {
+            width: 60px; height: 60px; border-radius: 50%;
+            background-size: cover; background-position: center;
+            border: 3px solid var(--tc-red);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .tpl-m5 .speaker-info .sn {
+            font-family: 'Montserrat', sans-serif; font-weight: 800;
+            font-size: 16px; color: var(--tc-navy); text-transform: uppercase;
+        }
+        .tpl-m5 .speaker-info .sr {
+            font-family: 'Inter', sans-serif; font-size: 13px;
+            color: #475569;
+        }
+
+        /* M6: Chiffres d'Impact */
+        .tpl-m6 {
+            display: flex; flex-direction: column; height: 100%;
+            justify-content: center; gap: 30px;
+        }
+        .tpl-m6 .stats-grid { display: flex; gap: 20px; }
+        .tpl-m6 .stat-card {
+            flex: 1; background: white;
+            border: 1px solid #E2E8F0;
+            border-radius: 20px; padding: 36px 24px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        .tpl-m6 .stat-card .stat-value {
+            font-family: 'Montserrat', sans-serif; font-size: 64px; font-weight: 900;
+            color: var(--tc-red); line-height: 1; margin-bottom: 8px;
+        }
+        .tpl-m6 .stat-card .stat-label {
+            font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 600;
+            color: var(--tc-navy); text-transform: uppercase; letter-spacing: 1px;
+        }
+        .tpl-m6 .stat-card:nth-child(1) { border-top: 4px solid var(--tc-cyan); }
+        .tpl-m6 .stat-card:nth-child(2) { border-top: 4px solid var(--tc-yellow); }
+        .tpl-m6 .stat-card:nth-child(3) { border-top: 4px solid var(--tc-red); }
+
+        /* M7: Portrait Leader */
+        .tpl-m7 {
+            display: flex; flex-direction: row; height: 100%; gap: 0;
+        }
+        .tpl-m7 .leader-text-col {
+            flex: 1; display: flex; flex-direction: column;
+            justify-content: center; padding-right: 40px; gap: 20px;
+        }
+        .tpl-m7 .leader-quote {
+            font-family: 'Montserrat', sans-serif; font-size: 28px;
+            font-weight: 700; color: var(--tc-navy); line-height: 1.4;
+            font-style: italic; border-left: 5px solid var(--tc-red);
+            padding-left: 20px;
+        }
+        .tpl-m7 .leader-name {
+            font-family: 'Montserrat', sans-serif; font-size: 24px;
+            font-weight: 900; color: var(--tc-red); text-transform: uppercase;
+        }
+        .tpl-m7 .leader-role {
+            font-family: 'Inter', sans-serif; font-size: 15px;
+            color: #475569;
+        }
+        .tpl-m7 .leader-photo-col {
+            width: 420px; flex-shrink: 0;
+            position: relative;
+        }
+        .tpl-m7 .leader-photo {
+            width: 100%; height: 100%;
+            background-size: cover; background-position: center top;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        /* M8: Cohésion Sociale */
+        .tpl-m8 {
+            display: flex; flex-direction: column; justify-content: center;
+            align-items: center; text-align: center; height: 100%; gap: 24px;
+        }
+        .tpl-m8 .peace-icon { font-size: 80px; margin-bottom: 8px; }
+        .tpl-m8 .peace-headline {
+            font-family: 'Montserrat', sans-serif; font-size: 60px; font-weight: 900;
+            color: var(--tc-navy); text-transform: uppercase; line-height: 1.05;
+            max-width: 800px;
+        }
+        .tpl-m8 .peace-box {
+            background: white; border: 1px solid #E2E8F0;
+            border-radius: 16px; padding: 32px 40px; max-width: 800px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        .tpl-m8 .peace-text {
+            font-family: 'Inter', sans-serif; font-size: 22px;
+            color: #334155; line-height: 1.5;
+        }
+        .tpl-m8 .peace-signature {
+            margin-top: 16px; font-family: 'Space Grotesk', sans-serif;
+            font-size: 14px; font-weight: 700; color: var(--tc-red);
+            text-transform: uppercase; letter-spacing: 2px;
+        }
+
+        /* M9: Communiqué Officiel */
+        .tpl-m9 { display: flex; flex-direction: column; height: 100%; }
+        .tpl-m9 .communique-header {
+            text-align: center; margin-bottom: 24px; padding-bottom: 16px;
+            border-bottom: 3px solid var(--tc-red);
+        }
+        .tpl-m9 .communique-title {
+            font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 36px;
+            color: var(--tc-red); text-transform: uppercase; letter-spacing: 2px;
+        }
+        .tpl-m9 .communique-ref {
+            font-family: 'Inter', sans-serif; font-size: 14px; color: #666;
+            margin-top: 6px;
+        }
+        .tpl-m9 .communique-body {
+            flex: 1; font-family: 'Inter', sans-serif; font-size: 20px;
+            color: #333; line-height: 1.7;
+        }
+        .tpl-m9 .communique-footer {
+            margin-top: auto; padding-top: 20px; border-top: 2px solid #eee;
+            display: flex; justify-content: space-between; align-items: flex-end;
+        }
+        .tpl-m9 .communique-footer .sig-name {
+            font-family: 'Montserrat', sans-serif; font-weight: 800;
+            font-size: 18px; color: var(--tc-navy);
+        }
+        .tpl-m9 .communique-footer .sig-role {
+            font-family: 'Inter', sans-serif; font-size: 13px; color: #999;
+        }
+        .tpl-m9 .communique-footer .sig-date {
+            font-family: 'Inter', sans-serif; font-size: 14px;
+            color: #999; text-align: right;
+        }
+
+        /* M10: Design T-Shirt */
+        .tpl-m10 {
+            display: flex; flex-direction: column; justify-content: center;
+            align-items: center; text-align: center; height: 100%; gap: 30px;
+        }
+        .tpl-m10 .tshirt-circle {
+            width: 500px; height: 500px; border-radius: 50%;
+            border: 6px solid var(--tc-navy);
+            display: flex; flex-direction: column; justify-content: center;
+            align-items: center; gap: 16px; padding: 40px;
+            box-shadow: 0 0 0 12px rgba(11,17,33,0.05), 0 20px 60px rgba(0,0,0,0.05);
+        }
+        .tpl-m10 .tshirt-circle .ts-icon { font-size: 56px; }
+        .tpl-m10 .tshirt-circle .ts-title {
+            font-family: 'Montserrat', sans-serif; font-weight: 900;
+            font-size: 40px; color: var(--tc-navy); text-transform: uppercase;
+            line-height: 1.1;
+        }
+        .tpl-m10 .tshirt-circle .ts-sub {
+            font-family: 'Inter', sans-serif; font-size: 16px;
+            color: #475569; max-width: 340px; line-height: 1.4;
+        }
+        .tpl-m10 .tshirt-bottom-text {
+            font-family: 'Space Grotesk', sans-serif; font-size: 18px;
+            font-weight: 700; color: var(--tc-red);
+            text-transform: uppercase; letter-spacing: 8px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+         SIDEBAR
+         ============================================================ -->
+    <div class="sidebar">
+        <div class="top-brand">
+            <h1>TUCHUNGUZE <em>II</em> Studio</h1>
+            <span class="version-badge">V1.0</span>
+        </div>
+
+        <!-- SECTION 1: Choix du modèle -->
+        <div class="form-section">
+            <div class="section-title">1. Choix du Modèle</div>
+            <div class="model-grid">
+                <button class="model-btn active" onclick="selectModel('M1')">
+                    <span class="emoji">🔍</span>Alerte Rumeur
+                </button>
+                <button class="model-btn" onclick="selectModel('M2')">
+                    <span class="emoji">💬</span>Témoignage
+                </button>
+                <button class="model-btn" onclick="selectModel('M3')">
+                    <span class="emoji">🚨</span>Alerte Urgente
+                </button>
+                <button class="model-btn" onclick="selectModel('M4')">
+                    <span class="emoji">🛡️</span>Mesures Barrières
+                </button>
+                <button class="model-btn" onclick="selectModel('M5')">
+                    <span class="emoji">🎤</span>Événement
+                </button>
+                <button class="model-btn" onclick="selectModel('M6')">
+                    <span class="emoji">📊</span>Chiffres d'Impact
+                </button>
+                <button class="model-btn" onclick="selectModel('M7')">
+                    <span class="emoji">👤</span>Portrait Leader
+                </button>
+                <button class="model-btn" onclick="selectModel('M8')">
+                    <span class="emoji">🕊️</span>Cohésion Sociale
+                </button>
+                <button class="model-btn" onclick="selectModel('M9')">
+                    <span class="emoji">📜</span>Communiqué
+                </button>
+                <button class="model-btn" onclick="selectModel('M10')">
+                    <span class="emoji">👕</span>Design T-Shirt
+                </button>
+            </div>
+        </div>
+
+        <!-- SECTION 2: Champs dynamiques -->
+        <div class="form-section" id="sect-fields">
+            <div class="section-title">2. Contenu</div>
+            <div class="dynamic-fields" id="dynamic-fields">
+                <!-- Injecté dynamiquement -->
+            </div>
+        </div>
+
+        <!-- SECTION 3: Apparence -->
+        <div class="form-section">
+            <div class="section-title">3. Apparence</div>
+            <div class="form-group">
+                <label>Photo de fond (optionnel)</label>
+                <input type="file" accept="image/*" id="bg-photo-input" onchange="loadBgPhoto(event)">
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Couleur de fond artboard</label>
+                    <input type="color" id="bg-color" value="#FFFFFF" onchange="liveRender()">
+                </div>
+                <div class="form-group">
+                    <label>Taille du titre principal (px)</label>
+                    <input type="range" id="title-size" min="30" max="130" value="72" oninput="updateTitleSize(this.value)">
+                    <span id="title-size-val" style="font-size: 11px; color: #cbd5e1; display: block; margin-top: 4px;">72px</span>
+                </div>
+            </div>
+            <div class="color-row">
+                <div class="form-group">
+                    <label>Couleur overlay 1</label>
+                    <input type="color" id="overlay-c1" value="#FFFFFF" onchange="liveRender()">
+                </div>
+                <div class="form-group">
+                    <label>Couleur overlay 2</label>
+                    <input type="color" id="overlay-c2" value="#FFFFFF" onchange="liveRender()">
+                </div>
+                <div class="form-group">
+                    <label>Opacité overlay (%)</label>
+                    <input type="text" id="overlay-opacity" value="85" oninput="liveRender()">
+                </div>
+            </div>
+        </div>
+
+        <!-- EXPORT -->
+        <button class="btn-export" onclick="exportImage()">
+            ⬇ Exporter l'Affiche HD (PNG)
+        </button>
+    </div>
+
+    <!-- ============================================================
+         WORKSPACE
+         ============================================================ -->
+    <div class="workspace">
+        <div class="artboard-wrapper">
+            <div class="artboard" id="artboard">
+
+                <!-- Fond photo -->
+                <div class="ab-bg-photo" id="ab-bg-photo"></div>
+                <!-- Overlay -->
+                <div class="ab-bg-overlay" id="ab-bg-overlay" style="background: linear-gradient(135deg, rgba(11,17,33,0.9) 0%, rgba(230,57,70,0.6) 100%);"></div>
+
+                <!-- Liseré tricolore RDC -->
+                <div class="ab-rdc-stripe">
+                    <div class="s1"></div>
+                    <div class="s2"></div>
+                    <div class="s3"></div>
+                </div>
+
+                <!-- Logo TUCHUNGUZE II haut centre -->
+                <div class="ab-logo-top">
+                    <img src="../logos/tuchunguze.PNG" alt="Tuchunguze II" id="logo-top-img">
+                </div>
+
+                <!-- Zone contenu dynamique -->
+                <div class="ab-content" id="ab-content">
+                    <!-- Rendu ici -->
+                </div>
+
+                <!-- Capsule sponsors bas -->
+                <div class="ab-sponsors-pill" id="ab-sponsors-pill">
+                    <span class="pill-label">Avec le soutien de</span>
+                    <div class="pill-sep"></div>
+                    <img src="../logos/kongo mwinda.PNG" alt="Kongo Mwinda">
+                    <div class="pill-sep"></div>
+                    <img src="../logos/congo debout.PNG" alt="Congo Debout">
+                    <div class="pill-sep"></div>
+                    <img src="../logos/acndc.jpeg" alt="ACNDC">
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         JAVASCRIPT ENGINE
+         ====    <script>
+        // =========================================================
+        // STATE
+        // =========================================================
+        let currentModel = 'M1';
+        const state = {};
+        const mediaDb = { bgPhoto: null, speakerPhoto: null };
+
+        // Helper de coloration textuelle dynamique [texte] -> span accentué
+        function formatTextColors(text) {
+            if (!text) return '';
+            return String(text).replace(/\[([^\]]+)\]/g, '<span class="t-accent">$1</span>');
+        }
+
+        // Helper pour le redimensionnement du titre principal
+        function updateTitleSize(val) {
+            document.getElementById('title-size-val').textContent = val + 'px';
+            const headline = document.querySelector('.t-headline');
+            if (headline) {
+                headline.style.fontSize = val + 'px';
+            }
+            state['title-size'] = val;
+        }
+
+        // =========================================================
+        // MODEL DEFINITIONS
+        // =========================================================
+        const MODELS = {
+            M1: {
+                name: '🟢 Affiche #StopEbola (Style LUCHA)',
+                overlayC1: '#1B5E20', overlayC2: '#1B5E20', opacity: 100,
+                defaultBg: '../logos/women_leaders.png',
+                fields: [
+                    { id: 'eb-hashtag', type: 'text', label: 'Hashtag principal', default: '#StopEbola' },
+                    { id: 'eb-headline', type: 'textarea', label: 'Titre principal (Gros)', default: 'Ebola existe et tue; mais nous pouvons [l\'arrêter].' },
+                    { id: 'eb-quote', type: 'textarea', label: 'Déclaration / Témoignage', default: 'Je lave régulièrement mes mains, j\'évite de toucher les malades ou les corps sans protection, j\'évite de propager les rumeurs, je collabore avec les agents de santé.' },
+                    { id: 'eb-name', type: 'text', label: 'Nom du déclarant', default: 'Laurence Kabwema' },
+                    { id: 'eb-cta', type: 'text', label: 'Appel à l\'action', default: 'Sauve des vies en participant à cette campagne. Envoie ta photo et ton nom à ce numéro' },
+                    { id: 'eb-phone', type: 'text', label: 'Téléphone WhatsApp', default: '+243 82 76 36 876' },
+                ]
+            },
+            M2: {
+                name: '🔴 Protocole Attention (6 Cercles)',
+                overlayC1: '#FFFFFF', overlayC2: '#FFFFFF', opacity: 100,
+                defaultBg: '',
+                fields: [
+                    { id: 'pr-alert', type: 'text', label: 'Bandeau Alerte', default: 'ATTENTION' },
+                    { id: 'c1-emoji', type: 'text', label: 'C1 Icône', default: '👕' },
+                    { id: 'c1-title', type: 'text', label: 'C1 Titre', default: 'Pas toucher effets' },
+                    { id: 'c1-desc', type: 'text', label: 'C1 Desc', default: 'Ne pas toucher les effets d\'un malade (habits, assiettes...)' },
+                    { id: 'c2-emoji', type: 'text', label: 'C2 Icône', default: '🤢' },
+                    { id: 'c2-title', type: 'text', label: 'C2 Titre', default: 'Sécrétions suspectes' },
+                    { id: 'c2-desc', type: 'text', label: 'C2 Desc', default: 'Ne pas toucher urine, salive, vomissures, sueur...' },
+                    { id: 'c3-emoji', type: 'text', label: 'C3 Icône', default: '🦌' },
+                    { id: 'c3-title', type: 'text', label: 'C3 Titre', default: 'Animaux sauvages' },
+                    { id: 'c3-desc', type: 'text', label: 'C3 Desc', default: 'Ne pas toucher d\'animaux sauvages malades ou morts.' },
+                    { id: 'c4-emoji', type: 'text', label: 'C4 Icône', default: '🤝' },
+                    { id: 'c4-title', type: 'text', label: 'C4 Titre', default: 'Serrer les mains' },
+                    { id: 'c4-desc', type: 'text', label: 'C4 Desc', default: 'Éviter les salutations physiques et poignées de main.' },
+                    { id: 'c5-emoji', type: 'text', label: 'C5 Icône', default: '🤗' },
+                    { id: 'c5-title', type: 'text', label: 'C5 Titre', default: 'Pas d\'accolades' },
+                    { id: 'c5-desc', type: 'text', label: 'C5 Desc', default: 'Éviter les embrassades et contacts physiques étroits.' },
+                    { id: 'c6-emoji', type: 'text', label: 'C6 Icône', default: '🦇' },
+                    { id: 'c6-title', type: 'text', label: 'C6 Titre', default: 'Chauve-souris/rats' },
+                    { id: 'c6-desc', type: 'text', label: 'C6 Desc', default: 'Ne pas consommer de viande de brousse ou de fruits rongés.' },
+                    { id: 'pr-cta', type: 'text', label: 'Appel à l\'action bas', default: 'Participez gratuitement à cette campagne en envoyant votre image au WhatsApp.' },
+                    { id: 'pr-phone', type: 'text', label: 'Téléphone WhatsApp', default: '+243 851 798 215' }
+                ]
+            },
+            M3: {
+                name: '🔵 Sensibilisation UNICEF (Wave)',
+                overlayC1: '#FFFFFF', overlayC2: '#FFFFFF', opacity: 100,
+                defaultBg: '',
+                fields: [
+                    { id: 'un-orange', type: 'text', label: 'Bandeau Orange', default: 'amour, nutrition et protection !' },
+                    { id: 'un-title', type: 'text', label: 'Titre principal', default: 'Le lait [maternel]:' },
+                    { id: 'un-body', type: 'textarea', label: 'Message central', default: 'Allaiter exclusivement au lait maternel pendant [6 mois] protège et nourrit votre bébé' },
+                    { id: 'un-emoji', type: 'text', label: 'Emoji central bas', default: '👩‍🍼' },
+                ]
+            },
+            M4: {
+                name: '🔍 Alerte Rumeur (Fact-check)',
+                overlayC1: '#FFFFFF', overlayC2: '#FFFFFF', opacity: 100,
+                defaultBg: '',
+                fields: [
+                    { id: 'stamp-type', type: 'select', label: 'Type de verdict', options: ['FAUX','VRAI','TROMPEUR'], default: 'FAUX' },
+                    { id: 'rumeur', type: 'textarea', label: 'La rumeur à vérifier', default: '"L\'Ebola se transmet par les [moustiques] et les aliments importés."' },
+                    { id: 'explication', type: 'textarea', label: 'Explication / Vérité', default: 'Le virus Ebola se transmet par [contact direct] avec les fluides corporels d\'une personne infectée. Les moustiques ne transmettent PAS Ebola.' },
+                    { id: 'source', type: 'text', label: 'Source', default: 'OMS / Ministère de la Santé RDC' },
+                ]
+            },
+            M5: {
+                name: '💬 Témoignage / Citation',
+                overlayC1: '#FFFFFF', overlayC2: '#FFFFFF', opacity: 85,
+                defaultBg: '../logos/women_leaders.png',
+                fields: [
+                    { id: 'citation', type: 'textarea', label: 'Le témoignage (citation)', default: '"Grâce à la sensibilisation, j\'ai compris que se laver les [mains régulièrement] protège toute ma famille et mon quartier."' },
+                    { id: 'auteur', type: 'text', label: 'Nom de l\'auteur', default: 'Marie Kahindo' },
+                    { id: 'role-auteur', type: 'text', label: 'Rôle / Lieu', default: 'Mère de famille, Goma' },
+                ]
+            },
+            M6: {
+                name: '🚨 Alerte Urgente Rouge',
+                overlayC1: '#B71C1C', overlayC2: '#E63946', opacity: 98,
+                defaultBg: '',
+                fields: [
+                    { id: 'titre-alerte', type: 'textarea', label: 'Titre de l\'alerte', default: 'NOUVEAU CAS [CONFIRMÉ]\nDANS LA ZONE DE SANTÉ' },
+                    { id: 'description-alerte', type: 'textarea', label: 'Description', default: 'Un nouveau cas d\'Ebola a été confirmé. Respectez les [mesures barrières] et signalez tout symptôme suspect immédiatement.' },
+                    { id: 'numero-vert', type: 'text', label: 'Numéro Vert', default: '0800 33 000' },
+                ]
+            },
+            M7: {
+                name: '🛡️ Mesures Barrières (3 étapes)',
+                overlayC1: '#FFFFFF', overlayC2: '#FFFFFF', opacity: 90,
+                defaultBg: '../logos/sensitization.png',
+                fields: [
+                    { id: 'titre-mesures', type: 'text', label: 'Titre principal', default: 'GESTES QUI [SAUVENT]' },
+                    { id: 'step1-icon', type: 'text', label: 'Icône étape 1', default: '🤲' },
+                    { id: 'step1-title', type: 'text', label: 'Titre étape 1', default: 'Lavez-vous les mains' },
+                    { id: 'step1-desc', type: 'text', label: 'Description étape 1', default: 'Avec de l\'eau et du savon pendant 20 secondes minimum' },
+                    { id: 'step2-icon', type: 'text', label: 'Icône étape 2', default: '🚫' },
+                    { id: 'step2-title', type: 'text', label: 'Titre étape 2', default: 'Évitez les contacts' },
+                    { id: 'step2-desc', type: 'text', label: 'Description étape 2', default: 'Ne touchez pas les personnes malades ou les corps des défunts' },
+                    { id: 'step3-icon', type: 'text', label: 'Icône étape 3', default: '🏥' },
+                    { id: 'step3-title', type: 'text', label: 'Titre étape 3', default: 'Consultez rapidement' },
+                    { id: 'step3-desc', type: 'text', label: 'Description étape 3', default: 'Rendez-vous au centre de santé dès les premiers symptômes' },
+                ]
+            },
+            M8: {
+                name: '📊 Chiffres d\'Impact',
+                overlayC1: '#FFFFFF', overlayC2: '#FFFFFF', opacity: 85,
+                defaultBg: '../logos/sensitization.png',
+                fields: [
+                    { id: 'impact-title', type: 'text', label: 'Titre', default: 'NOTRE IMPACT [EN CHIFFRES]' },
+                    { id: 'impact-sub', type: 'text', label: 'Sous-titre', default: 'Bilan de la campagne TUCHUNGUZE II — Mai 2026' },
+                    { id: 'stat1-value', type: 'text', label: 'Chiffre 1', default: '12K+' },
+                    { id: 'stat1-label', type: 'text', label: 'Libellé 1', default: 'Femmes leaders formées' },
+                    { id: 'stat2-value', type: 'text', label: 'Chiffre 2', default: '350' },
+                    { id: 'stat2-label', type: 'text', label: 'Libellé 2', default: 'Brigades anti-rumeurs' },
+                    { id: 'stat3-value', type: 'text', label: 'Chiffre 3', default: '45' },
+                    { id: 'stat3-label', type: 'text', label: 'Libellé 3', default: 'Centres de santé équipés' },
+                ]
+            },
+            M9: {
+                name: '📜 Communiqué Officiel',
+                overlayC1: '#FFFFFF', overlayC2: '#F8FAFC', opacity: 100,
+                defaultBg: '',
+                fields: [
+                    { id: 'comm-titre', type: 'text', label: 'Titre du communiqué', default: 'COMMUNIQUÉ DE PRESSE' },
+                    { id: 'comm-ref', type: 'text', label: 'Référence', default: 'Réf. : TUCH-II/COM/2026-005' },
+                    { id: 'comm-body', type: 'textarea', label: 'Corps du communiqué (le texte)', default: 'Le projet TUCHUNGUZE II informe la population que des brigades mobiles de vérification des faits seront déployées dans les zones de santé de Goma et Bukavu à partir du 1er juin 2026.\n\nNous appelons tous les leaders communautaires à accompagner cette campagne essentielle pour endiguer les rumeurs nocives qui nuisent à la santé publique.' },
+                    { id: 'comm-signataire', type: 'text', label: 'Signataire', default: 'La Coordination TUCHUNGUZE II' },
+                    { id: 'comm-sig-role', type: 'text', label: 'Fonction du signataire', default: 'Direction Générale Provinciale' },
+                    { id: 'comm-date', type: 'text', label: 'Date', default: 'Goma, le 30 mai 2026' },
+                ]
+            },
+            M10: {
+                name: '👕 Design T-Shirt',
+                overlayC1: '#FFFFFF', overlayC2: '#FFFFFF', opacity: 100,
+                defaultBg: '',
+                fields: [
+                    { id: 'ts-icon', type: 'text', label: 'Icône centrale (emoji)', default: '🤝' },
+                    { id: 'ts-title', type: 'textarea', label: 'Texte principal (court!)', default: 'FEMMES\nLEADERS\nCONTRE [EBOLA]' },
+                    { id: 'ts-sub', type: 'text', label: 'Sous-texte', default: 'Campagne Nationale de Protection' },
+                    { id: 'ts-bottom', type: 'text', label: 'Texte bas (hashtag)', default: '#TUCHUNGUZEII' },
+                ]
+            }
+        };
+
+        // =========================================================
+        // FIELD GENERATION
+        // =========================================================
+        function buildFields(modelId) {
+            const model = MODELS[modelId];
+            const container = document.getElementById('dynamic-fields');
+            let html = '';
+
+            model.fields.forEach(f => {
+                if (f.type === 'text') {
+                    const val = state[f.id] || f.default || '';
+                    html += `<div class="form-group">
+                        <label>${f.label}</label>
+                        <input type="text" id="${f.id}" value="${escH(val)}" oninput="saveField('${f.id}', this.value)">
+                    </div>`;
+                } else if (f.type === 'textarea') {
+                    const val = state[f.id] || f.default || '';
+                    html += `<div class="form-group">
+                        <label>${f.label}</label>
+                        <textarea id="${f.id}" rows="3" oninput="saveField('${f.id}', this.value)">${escH(val)}</textarea>
+                    </div>`;
+                } else if (f.type === 'select') {
+                    const val = state[f.id] || f.default || '';
+                    html += `<div class="form-group">
+                        <label>${f.label}</label>
+                        <select id="${f.id}" onchange="saveField('${f.id}', this.value)">
+                            ${f.options.map(o => `<option value="${o}" ${o === val ? 'selected' : ''}>${o}</option>`).join('')}
+                        </select>
+                    </div>`;
+                } else if (f.type === 'file') {
+                    html += `<div class="form-group">
+                        <label>${f.label}</label>
+                        <input type="file" accept="image/*" onchange="loadSpeakerPhoto(event)">
+                    </div>`;
+                }
+            });
+
+            container.innerHTML = html;
+        }
+
+        function escH(s) {
+            return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        }
+
+        function saveField(id, value) {
+            state[id] = value;
+            liveRender();
+        }
+
+        function gv(id) {
+            const model = MODELS[currentModel];
+            if (state[id] !== undefined) return state[id];
+            const field = model.fields.find(f => f.id === id);
+            return field ? (field.default || '') : '';
+        }
+
+        function nl2br(s) { return s.replace(/\n/g, '<br>'); }
+
+        // =========================================================
+        // MODEL SELECTION
+        // =========================================================
+        function selectModel(id) {
+            currentModel = id;
+            const model = MODELS[id];
+
+            // Active button
+            document.querySelectorAll('.model-btn').forEach((btn, i) => {
+                btn.classList.toggle('active', btn.textContent.includes(model.name.split(' ')[0]) || 'M' + (i + 1) === id);
+            });
+            // Fix: use proper index
+            const btns = document.querySelectorAll('.model-btn');
+            const idx = parseInt(id.replace('M','')) - 1;
+            btns.forEach((b, i) => b.classList.toggle('active', i === idx));
+
+            // Set overlay colors from model defaults
+            document.getElementById('overlay-c1').value = model.overlayC1;
+            document.getElementById('overlay-c2').value = model.overlayC2;
+            document.getElementById('overlay-opacity').value = model.opacity;
+
+            // Reset speaker photo
+            mediaDb.speakerPhoto = null;
+
+            buildFields(id);
+            liveRender();
+        }
+
+        // =========================================================
+        // MEDIA LOADING
+        // =========================================================
+        function loadBgPhoto(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    mediaDb.bgPhoto = e.target.result;
+                    liveRender();
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function loadSpeakerPhoto(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    mediaDb.speakerPhoto = e.target.result;
+                    liveRender();
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // =========================================================
+        // LIVE RENDER
+        // =========================================================
+        function liveRender() {
+            const content = document.getElementById('ab-content');
+            const bgPhoto = document.getElementById('ab-bg-photo');
+            const bgOverlay = document.getElementById('ab-bg-overlay');
+            const artboard = document.getElementById('artboard');
+            const sponsorsPill = document.getElementById('ab-sponsors-pill');
+
+            // Couleur de fond d'artboard
+            const bgColor = document.getElementById('bg-color').value;
+            artboard.style.backgroundColor = bgColor;
+
+            // Background photo
+            const defaultBgForModel = MODELS[currentModel].defaultBg || '';
+            const activeBg = mediaDb.bgPhoto || defaultBgForModel;
+            if (activeBg) {
+                bgPhoto.style.backgroundImage = `url('${activeBg}')`;
+                bgPhoto.style.opacity = '1';
+            } else {
+                bgPhoto.style.backgroundImage = 'none';
+                bgPhoto.style.opacity = '0';
+            }
+
+            // Overlay
+            const c1 = document.getElementById('overlay-c1').value;
+            const c2 = document.getElementById('overlay-c2').value;
+            const op = parseInt(document.getElementById('overlay-opacity').value) / 100;
+            const isM9 = currentModel === 'M9';
+
+            if (isM9) {
+                bgOverlay.style.background = `linear-gradient(180deg, ${c1} 0%, ${c2} 100%)`;
+                bgOverlay.style.opacity = '1';
+            } else {
+                const r1 = hexToRgba(c1, op);
+                const r2 = hexToRgba(c2, op * 0.7);
+                bgOverlay.style.background = `linear-gradient(135deg, ${r1} 0%, ${r2} 100%)`;
+                bgOverlay.style.opacity = '1';
+            }
+
+            // Afficher ou masquer la pill des sponsors du bas (les modèles M1, M2, M3 ont leurs propres bandeaux)
+            if (['M1', 'M2', 'M3'].includes(currentModel)) {
+                sponsorsPill.style.display = 'none';
+            } else {
+                sponsorsPill.style.display = 'flex';
+            }
+
+            // Rendu du contenu du modèle
+            let html = '';
+            switch (currentModel) {
+                case 'M1': html = renderM1(); break;
+                case 'M2': html = renderM2(); break;
+                case 'M3': html = renderM3(); break;
+                case 'M4': html = renderM4(); break;
+                case 'M5': html = renderM5(); break;
+                case 'M6': html = renderM6(); break;
+                case 'M7': html = renderM7(); break;
+                case 'M8': html = renderM8(); break;
+                case 'M9': html = renderM9(); break;
+                case 'M10': html = renderM10(); break;
+            }
+
+            content.innerHTML = html;
+
+            // Appliquer la taille de police personnalisée au titre principal
+            const titleSize = state['title-size'] || document.getElementById('title-size').value;
+            const headlines = document.querySelectorAll('.t-headline, .hash-title, .alert-headline, .circle-card-title, .wave-text');
+            headlines.forEach(hl => {
+                hl.style.fontSize = titleSize + 'px';
+            });
+        }
+
+        // =========================================================
+        // RENDER FUNCTIONS
+        // =========================================================
+
+        function renderM1() {
+            const speakerImg = mediaDb.speakerPhoto || '../logos/health_worker.png';
+            return `<div class="tpl-ebola-green">
+                <div class="yellow-card">
+                    <span class="tag-campagne">Campagne</span>
+                    <h2 class="hash-title">${formatTextColors(gv('eb-hashtag'))}</h2>
+                </div>
+
+                <div class="ebola-photo-col">
+                    <div class="ebola-photo-img" style="background-image:url('${speakerImg}')"></div>
+                </div>
+
+                <div class="ebola-message-box">
+                    <div class="t-headline" style="font-size: 38px; line-height: 1.25; margin-bottom: 20px; color: white;">${formatTextColors(gv('eb-headline'))}</div>
+                    <div class="ebola-quote-text">“ ${formatTextColors(gv('eb-quote'))} ”</div>
+                    <div class="ebola-quote-author">— ${gv('eb-name')}</div>
+                </div>
+
+                <div class="ebola-bottom-navy-bar">
+                    <div class="ebola-bottom-left">${gv('eb-cta')}</div>
+                    <div class="ebola-bottom-right">
+                        <span class="ebola-phone-num">${gv('eb-phone')}</span>
+                        <span class="ebola-phone-sub">via whatsapp</span>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        function renderM2() {
+            return `<div class="tpl-ebola-grid">
+                <div class="red-header-bar">${gv('pr-alert')}</div>
+                <div class="circles-container">
+                    <div class="circle-card">
+                        <div class="circle-wrapper">${gv('c1-emoji')}</div>
+                        <div class="circle-card-title">${gv('c1-title')}</div>
+                        <div class="circle-card-desc">${gv('c1-desc')}</div>
+                    </div>
+                    <div class="circle-card">
+                        <div class="circle-wrapper">${gv('c2-emoji')}</div>
+                        <div class="circle-card-title">${gv('c2-title')}</div>
+                        <div class="circle-card-desc">${gv('c2-desc')}</div>
+                    </div>
+                    <div class="circle-card">
+                        <div class="circle-wrapper">${gv('c3-emoji')}</div>
+                        <div class="circle-card-title">${gv('c3-title')}</div>
+                        <div class="circle-card-desc">${gv('c3-desc')}</div>
+                    </div>
+                    <div class="circle-card">
+                        <div class="circle-wrapper">${gv('c4-emoji')}</div>
+                        <div class="circle-card-title">${gv('c4-title')}</div>
+                        <div class="circle-card-desc">${gv('c4-desc')}</div>
+                    </div>
+                    <div class="circle-card">
+                        <div class="circle-wrapper">${gv('c5-emoji')}</div>
+                        <div class="circle-card-title">${gv('c5-title')}</div>
+                        <div class="circle-card-desc">${gv('c5-desc')}</div>
+                    </div>
+                    <div class="circle-card">
+                        <div class="circle-wrapper">${gv('c6-emoji')}</div>
+                        <div class="circle-card-title">${gv('c6-title')}</div>
+                        <div class="circle-card-desc">${gv('c6-desc')}</div>
+                    </div>
+                </div>
+                <div class="ebola-grid-bottom-bar">
+                    <div class="grid-bottom-text">${gv('pr-cta')}</div>
+                    <div class="grid-bottom-right">
+                        <span>📞 ${gv('pr-phone')}</span>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        function renderM3() {
+            return `<div class="tpl-unicef-wave">
+                <div class="orange-banner">${gv('un-orange')}</div>
+                <div class="t-headline" style="font-size: 64px; margin-bottom: 30px; color: var(--tc-navy);">${formatTextColors(gv('un-title'))}</div>
+                <div class="wave-container">
+                    <div class="wave-text">${formatTextColors(gv('un-body'))}</div>
+                </div>
+                <div class="circle-illustration">${gv('un-emoji')}</div>
+            </div>`;
+        }
+
+        function renderM4() {
+            const stampType = gv('stamp-type');
+            const stampClass = stampType === 'VRAI' ? 'vrai' : 'faux';
+            return `<div class="tpl-m1">
+                <div class="rumeur-badge">
+                    <span>🔍 VÉRIFICATION DES FAITS</span>
+                </div>
+
+                <div class="rumeur-box">
+                    <div class="rumeur-text">${formatTextColors(gv('rumeur'))}</div>
+                </div>
+
+                <div class="stamp ${stampClass}">${stampType}</div>
+
+                <div class="explication-box">
+                    <div class="check-title">✅ CE QUE DISENT LES EXPERTS</div>
+                    <div class="explication-text">${formatTextColors(gv('explication'))}</div>
+                </div>
+
+                <div style="margin-top:16px; font-family:'Inter',sans-serif; font-size:14px; color:rgba(0,0,0,0.5);">
+                    Source : ${gv('source')}
+                </div>
+            </div>`;
+        }
+
+        function renderM5() {
+            return `<div class="tpl-m2">
+                <div class="quote-marks">"</div>
+                <div class="quote-text">${formatTextColors(gv('citation'))}</div>
+                <div class="author-badge">
+                    ${gv('auteur')}
+                    <span class="role">— ${gv('role-auteur')}</span>
+                </div>
+            </div>`;
+        }
+
+        function renderM6() {
+            return `<div class="tpl-m3">
+                <div class="alert-icon">⚠️</div>
+                <div class="alert-headline">${formatTextColors(gv('titre-alerte'))}</div>
+                <div class="alert-sub">${formatTextColors(gv('description-alerte'))}</div>
+                <div class="num-vert-box">
+                    <span class="phone-icon">📞</span>
+                    <div>
+                        <div class="num-label">Numéro Vert Gratuit</div>
+                        <div class="num-value">${gv('numero-vert')}</div>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        function renderM7() {
+            return `<div class="tpl-m4">
+                <div class="t-supertitle">MESURES BARRIÈRES</div>
+                <div class="t-headline" style="font-size:56px; margin-bottom:8px;">${formatTextColors(gv('titre-mesures'))}</div>
+                <div class="measures-grid">
+                    <div class="measure-card">
+                        <div class="step-num">1</div>
+                        <div class="step-icon">${gv('step1-icon')}</div>
+                        <div class="step-title">${gv('step1-title')}</div>
+                        <div class="step-desc">${gv('step1-desc')}</div>
+                    </div>
+                    <div class="measure-card">
+                        <div class="step-num">2</div>
+                        <div class="step-icon">${gv('step2-icon')}</div>
+                        <div class="step-title">${gv('step2-title')}</div>
+                        <div class="step-desc">${gv('step2-desc')}</div>
+                    </div>
+                    <div class="measure-card">
+                        <div class="step-num">3</div>
+                        <div class="step-icon">${gv('step3-icon')}</div>
+                        <div class="step-title">${gv('step3-title')}</div>
+                        <div class="step-desc">${gv('step3-desc')}</div>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        function renderM8() {
+            return `<div class="tpl-m6">
+                <div style="text-align:center;">
+                    <div class="t-supertitle" style="text-align:center;">${gv('impact-sub')}</div>
+                    <div class="t-headline" style="font-size:52px; text-align:center; margin-bottom:8px;">${formatTextColors(gv('impact-title'))}</div>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">${gv('stat1-value')}</div>
+                        <div class="stat-label">${gv('stat1-label')}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">${gv('stat2-value')}</div>
+                        <div class="stat-label">${gv('stat2-label')}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">${gv('stat3-value')}</div>
+                        <div class="stat-label">${gv('stat3-label')}</div>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        function renderM9() {
+            return `<div class="tpl-m9">
+                <div class="communique-header">
+                    <div class="communique-title">${gv('comm-titre')}</div>
+                    <div class="communique-ref">${gv('comm-ref')}</div>
+                </div>
+                <div class="communique-body">${nl2br(gv('comm-body'))}</div>
+                <div class="communique-footer">
+                    <div>
+                        <div class="sig-name">${gv('comm-signataire')}</div>
+                        <div class="sig-role">${gv('comm-sig-role')}</div>
+                    </div>
+                    <div class="sig-date">${gv('comm-date')}</div>
+                </div>
+            </div>`;
+        }
+
+        function renderM10() {
+            return `<div class="tpl-m10">
+                <div class="tshirt-circle">
+                    <div class="ts-icon">${gv('ts-icon')}</div>
+                    <div class="ts-title">${formatTextColors(gv('ts-title'))}</div>
+                    <div class="ts-sub">${gv('ts-sub')}</div>
+                </div>
+                <div class="tshirt-bottom-text">${gv('ts-bottom')}</div>
+            </div>`;
+        }
+
+        // =========================================================
+        // HELPERS
+        // =========================================================
+        function hexToRgba(hex, alpha) {
+            const r = parseInt(hex.slice(1, 3), 16);
+            const g = parseInt(hex.slice(3, 5), 16);
+            const b = parseInt(hex.slice(5, 7), 16);
+            return `rgba(${r},${g},${b},${alpha})`;
+        }
+
+        // =========================================================
+        // EXPORT HD
+        // =========================================================
+        function exportImage() {
+            const btn = document.querySelector('.btn-export');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '⏳ Génération en cours...';
+            btn.style.pointerEvents = 'none';
+
+            const artboard = document.getElementById('artboard');
+            const wrapper = document.querySelector('.artboard-wrapper');
+
+            // Temporarily unscale for full-res capture
+            const originalTransform = wrapper.style.transform;
+            wrapper.style.transform = 'scale(1)';
+            wrapper.style.position = 'fixed';
+            wrapper.style.top = '0';
+            wrapper.style.left = '0';
+            wrapper.style.zIndex = '-9999';
+
+            document.fonts.ready.then(() => {
+                setTimeout(() => {
+                    html2canvas(artboard, {
+                        scale: 2,
+                        useCORS: true,
+                        allowTaint: true,
+                        backgroundColor: '#0B1121',
+                        width: 1080,
+                        height: 1080
+                    }).then(canvas => {
+                        // Restore
+                        wrapper.style.transform = originalTransform || 'scale(0.5)';
+                        wrapper.style.position = '';
+                        wrapper.style.top = '';
+                        wrapper.style.left = '';
+                        wrapper.style.zIndex = '';
+
+                        const link = document.createElement('a');
+                        const modelName = MODELS[currentModel].name.replace(/[^a-zA-Z0-9]/g, '_');
+                        link.download = `TUCHUNGUZE_II_${modelName}_${Date.now()}.png`;
+                        link.href = canvas.toDataURL('image/png', 1.0);
+                        link.click();
+
+                        btn.innerHTML = originalText;
+                        btn.style.pointerEvents = '';
+                    }).catch(err => {
+                        console.error('Export error:', err);
+                        wrapper.style.transform = originalTransform || 'scale(0.5)';
+                        wrapper.style.position = '';
+                        wrapper.style.top = '';
+                        wrapper.style.left = '';
+                        wrapper.style.zIndex = '';
+                        btn.innerHTML = originalText;
+                        btn.style.pointerEvents = '';
+                        alert('Erreur lors de l\'export. Vérifiez la console.');
+                    });
+                }, 500);
+            });
+        }
+
+        // =========================================================
+        // INIT
+        // =========================================================
+        window.addEventListener('DOMContentLoaded', () => {
+            selectModel('M1');
+        });
+    </script>
+
+</body>
+</html>

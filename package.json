@@ -7,9 +7,22 @@
     "dev": "vite dev",
     "build": "vite build",
     "build:dev": "vite build --mode development",
+    "generate:seo": "vite-node scripts/generate-seo-assets.ts",
+    "prebuild": "vite-node scripts/generate-seo-assets.ts",
+    "prebuild:dev": "vite-node scripts/generate-seo-assets.ts",
     "preview": "vite preview",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test": "vitest run",
+    "test:run": "vitest run",
+    "test:watch": "vitest",
+    "opays": "node scripts/opays-cli.mjs",
+    "opays:agents": "node scripts/opays-cli.mjs agents status",
+    "opays:agents:guide": "node scripts/opays-cli.mjs agents guide",
+    "opays:compass": "node scripts/opays-cli.mjs compass status",
+    "opays:compliance": "node scripts/opays-cli.mjs check-compliance",
+    "opays:progress": "node scripts/opays-cli.mjs plan-progress",
+    "opays:readiness": "node scripts/opays-cli.mjs readiness"
   },
   "dependencies": {
     "@cloudflare/vite-plugin": "^1.25.5",
@@ -70,6 +83,9 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.32.0",
+    "@testing-library/jest-dom": "^6.6.4",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
     "@types/node": "^22.16.5",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
@@ -79,10 +95,13 @@
     "eslint-plugin-prettier": "^5.2.6",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
+    "fast-check": "^3.23.2",
     "globals": "^15.15.0",
+    "jsdom": "^26.1.0",
     "prettier": "^3.7.3",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.56.1",
-    "vite": "^7.3.1"
+    "vite": "^7.3.1",
+    "vitest": "^3.2.4"
   }
 }

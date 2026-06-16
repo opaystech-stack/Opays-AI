@@ -8,8 +8,10 @@ Capacité à concevoir, maquetter et coder des interfaces web modernes à haute 
 2. **Vanilla CSS Pur :** Préférer le CSS natif pour une autonomie totale du fichier HTML généré. Aucun script externe ni framework lourd à moins d'une demande spécifique.
 3. **Motion & Feedback :** Ajouter des micro-interactions sur tous les éléments cliquables (hover, focus, transitions douces).
 4. **Ergonomie Souveraine :** Structure claire et aérée, contrastes soignés pour garantir l'accessibilité, typographie moderne (Inter).
+5. **Pattern Produit :** S'inspirer des interfaces de gestion d'entreprise éprouvées: sidebar claire, topbar de commande, workspace central, panneau de contexte, tables denses mais lisibles.
 
 ## Règles d'Implémentation dans le Studio
 - **Unicité :** Retourner un code HTML autonome propre, sans dépendance externe.
 - **Responsive-First :** Tester et optimiser l'affichage sur mobile (375px), tablette (768px) et grand écran (desktop).
 - **Structure Sémantique :** Utilisation correcte des balises HTML5 (`<header>`, `<main>`, `<section>`, `<article>`, `<footer>`).
+- **Lisibilité d'entreprise :** Prioriser les actions, la hiérarchie de l'information et les états de système avant l'effet décoratif.

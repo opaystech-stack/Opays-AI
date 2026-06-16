@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /tenant-0
+Disallow: /bridges-os
+
+Sitemap: https://opays.io/sitemap.xml

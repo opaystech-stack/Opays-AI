@@ -1,0 +1,11 @@
+instructions = """
+Opays Tech is a cabinet d'ingenierie de l'efficience.
+Prioritize clarity, usefulness, credibility, and maintainability.
+Read OPAYS_HQ.md, CLAUDE.md, and WORKSPACE_MAP.md before proposing changes.
+Use the local 00_hq/skills/ library when it helps the task.
+"""
+project_doc_max_bytes = 32768
+project_doc_fallback_filenames = ["OPAYS_HQ.md", "WORKSPACE_MAP.md", "CLAUDE.md"]
+
+[mcp_servers.openaiDeveloperDocs]
+url = "https://developers.openai.com/mcp"

@@ -158,7 +158,8 @@
               "title": "Plan"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
@@ -178,6 +179,11 @@
   },
   "active": "8554f966d0e7b898",
   "lastOpenFiles": [
+    "Sans titre.base",
+    "Sans titre 1.md",
+    "2026-06-09.md",
+    "Sans titre.canvas",
+    "Sans titre.md",
     "wiki/Règles de Décision.md",
     "wiki/Document Suite.md",
     "wiki/Lead Research.md",
@@ -200,10 +206,6 @@
     "wiki/Modèle Hybride.md",
     "wiki/Fondations Stratégiques.md",
     "Wiki Index.md",
-    "log.md",
-    "wiki/Automatisation IA.md",
-    "wiki/Formation.md",
-    "wiki/Audit.md",
     "assets",
     "sources",
     "wiki"

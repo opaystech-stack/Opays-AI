@@ -30,3 +30,16 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Private personal cockpit repos
+_private/
+
+# Playwright CLI (captures, snapshots, traces)
+.playwright-cli/
+
+# Scratch / artefacts de veille (captures brutes, scripts jetables)
+.codex_tmp/
+
+# Secrets / clés locales — ne jamais committer
+.webui_secret_key
+*.secret

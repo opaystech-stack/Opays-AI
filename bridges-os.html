@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bridgesat OS — Tableau de Bord Administrateur (SEC)</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'Plus Jakarta Sans', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            outfit: ['Outfit', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              orange: '#E8612D',
+              plum: '#8B1A4A',
+              blue: '#2563EB',
+              purple: '#7C3AED',
+              emerald: '#059669',
+              teal: '#10B981',
+              sky: '#3B82F6',
+              pink: '#EC4899',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #F7F8FA 0%, #EEF0F4 100%);
+    }
+    .custom-transition {
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .card-hover:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    }
+    .card-hover {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .gradient-card {
+      background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,250,252,0.9) 100%);
+      backdrop-filter: blur(10px);
+    }
+    .pulse-dot {
+      animation: pulse-animation 2s ease-in-out infinite;
+    }
+    @keyframes pulse-animation {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.2); }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in {
+      animation: fadeInUp 0.4s ease-out forwards;
+    }
+    .sidebar-item:hover {
+      background: linear-gradient(90deg, rgba(232,97,45,0.06) 0%, transparent 100%);
+    }
+    .glass-card {
+      background: rgba(255,255,255,0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.5);
+    }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 6px; }
+    ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+  </style>
+</head>
+<body class="text-[#1a1a2e] antialiased min-h-screen flex text-sm">
+
+  <!-- SIDEBAR -->
+  <aside id="sidebar" class="bg-white border-r border-[#E8E8ED] flex flex-col custom-transition shadow-sm shrink-0 w-[260px] min-h-screen">
+    <!-- Sidebar Header / Logo -->
+    <div class="p-4 border-b border-[#F0F0F5] flex items-center gap-3 cursor-pointer" onclick="toggleSidebar()">
+      <div class="h-9 w-9 rounded-lg bg-gradient-to-br from-[#E8612D] to-[#D4531F] flex items-center justify-center text-white font-bold text-lg shrink-0 shadow-md">B</div>
+      <div id="sidebar-header-text">
+        <div class="font-bold text-sm leading-tight text-[#1a1a2e] font-outfit">Bridgesat OS</div>
+        <div class="text-[10px] text-[#8C8CA1] mt-0.5">Pilotage opérationnel</div>
+      </div>
+    </div>
+
+    <!-- Pôles d'activité -->
+    <div class="flex-1 overflow-y-auto p-2">
+      <div id="sidebar-label-poles" class="text-[9px] font-bold text-[#A0A0B0] uppercase tracking-wider px-3 py-2">Pôles d'activité</div>
+      <div class="flex flex-col gap-0.5" id="poles-container"></div>
+
+      <div class="h-px bg-[#F0F0F5] my-3"></div>
+      
+      <div id="sidebar-label-nav" class="text-[9px] font-bold text-[#A0A0B0] uppercase tracking-wider px-3 py-2">Navigation</div>
+      <div class="flex flex-col gap-0.5" id="nav-container"></div>
+    </div>
+
+    <!-- Sidebar Footer -->
+    <div id="sidebar-footer" class="p-4 border-t border-[#F0F0F5] text-[10px] text-[#A0A0B0] flex flex-col gap-1">
+      <div class="flex items-center gap-1.5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="shrink-0 text-emerald-600"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Données sécurisées (VPS)
+      </div>
+      <div class="mt-2 text-[9px] text-[#C0C0D0]">Conception Opays Tech · v2.0</div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT AREA -->
+  <div class="flex-1 flex flex-col min-w-0">
+    <!-- TOP BAR -->
+    <header class="h-14 bg-white/80 backdrop-blur-md border-b border-[#E8E8ED] flex items-center justify-between px-6 shrink-0 shadow-sm sticky top-0 z-20">
+      <div class="flex items-center gap-3">
+        <div id="header-icon-container" class="text-brand-orange"></div>
+        <div>
+          <h1 id="header-title" class="text-sm font-bold text-[#1a1a2e] font-outfit">Vue groupe</h1>
+          <p id="header-tagline" class="text-xs text-[#8C8CA1]">Pilotage transversal — visibilité, alertes, arbitrages direction</p>
+        </div>
+      </div>
+      
+      <div class="flex items-center gap-3">
+        <div class="flex items-center gap-1.5 px-3 py-1 bg-red-50 text-red-600 rounded-full text-[10px] font-bold border border-red-200">
+          <span class="h-1.5 w-1.5 rounded-full bg-red-500 pulse-dot"></span>
+          Super Admin (SEC)
+        </div>
+        <div class="flex items-center gap-1.5 px-3 py-1 bg-[#FEF2EC] text-brand-orange rounded-full text-[10px] font-medium">
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3z"/></svg>
+          Pilote IA actif
+        </div>
+        <div class="h-8 w-8 rounded-full bg-gradient-to-br from-brand-orange to-[#D4531F] flex items-center justify-center text-[10px] font-bold text-white shadow-md">FL</div>
+      </div>
+    </header>
+
+    <!-- CONTENT BODY -->
+    <main class="flex-1 p-6 overflow-y-auto">
+      
+      <!-- ─── PANEL: TABLEAU DE BORD (OVERVIEW) ─── -->
+      <section id="panel-overview" class="flex flex-col gap-6">
+        <!-- Focus banner -->
+        <div id="focus-banner" class="p-5 border rounded-xl flex items-center justify-between gap-4 bg-gradient-to-r from-[#E8612D]/5 to-transparent border-[#E8612D]/20 shadow-sm">
+          <div>
+            <div id="focus-label" class="text-[10px] font-bold uppercase tracking-wider mb-1 text-brand-orange flex items-center gap-1.5">
+              <span class="h-1.5 w-1.5 rounded-full bg-brand-orange pulse-dot"></span>
+              Focus stratégique - Administrateur
+            </div>
+            <div id="focus-text" class="text-xs text-[#333345] max-w-xl leading-relaxed">Réduire les silos entre filiales, contrôler les agents IA et accélérer les validations direction.</div>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="text-right">
+              <div class="text-[9px] text-[#8C8CA1] uppercase">Fluidité</div>
+              <div id="fluidity-score" class="text-xl font-bold text-emerald-600">92%</div>
+            </div>
+            <div class="w-24 h-2.5 bg-gray-200 rounded-full overflow-hidden shadow-inner">
+              <div id="fluidity-progress-bar" class="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full custom-transition w-[92%]"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- KPI Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4" id="kpi-grid"></div>
+
+        <!-- SPECIALIZED OPERATIONAL CARDS -->
+        <div class="flex flex-col gap-2">
+          <div class="text-xs font-bold uppercase tracking-wider text-[#A0A0B0] flex items-center gap-1.5">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-brand-orange"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+            Réalités Métier & Intelligence Terrain
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="specialized-cards-grid"></div>
+        </div>
+
+        <!-- EXTRA POLE-SPECIFIC RICH CARDS -->
+        <div class="flex flex-col gap-2">
+          <div class="text-xs font-bold uppercase tracking-wider text-[#A0A0B0] flex items-center gap-1.5">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-purple-500"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3z"/></svg>
+            Actions & Insights Clés
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="extra-cards-grid"></div>
+        </div>
+
+        <!-- Splits: Workflow Summary & IA Assistant -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div class="lg:col-span-2 bg-white border border-[#E8E8ED] rounded-xl overflow-hidden shadow-sm">
+            <div class="p-4 border-b border-[#F0F0F5] flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-brand-orange"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+              <span class="text-xs font-bold text-gray-800">Synthèse opérationnelle</span>
+            </div>
+            <div class="p-4 flex flex-col gap-2" id="workflows-summary-list"></div>
+          </div>
+
+          <!-- IA Assistant Card -->
+          <div class="bg-white border border-[#E8E8ED] rounded-xl overflow-hidden shadow-sm flex flex-col">
+            <div class="p-4 border-b border-[#F0F0F5] flex items-center gap-2 bg-gradient-to-r from-orange-50 to-orange-100/50">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-brand-orange"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M12 2v4M12 6H8m4 0h4m-8 7h.01M16 13h.01"/></svg>
+              <span class="text-xs font-bold text-[#1a1a2e]">Assistant IA SEC</span>
+            </div>
+            <div class="p-4 flex-1 flex flex-col gap-3">
+              <div id="assistant-bubble" class="bg-gradient-to-br from-gray-50 to-slate-50 p-4 rounded-xl text-xs text-gray-700 flex-1 min-h-[140px] whitespace-pre-line leading-relaxed border border-slate-100 shadow-inner">
+Bonjour ! Je suis l'assistant IA de Bridgesat. En tant que Super Admin, vous pouvez me poser n'importe quelle question sur les opérations, les finances de chaque filiale, les accès RH ou les agents IA. Exemple : « Quels dossiers bloquent la direction ? »</div>
+              <div class="flex gap-2">
+                <input
+                  id="assistant-input"
+                  type="text"
+                  placeholder="Interroger... (ex: validation, stock, marketing)"
+                  class="flex-1 border border-[#E8E8ED] p-2.5 rounded-lg text-xs outline-none focus:border-brand-orange focus:ring-1 focus:ring-brand-orange/20 transition-all"
+                  onkeydown="if(event.key === 'Enter') sendAssistantQuery()"
+                />
+                <button onclick="sendAssistantQuery()" class="bg-gradient-to-r from-brand-orange to-[#D4531F] text-white p-2.5 rounded-lg hover:shadow-md transition-all shrink-0">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── PANEL: FLUX MÉTIER (WORKFLOWS) ─── -->
+      <section id="panel-workflows" class="hidden flex flex-col gap-6">
+        <div class="bg-white p-6 border border-[#E8E8ED] rounded-xl shadow-sm text-center">
+          <h3 class="text-sm font-bold mb-1">Pipeline Opérationnel — Vue Admin</h3>
+          <p class="text-xs text-gray-400 mb-6">Suivi du flux de travail unifié Bridges OS</p>
+          <div class="flex flex-wrap justify-center items-center gap-4">
+            <div class="flex items-center">
+              <div class="flex flex-col items-center gap-1.5">
+                <div class="h-10 w-10 rounded-full flex items-center justify-center font-bold text-xs border-2 bg-emerald-50 text-emerald-700 border-emerald-500">✓</div>
+                <span class="text-[11px] font-semibold text-gray-600">Demande</span>
+              </div>
+              <div class="w-10 h-0.5 bg-emerald-500 mb-4"></div>
+            </div>
+            <div class="flex items-center">
+              <div class="flex flex-col items-center gap-1.5">
+                <div class="h-10 w-10 rounded-full flex items-center justify-center font-bold text-xs border-2 bg-emerald-50 text-emerald-700 border-emerald-500">✓</div>
+                <span class="text-[11px] font-semibold text-gray-600">Audit/Stock</span>
+              </div>
+              <div class="w-10 h-0.5 bg-emerald-500 mb-4"></div>
+            </div>
+            <div class="flex items-center">
+              <div class="flex flex-col items-center gap-1.5">
+                <div class="h-10 w-10 rounded-full flex items-center justify-center font-bold text-xs border-2 bg-[#E8612D]/10 text-brand-orange border-[#E8612D]">3</div>
+                <span class="text-[11px] font-semibold text-gray-600">Validation SEC</span>
+              </div>
+              <div class="w-10 h-0.5 bg-gray-200 mb-4"></div>
+            </div>
+            <div class="flex items-center">
+              <div class="flex flex-col items-center gap-1.5">
+                <div class="h-10 w-10 rounded-full flex items-center justify-center font-bold text-xs border-2 bg-gray-50 text-gray-400 border-gray-300">4</div>
+                <span class="text-[11px] font-semibold text-gray-600">Action Agent IA</span>
+              </div>
+              <div class="w-10 h-0.5 bg-gray-200 mb-4"></div>
+            </div>
+            <div class="flex items-center">
+              <div class="flex flex-col items-center gap-1.5">
+                <div class="h-10 w-10 rounded-full flex items-center justify-center font-bold text-xs border-2 bg-gray-50 text-gray-400 border-gray-300">5</div>
+                <span class="text-[11px] font-semibold text-gray-600">Clôture</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="workflows-detailed-grid"></div>
+      </section>
+
+      <!-- ─── PANEL: COFFRE DOCUMENTAIRE (DOCS) ─── -->
+      <section id="panel-docs" class="hidden bg-white border border-[#E8E8ED] rounded-xl overflow-hidden shadow-sm">
+        <div class="p-4 border-b border-[#F0F0F5] flex justify-between items-center bg-gradient-to-r from-gray-50 to-white">
+          <div class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-brand-orange"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2zM14 2v6h6M9 15l2 2 4-4"/></svg>
+            <span class="text-xs font-bold">Coffre Documentaire Sécurisé (Chiffrement AES-256 local)</span>
+          </div>
+          <span class="text-[9px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-0.5 rounded-full">Super Admin Déverrouillé</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs text-left border-collapse">
+            <thead>
+              <tr class="bg-gray-100 border-b border-[#E8E8ED]">
+                <th class="p-3 text-gray-500 font-semibold uppercase tracking-wider text-[10px]">Réf</th>
+                <th class="p-3 text-gray-500 font-semibold uppercase tracking-wider text-[10px]">Document</th>
+                <th class="p-3 text-gray-500 font-semibold uppercase tracking-wider text-[10px]">Propriétaire</th>
+                <th class="p-3 text-gray-500 font-semibold uppercase tracking-wider text-[10px]">SLA</th>
+                <th class="p-3 text-gray-500 font-semibold uppercase tracking-wider text-[10px]">État</th>
+              </tr>
+            </thead>
+            <tbody id="docs-table-body"></tbody>
+          </table>
+        </div>
+        <div class="p-4 border-t border-[#F0F0F5] bg-gray-50 text-[10px] text-[#8C8CA1]">
+          🔒 Vos fichiers stratégiques sont cloisonnés. Les accès collaborateurs sont régulés en temps réel dans l'onglet <strong>Finances & RH</strong>.
+        </div>
+      </section>
+
+      <!-- ─── PANEL: GESTION DES TÂCHES (TASKS) ─── -->
+      <section id="panel-tasks" class="hidden flex flex-col gap-4">
+        <div class="flex justify-between items-center">
+          <h3 class="text-sm font-bold text-gray-800">Gestion des Tâches Opérationnelles</h3>
+          <button onclick="toggleForm('task-form-container')" class="bg-gradient-to-r from-brand-orange to-[#D4531F] hover:shadow-md text-white text-xs font-semibold px-4 py-2 rounded-lg transition-all flex items-center gap-1.5">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Créer une Tâche
+          </button>
+        </div>
+        <div id="task-form-container" class="hidden p-5 bg-white border border-[#E8E8ED] rounded-xl flex flex-col gap-3 shadow-sm animate-fade-in">
+          <div class="text-xs font-bold">Ajouter une Tâche</div>
+          <form onsubmit="addTask(event)" class="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <input id="task-title-input" type="text" placeholder="Intitulé de la tâche..." class="border p-2.5 rounded-lg text-xs outline-none focus:border-brand-orange focus:ring-1 focus:ring-brand-orange/20" required />
+            <select id="task-assign-input" class="border p-2.5 rounded-lg text-xs outline-none focus:border-brand-orange">
+              <option value="Tous">Tous</option>
+              <option value="Fénelon Lamsasiri">Fénelon Lamsasiri</option>
+              <option value="Jean-Pierre N.">Jean-Pierre N.</option>
+              <option value="Alice B.">Alice B.</option>
+              <option value="Marc K.">Marc K.</option>
+              <option value="Agent Relance Auto">Agent Relance Auto</option>
+            </select>
+            <div class="flex gap-2">
+              <select id="task-priority-input" class="flex-1 border p-2.5 rounded-lg text-xs outline-none focus:border-brand-orange">
+                <option value="high">Urgent</option>
+                <option value="medium">Normal</option>
+                <option value="low">Faible</option>
+              </select>
+              <button type="submit" class="bg-[#1a1a2e] text-white text-xs font-semibold px-4 rounded-lg hover:bg-slate-800 transition-colors">Valider</button>
+            </div>
+          </form>
+        </div>
+        <div class="bg-white border border-[#E8E8ED] rounded-xl overflow-hidden shadow-sm">
+          <table class="w-full text-xs text-left">
+            <thead>
+              <tr class="bg-gray-100 border-b border-[#E8E8ED]">
+                <th class="p-3 text-gray-500 font-semibold">Tâche</th>
+                <th class="p-3 text-gray-500 font-semibold">Assigné à</th>
+                <th class="p-3 text-gray-500 font-semibold">Échéance</th>
+                <th class="p-3 text-gray-500 font-semibold">Priorité</th>
+                <th class="p-3 text-gray-500 font-semibold">Statut</th>
+              </tr>
+            </thead>
+            <tbody id="tasks-table-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ─── PANEL: FINANCES & RH ─── -->
+      <section id="panel-finance-rh" class="hidden flex flex-col gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="financial-grid"></div>
+        <div class="bg-white border border-[#E8E8ED] rounded-xl overflow-hidden shadow-sm">
+          <div class="p-4 border-b border-[#F0F0F5] flex justify-between items-center bg-gradient-to-r from-gray-50 to-white">
+            <div class="flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-brand-orange"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+              <span class="text-xs font-bold">Ressources Humaines & Cloisonnement d'Accès</span>
+            </div>
+            <button onclick="toggleForm('rh-form-container')" class="bg-[#1a1a2e] text-white text-[10px] font-bold px-3 py-1.5 rounded-lg hover:bg-slate-800 transition-colors">
+              + Inviter un collaborateur
+            </button>
+          </div>
+          <div id="rh-form-container" class="hidden p-4 bg-gray-50 border-b border-[#E8E8ED] animate-fade-in">
+            <form onsubmit="addTeamMember(event)" class="grid grid-cols-1 md:grid-cols-3 gap-3 items-center">
+              <input id="rh-name-input" type="text" placeholder="Nom complet..." class="border p-2.5 rounded-lg text-xs outline-none" required />
+              <input id="rh-role-input" type="text" placeholder="Rôle/Poste..." class="border p-2.5 rounded-lg text-xs outline-none" required />
+              <button type="submit" class="bg-brand-orange text-white text-xs font-semibold p-2.5 rounded-lg hover:bg-orange-600 transition-colors">Inviter</button>
+            </form>
+          </div>
+          <table class="w-full text-xs text-left">
+            <thead>
+              <tr class="bg-gray-100 border-b border-[#E8E8ED]">
+                <th class="p-3 text-gray-500 font-semibold">Collaborateur</th>
+                <th class="p-3 text-gray-500 font-semibold">Rôle</th>
+                <th class="p-3 text-center text-gray-500 font-semibold">Accès Vins</th>
+                <th class="p-3 text-center text-gray-500 font-semibold">Accès Genesis</th>
+                <th class="p-3 text-center text-gray-500 font-semibold">Accès Quincaillerie</th>
+                <th class="p-3 text-center text-gray-500 font-semibold">Accès Com&Mkt</th>
+              </tr>
+            </thead>
+            <tbody id="rh-table-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ─── PANEL: GESTION DES AGENTS IA ─── -->
+      <section id="panel-agents" class="hidden flex flex-col gap-6">
+        <div class="p-4 bg-gradient-to-r from-orange-50 via-orange-100/50 to-amber-50 border border-brand-orange/20 rounded-xl flex items-center gap-3">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-brand-orange shrink-0"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span class="text-xs text-gray-700 leading-relaxed">
+            🛡️ <strong>Console de Supervision SEC</strong> : En tant que Secrétaire Général (SEC) ou Super Admin, vous avez le contrôle exclusif de la création, du paramétrage des compétences (skills) et du déploiement des agents IA de toutes les filiales de Bridgesat.
+          </span>
+        </div>
+        <div class="flex justify-between items-center">
+          <h3 class="text-sm font-bold text-gray-800">Supervision des Agents IA</h3>
+          <button onclick="toggleForm('agent-form-container')" class="bg-gradient-to-r from-brand-orange to-[#D4531F] hover:shadow-md text-white text-xs font-semibold px-4 py-2 rounded-lg transition-all flex items-center gap-1.5">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Configurer un Agent IA
+          </button>
+        </div>
+        <div id="agent-form-container" class="hidden p-5 bg-white border border-[#E8E8ED] rounded-xl flex flex-col gap-4 shadow-sm animate-fade-in">
+          <div class="text-xs font-bold">Nouvel Agent IA dans Bridges OS</div>
+          <form onsubmit="createAiAgent(event)" class="flex flex-col gap-3">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <input id="agent-name-input" type="text" placeholder="Nom de l'agent... (ex: Agent Factures)" class="border p-2.5 rounded-lg text-xs outline-none" required />
+              <input id="agent-role-input" type="text" placeholder="Mission/Rôle..." class="border p-2.5 rounded-lg text-xs outline-none" required />
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <div class="text-[10px] font-semibold text-slate-500 uppercase">Associer des compétences (Skills de la Forge IA) :</div>
+              <div class="flex gap-2 flex-wrap">
+                <button type="button" onclick="toggleSkillButton(this)" class="px-2.5 py-1 rounded bg-slate-100 text-slate-700 text-[11px] font-medium border border-slate-200 hover:bg-slate-200 transition-colors">Relance Email Auto</button>
+                <button type="button" onclick="toggleSkillButton(this)" class="px-2.5 py-1 rounded bg-slate-100 text-slate-700 text-[11px] font-medium border border-slate-200 hover:bg-slate-200 transition-colors">WhatsApp Direct</button>
+                <button type="button" onclick="toggleSkillButton(this)" class="px-2.5 py-1 rounded bg-slate-100 text-slate-700 text-[11px] font-medium border border-slate-200 hover:bg-slate-200 transition-colors">Calculateur de Marge</button>
+                <button type="button" onclick="toggleSkillButton(this)" class="px-2.5 py-1 rounded bg-slate-100 text-slate-700 text-[11px] font-medium border border-slate-200 hover:bg-slate-200 transition-colors">Alerte Stocks Bas</button>
+                <button type="button" onclick="toggleSkillButton(this)" class="px-2.5 py-1 rounded bg-slate-100 text-slate-700 text-[11px] font-medium border border-slate-200 hover:bg-slate-200 transition-colors">Rédaction Contenu</button>
+                <button type="button" onclick="toggleSkillButton(this)" class="px-2.5 py-1 rounded bg-slate-100 text-slate-700 text-[11px] font-medium border border-slate-200 hover:bg-slate-200 transition-colors">Analyse Réseaux Sociaux</button>
+              </div>
+            </div>
+            <div class="flex justify-between items-center gap-4 mt-2">
+              <div class="flex items-center gap-2 text-xs">
+                <span>Déployer sur le compte de :</span>
+                <select id="agent-deploy-input" class="border p-1.5 rounded text-xs">
+                  <option value="Jean-Pierre N.">Jean-Pierre N.</option>
+                  <option value="Alice B.">Alice B.</option>
+                  <option value="Marc K.">Marc K.</option>
+                  <option value="Sophie D.">Sophie D.</option>
+                  <option value="Lucie M.">Lucie M.</option>
+                </select>
+              </div>
+              <button type="submit" class="bg-[#1a1a2e] text-white text-xs font-semibold px-4 py-2 rounded-lg hover:bg-slate-800 transition-colors">Créer & Déployer</button>
+            </div>
+          </form>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="agents-cards-grid"></div>
+      </section>
+
+      <!-- ─── PANEL: PROSPECTION & RELANCES (RELANCES) ─── -->
+      <section id="panel-relances" class="hidden flex flex-col gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4" id="relance-stats-grid"></div>
+        <div class="flex justify-between items-center">
+          <h3 class="text-sm font-bold text-gray-800">Outil de Prospection & Relance</h3>
+          <button onclick="toggleForm('prospect-form-container')" class="bg-gradient-to-r from-brand-orange to-[#D4531F] hover:shadow-md text-white text-xs font-semibold px-4 py-2 rounded-lg transition-all flex items-center gap-1.5">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Ajouter au Pipeline
+          </button>
+        </div>
+        <div id="prospect-form-container" class="hidden p-5 bg-white border border-[#E8E8ED] rounded-xl flex flex-col gap-3 shadow-sm animate-fade-in">
+          <div class="text-xs font-bold">Nouveau Contact dans le Pipeline</div>
+          <form onsubmit="addProspect(event)" class="flex flex-col gap-3">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <input id="prospect-name-input" type="text" placeholder="Nom ou Raison Sociale..." class="border p-2.5 rounded-lg text-xs outline-none" required />
+              <select id="prospect-type-input" class="border p-2.5 rounded-lg text-xs outline-none">
+                <option value="client">Client potentiel</option>
+                <option value="associé">Associé</option>
+                <option value="collaborateur">Collaborateur</option>
+              </select>
+              <input id="prospect-subject-input" type="text" placeholder="Sujet de relance..." class="border p-2.5 rounded-lg text-xs outline-none" required />
+            </div>
+            <button type="submit" class="bg-[#1a1a2e] text-white text-xs font-semibold p-2.5 rounded-lg self-end hover:bg-slate-800 transition-colors px-6">Intégrer au Pipeline</button>
+          </form>
+        </div>
+        <div class="bg-white border border-[#E8E8ED] rounded-xl overflow-hidden shadow-sm">
+          <div class="p-4 border-b border-[#F0F0F5] flex items-center justify-between bg-gradient-to-r from-gray-50 to-white">
+            <span class="text-xs font-bold text-gray-800">Pipeline des Relances & Contacts</span>
+            <span class="text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full">Agent de relance IA actif</span>
+          </div>
+          <div class="flex flex-col" id="relance-pipeline-list"></div>
+        </div>
+      </section>
+
+      <!-- ─── PANEL: FIL D'ACTIVITÉ (ACTIVITY) ─── -->
+      <section id="panel-activity" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-2 bg-white border border-[#E8E8ED] rounded-xl overflow-hidden shadow-sm">
+          <div class="p-4 border-b border-[#F0F0F5] flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-[#8C8CA1]"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            <span class="text-xs font-bold">Activité de Bridges OS (Vue Super Admin)</span>
+          </div>
+          <div class="flex flex-col" id="activity-timeline"></div>
+        </div>
+        <div class="flex flex-col gap-4">
+          <div class="p-5 bg-white border border-[#E8E8ED] rounded-xl shadow-sm">
+            <div class="flex items-center gap-2 mb-4 font-bold text-xs">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-emerald-600"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <span>Sécurité & Rôles SEC</span>
+            </div>
+            <div class="py-2.5 border-b border-gray-50 flex gap-3 items-start">
+              <div class="h-7 w-7 rounded-lg bg-emerald-50 flex items-center justify-center shrink-0 mt-0.5 text-emerald-600">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </div>
+              <div>
+                <div class="text-xs font-bold text-gray-800">Contrôle d'Accès SEC</div>
+                <div class="text-[10px] text-gray-400 mt-1">Le SEC supervise l'intégralité des agents et des droits individuels.</div>
+              </div>
+            </div>
+            <div class="py-2.5 flex gap-3 items-start">
+              <div class="h-7 w-7 rounded-lg bg-emerald-50 flex items-center justify-center shrink-0 mt-0.5 text-emerald-600">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </div>
+              <div>
+                <div class="text-xs font-bold text-gray-800">Chiffrement local AES-256</div>
+                <div class="text-[10px] text-gray-400 mt-1">Tous les documents opérationnels restent sur votre serveur privé.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <div class="mt-8 pt-4 border-t border-[#E8E8ED] flex items-center justify-between text-[11px] text-[#A0A0B0] shrink-0">
+        <span>Bridgesat OS — Maquette de démonstration commerciale Super Admin</span>
+        <span>Opays Tech · Cabinet d'Ingénierie de l'Efficience</span>
+      </div>
+    </main>
+  </div>
+
+  <!-- ─── CORE VANILLA JAVASCRIPT STATE & LOGIC ─── -->
+  <script>
+    // State variables
+    let currentDivision = 'groupe';
+    let currentPanel = 'overview';
+    let sidebarCollapsed = false;
+
+    // Static Data
+    const divisions = [
+      { id: "groupe", label: "Vue groupe", short: "Groupe", icon: "building", color: "#E8612D", tagline: "Pilotage transversal — visibilité, alertes, arbitrages direction" },
+      { id: "vin", label: "Vin & Commerce", short: "Vins", icon: "wine", color: "#8B1A4A", tagline: "Stocks, ventes, fournisseurs, validation achats premium" },
+      { id: "academy", label: "Academy", short: "Academy", icon: "graduation", color: "#2563EB", tagline: "Partenariats universitaires, programmes spécifiques, budgets alloués et communication" },
+      { id: "dev", label: "Développement", short: "Dev", icon: "code", color: "#7C3AED", tagline: "Projets logiciels, livraisons, QA, documentation technique" },
+      { id: "satglob", label: "SATGLOB", icon: "satellite", short: "SATGLOB", color: "#059669", tagline: "Opérations globales, partenaires internationaux, suivi contractuel" },
+      { id: "genesis", label: "Genesis Bar", icon: "cocktail", short: "Genesis Bar", color: "#10B981", tagline: "Cocktails premium, stocks de boissons, gestion des encaissements bar" },
+      { id: "quincaillerie", label: "Quincaillerie", icon: "package", short: "Quincaillerie", color: "#3B82F6", tagline: "Matériaux de construction, stocks de fer, outillage, ventes comptoir et chantiers" },
+      { id: "commarketing", label: "Communication & Marketing", icon: "megaphone", short: "Com & Mkt", color: "#EC4899", tagline: "Stratégie de marque, réseaux sociaux, campagnes publicitaires, relations presse" },
+    ];
+
+    const svgIcons = {
+      building: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2m12-10h2a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-2M10 6h4m-4 4h4m-4 4h4m-4 4h4"/></svg>',
+      wine: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 22h8m-4-10v10M3 3h18M12 12a5 5 0 0 0 5-5H7a5 5 0 0 0 5 5z"/></svg>',
+      graduation: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5zM6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg>',
+      code: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m18 16 4-4-4-4M6 8l-4 4 4 4m8.5-12-3 16"/></svg>',
+      satellite: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="2"/><path d="M4.93 4.93a10 10 0 0 0 0 14.14M7.76 7.76a6 6 0 0 0 0 8.49M16.24 7.76a6 6 0 0 1 0 8.49M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>',
+      cocktail: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 22h8M12 12v10M2 2l10 10M22 2L12 12M2 2h20"/></svg>',
+      package: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16zM3.27 6.96L12 12.01l8.73-5.05M12 22.08V12"/></svg>',
+      megaphone: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l18-5v12L3 13v-2z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>',
+      grid: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>',
+      clipboard: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2M9 2h6a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z"/></svg>',
+      filecheck: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2zM14 2v6h6M9 15l2 2 4-4"/></svg>',
+      checksquare: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>',
+      dollar: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>',
+      bot: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M12 2v4M12 6H8m4 0h4m-8 7h.01M16 13h.01"/></svg>',
+      refresh: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>',
+      activity: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>',
+      shield: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+      lock: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>',
+      warning: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3M12 9v4m0 4h.01"/></svg>',
+      clock: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+      briefcase: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>',
+      users: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 7a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+      zap: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>',
+      heart: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
+      target: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
+      trending: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>',
+      share: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>',
+      camera: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>',
+      bar_chart: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>',
+      star: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
+      truck: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>',
+      thermometer: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>',
+    };
+
+    // ─── Division-specific data ───
+    const divisionData = {
+      groupe: {
+        focus: "Réduire les silos entre filiales, contrôler les agents IA et accélérer les validations direction.",
+        revenue: "420 500 €", expenses: "185 000 €", margin: "56 %", fluidity: "92",
+        kpis: [
+          { label: "Dossiers en attente", value: "23", hint: "−18 % vs mois dernier", trend: "down", icon: "clipboard" },
+          { label: "Temps moyen validation", value: "2,4 j", hint: "Objectif : 1,5 j", trend: "neutral", icon: "clock" },
+          { label: "Tâches auto. évitées", value: "126/sem", hint: "Automatisations actives", trend: "up", icon: "zap" },
+          { label: "Alertes critiques", value: "3", hint: "1 quincaillerie · 1 vins · 1 com", trend: "neutral", icon: "warning" },
+        ],
+        workflows: [
+          { name: "Demandes direction", count: 9, status: "warn" },
+          { name: "Achats > seuil", count: 6, status: "late" },
+          { name: "Contrats partenaires", count: 4, status: "ok" },
+          { name: "Campagnes marketing", count: 3, status: "ok" },
+        ],
+        activity: [
+          { time: "14:12", actor: "Admin (SEC)", action: "Déploiement de l'agent IA 'Relance Vins' sur le compte de Jean-Pierre N.", status: "OK", avatar: "AD" },
+          { time: "13:45", actor: "Com & Mkt", action: "Campagne réseaux sociaux 'Été Bridgesat' lancée — 3 200 impressions en 2h", status: "OK", avatar: "CM" },
+          { time: "11:55", actor: "Système IA", action: "Alerte stock bas : Fer à béton de 12 (Quincaillerie)", status: "Alerte", avatar: "AI" },
+          { time: "09:40", actor: "Academy", action: "Attestations de formation prêtes pour signature SEC", status: "Prêt", avatar: "AC" },
+        ],
+        docs: [
+          { ref: "DIR-088", title: "Note de cadrage Q3 — consolidation filiales", owner: "DG", sla: "J+1", state: "À signer" },
+          { ref: "ACH-441", title: "Bon de commande fournisseur verre", owner: "Achats", sla: "J+2", state: "Validation" },
+          { ref: "CTR-119", title: "Avenant partenaire distribution SATGLOB", owner: "Juridique", sla: "J+3", state: "Relecture" },
+          { ref: "MKT-021", title: "Charte graphique unifiée Bridgesat 2026", owner: "Com & Mkt", sla: "J+5", state: "Validation" },
+        ],
+      },
+      vin: {
+        focus: "Fluidifier stock → vente → réapprovisionnement sans rupture ni surstock.",
+        revenue: "145 000 €", expenses: "78 000 €", margin: "46 %", fluidity: "84",
+        kpis: [
+          { label: "Références actives", value: "84", hint: "Catalogue vins & spiritueux", trend: "neutral", icon: "package" },
+          { label: "Commandes en cours", value: "31", hint: "12 en validation achat", trend: "neutral", icon: "clipboard" },
+          { label: "Écarts inventaire", value: "0,8 %", hint: "Cible < 1 %", trend: "down", icon: "warning" },
+          { label: "Marge prévisionnelle", value: "+6 pts", hint: "Scénario pilote", trend: "up", icon: "activity" },
+        ],
+        workflows: [
+          { name: "Réception stock", count: 5, status: "ok" },
+          { name: "Validation achat", count: 8, status: "warn" },
+          { name: "Expédition client", count: 14, status: "ok" },
+        ],
+        activity: [
+          { time: "10:05", actor: "Logistique", action: "Palette #V-902 prête expédition Douala", status: "OK", avatar: "LG" },
+          { time: "09:15", actor: "Agent IA", action: "Relance automatique vers Cave du Littoral — devis lot millésime", status: "Envoyé", avatar: "AI" },
+        ],
+        docs: [
+          { ref: "STK-220", title: "Inventaire chai — lot millésime 24", owner: "Qualité", sla: "Auj.", state: "Contrôle" },
+          { ref: "VEN-077", title: "Conditions export zone CEMAC", owner: "Export", sla: "J+2", state: "Brouillon" },
+        ],
+      },
+      academy: {
+        focus: "Piloter les partenariats universitaires : programmes d'activités, relecture des contrats, budgets alloués, planification des animateurs et campagnes de communication associées.",
+        revenue: "185 000 €", expenses: "45 000 €", margin: "75 %", fluidity: "88",
+        kpis: [
+          { label: "Partenariats actifs", value: "6 universités", hint: "Contrats spécifiques signés", trend: "up", icon: "graduation" },
+          { label: "Budget global alloué", value: "185 000 €", hint: "Financement des activités", trend: "up", icon: "dollar" },
+          { label: "Taux d'animation OK", value: "85 %", hint: "Intervenants assignés", trend: "neutral", icon: "users" },
+          { label: "Couverture Comm.", value: "92 %", hint: "Communications validées", trend: "up", icon: "megaphone" },
+        ],
+        workflows: [
+          { name: "Revue contrat cadre", count: 2, status: "ok" },
+          { name: "Recherche animateurs", count: 3, status: "warn" },
+          { name: "Besoins financiers validés", count: 5, status: "ok" },
+          { name: "Campagnes comm. prêtes", count: 4, status: "ok" },
+        ],
+        activity: [
+          { time: "09:40", actor: "Partenariats", action: "Programme validé pour l'Université de Yaoundé I — budget 45k€ débloqué", status: "OK", avatar: "PT" },
+          { time: "08:30", actor: "Système IA", action: "Alerte calendrier : activité 'Séminaire Solaire' (Douala) sans animateur assigné", status: "Alerte", avatar: "AI" },
+        ],
+        docs: [
+          { ref: "ACA-102", title: "Contrat cadre de partenariat — Univ. Douala", owner: "Direction", sla: "J+2", state: "Validé" },
+          { ref: "ACA-115", title: "Budget & Programme — Univ. Yaoundé I", owner: "Coordinateur", sla: "J+3", state: "Signature" },
+        ],
+      },
+      dev: {
+        focus: "Unifier suivi projet, QA et documentation — moins de friction entre équipes.",
+        revenue: "0 €", expenses: "45 000 €", margin: "0 %", fluidity: "90",
+        kpis: [
+          { label: "Projets actifs", value: "9", hint: "2 releases cette semaine", trend: "neutral", icon: "code" },
+          { label: "Tickets bloquants", value: "7", hint: "−3 depuis lundi", trend: "down", icon: "warning" },
+          { label: "Couverture doc", value: "78 %", hint: "Cible 90 %", trend: "up", icon: "filecheck" },
+          { label: "Lead time moyen", value: "4,2 j", hint: "Objectif 3 j", trend: "neutral", icon: "clock" },
+        ],
+        workflows: [
+          { name: "Backlog priorisé", count: 34, status: "ok" },
+          { name: "QA / recette", count: 5, status: "ok" },
+          { name: "Docs technique", count: 8, status: "warn" },
+        ],
+        activity: [
+          { time: "10:22", actor: "QA", action: "Suite régression — build 2.8.4 verte", status: "OK", avatar: "QA" },
+          { time: "09:50", actor: "DevOps", action: "Déploiement VPS Cameroun — latence 12ms", status: "OK", avatar: "DO" },
+        ],
+        docs: [
+          { ref: "DEV-501", title: "Release notes 2.8.4", owner: "Tech lead", sla: "Auj.", state: "Publication" },
+        ],
+      },
+      satglob: {
+        focus: "Visibilité partenaires et contrats internationaux — moins de relances manuelles.",
+        revenue: "112 000 €", expenses: "32 000 €", margin: "71 %", fluidity: "76",
+        kpis: [
+          { label: "Contrats actifs", value: "36", hint: "6 renouvellements Q3", trend: "neutral", icon: "filecheck" },
+          { label: "SLA partenaires OK", value: "94 %", hint: "+2 pts", trend: "up", icon: "checksquare" },
+          { label: "Dossiers export", value: "8", hint: "2 en attente douane", trend: "neutral", icon: "building" },
+          { label: "Relances auto.", value: "41/sem", hint: "Emails + WhatsApp", trend: "up", icon: "refresh" },
+        ],
+        workflows: [
+          { name: "Onboarding partenaire", count: 3, status: "ok" },
+          { name: "Suivi SLA", count: 5, status: "warn" },
+        ],
+        activity: [
+          { time: "09:33", actor: "Partenariats", action: "Contrat distribution — signature électronique", status: "En cours", avatar: "PT" },
+        ],
+        docs: [
+          { ref: "SG-044", title: "Avenant SLA — opérateur régional", owner: "Juridique", sla: "J+2", state: "Négociation" },
+        ],
+      },
+      genesis: {
+        focus: "Optimisation des stocks de boissons premium, suivi des événements et automatisation des encaissements.",
+        revenue: "48 000 €", expenses: "11 000 €", margin: "77 %", fluidity: "94",
+        kpis: [
+          { label: "Articles en stock", value: "142 ref", hint: "Spiritueux, bières, softs", trend: "neutral", icon: "package" },
+          { label: "Alertes rupture stock", value: "2", hint: "Gin premium & Menthe fraîche", trend: "down", icon: "warning" },
+          { label: "Encaissements jour", value: "1 840 €", hint: "+12 % vs mardi dernier", trend: "up", icon: "dollar" },
+          { label: "Événements planifiés", value: "4", hint: "Cette semaine", trend: "up", icon: "clipboard" },
+        ],
+        workflows: [
+          { name: "Commandes boissons", count: 3, status: "ok" },
+          { name: "Clôtures caisse bar", count: 7, status: "ok" },
+          { name: "Réservations VIP", count: 12, status: "ok" },
+        ],
+        activity: [
+          { time: "14:05", actor: "Serveur", action: "Caisse clôturée — session midi Genesis", status: "OK", avatar: "SV" },
+          { time: "13:20", actor: "Système IA", action: "Alerte stock critique : Gin Tanqueray < 5 bouteilles", status: "Alerte", avatar: "AI" },
+        ],
+        docs: [
+          { ref: "GEN-012", title: "Licence d'exploitation active", owner: "SEC", sla: "Infini", state: "Validé" },
+          { ref: "GEN-099", title: "Devis traiteur événementiel VIP", owner: "Événements", sla: "J+1", state: "À signer" },
+        ],
+      },
+      quincaillerie: {
+        focus: "Maîtrise des stocks lourds de matériaux de construction et rapidité des ventes comptoir.",
+        revenue: "65 500 €", expenses: "47 000 €", margin: "28 %", fluidity: "81",
+        kpis: [
+          { label: "Stock matériaux (T)", value: "32,4 T", hint: "Fer à béton, ciment, etc.", trend: "neutral", icon: "package" },
+          { label: "Livraisons chantiers", value: "8", hint: "6 programmées aujourd'hui", trend: "neutral", icon: "truck" },
+          { label: "Créances clients", value: "14 800 €", hint: "À suivre par l'agent de relance", trend: "neutral", icon: "warning" },
+          { label: "Ventes comptoir/jour", value: "22", hint: "+4 vs moyenne semaine", trend: "up", icon: "trending" },
+        ],
+        workflows: [
+          { name: "Approvisionnement fer", count: 2, status: "late" },
+          { name: "Bons de livraison", count: 14, status: "ok" },
+          { name: "Facturation chantiers", count: 6, status: "warn" },
+        ],
+        activity: [
+          { time: "13:45", actor: "Magasinier", action: "Réception de 12 tonnes de ciment CPJ35", status: "OK", avatar: "MG" },
+          { time: "11:10", actor: "Agent IA", action: "Génération automatique d'un rappel de facture : BTP Cameroun", status: "Prêt", avatar: "AI" },
+        ],
+        docs: [
+          { ref: "QUI-104", title: "Fiche technique conformité fers à béton", owner: "Qualité", sla: "J+10", state: "Validé" },
+          { ref: "QUI-208", title: "Facture impayée BTP Cameroun - 4 200 €", owner: "Compta", sla: "Retard J-5", state: "En relance" },
+        ],
+      },
+      commarketing: {
+        focus: "Construire l'image de marque Bridgesat, générer des leads qualifiés et piloter la communication multicanal.",
+        revenue: "18 500 €", expenses: "8 200 €", margin: "56 %", fluidity: "87",
+        kpis: [
+          { label: "Campagnes actives", value: "6", hint: "3 réseaux sociaux, 2 email, 1 presse", trend: "up", icon: "megaphone" },
+          { label: "Leads générés/mois", value: "148", hint: "+34 % vs mois dernier", trend: "up", icon: "target" },
+          { label: "Taux d'engagement", value: "4,7 %", hint: "Instagram + LinkedIn", trend: "up", icon: "heart" },
+          { label: "Budget consommé", value: "62 %", hint: "Sur budget Q2 alloué", trend: "neutral", icon: "dollar" },
+        ],
+        workflows: [
+          { name: "Calendrier éditorial", count: 18, status: "ok" },
+          { name: "Créations graphiques", count: 5, status: "warn" },
+          { name: "Campagnes emailing", count: 3, status: "ok" },
+          { name: "Relations presse", count: 2, status: "ok" },
+        ],
+        activity: [
+          { time: "14:30", actor: "Com & Mkt", action: "Publication Instagram 'Été Bridgesat' — 1 240 likes en 3h", status: "OK", avatar: "CM" },
+          { time: "11:00", actor: "Agent IA", action: "Rédaction automatique de 5 posts LinkedIn programmés pour la semaine", status: "OK", avatar: "AI" },
+          { time: "09:15", actor: "Presse", action: "Article dans Le Quotidien — mention Bridgesat Academy", status: "Publié", avatar: "PR" },
+        ],
+        docs: [
+          { ref: "MKT-033", title: "Charte graphique unifiée Bridgesat 2026", owner: "Dir. Com", sla: "J+5", state: "Validation" },
+          { ref: "MKT-041", title: "Plan média Q3 — réseaux sociaux & presse", owner: "Com & Mkt", sla: "J+3", state: "En cours" },
+          { ref: "MKT-052", title: "Brief création vidéo Genesis Bar", owner: "Création", sla: "J+2", state: "Brouillon" },
+        ],
+      },
+    };
+
+    // ─── Specialized high-fidelity operational cards (TOUCH CLIENTS HEART) ───
+    const specializedCards = {
+      groupe: [
+        { title: "Synergies Opérationnelles", value: "4 Liaisons Actives", desc: "Vente de vins vers Genesis Bar, approvisionnement fer Quincaillerie chantiers SATGLOB, communication unifiée.", badge: "Optimisé", icon: "activity" },
+        { title: "Gouvernance SEC", value: "Cloisonnement RBAC", desc: "Contrôle global des accréditations par rôle. Journalisation en temps réel sur VPS privé.", badge: "Sécurisé", icon: "shield" },
+        { title: "Intelligence Consolidée", value: "3 Moteurs IA", desc: "Prédictions de ruptures de stocks, automatisation des relances clients et rédaction de contenus marketing.", badge: "Actif", icon: "bot" }
+      ],
+      vin: [
+        { title: "Chai & Température (IoT)", value: "14,2 °C constant", desc: "Surveillance de l'humidité relative à 72% dans les caves de stockage. Capteurs autonomes connectés.", badge: "Optimal", icon: "thermometer" },
+        { title: "Statut des Caisses Export", value: "CEMAC Port Douala", desc: "240 caisses en dédouanement. SLA d'arrivée estimé dans 24h par l'agent de transit automatisé.", badge: "En transit", icon: "truck" },
+        { title: "Contrôle Qualité Lot #44", value: "Analyse œnologique", desc: "Acidité volatile et sulfites validés par l'ingénieur laboratoire. Prêt pour mise en bouteille.", badge: "Certifié", icon: "filecheck" }
+      ],
+      genesis: [
+        { title: "Spiritueux & Cocktails VIP", value: "Mojito Bridges N°1", desc: "182 ventes cette semaine. Marge unitaire nette : 78%. Alerte stock sur la menthe fraîche.", badge: "Populaire", icon: "cocktail" },
+        { title: "IoT : Fûts de Bière", value: "4,2 °C (Cible 4,0)", desc: "Sonde active sur la tireuse centrale. Zéro alerte sur le circuit de réfrigération.", badge: "En ligne", icon: "thermometer" },
+        { title: "Événement d'Affaires", value: "29 Mai - 120 pers", desc: "Soirée privée réservée. Devis traiteur validé par le SEC. 3 serveurs assignés.", badge: "Confirmé", icon: "star" }
+      ],
+      quincaillerie: [
+        { title: "Suivi des Fers de 12", value: "18,4 Tonnes en stock", desc: "Stock critique : 10T. Réapprovisionnement automatique programmé pour demain matin.", badge: "Alerte stock", icon: "package" },
+        { title: "Logistique Camions", value: "Chantier Akwa", desc: "Camion B-420 en route pour livraison de 4,5T de fer. Suivi GPS actif sur Bridges OS.", badge: "Livraison", icon: "truck" },
+        { title: "Marge Brute BTP", value: "Calculateur Actif", desc: "Indexation automatique des prix de vente comptoir selon les cours mondiaux de l'acier.", badge: "Marge 28%", icon: "trending" }
+      ],
+      academy: [
+        { title: "Univ. Yaoundé I — Solaire", value: "Intervenant: Dr. Nsame", desc: "Budget 45k€. Calendrier validé. Communication réseaux sociaux lancée.", badge: "En cours", icon: "graduation" },
+        { title: "Univ. Douala — Réseaux", value: "Recherche Animateur", desc: "Budget 30k€. Calendrier prévu le 12 juin. Relance automatique d'intervenants active.", badge: "Recherche", icon: "clock" },
+        { title: "Univ. Dschang — Cloud", value: "Intervenant: Sophie D. (SEC)", desc: "Contrat cadre validé. Budget 60k€. Communication presse planifiée.", badge: "Prêt", icon: "shield" }
+      ],
+      dev: [
+        { title: "Pipeline CI/CD", value: "Build #284 VERT", desc: "Couverture de test globale de 82%. Temps moyen d'intégration : 14 minutes.", badge: "Succès", icon: "code" },
+        { title: "Souveraineté d'Hébergement", value: "VPS Privé Cameroun", desc: "Aucun appel à des API étrangères pour le stockage ou la compilation du code.", badge: "Souverain", icon: "lock" },
+        { title: "QA Staging Status", value: "Zéro bloquant", desc: "Version 2.8.4 validée par le lead QA. Prête pour le déploiement sur Bridgesat.", badge: "Prêt", icon: "checksquare" }
+      ],
+      satglob: [
+        { title: "Liaisons Satellitaires", value: "Bande K - 120ms", desc: "Statut de télémesure stable. Signal à 99% sur la station terrestre principale.", badge: "Stable", icon: "satellite" },
+        { title: "SLA Partenaires", value: "99.8% Disponibilité", desc: "Indicateur contractuel vert. Zéro pénalité enregistrée sur le trimestre en cours.", badge: "Conforme", icon: "checksquare" },
+        { title: "Couverture Continentale", value: "8 Stations terrestres", desc: "Interconnexion complète de la zone Afrique Centrale. Supervision IA active.", badge: "Actif", icon: "satellite" }
+      ],
+      commarketing: [
+        { title: "Social Media Dashboard", value: "12 400 abonnés", desc: "Croissance de +18% sur Instagram, +22% sur LinkedIn. Taux d'engagement moyen de 4,7%.", badge: "En croissance", icon: "trending" },
+        { title: "Campagne 'Été Bridgesat'", value: "32 000 impressions", desc: "Campagne cross-plateforme lancée. CTR de 3,8% — au-dessus de la moyenne du secteur.", badge: "Performant", icon: "target" },
+        { title: "Brand Awareness Score", value: "72/100", desc: "Notoriété assistée en hausse de +11pts sur le marché camerounais depuis janvier 2026.", badge: "+11 pts", icon: "star" }
+      ]
+    };
+
+    // ─── EXTRA rich cards per pole (touch their heart) ───
+    const extraCards = {
+      groupe: [
+        { title: "Décisions en attente", value: "5", desc: "3 achats > seuil, 1 contrat partenaire, 1 recrutement", color: "#E8612D", icon: "clipboard" },
+        { title: "Rentabilité globale", value: "+12 %", desc: "Hausse de la marge nette consolidée vs Q1", color: "#059669", icon: "trending" },
+        { title: "Agents IA déployés", value: "4", desc: "Relance, Stocks, Rédaction, Analyse", color: "#7C3AED", icon: "bot" },
+        { title: "Satisfaction équipe", value: "4,3/5", desc: "Moyenne de satisfaction des collaborateurs", color: "#EC4899", icon: "heart" },
+      ],
+      vin: [
+        { title: "Top vente du mois", value: "Château Margaux 2019", desc: "42 bouteilles vendues — marge 62%", color: "#8B1A4A", icon: "wine" },
+        { title: "Fournisseurs actifs", value: "12", desc: "3 nouveaux ce trimestre", color: "#059669", icon: "users" },
+        { title: "Prévision commande", value: "J+4", desc: "Réapprovisionnement automatisé prévu", color: "#3B82F6", icon: "clock" },
+        { title: "Clients fidèles", value: "28", desc: "Programme de fidélité actif", color: "#EC4899", icon: "heart" },
+      ],
+      genesis: [
+        { title: "Cocktail star", value: "Mojito Bridges", desc: "182 ventes — marge nette 78%", color: "#10B981", icon: "cocktail" },
+        { title: "Réservations VIP", value: "12", desc: "4 soirées privées cette semaine", color: "#7C3AED", icon: "star" },
+        { title: "Serveurs assignés", value: "8", desc: "Planning optimisé par l'IA", color: "#3B82F6", icon: "users" },
+        { title: "Ambiance musicale", value: "Playlist IA", desc: "Sélection dynamique selon l'affluence", color: "#EC4899", icon: "zap" },
+      ],
+      quincaillerie: [
+        { title: "Ciment en stock", value: "14 T CPJ35", desc: "Réapprovisionnement dans 3 jours", color: "#3B82F6", icon: "package" },
+        { title: "Clients chantiers", value: "18 actifs", desc: "6 livraisons programmées aujourd'hui", color: "#059669", icon: "truck" },
+        { title: "Impayés à relancer", value: "4 200 €", desc: "BTP Cameroun — agent IA en suivi", color: "#E8612D", icon: "warning" },
+        { title: "Marge comptoir", value: "32 %", desc: "Meilleur mois depuis janvier", color: "#7C3AED", icon: "trending" },
+      ],
+      academy: [
+        { title: "Univ. Yaoundé II", value: "Contrat Activé", desc: "Budget 50 000 € · Intervenant assigné", color: "#2563EB", icon: "filecheck" },
+        { title: "Univ. Buea", value: "Activité 18 Juin", desc: "Besoin financier validé · Comm. OK", color: "#059669", icon: "clock" },
+        { title: "Univ. Maroua", value: "En attente Comm.", desc: "Budget 25 000 € · Programme validé", color: "#7C3AED", icon: "warning" },
+        { title: "Partenariats Actifs", value: "6 Universités", desc: "Contrats spécifiques et budgets alloués", color: "#10B981", icon: "graduation" },
+      ],
+      dev: [
+        { title: "Uptime VPS", value: "99.97 %", desc: "Serveur souverain Cameroun", color: "#059669", icon: "activity" },
+        { title: "Sprints actifs", value: "3", desc: "Bridges OS, API, Mobile", color: "#7C3AED", icon: "code" },
+        { title: "Temps de build", value: "14 min", desc: "Pipeline CI/CD optimisé", color: "#3B82F6", icon: "zap" },
+        { title: "Code review", value: "98 % done", desc: "Toutes les PR revues cette semaine", color: "#E8612D", icon: "checksquare" },
+      ],
+      satglob: [
+        { title: "Partenaires actifs", value: "8 pays", desc: "Afrique Centrale et Occidentale", color: "#059669", icon: "building" },
+        { title: "Contrats signés Q2", value: "12", desc: "Valeur totale : 89 000 €", color: "#3B82F6", icon: "filecheck" },
+        { title: "Temps de réponse", value: "< 2h", desc: "SLA respecté à 99,8%", color: "#7C3AED", icon: "clock" },
+        { title: "Revenus récurrents", value: "72 %", desc: "Part des revenus sous contrat annuel", color: "#10B981", icon: "trending" },
+      ],
+      commarketing: [
+        { title: "Posts programmés", value: "24", desc: "Instagram 12 · LinkedIn 8 · Facebook 4", color: "#EC4899", icon: "camera" },
+        { title: "Newsletters envoyées", value: "3 200", desc: "Taux d'ouverture : 28% — secteur: 18%", color: "#3B82F6", icon: "share" },
+        { title: "Mentions presse", value: "7", desc: "Articles positifs ce trimestre", color: "#059669", icon: "megaphone" },
+        { title: "ROI campagnes", value: "340 %", desc: "Retour sur investissement marketing", color: "#7C3AED", icon: "trending" },
+      ],
+    };
+
+    // ─── Prospects (Prospection state) ───
+    let relances = [
+      { id: "1", client: "Cave du Littoral", subject: "Commande lot millésime 2024", lastContact: "Il y a 3 jours", nextAction: "Relance email prix", priority: "high", channel: "email", status: "pending", type: "client" },
+      { id: "2", client: "Hôtel Akwa Palace", subject: "Livraison mensuelle vin premium", lastContact: "Il y a 1 jour", nextAction: "Confirmation WhatsApp", priority: "medium", channel: "whatsapp", status: "sent", type: "client" },
+      { id: "3", client: "BTP Cameroun", subject: "Relance facture matériaux 4200€", lastContact: "Il y a 5 jours", nextAction: "Appel de rappel", priority: "high", channel: "phone", status: "overdue", type: "client" },
+      { id: "4", client: "Fénelon Lamsasiri", subject: "Associé principal - Validation equity", lastContact: "Aujourd'hui", nextAction: "Aucune action requise", priority: "low", channel: "email", status: "sent", type: "associé" },
+      { id: "5", client: "Marc K.", subject: "Responsable Quincaillerie - Accords chantiers", lastContact: "Il y a 2 jours", nextAction: "Briefing", priority: "medium", channel: "whatsapp", status: "pending", type: "collaborateur" },
+      { id: "6", client: "Agence Digitale Akwa", subject: "Partenariat contenus réseaux sociaux", lastContact: "Il y a 4 jours", nextAction: "Appel de suivi", priority: "medium", channel: "phone", status: "pending", type: "client" },
+    ];
+
+    // ─── RH Team State ───
+    let teamMembers = [
+      { id: "1", name: "Fénelon Lamsasiri", role: "Super Admin (SEC)", email: "fenelon@bridgesat.com", access: { groupe: true, vin: true, academy: true, dev: true, satglob: true, genesis: true, quincaillerie: true, commarketing: true } },
+      { id: "2", name: "Jean-Pierre N.", role: "Directeur Vin & Commerce", email: "jean-pierre@bridgesat.com", access: { groupe: false, vin: true, academy: false, dev: false, satglob: false, genesis: false, quincaillerie: false, commarketing: false } },
+      { id: "3", name: "Alice B.", role: "Responsable Genesis Bar", email: "alice@bridgesat.com", access: { groupe: false, vin: false, academy: false, dev: false, satglob: false, genesis: true, quincaillerie: false, commarketing: false } },
+      { id: "4", name: "Marc K.", role: "Responsable Quincaillerie", email: "marc@bridgesat.com", access: { groupe: false, vin: false, academy: false, dev: false, satglob: false, genesis: false, quincaillerie: true, commarketing: false } },
+      { id: "5", name: "Sophie D.", role: "Secrétaire Générale (SEC)", email: "sophie@bridgesat.com", access: { groupe: true, vin: true, academy: true, dev: true, satglob: true, genesis: true, quincaillerie: true, commarketing: true } },
+      { id: "6", name: "Lucie M.", role: "Responsable Com & Marketing", email: "lucie@bridgesat.com", access: { groupe: false, vin: false, academy: false, dev: false, satglob: false, genesis: false, quincaillerie: false, commarketing: true } },
+    ];
+
+    // ─── AI Agents State ───
+    let aiAgents = [
+      { id: "1", name: "Agent Relance Auto", role: "Suivi des factures impayées & clients", skills: ["Relance Email", "WhatsApp Auto"], tokensUsed: 1245000, deployedTo: "Jean-Pierre N." },
+      { id: "2", name: "Agent Stocks & Ruptures", role: "Vigilance inventaire et achats", skills: ["Alerte stocks bas", "Proposition de commande"], tokensUsed: 842000, deployedTo: "Marc K." },
+      { id: "3", name: "Agent Rédaction Marketing", role: "Création de contenus réseaux sociaux", skills: ["Rédaction Contenu", "Analyse Réseaux Sociaux"], tokensUsed: 564000, deployedTo: "Lucie M." },
+    ];
+
+    // ─── Tasks State ───
+    let tasks = [
+      { id: "1", title: "Valider l'inventaire annuel du chai", assignedTo: "Jean-Pierre N.", dueDate: "28/05/2026", status: "in_progress", priority: "high" },
+      { id: "2", title: "Commander la menthe fraîche pour le weekend", assignedTo: "Alice B.", dueDate: "27/05/2026", status: "todo", priority: "high" },
+      { id: "3", title: "Relancer la créance BTP Cameroun de 4200€", assignedTo: "Agent Relance Auto", dueDate: "Aujourd'hui", status: "in_progress", priority: "high" },
+      { id: "4", title: "Publier la campagne 'Été Bridgesat' sur Instagram", assignedTo: "Lucie M.", dueDate: "26/05/2026", status: "done", priority: "medium" },
+      { id: "5", title: "Préparer le brief vidéo Genesis Bar", assignedTo: "Lucie M.", dueDate: "30/05/2026", status: "todo", priority: "medium" },
+    ];
+
+    // ─── Assistant IA Replies ───
+    const assistantReplies = {
+      default: "Je n'ai pas trouvé de données précises pour cette requête. Essayez de me demander des informations sur les stocks, les validations, les relances, la sécurité ou le marketing. Je suis connecté à l'ensemble de vos filiales.",
+      validation: "📋 3 dossiers en attente de validation SEC :\n• Bon de commande fournisseur verre (ACH-441) — SLA J+2\n• Avenant partenaire distribution SATGLOB (CTR-119) — SLA J+3\n• Charte graphique unifiée (MKT-021) — SLA J+5\n\nRecommandation : prioriser ACH-441 pour éviter un retard de livraison.",
+      stock: "📦 État des stocks critiques :\n• Vin : 84 références, 0.8% d'écart inventaire ✅\n• Genesis Bar : Alerte Gin Tanqueray (< 5 bouteilles) ⚠️\n• Quincaillerie : Fer de 12 = 18.4T (seuil critique 10T) ✅\n• Ciment CPJ35 : 14T en stock, réappro prévu J+3\n\nAction : Commander Gin Tanqueray et menthe fraîche en priorité.",
+      relance: "🔔 Pipeline de relances actif :\n• Cave du Littoral — relance email prix (urgent)\n• BTP Cameroun — rappel facture 4200€ (retard J-5) ⚠️\n• Agence Digitale Akwa — suivi partenariat contenu\n\nL'Agent Relance Auto a envoyé 3 relances automatiques aujourd'hui.",
+      securite: "🔒 Statut de sécurité SEC :\n• Chiffrement AES-256 actif sur tous les documents\n• 6 collaborateurs enregistrés — 2 Super Admins\n• Dernier audit d'accès : aujourd'hui à 09:00\n• Aucune tentative d'accès non autorisé détectée\n• Cloisonnement RBAC en place sur toutes les filiales.",
+      marketing: "📢 Rapport Communication & Marketing :\n• 6 campagnes actives (3 réseaux sociaux, 2 email, 1 presse)\n• 148 leads générés ce mois (+34%)\n• Taux d'engagement : 4,7% (benchmark secteur : 2,1%)\n• ROI campagnes : 340%\n• Agent IA Rédaction : 5 posts LinkedIn programmés cette semaine\n\nRecommandation : augmenter le budget Instagram de 15% pour maximiser le ROI.",
+      academy: "🎓 Partenariats Académiques & Universitaires :\n• 6 Universités actives (Douala, Yaoundé I & II, Buea, Dschang, Maroua)\n• Budget total : 185 000 €\n• 1 alerte calendrier : Séminaire Univ. Douala sans intervenant assigné (SLA J+5)\n• Couverture de Communication : 92% des activités publiées\n\nAction requise : valider le budget Univ. Maroua (25 000 €) et affecter un animateur pour Douala."
+    };
+
+    // ─── INITIALIZATION & DYNAMIC RENDERING ───
+    window.onload = function() {
+      renderPolesNav();
+      renderPanelsNav();
+      selectDivision('groupe');
+      selectPanel('overview');
+      renderProspectList();
+      renderRHSwitches();
+      renderAiAgentsCards();
+      renderTaskList();
+    };
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const headerText = document.getElementById('sidebar-header-text');
+      const labelPoles = document.getElementById('sidebar-label-poles');
+      const labelNav = document.getElementById('sidebar-label-nav');
+      const footer = document.getElementById('sidebar-footer');
+      
+      sidebarCollapsed = !sidebarCollapsed;
+      
+      if (sidebarCollapsed) {
+        sidebar.className = "bg-white border-r border-[#E8E8ED] flex flex-col custom-transition shadow-sm shrink-0 w-[68px] min-h-screen";
+        headerText.classList.add('hidden');
+        labelPoles.classList.add('hidden');
+        labelNav.classList.add('hidden');
+        footer.classList.add('hidden');
+      } else {
+        sidebar.className = "bg-white border-r border-[#E8E8ED] flex flex-col custom-transition shadow-sm shrink-0 w-[260px] min-h-screen";
+        headerText.classList.remove('hidden');
+        labelPoles.classList.remove('hidden');
+        labelNav.classList.remove('hidden');
+        footer.classList.remove('hidden');
+      }
+      renderPolesNav();
+      renderPanelsNav();
+    }
+
+    function renderPolesNav() {
+      const container = document.getElementById('poles-container');
+      container.innerHTML = '';
+      divisions.forEach(d => {
+        const isActive = currentDivision === d.id;
+        const btn = document.createElement('button');
+        btn.onclick = () => selectDivision(d.id);
+        
+        btn.className = `flex items-center gap-3 w-full rounded-lg text-left transition-all sidebar-item ${sidebarCollapsed ? 'justify-center py-3' : 'px-3 py-2'} mb-0.5 text-xs ${isActive ? 'font-bold shadow-sm' : 'text-[#555566]'}`;
+        if (isActive) {
+          btn.style.color = d.color;
+          btn.style.background = `linear-gradient(90deg, ${d.color}12 0%, transparent 100%)`;
+        }
+        
+        btn.innerHTML = `${svgIcons[d.icon]} ${!sidebarCollapsed ? `<span>${d.short}</span>` : ''}`;
+        container.appendChild(btn);
+      });
+    }
+
+    function renderPanelsNav() {
+      const container = document.getElementById('nav-container');
+      container.innerHTML = '';
+      navPanels.forEach(p => {
+        const isActive = currentPanel === p.id;
+        const btn = document.createElement('button');
+        btn.onclick = () => selectPanel(p.id);
+        
+        btn.className = `flex items-center gap-3 w-full rounded-lg text-left transition-all sidebar-item ${sidebarCollapsed ? 'justify-center py-3' : 'px-3 py-2'} mb-0.5 text-xs ${isActive ? 'font-bold bg-[#FEF2EC] text-brand-orange shadow-sm' : 'text-[#555566]'}`;
+        btn.innerHTML = `${svgIcons[p.icon]} ${!sidebarCollapsed ? `<span>${p.label}</span>` : ''}`;
+        container.appendChild(btn);
+      });
+    }
+
+    const navPanels = [
+      { id: "overview", label: "Tableau de bord", icon: "grid" },
+      { id: "workflows", label: "Flux métier", icon: "clipboard" },
+      { id: "docs", label: "Coffre Documentaire", icon: "filecheck" },
+      { id: "tasks", label: "Gestion des Tâches", icon: "checksquare" },
+      { id: "finance-rh", label: "Finances & RH", icon: "dollar" },
+      { id: "agents", label: "Gestion des Agents IA", icon: "bot" },
+      { id: "relances", label: "Prospection & Relances", icon: "refresh" },
+      { id: "activity", label: "Fil d'activité", icon: "activity" },
+    ];
+
+    function selectDivision(id) {
+      currentDivision = id;
+      renderPolesNav();
+      
+      const divObj = divisions.find(d => d.id === id);
+      const data = divisionData[id] || divisionData.groupe;
+
+      // Update Top Bar & Colors
+      document.getElementById('header-title').innerText = divObj.label;
+      document.getElementById('header-tagline').innerText = divObj.tagline;
+      document.getElementById('header-icon-container').innerHTML = svgIcons[divObj.icon];
+      
+      // Update Overview Banner Focus
+      document.getElementById('focus-text').innerText = data.focus;
+      document.getElementById('fluidity-score').innerText = data.fluidity + '%';
+      document.getElementById('fluidity-progress-bar').style.width = data.fluidity + '%';
+      
+      // Render Overview KPIs
+      const kpiContainer = document.getElementById('kpi-grid');
+      kpiContainer.innerHTML = '';
+      data.kpis.forEach((k, i) => {
+        const card = document.createElement('div');
+        card.className = "p-5 bg-white border border-[#E8E8ED] rounded-xl shadow-sm card-hover animate-fade-in";
+        card.style.animationDelay = (i * 60) + 'ms';
+        card.innerHTML = `
+          <div class="flex items-center justify-between mb-3">
+            <div class="h-9 w-9 rounded-xl flex items-center justify-center" style="background: ${divObj.color}15; color: ${divObj.color}">
+              ${svgIcons[k.icon]}
+            </div>
+            <span class="text-xs font-bold ${k.trend === 'up' ? 'text-emerald-500' : k.trend === 'down' ? 'text-red-400' : 'text-gray-400'}">${k.trend === 'up' ? '▲' : k.trend === 'down' ? '▼' : '—'}</span>
+          </div>
+          <div class="text-2xl font-bold font-outfit text-slate-800">${k.value}</div>
+          <div class="text-xs font-semibold text-[#555566] mt-1">${k.label}</div>
+          <div class="text-[10px] text-[#A0A0B0] mt-1">${k.hint}</div>
+        `;
+        kpiContainer.appendChild(card);
+      });
+
+      // Render specialized operational cards
+      const specCardsContainer = document.getElementById('specialized-cards-grid');
+      specCardsContainer.innerHTML = '';
+      const cards = specializedCards[id] || specializedCards.groupe;
+      
+      cards.forEach((c, i) => {
+        const card = document.createElement('div');
+        card.className = "p-5 bg-white border border-[#E8E8ED] rounded-xl shadow-sm card-hover border-l-4 animate-fade-in";
+        card.style.borderLeftColor = divObj.color;
+        card.style.animationDelay = (i * 80) + 'ms';
+        
+        card.innerHTML = `
+          <div class="flex items-center justify-between mb-3">
+            <div class="h-8 w-8 rounded-lg flex items-center justify-center" style="background: ${divObj.color}10; color: ${divObj.color}">
+              ${svgIcons[c.icon]}
+            </div>
+            <span class="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border" style="background: ${divObj.color}08; color: ${divObj.color}; border-color: ${divObj.color}30">${c.badge}</span>
+          </div>
+          <div class="text-base font-bold text-slate-800 leading-tight font-outfit">${c.title}</div>
+          <div class="text-sm font-extrabold mt-1" style="color: ${divObj.color}">${c.value}</div>
+          <p class="text-[11px] text-gray-500 mt-2 leading-relaxed">${c.desc}</p>
+        `;
+        specCardsContainer.appendChild(card);
+      });
+
+      // Render extra rich cards
+      const extraContainer = document.getElementById('extra-cards-grid');
+      extraContainer.innerHTML = '';
+      const eCards = extraCards[id] || extraCards.groupe;
+      eCards.forEach((ec, i) => {
+        const card = document.createElement('div');
+        card.className = "p-4 rounded-xl shadow-sm card-hover animate-fade-in border overflow-hidden relative";
+        card.style.animationDelay = (i * 70) + 'ms';
+        card.style.borderColor = ec.color + '25';
+        card.innerHTML = `
+          <div class="absolute top-0 right-0 w-16 h-16 rounded-bl-full opacity-10" style="background: ${ec.color}"></div>
+          <div class="h-8 w-8 rounded-lg flex items-center justify-center mb-3" style="background: ${ec.color}15; color: ${ec.color}">
+            ${svgIcons[ec.icon]}
+          </div>
+          <div class="text-xl font-bold font-outfit" style="color: ${ec.color}">${ec.value}</div>
+          <div class="text-[11px] font-semibold text-slate-700 mt-1">${ec.title}</div>
+          <div class="text-[10px] text-gray-400 mt-1">${ec.desc}</div>
+        `;
+        extraContainer.appendChild(card);
+      });
+
+      // Render Workflows Summary in Overview
+      const summaryList = document.getElementById('workflows-summary-list');
+      summaryList.innerHTML = '';
+      data.workflows.forEach(w => {
+        const row = document.createElement('div');
+        row.className = "flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors";
+        row.innerHTML = `
+          <span class="text-xs font-semibold text-gray-700">${w.name}</span>
+          <div class="flex items-center gap-3">
+            <span class="text-[11px] text-gray-400">${w.count} dossiers</span>
+            <span class="text-[10px] px-2.5 py-0.5 rounded-full border ${w.status === 'ok' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : w.status === 'warn' ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-red-50 text-red-700 border-red-200'}">${w.status === 'ok' ? 'Fluide' : w.status === 'warn' ? 'Alerte' : 'Retard'}</span>
+          </div>
+        `;
+        summaryList.appendChild(row);
+      });
+
+      // Render Workflows detailed view
+      const workflowsGrid = document.getElementById('workflows-detailed-grid');
+      workflowsGrid.innerHTML = '';
+      data.workflows.forEach(w => {
+        const card = document.createElement('div');
+        card.className = "p-4 bg-white border border-[#E8E8ED] rounded-xl flex items-center justify-between shadow-sm card-hover";
+        card.innerHTML = `
+          <div>
+            <div class="text-xs font-bold text-gray-800">${w.name}</div>
+            <div class="text-[10px] text-gray-400 mt-1">${w.count} dossiers suivis</div>
+          </div>
+          <span class="text-[10px] px-2 py-0.5 rounded-full ${w.status === 'ok' ? 'bg-emerald-50 text-emerald-700' : w.status === 'warn' ? 'bg-amber-50 text-amber-700' : 'bg-rose-50 text-rose-700'}">${w.status === 'ok' ? 'Fluide' : w.status === 'warn' ? 'Alerte' : 'Retard'}</span>
+        `;
+        workflowsGrid.appendChild(card);
+      });
+
+      // Render Documents Table
+      const docsBody = document.getElementById('docs-table-body');
+      docsBody.innerHTML = '';
+      data.docs.forEach(doc => {
+        const tr = document.createElement('tr');
+        tr.className = "border-b border-gray-50 hover:bg-gray-50 transition-colors";
+        tr.innerHTML = `
+          <td class="p-3 font-semibold" style="color: ${divObj.color}">${doc.ref}</td>
+          <td class="p-3 font-medium text-gray-800">${doc.title}</td>
+          <td class="p-3 text-gray-500">${doc.owner}</td>
+          <td class="p-3 text-gray-500">${doc.sla}</td>
+          <td class="p-3"><span class="bg-gray-100 text-gray-700 px-2 py-0.5 rounded">${doc.state}</span></td>
+        `;
+        docsBody.appendChild(tr);
+      });
+
+      // Render Finances
+      const financeGrid = document.getElementById('financial-grid');
+      financeGrid.innerHTML = `
+        <div class="p-5 bg-white border border-[#E8E8ED] rounded-xl shadow-sm card-hover flex items-center gap-4">
+          <div class="h-12 w-12 rounded-xl flex items-center justify-center bg-gradient-to-br from-brand-orange/10 to-brand-orange/5 text-brand-orange">${svgIcons.dollar}</div>
+          <div><div class="text-2xl font-bold text-brand-orange font-outfit">${data.revenue}</div><div class="text-xs text-gray-400 mt-1">Chiffre d'Affaires (${divObj.short})</div></div>
+        </div>
+        <div class="p-5 bg-white border border-[#E8E8ED] rounded-xl shadow-sm card-hover flex items-center gap-4">
+          <div class="h-12 w-12 rounded-xl flex items-center justify-center bg-red-50 text-red-600">${svgIcons.briefcase}</div>
+          <div><div class="text-2xl font-bold text-red-600 font-outfit">${data.expenses}</div><div class="text-xs text-gray-400 mt-1">Dépenses & Achats</div></div>
+        </div>
+        <div class="p-5 bg-white border border-[#E8E8ED] rounded-xl shadow-sm card-hover flex items-center gap-4">
+          <div class="h-12 w-12 rounded-xl flex items-center justify-center bg-emerald-50 text-emerald-600">${svgIcons.trending}</div>
+          <div><div class="text-2xl font-bold text-emerald-600 font-outfit">${data.margin}</div><div class="text-xs text-gray-400 mt-1">Marge brute moyenne</div></div>
+        </div>
+      `;
+
+      // Render Activity feed
+      const activityContainer = document.getElementById('activity-timeline');
+      activityContainer.innerHTML = '';
+      data.activity.forEach(a => {
+        const row = document.createElement('div');
+        row.className = "p-4 border-b border-gray-50 flex items-start gap-3 hover:bg-gray-50 transition-colors";
+        row.innerHTML = `
+          <div class="h-8 w-8 rounded-full flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5 text-white shadow-sm" style="background: ${divObj.color}">${a.avatar}</div>
+          <div class="flex-1">
+            <div class="flex items-center gap-2 text-xs">
+              <span class="font-bold">${a.actor}</span>
+              <span class="text-gray-400 text-[10px]">${a.time}</span>
+            </div>
+            <p class="text-xs text-gray-600 mt-1">${a.action}</p>
+          </div>
+          <span class="text-[9px] font-bold px-2 py-0.5 rounded-md shrink-0 ${a.status === 'Alerte' ? 'text-amber-600 bg-amber-50' : 'text-emerald-600 bg-emerald-50'}">${a.status}</span>
+        `;
+        activityContainer.appendChild(row);
+      });
+    }
+
+    function selectPanel(panelId) {
+      currentPanel = panelId;
+      renderPanelsNav();
+
+      const panels = ['overview', 'workflows', 'docs', 'tasks', 'finance-rh', 'agents', 'relances', 'activity'];
+      panels.forEach(p => {
+        const elem = document.getElementById('panel-' + p);
+        if (elem) elem.classList.add('hidden');
+      });
+
+      const target = document.getElementById('panel-' + panelId);
+      if (target) target.classList.remove('hidden');
+    }
+
+    function toggleForm(id) {
+      const form = document.getElementById(id);
+      form.classList.toggle('hidden');
+    }
+
+    // ─── PROSPECTION PIPELINE ACTIONS ───
+    function renderProspectList() {
+      const list = document.getElementById('relance-pipeline-list');
+      list.innerHTML = '';
+      relances.forEach(r => {
+        const row = document.createElement('div');
+        row.className = "flex items-center justify-between p-4 border-b border-gray-50 hover:bg-gray-50 transition-colors text-xs";
+        
+        const priorityColors = r.priority === 'high' ? 'bg-red-50 text-red-700 border-red-200' : r.priority === 'medium' ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-blue-50 text-blue-700 border-blue-200';
+        const typeColors = r.type === 'associé' ? 'bg-purple-100 text-purple-700' : r.type === 'collaborateur' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-700';
+        
+        row.innerHTML = `
+          <div class="flex items-center gap-3 flex-1 min-w-0">
+            <div class="h-9 w-9 rounded-full bg-gradient-to-br from-slate-100 to-slate-50 flex items-center justify-center text-gray-500 shrink-0 border border-slate-200">
+              ${r.channel === 'phone' ? svgIcons.activity : r.channel === 'whatsapp' ? svgIcons.share : svgIcons.share}
+            </div>
+            <div class="min-w-0">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="font-bold text-gray-800">${r.client}</span>
+                <span class="text-[9px] ${typeColors} px-1.5 py-0.5 rounded-full font-semibold uppercase tracking-wider">${r.type}</span>
+              </div>
+              <div class="text-[10px] text-gray-400 mt-1 truncate">${r.subject}</div>
+            </div>
+          </div>
+          <div class="text-right shrink-0 mx-4">
+            <div class="text-[10px] text-gray-400">${r.lastContact}</div>
+            <div class="text-[10px] font-semibold text-gray-700 mt-1">${r.nextAction}</div>
+          </div>
+          <span class="px-2.5 py-0.5 rounded-full text-[9px] font-bold border ${priorityColors} shrink-0">${r.priority === 'high' ? 'Urgent' : r.priority === 'medium' ? 'Normal' : 'Faible'}</span>
+        `;
+        list.appendChild(row);
+      });
+
+      // Update Relance Stats
+      const total = relances.length;
+      const overdue = relances.filter(r => r.status === 'overdue').length;
+      const pending = relances.filter(r => r.status === 'pending').length;
+      const sent = relances.filter(r => r.status === 'sent').length;
+
+      const statsGrid = document.getElementById('relance-stats-grid');
+      statsGrid.innerHTML = `
+        <div class="p-4 bg-white border border-[#E8E8ED] rounded-xl shadow-sm card-hover flex items-center gap-4">
+          <div class="h-10 w-10 rounded-lg flex items-center justify-center bg-brand-orange/10 text-brand-orange">${svgIcons.users}</div>
+          <div><div class="text-xl font-bold text-brand-orange">${total}</div><div class="text-xs text-gray-400 mt-1">Total contacts</div></div>
+        </div>
+        <div class="p-4 bg-white border border-[#E8E8ED] rounded-xl shadow-sm card-hover flex items-center gap-4">
+          <div class="h-10 w-10 rounded-lg flex items-center justify-center bg-red-50 text-red-600">${svgIcons.warning}</div>
+          <div><div class="text-xl font-bold text-red-600">${overdue}</div><div class="text-xs text-gray-400 mt-1">Urgent/Retard</div></div>
+        </div>
+        <div class="p-4 bg-white border border-[#E8E8ED] rounded-xl shadow-sm card-hover flex items-center gap-4">
+          <div class="h-10 w-10 rounded-lg flex items-center justify-center bg-amber-50 text-amber-600">${svgIcons.clock}</div>
+          <div><div class="text-xl font-bold text-amber-600">${pending}</div><div class="text-xs text-gray-400 mt-1">En attente</div></div>
+        </div>
+        <div class="p-4 bg-white border border-[#E8E8ED] rounded-xl shadow-sm card-hover flex items-center gap-4">
+          <div class="h-10 w-10 rounded-lg flex items-center justify-center bg-emerald-50 text-emerald-600">${svgIcons.checksquare}</div>
+          <div><div class="text-xl font-bold text-emerald-600">${sent}</div><div class="text-xs text-gray-400 mt-1">Actions envoyées</div></div>
+        </div>
+      `;
+    }
+
+    function addProspect(e) {
+      e.preventDefault();
+      const name = document.getElementById('prospect-name-input').value;
+      const type = document.getElementById('prospect-type-input').value;
+      const subject = document.getElementById('prospect-subject-input').value;
+
+      if (!name) return;
+
+      const newP = {
+        id: Date.now().toString(),
+        client: name,
+        type: type,
+        subject: subject,
+        lastContact: "Aujourd'hui",
+        nextAction: type === 'client' ? "Relance automatique dans 3 jours" : "Entretien planifié",
+        priority: type === 'client' ? "high" : "medium",
+        channel: "email",
+        status: "pending"
+      };
+
+      relances.unshift(newP);
+      renderProspectList();
+
+      document.getElementById('prospect-name-input').value = '';
+      document.getElementById('prospect-subject-input').value = '';
+      toggleForm('prospect-form-container');
+    }
+
+    // ─── RH SWITCH BOARD ACTIONS ───
+    function renderRHSwitches() {
+      const tbody = document.getElementById('rh-table-body');
+      tbody.innerHTML = '';
+      teamMembers.forEach(m => {
+        const tr = document.createElement('tr');
+        tr.className = "border-b border-slate-100 hover:bg-gray-50 transition-colors text-xs";
+        
+        const accessBtn = (key) => {
+          const isOn = m.access[key];
+          return `<button onclick="toggleMemberAccess('${m.id}', '${key}')" class="focus:outline-none shrink-0 inline-block text-center hover:scale-105 transition-transform">
+            ${isOn ? '<span class="bg-emerald-100 text-emerald-800 border border-emerald-300 font-bold px-3 py-1 rounded text-[10px]">ACCÈS</span>' : '<span class="bg-slate-100 text-slate-400 border border-slate-200 font-bold px-3 py-1 rounded text-[10px]">BLOQUÉ</span>'}
+          </button>`;
+        };
+
+        tr.innerHTML = `
+          <td class="p-3">
+            <div class="font-bold text-slate-800">${m.name}</div>
+            <div class="text-[10px] text-gray-400">${m.email}</div>
+          </td>
+          <td class="p-3 text-slate-500">${m.role}</td>
+          <td class="p-3 text-center">${accessBtn('vin')}</td>
+          <td class="p-3 text-center">${accessBtn('genesis')}</td>
+          <td class="p-3 text-center">${accessBtn('quincaillerie')}</td>
+          <td class="p-3 text-center">${accessBtn('commarketing')}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function toggleMemberAccess(memberId, divisionKey) {
+      teamMembers = teamMembers.map(m => {
+        if (m.id === memberId) {
+          m.access[divisionKey] = !m.access[divisionKey];
+        }
+        return m;
+      });
+      renderRHSwitches();
+    }
+
+    function addTeamMember(e) {
+      e.preventDefault();
+      const name = document.getElementById('rh-name-input').value;
+      const role = document.getElementById('rh-role-input').value;
+
+      if (!name || !role) return;
+
+      const newM = {
+        id: Date.now().toString(),
+        name: name,
+        role: role,
+        email: `${name.toLowerCase().replace(/\s+/g, ".")}@bridgesat.com`,
+        access: { groupe: false, vin: false, academy: false, dev: false, satglob: false, genesis: false, quincaillerie: false, commarketing: false }
+      };
+
+      teamMembers.push(newM);
+      renderRHSwitches();
+
+      document.getElementById('rh-name-input').value = '';
+      document.getElementById('rh-role-input').value = '';
+      toggleForm('rh-form-container');
+    }
+
+    // ─── AI AGENTS ACTIONS ───
+    function renderAiAgentsCards() {
+      const container = document.getElementById('agents-cards-grid');
+      container.innerHTML = '';
+      aiAgents.forEach((agent, i) => {
+        const card = document.createElement('div');
+        card.className = "p-5 bg-white border border-[#E8E8ED] rounded-xl shadow-sm flex flex-col gap-4 text-xs card-hover animate-fade-in";
+        card.style.animationDelay = (i * 80) + 'ms';
+        
+        let skillsHtml = '';
+        agent.skills.forEach(s => {
+          skillsHtml += `<span class="bg-[#FEF2EC] text-brand-orange px-2 py-0.5 rounded text-[10px] font-medium border border-brand-orange/20">${s}</span>`;
+        });
+
+        card.innerHTML = `
+          <div class="flex justify-between items-start">
+            <div class="flex items-center gap-2">
+              <div class="h-9 w-9 rounded-xl bg-gradient-to-br from-brand-orange/10 to-brand-orange/5 flex items-center justify-center text-brand-orange">${svgIcons.bot}</div>
+              <span class="font-bold text-sm text-gray-800 font-outfit">${agent.name}</span>
+            </div>
+            <span class="text-[9px] bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full border border-emerald-200 flex items-center gap-1">
+              <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 pulse-dot"></span>
+              Actif
+            </span>
+          </div>
+          <div class="text-gray-500">${agent.role}</div>
+          <div>
+            <div class="text-[10px] text-gray-400 font-semibold mb-2 uppercase">Skills Forge IA :</div>
+            <div class="flex flex-wrap gap-1.5">${skillsHtml}</div>
+          </div>
+          <div class="border-t border-gray-100 pt-3 flex justify-between items-center text-[10px] text-gray-400 mt-auto">
+            <div><strong class="text-gray-600">Tokens :</strong> ${(agent.tokensUsed / 1000).toFixed(0)}k tkn (Local: 0.00$)</div>
+            <div class="font-semibold text-brand-orange">Compte: ${agent.deployedTo}</div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    let activeCreatedSkills = [];
+    function toggleSkillButton(btn) {
+      const text = btn.innerText;
+      if (activeCreatedSkills.includes(text)) {
+        activeCreatedSkills = activeCreatedSkills.filter(s => s !== text);
+        btn.className = "px-2.5 py-1 rounded bg-slate-100 text-slate-700 text-[11px] font-medium border border-slate-200 hover:bg-slate-200 transition-colors";
+      } else {
+        activeCreatedSkills.push(text);
+        btn.className = "px-2.5 py-1 rounded bg-[#FEF2EC] text-brand-orange text-[11px] font-medium border border-brand-orange";
+      }
+    }
+
+    function createAiAgent(e) {
+      e.preventDefault();
+      const name = document.getElementById('agent-name-input').value;
+      const role = document.getElementById('agent-role-input').value;
+      const deployed = document.getElementById('agent-deploy-input').value;
+
+      if (!name || !role) return;
+
+      const newAgent = {
+        id: Date.now().toString(),
+        name: name,
+        role: role,
+        skills: activeCreatedSkills.length > 0 ? [...activeCreatedSkills] : ["Analyse de flux"],
+        tokensUsed: 0,
+        deployedTo: deployed
+      };
+
+      aiAgents.push(newAgent);
+      renderAiAgentsCards();
+
+      document.getElementById('agent-name-input').value = '';
+      document.getElementById('agent-role-input').value = '';
+      activeCreatedSkills = [];
+      const buttons = document.querySelectorAll('#agent-form-container button[type="button"]');
+      buttons.forEach(b => {
+        b.className = "px-2.5 py-1 rounded bg-slate-100 text-slate-700 text-[11px] font-medium border border-slate-200 hover:bg-slate-200 transition-colors";
+      });
+      toggleForm('agent-form-container');
+    }
+
+    // ─── TASK MANAGEMENT ACTIONS ───
+    function renderTaskList() {
+      const tbody = document.getElementById('tasks-table-body');
+      tbody.innerHTML = '';
+      tasks.forEach(t => {
+        const tr = document.createElement('tr');
+        tr.className = "border-b border-slate-100 hover:bg-gray-50 text-xs transition-colors";
+        
+        const statusColor = t.status === 'done' ? 'bg-emerald-50 text-emerald-700' : t.status === 'in_progress' ? 'bg-amber-50 text-amber-700' : 'bg-slate-100 text-slate-600';
+        const statusLabel = t.status === 'done' ? 'Terminé' : t.status === 'in_progress' ? 'En cours' : 'À faire';
+
+        tr.innerHTML = `
+          <td class="p-3 font-semibold text-slate-800">${t.title}</td>
+          <td class="p-3 text-slate-500">${t.assignedTo}</td>
+          <td class="p-3 text-slate-400">${t.dueDate}</td>
+          <td class="p-3"><span class="px-2 py-0.5 rounded-full text-[10px] ${t.priority === 'high' ? 'bg-red-50 text-red-700 border border-red-200' : 'bg-slate-100 text-slate-600'}">${t.priority === 'high' ? 'Urgent' : 'Normal'}</span></td>
+          <td class="p-3"><span class="${statusColor} px-2 py-0.5 rounded text-[10px] font-semibold">${statusLabel}</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function addTask(event) {
+      event.preventDefault();
+      const title = document.getElementById('task-title-input').value;
+      const assigned = document.getElementById('task-assign-input').value;
+      const priority = document.getElementById('task-priority-input').value;
+
+      if (!title) return;
+
+      const newT = {
+        id: Date.now().toString(),
+        title: title,
+        assignedTo: assigned,
+        dueDate: "À définir",
+        status: "todo",
+        priority: priority
+      };
+
+      tasks.unshift(newT);
+      renderTaskList();
+
+      document.getElementById('task-title-input').value = '';
+      toggleForm('task-form-container');
+    }
+
+    // ─── ASSISTANT IA INTERACTIVE ACTIONS ───
+    function sendAssistantQuery() {
+      const input = document.getElementById('assistant-input');
+      const query = input.value.trim();
+      if (!query) return;
+
+      const bubble = document.getElementById('assistant-bubble');
+      bubble.innerText = "⏳ L'assistant analyse vos données chiffrées localement...";
+      
+      setTimeout(() => {
+        const q = query.toLowerCase();
+        let reply = assistantReplies.default;
+        
+        if (q.includes("validation") || q.includes("direction") || q.includes("bloqu")) {
+          reply = assistantReplies.validation;
+        } else if (q.includes("stock") || q.includes("vin") || q.includes("achat")) {
+          reply = assistantReplies.stock;
+        } else if (q.includes("relance") || q.includes("client") || q.includes("rappel")) {
+          reply = assistantReplies.relance;
+        } else if (q.includes("sécurité") || q.includes("securite") || q.includes("sec") || q.includes("accès")) {
+          reply = assistantReplies.securite;
+        } else if (q.includes("marketing") || q.includes("communication") || q.includes("campaign") || q.includes("social") || q.includes("com")) {
+          reply = assistantReplies.marketing;
+        } else if (q.includes("academy") || q.includes("université") || q.includes("universite") || q.includes("partenariat") || q.includes("programme")) {
+          reply = assistantReplies.academy;
+        }
+        
+        bubble.innerText = reply;
+        input.value = '';
+      }, 600);
+    }
+  </script>
+</body>
+</html>

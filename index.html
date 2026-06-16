@@ -3,13 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Opays Tech — L'IA bâtie pour votre réalité</title>
-    <meta name="description" content="Opays Tech aide les entreprises à automatiser les tâches répétitives et fluidifier leurs processus grâce à l'IA pragmatique." />
-    <meta property="og:title" content="Opays Tech — L'IA utile" />
-    <meta property="og:description" content="Architecture IA & automatisation pour des opérations plus claires." />
-    <meta property="og:type" content="website" />
+    <!--
+      Titre/description/canonical/Open Graph sont pilotés par page via l'API
+      `head()` de TanStack Router (source unique `PUBLIC_ROUTES`, rendue par
+      `<HeadContent />` dans `__root.tsx`). Ce titre n'est qu'un repli affiché
+      avant le chargement du bundle ; il est remplacé par le titre de la route.
+      Les balises SEO par page ne sont PAS dupliquées ici pour éviter des
+      métadonnées en double.
+    -->
+    <title>Opays Tech — Ingénierie de l'efficience par l'IA</title>
     <meta name="twitter:card" content="summary_large_image" />
-    
+
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

@@ -7,6 +7,7 @@ Garantir que tous les actifs produits (fichiers, UI, documents) respectent l'ide
 - **Couleurs :** Noir profond, Gris anthracite, Blanc pur, Accents bleus électriques ou verts néon subtils.
 - **Typographie :** Utilisation systématique de polices premium (Inter, Outfit, Roboto Mono).
 - **Style :** Glassmorphism, ombres douces, espacement généreux.
+- **Direction produit :** Cohérence de back-office premium, lisibilité des tableaux, densité maîtrisée, panneaux latéraux et cartes fonctionnelles.
 
 ## Application du Ton
 - **Direct :** Pas de phrases de remplissage.

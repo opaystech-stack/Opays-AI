@@ -9,50 +9,417 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as Tenant0RouteImport } from './routes/tenant-0'
+import { Route as BridgesOsRouteImport } from './routes/bridges-os'
+import { Route as PublicRouteImport } from './routes/_public'
+import { Route as PublicIndexRouteImport } from './routes/_public.index'
+import { Route as PublicWebIntelligentRouteImport } from './routes/_public.web-intelligent'
+import { Route as PublicSouveraineteRdRouteImport } from './routes/_public.souverainete-rd'
+import { Route as PublicServicesRouteImport } from './routes/_public.services'
+import { Route as PublicSaasRouteImport } from './routes/_public.saas'
+import { Route as PublicOffresRouteImport } from './routes/_public.offres'
+import { Route as PublicMethodeRouteImport } from './routes/_public.methode'
+import { Route as PublicMentionsLegalesRouteImport } from './routes/_public.mentions-legales'
+import { Route as PublicIntegrationIaRouteImport } from './routes/_public.integration-ia'
+import { Route as PublicContactRouteImport } from './routes/_public.contact'
+import { Route as PublicConsultationWebEtIaRouteImport } from './routes/_public.consultation-web-et-ia'
+import { Route as PublicConfidentialiteRouteImport } from './routes/_public.confidentialite'
+import { Route as PublicChatbotIntelligentRouteImport } from './routes/_public.chatbot-intelligent'
+import { Route as PublicAutomatisationRouteImport } from './routes/_public.automatisation'
+import { Route as PublicAgentsIaRouteImport } from './routes/_public.agents-ia'
 
-const IndexRoute = IndexRouteImport.update({
+const Tenant0Route = Tenant0RouteImport.update({
+  id: '/tenant-0',
+  path: '/tenant-0',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BridgesOsRoute = BridgesOsRouteImport.update({
+  id: '/bridges-os',
+  path: '/bridges-os',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PublicRoute = PublicRouteImport.update({
+  id: '/_public',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PublicIndexRoute = PublicIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicWebIntelligentRoute = PublicWebIntelligentRouteImport.update({
+  id: '/web-intelligent',
+  path: '/web-intelligent',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicSouveraineteRdRoute = PublicSouveraineteRdRouteImport.update({
+  id: '/souverainete-rd',
+  path: '/souverainete-rd',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicServicesRoute = PublicServicesRouteImport.update({
+  id: '/services',
+  path: '/services',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicSaasRoute = PublicSaasRouteImport.update({
+  id: '/saas',
+  path: '/saas',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicOffresRoute = PublicOffresRouteImport.update({
+  id: '/offres',
+  path: '/offres',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicMethodeRoute = PublicMethodeRouteImport.update({
+  id: '/methode',
+  path: '/methode',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicMentionsLegalesRoute = PublicMentionsLegalesRouteImport.update({
+  id: '/mentions-legales',
+  path: '/mentions-legales',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicIntegrationIaRoute = PublicIntegrationIaRouteImport.update({
+  id: '/integration-ia',
+  path: '/integration-ia',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicContactRoute = PublicContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicConsultationWebEtIaRoute =
+  PublicConsultationWebEtIaRouteImport.update({
+    id: '/consultation-web-et-ia',
+    path: '/consultation-web-et-ia',
+    getParentRoute: () => PublicRoute,
+  } as any)
+const PublicConfidentialiteRoute = PublicConfidentialiteRouteImport.update({
+  id: '/confidentialite',
+  path: '/confidentialite',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicChatbotIntelligentRoute =
+  PublicChatbotIntelligentRouteImport.update({
+    id: '/chatbot-intelligent',
+    path: '/chatbot-intelligent',
+    getParentRoute: () => PublicRoute,
+  } as any)
+const PublicAutomatisationRoute = PublicAutomatisationRouteImport.update({
+  id: '/automatisation',
+  path: '/automatisation',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicAgentsIaRoute = PublicAgentsIaRouteImport.update({
+  id: '/agents-ia',
+  path: '/agents-ia',
+  getParentRoute: () => PublicRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/': typeof PublicIndexRoute
+  '/bridges-os': typeof BridgesOsRoute
+  '/tenant-0': typeof Tenant0Route
+  '/agents-ia': typeof PublicAgentsIaRoute
+  '/automatisation': typeof PublicAutomatisationRoute
+  '/chatbot-intelligent': typeof PublicChatbotIntelligentRoute
+  '/confidentialite': typeof PublicConfidentialiteRoute
+  '/consultation-web-et-ia': typeof PublicConsultationWebEtIaRoute
+  '/contact': typeof PublicContactRoute
+  '/integration-ia': typeof PublicIntegrationIaRoute
+  '/mentions-legales': typeof PublicMentionsLegalesRoute
+  '/methode': typeof PublicMethodeRoute
+  '/offres': typeof PublicOffresRoute
+  '/saas': typeof PublicSaasRoute
+  '/services': typeof PublicServicesRoute
+  '/souverainete-rd': typeof PublicSouveraineteRdRoute
+  '/web-intelligent': typeof PublicWebIntelligentRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/bridges-os': typeof BridgesOsRoute
+  '/tenant-0': typeof Tenant0Route
+  '/agents-ia': typeof PublicAgentsIaRoute
+  '/automatisation': typeof PublicAutomatisationRoute
+  '/chatbot-intelligent': typeof PublicChatbotIntelligentRoute
+  '/confidentialite': typeof PublicConfidentialiteRoute
+  '/consultation-web-et-ia': typeof PublicConsultationWebEtIaRoute
+  '/contact': typeof PublicContactRoute
+  '/integration-ia': typeof PublicIntegrationIaRoute
+  '/mentions-legales': typeof PublicMentionsLegalesRoute
+  '/methode': typeof PublicMethodeRoute
+  '/offres': typeof PublicOffresRoute
+  '/saas': typeof PublicSaasRoute
+  '/services': typeof PublicServicesRoute
+  '/souverainete-rd': typeof PublicSouveraineteRdRoute
+  '/web-intelligent': typeof PublicWebIntelligentRoute
+  '/': typeof PublicIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
+  '/_public': typeof PublicRouteWithChildren
+  '/bridges-os': typeof BridgesOsRoute
+  '/tenant-0': typeof Tenant0Route
+  '/_public/agents-ia': typeof PublicAgentsIaRoute
+  '/_public/automatisation': typeof PublicAutomatisationRoute
+  '/_public/chatbot-intelligent': typeof PublicChatbotIntelligentRoute
+  '/_public/confidentialite': typeof PublicConfidentialiteRoute
+  '/_public/consultation-web-et-ia': typeof PublicConsultationWebEtIaRoute
+  '/_public/contact': typeof PublicContactRoute
+  '/_public/integration-ia': typeof PublicIntegrationIaRoute
+  '/_public/mentions-legales': typeof PublicMentionsLegalesRoute
+  '/_public/methode': typeof PublicMethodeRoute
+  '/_public/offres': typeof PublicOffresRoute
+  '/_public/saas': typeof PublicSaasRoute
+  '/_public/services': typeof PublicServicesRoute
+  '/_public/souverainete-rd': typeof PublicSouveraineteRdRoute
+  '/_public/web-intelligent': typeof PublicWebIntelligentRoute
+  '/_public/': typeof PublicIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/bridges-os'
+    | '/tenant-0'
+    | '/agents-ia'
+    | '/automatisation'
+    | '/chatbot-intelligent'
+    | '/confidentialite'
+    | '/consultation-web-et-ia'
+    | '/contact'
+    | '/integration-ia'
+    | '/mentions-legales'
+    | '/methode'
+    | '/offres'
+    | '/saas'
+    | '/services'
+    | '/souverainete-rd'
+    | '/web-intelligent'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/bridges-os'
+    | '/tenant-0'
+    | '/agents-ia'
+    | '/automatisation'
+    | '/chatbot-intelligent'
+    | '/confidentialite'
+    | '/consultation-web-et-ia'
+    | '/contact'
+    | '/integration-ia'
+    | '/mentions-legales'
+    | '/methode'
+    | '/offres'
+    | '/saas'
+    | '/services'
+    | '/souverainete-rd'
+    | '/web-intelligent'
+    | '/'
+  id:
+    | '__root__'
+    | '/_public'
+    | '/bridges-os'
+    | '/tenant-0'
+    | '/_public/agents-ia'
+    | '/_public/automatisation'
+    | '/_public/chatbot-intelligent'
+    | '/_public/confidentialite'
+    | '/_public/consultation-web-et-ia'
+    | '/_public/contact'
+    | '/_public/integration-ia'
+    | '/_public/mentions-legales'
+    | '/_public/methode'
+    | '/_public/offres'
+    | '/_public/saas'
+    | '/_public/services'
+    | '/_public/souverainete-rd'
+    | '/_public/web-intelligent'
+    | '/_public/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  PublicRoute: typeof PublicRouteWithChildren
+  BridgesOsRoute: typeof BridgesOsRoute
+  Tenant0Route: typeof Tenant0Route
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
+    '/tenant-0': {
+      id: '/tenant-0'
+      path: '/tenant-0'
+      fullPath: '/tenant-0'
+      preLoaderRoute: typeof Tenant0RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bridges-os': {
+      id: '/bridges-os'
+      path: '/bridges-os'
+      fullPath: '/bridges-os'
+      preLoaderRoute: typeof BridgesOsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_public': {
+      id: '/_public'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof PublicRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_public/': {
+      id: '/_public/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof PublicIndexRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/web-intelligent': {
+      id: '/_public/web-intelligent'
+      path: '/web-intelligent'
+      fullPath: '/web-intelligent'
+      preLoaderRoute: typeof PublicWebIntelligentRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/souverainete-rd': {
+      id: '/_public/souverainete-rd'
+      path: '/souverainete-rd'
+      fullPath: '/souverainete-rd'
+      preLoaderRoute: typeof PublicSouveraineteRdRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/services': {
+      id: '/_public/services'
+      path: '/services'
+      fullPath: '/services'
+      preLoaderRoute: typeof PublicServicesRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/saas': {
+      id: '/_public/saas'
+      path: '/saas'
+      fullPath: '/saas'
+      preLoaderRoute: typeof PublicSaasRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/offres': {
+      id: '/_public/offres'
+      path: '/offres'
+      fullPath: '/offres'
+      preLoaderRoute: typeof PublicOffresRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/methode': {
+      id: '/_public/methode'
+      path: '/methode'
+      fullPath: '/methode'
+      preLoaderRoute: typeof PublicMethodeRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/mentions-legales': {
+      id: '/_public/mentions-legales'
+      path: '/mentions-legales'
+      fullPath: '/mentions-legales'
+      preLoaderRoute: typeof PublicMentionsLegalesRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/integration-ia': {
+      id: '/_public/integration-ia'
+      path: '/integration-ia'
+      fullPath: '/integration-ia'
+      preLoaderRoute: typeof PublicIntegrationIaRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/contact': {
+      id: '/_public/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof PublicContactRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/consultation-web-et-ia': {
+      id: '/_public/consultation-web-et-ia'
+      path: '/consultation-web-et-ia'
+      fullPath: '/consultation-web-et-ia'
+      preLoaderRoute: typeof PublicConsultationWebEtIaRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/confidentialite': {
+      id: '/_public/confidentialite'
+      path: '/confidentialite'
+      fullPath: '/confidentialite'
+      preLoaderRoute: typeof PublicConfidentialiteRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/chatbot-intelligent': {
+      id: '/_public/chatbot-intelligent'
+      path: '/chatbot-intelligent'
+      fullPath: '/chatbot-intelligent'
+      preLoaderRoute: typeof PublicChatbotIntelligentRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/automatisation': {
+      id: '/_public/automatisation'
+      path: '/automatisation'
+      fullPath: '/automatisation'
+      preLoaderRoute: typeof PublicAutomatisationRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/agents-ia': {
+      id: '/_public/agents-ia'
+      path: '/agents-ia'
+      fullPath: '/agents-ia'
+      preLoaderRoute: typeof PublicAgentsIaRouteImport
+      parentRoute: typeof PublicRoute
     }
   }
 }
 
+interface PublicRouteChildren {
+  PublicAgentsIaRoute: typeof PublicAgentsIaRoute
+  PublicAutomatisationRoute: typeof PublicAutomatisationRoute
+  PublicChatbotIntelligentRoute: typeof PublicChatbotIntelligentRoute
+  PublicConfidentialiteRoute: typeof PublicConfidentialiteRoute
+  PublicConsultationWebEtIaRoute: typeof PublicConsultationWebEtIaRoute
+  PublicContactRoute: typeof PublicContactRoute
+  PublicIntegrationIaRoute: typeof PublicIntegrationIaRoute
+  PublicMentionsLegalesRoute: typeof PublicMentionsLegalesRoute
+  PublicMethodeRoute: typeof PublicMethodeRoute
+  PublicOffresRoute: typeof PublicOffresRoute
+  PublicSaasRoute: typeof PublicSaasRoute
+  PublicServicesRoute: typeof PublicServicesRoute
+  PublicSouveraineteRdRoute: typeof PublicSouveraineteRdRoute
+  PublicWebIntelligentRoute: typeof PublicWebIntelligentRoute
+  PublicIndexRoute: typeof PublicIndexRoute
+}
+
+const PublicRouteChildren: PublicRouteChildren = {
+  PublicAgentsIaRoute: PublicAgentsIaRoute,
+  PublicAutomatisationRoute: PublicAutomatisationRoute,
+  PublicChatbotIntelligentRoute: PublicChatbotIntelligentRoute,
+  PublicConfidentialiteRoute: PublicConfidentialiteRoute,
+  PublicConsultationWebEtIaRoute: PublicConsultationWebEtIaRoute,
+  PublicContactRoute: PublicContactRoute,
+  PublicIntegrationIaRoute: PublicIntegrationIaRoute,
+  PublicMentionsLegalesRoute: PublicMentionsLegalesRoute,
+  PublicMethodeRoute: PublicMethodeRoute,
+  PublicOffresRoute: PublicOffresRoute,
+  PublicSaasRoute: PublicSaasRoute,
+  PublicServicesRoute: PublicServicesRoute,
+  PublicSouveraineteRdRoute: PublicSouveraineteRdRoute,
+  PublicWebIntelligentRoute: PublicWebIntelligentRoute,
+  PublicIndexRoute: PublicIndexRoute,
+}
+
+const PublicRouteWithChildren =
+  PublicRoute._addFileChildren(PublicRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  PublicRoute: PublicRouteWithChildren,
+  BridgesOsRoute: BridgesOsRoute,
+  Tenant0Route: Tenant0Route,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

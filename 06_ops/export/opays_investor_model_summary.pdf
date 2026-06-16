@@ -1,0 +1,227 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [ 4 0 R 6 0 R 8 0 R ] /Count 3 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+4 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 5 0 R >>
+endobj
+5 0 obj
+<< /Length 1744 >>
+stream
+BT
+/F1 11 Tf
+1 0 0 1 50 742 Tm
+14 TL
+(OPAYS TECH) Tj
+T*
+(INVESTOR MODEL SUMMARY) Tj
+T*
+(Resume du modele economique, des hypotheses et du plan) Tj
+T*
+T*
+(Version : Mai 2026) Tj
+T*
+(Statut : Dossier Investisseur / Partenaire) Tj
+T*
+(Acces : Confidentiel) Tj
+T*
+T*
+(==============================================================================================) Tj
+T*
+T*
+T*
+(RESUME DU MODELE FINANCIER OPAYS TECH) Tj
+T*
+T*
+T*
+(Classeur : `C:\\LAPOSTE\\Projets\\OPAYS TECH\\06_ops\\opays_investor_model.xlsx`) Tj
+T*
+T*
+T*
+(## Chiffres Cles \(Scenario Reference / Base\)) Tj
+T*
+T*
+(- Chiffre d'affaires \(Annee 1\) : ZAR 1,793,550) Tj
+T*
+(- Marge brute \(Annee 1\) : 69.5%) Tj
+T*
+(- EBITDA \(Annee 1\) : ZAR 309,855) Tj
+T*
+(- Mois d'equilibre \(Seuil de rentabilite\) : 4) Tj
+T*
+(- CA mensuel cible \(Mois 36\) : ZAR 531,625) Tj
+T*
+(- Tresorerie finale \(Mois 36\) : ZAR 4,131,725) Tj
+T*
+T*
+T*
+(## Hypotheses Cles) Tj
+T*
+T*
+(- Devise : ZAR \(Rand sud-africain\)) Tj
+T*
+(- TVA : 15% traitee en pass-through distinct) Tj
+T*
+(- Impot sur les societes \(IS\) : 27% \(hypothese prudente pour l'Afrique du Sud\)) Tj
+T*
+(- Taxe sur le chiffre d'affaires : non retenue car les services professionnels en sont) Tj
+T*
+(  exclus selon les regles de la SARS.) Tj
+T*
+(- Tresorerie de depart : ZAR 250,000) Tj
+T*
+(- Levee de fonds recommandee \(Seed\) : ZAR 1,200,000) Tj
+T*
+T*
+T*
+(## Contenu du Classeur) Tj
+T*
+T*
+(- Dashboard \(Tableau de bord de synthese\)) Tj
+T*
+(- Assumptions \(Hypotheses operationnelles modifiables\)) Tj
+T*
+(- Offers \(Detail commercial des offres\)) Tj
+T*
+(- GTM \(Canaux de vente et taux de conversion\)) Tj
+T*
+(- Revenue_Model \(Modelisation mensuelle des revenus\)) Tj
+T*
+(- Expenses \(Detail des charges fixes par phase\)) Tj
+T*
+ET
+endstream
+endobj
+6 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 7 0 R >>
+endobj
+7 0 obj
+<< /Length 2410 >>
+stream
+BT
+/F1 11 Tf
+1 0 0 1 50 742 Tm
+14 TL
+(- P&L \(Compte de resultat previsionnel\)) Tj
+T*
+(- Cashflow \(Flux de tresorerie mensuels\)) Tj
+T*
+(- Funding \(Detail de l'utilisation des fonds\)) Tj
+T*
+(- Scenarios \(Comparaison conservateur / base / optimiste\)) Tj
+T*
+(- Risks_QA \(Registre des risques et Q&A\)) Tj
+T*
+(- Sources \(References fiscales et reglementaires\)) Tj
+T*
+(- Operations \(Principes operationnels et roles\)) Tj
+T*
+(- Capacity \(Modelisation de la charge de travail\)) Tj
+T*
+(- Delivery \(Deroulement du parcours client\)) Tj
+T*
+(- Cadence \(Rythme hebdomadaire d'execution\)) Tj
+T*
+(- SOPs \(Procedures operationnelles standardisees\)) Tj
+T*
+(- Team \(Profil de l'equipe et repartition\)) Tj
+T*
+(- Pipeline \(Funnel de conversion\)) Tj
+T*
+(- 90_Day_Plan \(Plan d'action pour le premier trimestre\)) Tj
+T*
+(- Pitch_Outline \(Structure du deck de presentation\)) Tj
+T*
+(- Investor_QA \(Reponses aux questions sensibles des investisseurs\)) Tj
+T*
+T*
+T*
+(## Couche Operationnelle) Tj
+T*
+T*
+(Le classeur ne se limite pas a des chiffres. Il definit le systeme d'exploitation d'Opays Tech) Tj
+T*
+(:) Tj
+T*
+T*
+(- les principes de travail et la repartition des roles,) Tj
+T*
+(- la modelisation de la capacite reelle de l'equipe pour rester realiste,) Tj
+T*
+(- le playbook de livraison du lead jusqu'a l'abonnement recurrent,) Tj
+T*
+(- le rythme hebdomadaire pour traduire la strategie en routine,) Tj
+T*
+(- les procedures standard \(SOPs\) pour industrialiser la livraison de valeur,) Tj
+T*
+(- la structure de l'equipe alignee sur la charge de travail reelle,) Tj
+T*
+(- le plan d'action des 90 premiers jours pour ancrer l'execution,) Tj
+T*
+(- le registre des risques et les reponses argumentees aux investisseurs.) Tj
+T*
+T*
+T*
+(## Narratif de Presentation aux Investisseurs) Tj
+T*
+T*
+(Opays Tech est modelise comme un cabinet d'ingenierie de l'efficience sobre et rentable :) Tj
+T*
+T*
+(1. La branche **Forge** genere la tresorerie immediate via des audits, des sprints et des) Tj
+T*
+(  retainers.) Tj
+T*
+(2. La branche **Sovereign** valorise l'expertise via des dossiers de recherche et R&D) Tj
+T*
+(  premium.) Tj
+T*
+(3. Le modele reste tres prudent sur les charges fixes et applique strictement la) Tj
+T*
+(  conformite fiscale locale.) Tj
+T*
+(4. L'entreprise evite le "piege des agences classiques" en vendant des resultats) Tj
+T*
+(  productises et en cadrant strictement son perimetre.) Tj
+T*
+T*
+ET
+endstream
+endobj
+8 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 9 0 R >>
+endobj
+9 0 obj
+<< /Length 43 >>
+stream
+BT
+/F1 11 Tf
+1 0 0 1 50 742 Tm
+14 TL
+T*
+ET
+endstream
+endobj
+xref
+0 10
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000129 00000 n 
+0000000199 00000 n 
+0000000325 00000 n 
+0000002120 00000 n 
+0000002246 00000 n 
+0000004707 00000 n 
+0000004833 00000 n 
+trailer
+<< /Size 10 /Root 1 0 R >>
+startxref
+4925
+%%EOF

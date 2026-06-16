@@ -6,12 +6,14 @@
 - [[Recherche Épidémiologique IA]] : Accélérateur de recherche souverain (Ebola/Santé).
 - [[Methodologie Opays]] : Ingénierie de l'efficience et philosophie du ROI.
 - [[Règles de Décision]] : Le filtre des 4 questions stratégiques.
+- [[Opays Compass]] : Mémoire de projet, gouvernance technique et contrôle de cohérence.
 - [[Gouvernance et Pacte d'Associés]] : Structure du Board et Vesting.
 
 ## 🛠️ Architecture & Tech
 - [[Architecture Opays HQ]] : Stack technique et composants.
 - [[Opays HQ OS]] : Le noyau applicatif unique (ERP).
 - [[Répertoire des Compétences]] : Catalogue des "Skills" IA et stratégiques.
+- [[Tenant 0 - Plan d'execution technique]] : Plan de lancement du cobaye interne.
 
 ## 📖 Concepts (Les 7 Véhicules)
 - [[Agent IA]] | [[Système RAG]] | [[Micro-SaaS]] | [[Infrastructure IA]] | [[Audit]] | [[Formation]] | [[Automatisation IA]]

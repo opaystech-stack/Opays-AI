@@ -1,0 +1,46 @@
+# config.yaml — Configuration du Profil Opays Tech (Hermes)
+
+profile:
+  name: "opays"
+  alias: "opays chat"
+  description: "Profil stratégique et technique principal pour le pilotage d'Opays Tech"
+  icon: "💼"
+
+workspace:
+  default_path: "/home/hermeswebui/projects/opays"
+  allowed_paths:
+    - "/home/hermeswebui/projects/opays"
+    - "/home/hermeswebui/projects/kiveclair"
+    - "/home/hermeswebui/projects/cointribune"
+  prevent_escaping: true
+
+behavior:
+  default_language: "fr"
+  system_hint: |
+    Tu es l'assistant de direction d'Opays Tech. Reste strictement dans ton espace de travail
+    (/home/hermeswebui/projects/opays/) sauf demande explicite du CEO. Applique la méthode
+    OPAYS (efficience, terrain, pas de jargon marketing vide, focus sur le ROI réel et la suppression
+    de lignes de coûts).
+  soul_file: "SOUL.md"
+
+models:
+  default: "gemini-1.5-pro" # Ou le modèle recommandé sur ton serveur pour les tâches de réflexion
+  coding: "gemini-1.5-pro"
+  fast: "gemini-1.5-flash"
+  temperature: 0.2
+
+tools:
+  git:
+    enabled: true
+    default_branch: "main"
+    allow_cloning: true
+  terminal:
+    enabled: true
+    restricted_commands:
+      - "rm -rf /"
+      - "chmod 777"
+  security_scan:
+    auto_audit_on_clone: true
+    tools_preferred:
+      - "gitleaks"
+      - "clamav"

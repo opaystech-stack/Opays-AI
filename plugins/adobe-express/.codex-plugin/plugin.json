@@ -1,0 +1,36 @@
+{
+  "name": "adobe-express",
+  "version": "1.0.0",
+  "description": "Plugin assistant pour orchestrer des tâches autour d'Adobe Express.",
+  "author": {
+    "name": "Opays Tech",
+    "email": "contact@opays.io",
+    "url": "https://opays.io"
+  },
+  "homepage": "https://opays.io",
+  "repository": "https://opays.io",
+  "license": "MIT",
+  "keywords": [
+    "adobe",
+    "express",
+    "design",
+    "content"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Adobe Express",
+    "shortDescription": "Assistant pour Adobe Express",
+    "longDescription": "Aide à préparer, structurer et standardiser des contenus pour Adobe Express.",
+    "developerName": "Opays Tech",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Prépare un brief clair pour Adobe Express.",
+      "Structure un contenu réutilisable pour Adobe Express.",
+      "Rends le message plus simple et plus crédible."
+    ]
+  }
+}

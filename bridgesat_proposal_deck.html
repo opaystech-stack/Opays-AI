@@ -1,0 +1,2330 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proposition Stratégique - Bridgesat | Opays Tech</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ================= SYSTEM DESIGN TOKENS (OPAYS BRAND) ================= */
+    :root {
+      --bg-dark: #090d16;
+      --bg-card: rgba(15, 23, 42, 0.65);
+      --border-glow: rgba(6, 182, 212, 0.2);
+      --cyan-primary: #06b6d4;
+      --cyan-glow: #0891b2;
+      --blue-primary: #3b82f6;
+      --blue-deep: #1e40af;
+      --green-primary: #10b981;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --font-title: 'Outfit', 'Segoe UI', sans-serif;
+      --font-body: 'Inter', 'Segoe UI', sans-serif;
+      --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      overflow: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Ambient background grid */
+    .bg-grid {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(6, 182, 212, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(30, 64, 175, 0.08) 0%, transparent 50%),
+        linear-gradient(rgba(255, 255, 255, 0.005) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.005) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* ================= MAIN INTERFACE LAYOUT ================= */
+    .app-container {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    /* Side Copy Panel & Index */
+    .sidebar {
+      background: rgba(10, 15, 28, 0.85);
+      border-right: 1px solid rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      z-index: 10;
+      padding: 1.2rem 1rem;
+    }
+
+    .brand-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.2rem;
+      padding-left: 0.5rem;
+    }
+
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--cyan-primary), var(--blue-deep));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: white;
+      font-size: 1.1rem;
+      box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+    }
+
+    .brand-title {
+      font-family: var(--font-title);
+      font-weight: 700;
+      font-size: 1.2rem;
+      letter-spacing: 0.5px;
+      background: linear-gradient(to right, #ffffff, #94a3b8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .sidebar-instructions {
+      background: rgba(6, 182, 212, 0.06);
+      border: 1px dashed rgba(6, 182, 212, 0.25);
+      border-radius: 8px;
+      padding: 0.6rem 0.8rem;
+      font-size: 0.74rem;
+      line-height: 1.35;
+      color: #a5f3fc;
+      margin-bottom: 1rem;
+    }
+
+    .slide-index-list {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      padding-right: 0.2rem;
+    }
+
+    /* Scrollbar style */
+    .slide-index-list::-webkit-scrollbar {
+      width: 4px;
+    }
+    .slide-index-list::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 2px;
+    }
+
+    .slide-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.5rem 0.7rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      border: 1px solid transparent;
+      transition: var(--transition-smooth);
+      text-align: left;
+      background: transparent;
+      width: 100%;
+    }
+
+    .slide-item:hover {
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text-main);
+    }
+
+    .slide-item.active {
+      background: rgba(6, 182, 212, 0.08);
+      border-color: rgba(6, 182, 212, 0.2);
+      color: var(--cyan-primary);
+    }
+
+    .slide-num {
+      font-size: 0.65rem;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-muted);
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .slide-item.active .slide-num {
+      background: var(--cyan-primary);
+      color: var(--bg-dark);
+      font-weight: 700;
+    }
+
+    .slide-item-label {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Sidebar Contact Box */
+    .sidebar-contact-box {
+      margin-top: 1rem;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      padding: 0.65rem;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .sidebar-contact-box:hover {
+      background: rgba(6, 182, 212, 0.08);
+      border-color: rgba(6, 182, 212, 0.25);
+    }
+
+    .sidebar-contact-icon {
+      color: var(--cyan-primary);
+      flex-shrink: 0;
+    }
+
+    .sidebar-contact-text {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+
+    .sidebar-contact-title {
+      font-weight: 600;
+      color: white;
+    }
+
+    .sidebar-contact-sub {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+    }
+
+    .copy-toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 140px;
+      transform: translateX(-50%) translateY(20px);
+      background: #0ea5e9;
+      color: white;
+      padding: 0.6rem 1.2rem;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      box-shadow: 0 10px 25px rgba(14, 165, 233, 0.4);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .copy-toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ================= MAIN PRESENTATION CANVAS ================= */
+    .deck-container {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      height: 100vh;
+      background: #07090f;
+    }
+
+    .top-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      background: rgba(7, 9, 15, 0.6);
+      backdrop-filter: blur(10px);
+      z-index: 5;
+    }
+
+    .meta-doc {
+      font-size: 0.75rem;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .meta-badge {
+      background: rgba(220, 38, 38, 0.15);
+      border: 1px solid rgba(220, 38, 38, 0.3);
+      color: #ef4444;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+    }
+
+    .presentation-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .btn-action {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-main);
+      padding: 0.45rem 1rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: var(--transition-smooth);
+    }
+
+    .btn-action:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-action.primary {
+      background: var(--cyan-primary);
+      border-color: var(--cyan-primary);
+      color: var(--bg-dark);
+      font-weight: 600;
+    }
+
+    .btn-action.primary:hover {
+      background: #22d3ee;
+      box-shadow: 0 0 15px rgba(6, 182, 212, 0.3);
+    }
+
+    /* Slides Viewer Area */
+    .slides-wrapper {
+      flex: 1;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem 2.5rem;
+    }
+
+    /* Slide Card Box - Fixed aspect ratio 16:9 for design containment */
+    .slide-viewport {
+      width: 100%;
+      max-width: 1050px;
+      aspect-ratio: 16 / 9;
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 
+        0 30px 70px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(15px);
+      transition: var(--transition-smooth);
+    }
+
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      padding: 2rem 3rem;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(15px) scale(0.98);
+      transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      z-index: 1;
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0) scale(1);
+      z-index: 2;
+    }
+
+    /* Decorative slide corner borders to emphasize tech aspect */
+    .slide::before, .slide::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      pointer-events: none;
+    }
+
+    .slide::before {
+      top: 1.2rem;
+      left: 1.2rem;
+      border-top: 2px solid rgba(6, 182, 212, 0.3);
+      border-left: 2px solid rgba(6, 182, 212, 0.3);
+    }
+
+    .slide::after {
+      bottom: 1.2rem;
+      right: 1.2rem;
+      border-bottom: 2px solid rgba(6, 182, 212, 0.3);
+      border-right: 2px solid rgba(6, 182, 212, 0.3);
+    }
+
+    /* ================= SEAMLESS DOCUMENT HEADER (EN-TÊTE) ================= */
+    /* Integrates seamlessly with the background of the slides as a letterhead */
+    .document-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding-bottom: 0.65rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: 0.8rem;
+      background: transparent; /* Seamless background */
+    }
+
+    .header-logo-area {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .header-contact-area {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.15rem 1.2rem;
+      font-family: var(--font-body);
+      font-size: 0.62rem;
+      line-height: 1.35;
+      color: #cbd5e1;
+      text-align: left;
+    }
+
+    .header-contact-line {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .header-contact-line strong {
+      color: var(--cyan-primary);
+      font-weight: 700;
+      min-width: 55px;
+      display: inline-block;
+    }
+
+    .header-contact-line a {
+      color: white;
+      text-decoration: none;
+      transition: var(--transition-smooth);
+    }
+
+    .header-contact-line a:hover {
+      text-decoration: underline;
+      color: var(--cyan-primary);
+    }
+
+    .opays-logo-svg text.logo-opays {
+      fill: #ffffff;
+      font-weight: 800;
+    }
+
+    .opays-logo-svg text.logo-tech {
+      fill: var(--cyan-primary);
+      font-weight: 400;
+    }
+
+    /* Standard slide header for other slides */
+    .slide-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.8rem;
+    }
+
+    .slide-tag {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--cyan-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .slide-tag::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: var(--cyan-primary);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--cyan-primary);
+    }
+
+    .slide-decor-logo {
+      font-family: var(--font-title);
+      font-weight: 800;
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.15);
+      letter-spacing: 1px;
+    }
+
+    /* Slide Content Typographies */
+    .slide-title {
+      font-family: var(--font-title);
+      font-size: 1.85rem;
+      font-weight: 700;
+      line-height: 1.25;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 50%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.8rem;
+    }
+
+    .slide-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* General bullet / description text styling */
+    .slide-desc {
+      font-size: 0.9rem;
+      line-height: 1.45;
+      color: #cbd5e1;
+      margin-bottom: 0.8rem;
+    }
+
+    .highlight {
+      color: var(--cyan-primary);
+      font-weight: 600;
+    }
+
+    .bold-accent {
+      color: white;
+      font-weight: 600;
+    }
+
+    /* ================= SPECIFIC CARD COMPONENT LAYOUTS ================= */
+    
+    /* Cover Page (Slide 1) */
+    .cover-layout {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      text-align: center;
+      padding: 0.4rem 0;
+    }
+
+    .cover-badge-top {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: var(--cyan-primary);
+      margin-bottom: 0.6rem;
+      display: inline-block;
+      padding: 0.3rem 0.8rem;
+      background: rgba(6, 182, 212, 0.08);
+      border: 1px solid rgba(6, 182, 212, 0.18);
+      border-radius: 9999px;
+      align-self: center;
+    }
+
+    .cover-title {
+      font-family: var(--font-title);
+      font-size: 2rem;
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -1px;
+      margin-bottom: 0.4rem;
+      background: linear-gradient(135deg, #ffffff 30%, #a5f3fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .cover-subtitle {
+      font-family: var(--font-body);
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: #94a3b8;
+      margin-bottom: 0.8rem;
+    }
+
+    .cover-footer {
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 0.65rem;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* Columns grids */
+    .two-cols {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .two-cols-equal {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: stretch;
+    }
+
+    .list-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .list-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      font-size: 0.82rem;
+      line-height: 1.35;
+      color: #cbd5e1;
+    }
+
+    .list-bullet {
+      color: var(--cyan-primary);
+      font-weight: 800;
+      margin-top: 0.1rem;
+      flex-shrink: 0;
+    }
+
+    /* Grid layout for ecosystem items */
+    .ecosystem-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.45rem;
+    }
+
+    .ecosystem-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      padding: 0.45rem 0.65rem;
+      font-size: 0.75rem;
+      color: #cbd5e1;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: var(--transition-smooth);
+    }
+
+    .ecosystem-card:hover {
+      background: rgba(6, 182, 212, 0.04);
+      border-color: rgba(6, 182, 212, 0.2);
+    }
+
+    .ecosystem-dot {
+      width: 4px;
+      height: 4px;
+      background: var(--cyan-primary);
+      border-radius: 50%;
+    }
+
+    /* Frictions Cards Grid */
+    .frictions-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      max-height: 220px;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+    }
+
+    .friction-card {
+      background: rgba(239, 68, 68, 0.03);
+      border: 1px solid rgba(239, 68, 68, 0.1);
+      border-left: 3px solid #ef4444;
+      border-radius: 6px;
+      padding: 0.55rem 0.75rem;
+    }
+
+    .friction-card-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #fca5a5;
+      margin-bottom: 0.15rem;
+    }
+
+    .friction-card-desc {
+      font-size: 0.72rem;
+      line-height: 1.35;
+      color: #cbd5e1;
+    }
+
+    /* Construction Items Grid */
+    .construct-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.8rem;
+    }
+
+    .construct-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      padding: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      position: relative;
+    }
+
+    .construct-num {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.7rem;
+      font-size: 1rem;
+      font-weight: 800;
+      font-family: var(--font-title);
+      color: rgba(255, 255, 255, 0.04);
+    }
+
+    .construct-title {
+      font-family: var(--font-title);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: white;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding-bottom: 0.25rem;
+    }
+
+    .construct-card-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .construct-card-item {
+      font-size: 0.68rem;
+      line-height: 1.25;
+      color: #94a3b8;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.25rem;
+    }
+
+    .construct-card-item::before {
+      content: '•';
+      color: var(--cyan-primary);
+      font-weight: bold;
+    }
+
+    .construct-goal {
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: var(--cyan-primary);
+      margin-top: 0.15rem;
+      background: rgba(6, 182, 212, 0.06);
+      padding: 0.15rem 0.35rem;
+      border-radius: 4px;
+    }
+
+    /* Table styling for Roadmap (Slide 9) */
+    .roadmap-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 0.1rem;
+    }
+
+    .roadmap-table th {
+      text-align: left;
+      font-family: var(--font-title);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--cyan-primary);
+      padding: 0.45rem 0.75rem;
+      border-bottom: 1px solid rgba(6, 182, 212, 0.2);
+    }
+
+    .roadmap-table td {
+      padding: 0.6rem 0.75rem;
+      font-size: 0.8rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      color: #cbd5e1;
+    }
+
+    .roadmap-table tr:hover td {
+      background: rgba(255, 255, 255, 0.01);
+      color: white;
+    }
+
+    .roadmap-table td:first-child {
+      font-weight: 700;
+      color: white;
+      font-family: var(--font-title);
+    }
+
+    /* Split layout specifically for payments (Slide 10) */
+    .payment-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      margin-top: 0.2rem;
+    }
+
+    .payment-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: 10px;
+      padding: 0.85rem 0.75rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .payment-card.highlighted {
+      background: rgba(6, 182, 212, 0.03);
+      border-color: rgba(6, 182, 212, 0.15);
+    }
+
+    .payment-pct {
+      font-family: var(--font-title);
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--cyan-primary);
+      line-height: 1;
+    }
+
+    .payment-title-sum {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: white;
+      margin: 0.25rem 0;
+    }
+
+    .payment-desc {
+      font-size: 0.68rem;
+      line-height: 1.3;
+      color: var(--text-muted);
+    }
+
+    /* Security items */
+    .security-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.6rem;
+    }
+
+    .security-card {
+      background: rgba(16, 185, 129, 0.02);
+      border: 1px solid rgba(16, 185, 129, 0.08);
+      border-left: 3px solid var(--green-primary);
+      border-radius: 6px;
+      padding: 0.6rem 0.75rem;
+    }
+
+    .security-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #a7f3d0;
+      margin-bottom: 0.15rem;
+    }
+
+    .security-desc {
+      font-size: 0.7rem;
+      line-height: 1.3;
+      color: #cbd5e1;
+    }
+
+    /* Giant highlight card for big conviction statement */
+    .statement-card {
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.08) 0%, rgba(30, 64, 175, 0.12) 100%);
+      border: 1px solid rgba(6, 182, 212, 0.25);
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 0.8rem;
+      box-shadow: 0 0 30px rgba(6, 182, 212, 0.05);
+    }
+
+    .statement-text {
+      font-family: var(--font-title);
+      font-size: 0.95rem;
+      line-height: 1.4;
+      color: #e2e8f0;
+      font-weight: 500;
+    }
+
+    /* BOTTOM NAV CONTROLS */
+    .bottom-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.03);
+      background: rgba(7, 9, 15, 0.6);
+      backdrop-filter: blur(10px);
+      z-index: 5;
+    }
+
+    .slide-progress-container {
+      flex: 1;
+      margin: 0 2rem;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 2px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide-progress-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--cyan-primary), var(--blue-primary));
+      border-radius: 2px;
+      transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .nav-buttons {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .nav-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--text-main);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition-smooth);
+    }
+
+    .nav-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.15);
+      color: var(--cyan-primary);
+    }
+
+    .nav-counter {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      min-width: 55px;
+      text-align: center;
+      font-family: var(--font-title);
+    }
+
+    /* Hidden elements */
+    .hidden-copy-area {
+      display: none;
+      visibility: hidden;
+    }
+
+    .hotkey-badge {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.6rem;
+      font-family: monospace;
+      color: var(--text-muted);
+    }
+
+    /* ================= PRINT / PDF EXPORT OVERRIDES ================= */
+    @media print {
+      @page {
+        size: 297mm 167mm; /* Standard 16:9 Landscape dimensions */
+        margin: 0;
+      }
+      
+      body {
+        overflow: visible;
+        background: var(--bg-dark);
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .app-container {
+        display: block;
+        width: 100vw;
+        height: auto;
+      }
+
+      .sidebar, .top-controls, .bottom-nav, .nav-buttons, .copy-toast {
+        display: none !important;
+      }
+
+      .deck-container {
+        display: block;
+        height: auto;
+        width: 100vw;
+        background: transparent;
+      }
+
+      .slides-wrapper {
+        display: block;
+        padding: 0;
+        margin: 0;
+      }
+
+      .slide-viewport {
+        max-width: none;
+        width: 100vw;
+        height: 100vh;
+        aspect-ratio: 16 / 9;
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+        background: var(--bg-dark);
+        backdrop-filter: none;
+        position: relative;
+        display: block;
+      }
+
+      .slide {
+        position: relative;
+        display: flex !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        transform: none !important;
+        width: 100vw;
+        height: 100vh;
+        page-break-after: always;
+        break-after: page;
+        padding: 2.8rem 4rem;
+        background: #090d16;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+      }
+
+      /* Print styles for seamless header layout (matches a crisp white page layout) */
+      .document-header {
+        border-bottom: 1px solid #cbd5e1 !important;
+        background: transparent !important;
+      }
+      
+      .opays-logo-svg text.logo-opays {
+        fill: #1e3a8a !important;
+      }
+
+      .opays-logo-svg text.logo-tech {
+        fill: #3b82f6 !important;
+      }
+
+      .header-contact-area {
+        color: #1e293b !important;
+      }
+
+      .header-contact-line strong {
+        color: #0f172a !important;
+      }
+
+      .header-contact-line a {
+        color: #2563eb !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background grid layers -->
+  <div class="bg-grid"></div>
+
+  <!-- Clipboard confirmation popup -->
+  <div id="copyToast" class="copy-toast">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+    </svg>
+    <span id="copyToastText">Copié dans le presse-papiers !</span>
+  </div>
+
+  <div class="app-container">
+    
+    <!-- ================= LEFT COLUMN : SIDEBAR & ONE-CLICK COPY ================= -->
+    <aside class="sidebar">
+      <div class="brand-header">
+        <div class="brand-logo">O</div>
+        <div class="brand-title">OPAYS TECH</div>
+      </div>
+      
+      <div class="sidebar-instructions">
+        <strong>💡 Canva Partner Lab</strong><br>
+        Cliquez sur une planche ci-dessous pour copier son texte ou cliquez en bas pour l'en-tête de contact.
+      </div>
+
+      <!-- Slide list index -->
+      <nav class="slide-index-list" id="slideIndexList">
+        <button class="slide-item active" onclick="goToSlide(0)">
+          <span class="slide-num">1</span>
+          <span class="slide-item-label">Page de Garde</span>
+        </button>
+        <button class="slide-item" onclick="goToSlide(1)">
+          <span class="slide-num">2</span>
+          <span class="slide-item-label">Bridgesat - Nouvelle Phase</span>
+        </button>
+        <button class="slide-item" onclick="goToSlide(2)">
+          <span class="slide-num">3</span>
+          <span class="slide-item-label">Modèle Actuel & Limites</span>
+        </button>
+        <button class="slide-item" onclick="goToSlide(3)">
+          <span class="slide-num">4</span>
+          <span class="slide-item-label">Notre Conviction & Offre</span>
+        </button>
+        <button class="slide-item" onclick="goToSlide(4)">
+          <span class="slide-num">5</span>
+          <span class="slide-item-label">Frictions Identifiées</span>
+        </button>
+        <button class="slide-item" onclick="goToSlide(5)">
+          <span class="slide-num">6</span>
+          <span class="slide-item-label">Programme Pilote (V1 - P1)</span>
+        </button>
+        <button class="slide-item" onclick="goToSlide(6)">
+          <span class="slide-num">7</span>
+          <span class="slide-item-label">Programme Pilote (V1 - P2)</span>
+        </button>
+        <button class="slide-item" onclick="goToSlide(7)">
+          <span class="slide-num">8</span>
+          <span class="slide-item-label">Pourquoi Notre Approche</span>
+        </button>
+        <button class="slide-item" onclick="goToSlide(8)">
+          <span class="slide-num">9</span>
+          <span class="slide-item-label">Roadmap 30 Jours</span>
+        </button>
+        <button class="slide-item" onclick="goToSlide(9)">
+          <span class="slide-num">10</span>
+          <span class="slide-item-label">Investissement & Paiement</span>
+        </button>
+        <button class="slide-item" onclick="goToSlide(10)">
+          <span class="slide-num">11</span>
+          <span class="slide-item-label">Confidentialité & Serveurs</span>
+        </button>
+        <button class="slide-item" onclick="goToSlide(11)">
+          <span class="slide-num">12</span>
+          <span class="slide-item-label">Agents IA - Relance Client</span>
+        </button>
+        <button class="slide-item" onclick="goToSlide(12)">
+          <span class="slide-num">13</span>
+          <span class="slide-item-label">Conclusion Générale</span>
+        </button>
+      </nav>
+
+      <!-- Sidebar 1-Click Copy contact block -->
+      <div class="sidebar-contact-box" onclick="copyContactBlockText()">
+        <div class="sidebar-contact-icon">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
+          </svg>
+        </div>
+        <div class="sidebar-contact-text">
+          <span class="sidebar-contact-title">📋 Copier l'en-tête complet</span>
+          <span class="sidebar-contact-sub">X, FB, Web, Mail & Tel</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ================= RIGHT COLUMN : PRESENTATION VISUALIZER ================= -->
+    <main class="deck-container">
+      
+      <!-- Top header layout -->
+      <div class="top-controls">
+        <div class="meta-doc">
+          <span>BRIDGES OS PROPOSAL</span>
+          <span class="hotkey-badge">v2.6</span>
+          <span class="meta-badge">Confidentiel</span>
+        </div>
+        <div class="presentation-actions">
+          <button class="btn-action" onclick="copyCurrentSlideText()">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="margin-right: 2px;">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
+            </svg>
+            Copier le texte
+          </button>
+          <button class="btn-action primary" onclick="window.print()">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="margin-right: 2px;">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+            </svg>
+            Imprimer / PDF Canva
+          </button>
+        </div>
+      </div>
+
+      <!-- Slide Viewport (aspect-ratio 16:9 container) -->
+      <div class="slides-wrapper">
+        <div class="slide-viewport">
+
+          <!-- ------------------------------------------------------------- -->
+          <!-- SLIDE 1 : PAGE DE GARDE -->
+          <!-- ------------------------------------------------------------- -->
+          <div class="slide active" id="slide-0">
+            <!-- OFFICIAL SEAMLESS EN-TÊTE (HEADER) -->
+            <header class="document-header">
+              <div class="header-logo-area">
+                <svg class="opays-logo-svg" width="105" height="32" viewBox="0 0 160 50" xmlns="http://www.w3.org/2000/svg">
+                  <g transform="translate(5, 5)">
+                    <path d="M 20 5 C 11.7 5 5 11.7 5 20 C 5 28.3 11.7 35 20 35 C 28.3 35 35 28.3 35 20" fill="none" stroke="url(#header-grad-dark)" stroke-width="4.5" stroke-linecap="round" />
+                    <path d="M 12 16 L 28 16 M 20 16 L 20 32" fill="none" stroke="url(#header-grad-light)" stroke-width="4" stroke-linecap="round" />
+                    <rect x="33" y="4" width="4" height="4" rx="1" fill="#06b6d4" />
+                    <rect x="39" y="8" width="4" height="4" rx="1" fill="#3b82f6" />
+                    <rect x="35" y="11" width="3" height="3" rx="0.5" fill="#00c4ff" />
+                  </g>
+                  <text class="logo-opays" x="55" y="27" font-family="'Outfit', sans-serif" font-weight="800" font-size="16">OPAYS</text>
+                  <text class="logo-tech" x="110" y="27" font-family="'Outfit', sans-serif" font-weight="300" font-size="16">TECH</text>
+                  <defs>
+                    <linearGradient id="header-grad-dark" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#1e40af" />
+                      <stop offset="100%" stop-color="#3b82f6" />
+                    </linearGradient>
+                    <linearGradient id="header-grad-light" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#06b6d4" />
+                      <stop offset="100%" stop-color="#22d3ee" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </div>
+              <div class="header-contact-area">
+                <div class="header-contact-line"><strong>X :</strong> <a href="https://x.com/OpaysTech" target="_blank">https://x.com/OpaysTech</a></div>
+                <div class="header-contact-line"><strong>Facebook :</strong> <a href="https://www.facebook.com/share/1HXhTPzytG/?mibextid=wwXlfr" target="_blank">https://www.facebook.com/share/1HXhTPzytG/...</a></div>
+                <div class="header-contact-line"><strong>LinkedIn :</strong> <a href="https://www.linkedin.com/company/opaystech/" target="_blank">https://www.linkedin.com/company/opaystech/</a></div>
+                <div class="header-contact-line"><strong>web site :</strong> <a href="https://opays.io/" target="_blank">https://opays.io/</a></div>
+                <div class="header-contact-line"><strong>Email :</strong> <a href="mailto:opaystech@gmail.com">opaystech@gmail.com</a></div>
+                <div class="header-contact-line"><strong>Tel :</strong> +243 983 819 398</div>
+              </div>
+            </header>
+
+            <div class="slide-body" style="justify-content: center; flex: 1; padding: 0.5rem 0;">
+              <div class="cover-layout" style="justify-content: center;">
+                <span class="cover-badge-top">Pilote d'Efficience Opérationnelle</span>
+                <h1 class="cover-title">PROGRAMME PILOTE DE TRANSFORMATION OPÉRATIONNELLE INTELLIGENTE</h1>
+                <p class="cover-subtitle">Proposition stratégique pour Bridgesat</p>
+              </div>
+            </div>
+
+            <div class="cover-footer">
+              <span>Présentée par : <span class="bold-accent">Opays Tech</span></span>
+              <span>Date : <span class="bold-accent">26 Mai 2026</span></span>
+              <span style="color: #ef4444; font-weight: 700;">Document confidentiel</span>
+            </div>
+          </div>
+
+          <!-- ------------------------------------------------------------- -->
+          <!-- SLIDE 2 : NOUVELLE PHASE BRIDGESAT -->
+          <!-- ------------------------------------------------------------- -->
+          <div class="slide" id="slide-1">
+            <div class="slide-header">
+              <span class="slide-tag">Le Contexte</span>
+              <span class="slide-decor-logo">OPAYS FORGE</span>
+            </div>
+            <div class="slide-body">
+              <h2 class="slide-title">BRIDGESAT ENTRE DANS UNE NOUVELLE PHASE</h2>
+              <div class="two-cols">
+                <div class="list-container">
+                  <p class="slide-desc" style="font-size: 0.85rem; margin-bottom: 0.4rem;">En quelques années, Bridgesat a construit un écosystème ambitieux autour de plusieurs activités stratégiques :</p>
+                  <div class="ecosystem-grid">
+                    <div class="ecosystem-card"><span class="ecosystem-dot"></span><span>développement logiciel</span></div>
+                    <div class="ecosystem-card"><span class="ecosystem-dot"></span><span>Academy & formation</span></div>
+                    <div class="ecosystem-card"><span class="ecosystem-dot"></span><span>adoption Bitcoin universitaire</span></div>
+                    <div class="ecosystem-card"><span class="ecosystem-dot"></span><span>OTC Bitcoin</span></div>
+                    <div class="ecosystem-card"><span class="ecosystem-dot"></span><span>cybersécurité & SATGLOB</span></div>
+                    <div class="ecosystem-card"><span class="ecosystem-dot"></span><span>distribution de solutions tech</span></div>
+                    <div class="ecosystem-card"><span class="ecosystem-dot"></span><span>commerce & distribution</span></div>
+                    <div class="ecosystem-card"><span class="ecosystem-dot"></span><span>opérations terrain</span></div>
+                    <div class="ecosystem-card"><span class="ecosystem-dot"></span><span>projets à forte croissance</span></div>
+                  </div>
+                </div>
+                <div style="background: rgba(255,255,255,0.01); border-left: 3px solid var(--cyan-primary); padding: 1rem 1.2rem; border-radius: 0 8px 8px 0;">
+                  <p class="slide-desc" style="font-style: italic; margin-bottom: 0.6rem; font-size: 0.85rem;">
+                    "Cette capacité d’exécution démontre une vraie dynamique entrepreneuriale."
+                  </p>
+                  <p class="slide-desc" style="font-size: 0.82rem; margin-bottom: 0.6rem;">
+                    Mais lorsqu’une organisation commence à gérer simultanément plusieurs pôles, plusieurs équipes, plusieurs partenaires et plusieurs opérations, un nouveau défi apparaît naturellement :
+                  </p>
+                  <p class="slide-desc highlight" style="font-size: 1.05rem; font-weight: 700; margin-bottom: 0;">
+                    la coordination devient plus complexe que la croissance elle-même.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ------------------------------------------------------------- -->
+          <!-- SLIDE 3 : LE MODÈLE ACTUEL & SES LIMITES -->
+          <!-- ------------------------------------------------------------- -->
+          <div class="slide" id="slide-2">
+            <div class="slide-header">
+              <span class="slide-tag">Le Diagnostic</span>
+              <span class="slide-decor-logo">OPAYS FORGE</span>
+            </div>
+            <div class="slide-body">
+              <h2 class="slide-title">LE MODÈLE ACTUEL ET LE VÉRITABLE RISQUE</h2>
+              <div class="two-cols-equal">
+                <div style="border-right: 1px solid rgba(255,255,255,0.05); padding-right: 1.2rem;">
+                  <p class="slide-desc" style="font-size: 0.85rem; margin-bottom: 0.6rem;">
+                    Aujourd’hui, une grande partie du fonctionnement opérationnel repose encore principalement sur :
+                  </p>
+                  <div class="list-container" style="margin-bottom: 0.8rem; gap: 0.4rem;">
+                    <div class="list-item"><span class="list-bullet">▪</span><span>les échanges WhatsApp ;</span></div>
+                    <div class="list-item"><span class="list-bullet">▪</span><span>des validations humaines dispersées ;</span></div>
+                    <div class="list-item"><span class="list-bullet">▪</span><span>des fichiers Excel ou Word isolés ;</span></div>
+                    <div class="list-item"><span class="list-bullet">▪</span><span>des informations non centralisées ;</span></div>
+                    <div class="list-item"><span class="list-bullet">▪</span><span>et une forte dépendance à certaines personnes clés.</span></div>
+                  </div>
+                  <p class="slide-desc" style="font-size: 0.8rem; color: var(--text-muted); font-style: italic; margin-bottom: 0;">
+                    Ce modèle peut fonctionner efficacement dans une phase de démarrage.
+                  </p>
+                </div>
+                
+                <div style="display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <p class="slide-desc" style="font-size: 0.85rem; margin-bottom: 0.5rem;">
+                      Mais à mesure que les activités grandissent, il devient progressivement plus difficile :
+                    </p>
+                    <div class="list-container" style="gap: 0.3rem; font-size: 0.8rem;">
+                      <div class="list-item"><span class="list-bullet">›</span><span>d’avoir une visibilité globale sur les opérations ;</span></div>
+                      <div class="list-item"><span class="list-bullet">›</span><span>de suivre clairement les responsabilités ;</span></div>
+                      <div class="list-item"><span class="list-bullet">›</span><span>de centraliser la mémoire documentaire ;</span></div>
+                      <div class="list-item"><span class="list-bullet">›</span><span>de fluidifier les validations ;</span></div>
+                      <div class="list-item"><span class="list-bullet">›</span><span>de coordonner plusieurs pôles simultanément ;</span></div>
+                      <div class="list-item"><span class="list-bullet">›</span><span>et de rendre l’information accessible au bon moment.</span></div>
+                    </div>
+                  </div>
+                  
+                  <div style="background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 8px; padding: 0.6rem 0.8rem; margin-top: 0.6rem;">
+                    <p class="slide-desc" style="font-size: 0.8rem; margin-bottom: 0.1rem; color: #fca5a5; font-weight: 700;">
+                      Le véritable risque n’est pas technique. Le véritable risque est opérationnel :
+                    </p>
+                    <p class="slide-desc" style="font-size: 0.78rem; margin-bottom: 0; color: #cbd5e1;">
+                      perte de fluidité, surcharge décisionnelle, dépendance humaine et difficulté de passage à l’échelle.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ------------------------------------------------------------- -->
+          <!-- SLIDE 4 : NOTRE CONVICTION & CE QUE NOUS PROPOSONS -->
+          <!-- ------------------------------------------------------------- -->
+          <div class="slide" id="slide-3">
+            <div class="slide-header">
+              <span class="slide-tag">La Vision</span>
+              <span class="slide-decor-logo">OPAYS FORGE</span>
+            </div>
+            <div class="slide-body">
+              <div class="two-cols-equal">
+                <div>
+                  <h2 class="slide-title" style="font-size: 1.6rem; margin-bottom: 0.8rem;">NOTRE CONVICTION</h2>
+                  <div class="statement-card" style="padding: 1rem; margin-bottom: 0.8rem;">
+                    <p class="statement-text" style="font-size: 0.95rem;">
+                      Le futur des organisations modernes ne repose plus uniquement sur des équipes ou des outils séparés.
+                    </p>
+                  </div>
+                  <p class="slide-desc" style="font-size: 0.85rem; margin-bottom: 0.5rem;">Il repose sur des systèmes capables de :</p>
+                  <div class="list-container" style="gap: 0.35rem; font-size: 0.8rem;">
+                    <div class="list-item"><span class="list-bullet">■</span><span>centraliser ;</span></div>
+                    <div class="list-item"><span class="list-bullet">■</span><span>coordonner ;</span></div>
+                    <div class="list-item"><span class="list-bullet">■</span><span>assister ;</span></div>
+                    <div class="list-item"><span class="list-bullet">■</span><span>automatiser ;</span></div>
+                    <div class="list-item"><span class="list-bullet">■</span><span>et fluidifier les opérations au quotidien.</span></div>
+                  </div>
+                  <p class="slide-desc highlight" style="font-size: 0.8rem; margin-top: 0.6rem; font-weight: 700; margin-bottom: 0;">
+                    C’est précisément l’objectif du programme pilote proposé par Opays Tech.
+                  </p>
+                </div>
+                
+                <div style="border-left: 1px solid rgba(255,255,255,0.05); padding-left: 1.5rem; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <h2 class="slide-title" style="font-size: 1.6rem; margin-bottom: 0.8rem;">CE QUE NOUS PROPOSONS</h2>
+                    <p class="slide-desc" style="font-size: 0.8rem; margin-bottom: 0.6rem;">
+                      Nous ne proposons pas simplement un logiciel supplémentaire. Nous proposons la mise en place progressive d’une couche opérationnelle intelligente permettant à Bridgesat de :
+                    </p>
+                    <div class="list-container" style="gap: 0.3rem; font-size: 0.76rem;">
+                      <div class="list-item"><span class="list-bullet">›</span><span>mieux coordonner ses activités ;</span></div>
+                      <div class="list-item"><span class="list-bullet">›</span><span>centraliser ses opérations ;</span></div>
+                      <div class="list-item"><span class="list-bullet">›</span><span>fluidifier ses validations ;</span></div>
+                      <div class="list-item"><span class="list-bullet">›</span><span>structurer sa mémoire documentaire ;</span></div>
+                      <div class="list-item"><span class="list-bullet">›</span><span>améliorer sa visibilité managériale ;</span></div>
+                      <div class="list-item"><span class="list-bullet">›</span><span>réduire la dépendance aux échanges dispersés ;</span></div>
+                      <div class="list-item"><span class="list-bullet">›</span><span>et intégrer progressivement des assistants IA opérationnels.</span></div>
+                    </div>
+                  </div>
+                  
+                  <div style="margin-top: 0.6rem; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 0.5rem;">
+                    <p class="slide-desc" style="font-size: 0.75rem; margin-bottom: 0.1rem; color: var(--text-muted); font-style: italic;">
+                      L’objectif n’est pas de remplacer les équipes. L’objectif est de leur offrir :
+                    </p>
+                    <p class="slide-desc highlight" style="font-size: 0.78rem; font-weight: 700; margin-bottom: 0;">
+                      plus de visibilité, de fluidité, de coordination, de continuité et d’exécution.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ------------------------------------------------------------- -->
+          <!-- SLIDE 5 : LES FRICTIONS OPÉRATIONNELLES IDENTIFIÉES -->
+          <!-- ------------------------------------------------------------- -->
+          <div class="slide" id="slide-4">
+            <div class="slide-header">
+              <span class="slide-tag">Diagnostic Terrain</span>
+              <span class="slide-decor-logo">OPAYS FORGE</span>
+            </div>
+            <div class="slide-body">
+              <h2 class="slide-title" style="font-size: 1.65rem; margin-bottom: 0.4rem;">LES FRICTIONS OPÉRATIONNELLES IDENTIFIÉES</h2>
+              <p class="slide-desc" style="font-size: 0.76rem; color: var(--text-muted); margin-bottom: 0.6rem;">
+                Notre experiance après avoir travailler plus d’une année dans l’entreprise, nous a permi d’avoir une vision plus clair de faire ce petit observation, bien que ca ne va pas remplacer l’audit que nous allons faire , plusieurs défis structurels apparaissent naturellement :
+              </p>
+              
+              <div class="frictions-container">
+                <div class="friction-card">
+                  <div class="friction-card-title">Communication dispersée</div>
+                  <div class="friction-card-desc">Une grande partie des échanges opérationnels, validations et suivis transitent principalement par WhatsApp, rendant certaines informations difficiles à retrouver ou à suivre dans le temps.</div>
+                </div>
+                <div class="friction-card">
+                  <div class="friction-card-title">Centralisation limitée de l’information</div>
+                  <div class="friction-card-desc">Les documents, rapports, contrats et suivis opérationnels sont souvent répartis entre plusieurs appareils, comptes ou fichiers isolés. Cela réduit progressivement la visibilité, la continuité opérationnelle et la capacité de coordination globale.</div>
+                </div>
+                <div class="friction-card">
+                  <div class="friction-card-title">Dépendance forte à certaines personnes clés</div>
+                  <div class="friction-card-desc">Une grande partie des validations et décisions importantes dépend actuellement de quelques responsables centraux. À mesure que les activités augmentent, cette centralisation crée naturellement des retards, des blocages et une surcharge décisionnelle.</div>
+                </div>
+                <div class="friction-card">
+                  <div class="friction-card-title">Difficulté de suivi transversal</div>
+                  <div class="friction-card-desc">Avec plusieurs pôles fonctionnant simultanément (Academy, OTC, commerce, développement, SATGLOB), il devient difficile d’avoir une visibilité centralisée et instantanée sur les activités en cours, les responsabilités, les échéances, les validations et les opérations critiques.</div>
+                </div>
+                <div class="friction-card">
+                  <div class="friction-card-title">Absence de mémoire opérationnelle unifiée</div>
+                  <div class="friction-card-desc">Aujourd’hui, une grande partie des connaissances de l’entreprise reste encore fortement dépendante des personnes plutôt qu’un système structuré. Cela rend plus difficile la continuité, la transmission, le suivi historique et la scalabilité des opérations.</div>
+                </div>
+              </div>
+              
+              <div style="margin-top: 0.6rem; padding: 0.35rem 0.8rem; background: rgba(6, 182, 212, 0.08); border-radius: 6px; display: inline-block;">
+                <span class="highlight" style="font-weight: 700; font-size: 0.78rem;">NOTRE OBJECTIF :</span>
+                <span style="font-size: 0.78rem; font-weight: 500;">Transformer progressivement ce fonctionnement dispersé en une infrastructure opérationnelle moderne, centralisée et intelligente.</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ------------------------------------------------------------- -->
+          <!-- SLIDE 6 : CE QUE LE PILOTE VA CONSTRUIRE - PARTIE 1 -->
+          <!-- ------------------------------------------------------------- -->
+          <div class="slide" id="slide-5">
+            <div class="slide-header">
+              <span class="slide-tag">Livrables V1 — Partie 1</span>
+              <span class="slide-decor-logo">OPAYS FORGE</span>
+            </div>
+            <div class="slide-body">
+              <h2 class="slide-title" style="font-size: 1.65rem; margin-bottom: 0.4rem;">CE QUE LE PROGRAMME PILOTE VA CONSTRUIRE (V1)</h2>
+              <p class="slide-desc" style="font-size: 0.76rem; color: var(--text-muted); margin-bottom: 0.8rem;">
+                Cette première version sera volontairement pragmatique, progressive et orientée usage réel. L’objectif est de graphite rapidement une première couche opérationnelle fonctionnelle capable d’améliorer immédiatement la coordination et la visibilité de Bridgesat.
+              </p>
+              
+              <div class="construct-grid">
+                <div class="construct-card">
+                  <div class="construct-num">01</div>
+                  <div class="construct-title">1. HUB OPÉRATIONNEL</div>
+                  <div class="construct-card-list">
+                    <span class="construct-card-item">activités & projets</span>
+                    <span class="construct-card-item">tâches & validations</span>
+                    <span class="construct-card-item">reporting & alertes</span>
+                    <span class="construct-card-item">échéances & responsabilités</span>
+                  </div>
+                  <div class="construct-goal">L’objectif : visibilité claire et centralisée sur le fonctionnement.</div>
+                </div>
+                
+                <div class="construct-card">
+                  <div class="construct-num">02</div>
+                  <div class="construct-title">2. WORKFLOWS INTELLIGENTS</div>
+                  <div class="construct-card-list">
+                    <span class="construct-card-item">centraliser les demandes</span>
+                    <span class="construct-card-item">fluidifier les validations</span>
+                    <span class="construct-card-item">conserver l'historique</span>
+                    <span class="construct-card-item">notifier les responsables</span>
+                  </div>
+                  <div class="construct-goal">L’objectif : accélérer la coordination sans perdre le contrôle.</div>
+                </div>
+                
+                <div class="construct-card">
+                  <div class="construct-num">03</div>
+                  <div class="construct-title">3. MÉMOIRE CENTRALISÉE</div>
+                  <div class="construct-card-list">
+                    <span class="construct-card-item">contrats & procédures</span>
+                    <span class="construct-card-item">rapports & docs Academy</span>
+                    <span class="construct-card-item">ressources internes</span>
+                    <span class="construct-card-item">fichiers administratifs</span>
+                  </div>
+                  <div class="construct-goal">L’objectif : information accessible sans dépendre d'échanges privés.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ------------------------------------------------------------- -->
+          <!-- SLIDE 7 : CE QUE LE PILOTE VA CONSTRUIRE - PARTIE 2 -->
+          <!-- ------------------------------------------------------------- -->
+          <div class="slide" id="slide-6">
+            <div class="slide-header">
+              <span class="slide-tag">Livrables V1 — Partie 2</span>
+              <span class="slide-decor-logo">OPAYS FORGE</span>
+            </div>
+            <div class="slide-body">
+              <h2 class="slide-title" style="font-size: 1.65rem; margin-bottom: 0.4rem;">CE QUE LE PROGRAMME PILOTE VA CONSTRUIRE (V1)</h2>
+              <p class="slide-desc" style="font-size: 0.76rem; color: var(--text-muted); margin-bottom: 0.8rem;">
+                Cette première version sera volontairement pragmatique, progressive et orientée usage réel. L’objectif est de produire rapidement une première couche opérationnelle fonctionnelle capable d’améliorer immédiatement la coordination et la visibilité de Bridgesat.
+              </p>
+              
+              <div class="construct-grid">
+                <div class="construct-card">
+                  <div class="construct-num">04</div>
+                  <div class="construct-title">4. ASSISTANT CONVERSATIONNEL</div>
+                  <div class="construct-card-list">
+                    <span class="construct-card-item">"Montre-moi les activités Academy..."</span>
+                    <span class="construct-card-item">"Retrouve le contrat SATGLOB..."</span>
+                    <span class="construct-card-item">"Quels projets en validation ?"</span>
+                    <span class="construct-card-item">"Qui n'a pas soumis son reporting ?"</span>
+                  </div>
+                  <div class="construct-goal">L’objectif : accès plus rapide et réduction de la dépendance manuelle.</div>
+                </div>
+                
+                <div class="construct-card">
+                  <div class="construct-num">05</div>
+                  <div class="construct-title">5. AGENTS IA OPÉRATIONNELS</div>
+                  <div class="construct-card-list">
+                    <span class="construct-card-item">génération de rapports</span>
+                    <span class="construct-card-item">suivi des tâches & rappels</span>
+                    <span class="construct-card-item">relances clients & Telegram</span>
+                    <span class="construct-card-item">rédaction administrative</span>
+                  </div>
+                  <div class="construct-goal">L’objectif : réduire les frictions sans remplacer les équipes.</div>
+                </div>
+                
+                <div class="construct-card">
+                  <div class="construct-num">06</div>
+                  <div class="construct-title">6. STRUCTURATION & CONTINUITÉ</div>
+                  <div class="construct-card-list">
+                    <span class="construct-card-item">réduire la dépendance clé</span>
+                    <span class="construct-card-item">standardiser les procédures</span>
+                    <span class="construct-card-item">rendre le suivi visible</span>
+                    <span class="construct-card-item">faciliter le pilotage global</span>
+                  </div>
+                  <div class="construct-goal">L’objectif : asseoir une infrastructure de collaboration solide.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ------------------------------------------------------------- -->
+          <!-- SLIDE 8 : POURQUOI CETTE APPROCHE EST DIFFÉRENTE -->
+          <!-- ------------------------------------------------------------- -->
+          <div class="slide" id="slide-7">
+            <div class="slide-header">
+              <span class="slide-tag">Notre Différence</span>
+              <span class="slide-decor-logo">OPAYS FORGE</span>
+            </div>
+            <div class="slide-body">
+              <h2 class="slide-title">POURQUOI CETTE APPROCHE EST DIFFÉRENTE</h2>
+              <div class="two-cols">
+                <div>
+                  <div class="statement-card" style="margin-bottom: 0.8rem; padding: 1rem;">
+                    <p class="statement-text" style="font-size: 0.95rem; line-height: 1.5;">
+                      Développer des outils isolés ou des interfaces est relativement accessible.
+                    </p>
+                  </div>
+                  <p class="slide-desc" style="font-size: 0.85rem;">
+                    Mais construire :
+                  </p>
+                  <div class="list-container" style="gap: 0.4rem; margin-top: 0.4rem; font-size: 0.8rem;">
+                    <div class="list-item"><span class="list-bullet">›</span><span>une mémoire opérationnelle intelligente ;</span></div>
+                    <div class="list-item"><span class="list-bullet">›</span><span>une coordination centralisée ;</span></div>
+                    <div class="list-item"><span class="list-bullet">›</span><span>une couche conversationnelle IA ;</span></div>
+                    <div class="list-item"><span class="list-bullet">›</span><span>des agents opérationnels ;</span></div>
+                    <div class="list-item"><span class="list-bullet">›</span><span>et une infrastructure cohérente capable de connecter plusieurs activités ;</span></div>
+                  </div>
+                </div>
+                
+                <div style="background: rgba(6, 182, 212, 0.04); border: 1px solid rgba(6, 182, 212, 0.2); border-radius: 12px; padding: 1.5rem; display: flex; flex-direction: column; justify-content: center; gap: 0.6rem;">
+                  <p class="slide-desc" style="font-size: 0.85rem; margin-bottom: 0;">
+                    nécessite :
+                  </p>
+                  <p class="slide-desc highlight" style="font-size: 1.15rem; font-weight: 800; line-height: 1.35; margin-bottom: 0;">
+                    une vision globale,<br>
+                    une architecture cohérente,<br>
+                    une logique de gouvernance,<br>
+                    et une approche orientée scalabilité.
+                  </p>
+                  <p class="slide-desc" style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 0.6rem;">
+                    Le programme proposé par Opays Tech vise précisément cette transformation progressive.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ------------------------------------------------------------- -->
+          <!-- SLIDE 9 : ROADMAP PILOTE — 30 JOURS -->
+          <!-- ------------------------------------------------------------- -->
+          <div class="slide" id="slide-8">
+            <div class="slide-header">
+              <span class="slide-tag">Planification</span>
+              <span class="slide-decor-logo">OPAYS FORGE</span>
+            </div>
+            <div class="slide-body">
+              <h2 class="slide-title">PROGRAMME PILOTE — 30 JOURS</h2>
+              <div style="background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.03); border-radius: 10px; overflow: hidden; padding: 0.3rem 0.8rem;">
+                <table class="roadmap-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 25%;">Phase</th>
+                      <th style="width: 75%;">Livrable</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Jour 0</td>
+                      <td>Signature & lancement</td>
+                    </tr>
+                    <tr>
+                      <td>J+3</td>
+                      <td>Audit rapide & cadrage</td>
+                    </tr>
+                    <tr>
+                      <td>J+10</td>
+                      <td>Validation structure & maquettes</td>
+                    </tr>
+                    <tr>
+                      <td>J+20</td>
+                      <td>Première version opérationnelle</td>
+                    </tr>
+                    <tr>
+                      <td>J+30</td>
+                      <td>Livraison V1 & phase test</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- ------------------------------------------------------------- -->
+          <!-- SLIDE 10 : INVESTISSEMENT PILOTE & PAIEMENT -->
+          <!-- ------------------------------------------------------------- -->
+          <div class="slide" id="slide-9">
+            <div class="slide-header">
+              <span class="slide-tag">Conditions Financières</span>
+              <span class="slide-decor-logo">OPAYS FORGE</span>
+            </div>
+            <div class="slide-body">
+              <h2 class="slide-title" style="font-size: 1.65rem; margin-bottom: 0.3rem;">INVESTISSEMENT PILOTE & PAIEMENT</h2>
+              
+              <div style="background: rgba(6,182,212,0.06); border: 1px solid rgba(6,182,212,0.15); border-radius: 8px; padding: 0.6rem 0.8rem; margin-bottom: 0.6rem; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <span style="font-size: 0.68rem; text-transform: uppercase; letter-spacing: 1px; color: var(--cyan-primary); font-weight: 700;">Montant Global Fixe</span>
+                  <p class="slide-desc" style="font-size: 0.76rem; color: #cbd5e1; margin-bottom: 0; line-height: 1.35;">
+                    Ce programme pilote est volontairement proposé dans une logique de partenariat stratégique afin de :
+                  </p>
+                </div>
+                <div style="font-family: var(--font-title); font-size: 1.5rem; font-weight: 800; color: white;">
+                  2 500 USD
+                </div>
+              </div>
+              
+              <p class="slide-desc" style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.5rem; padding-left: 0.4rem; line-height: 1.3;">
+                permettre une validation terrain rapide ; construire progressivement le système avec les équipes ; adapter les usages à la réalité opérationnelle de Bridgesat ; et poser les bases d’une collaboration long terme.
+              </p>
+              
+              <div class="payment-grid">
+                <div class="payment-card">
+                  <div class="payment-pct">10%</div>
+                  <div>
+                    <div class="payment-title-sum">Lancement — 250 USD</div>
+                    <div class="payment-desc">Mobilisation des ressources, infrastructure initiale et audit rapide.</div>
+                  </div>
+                </div>
+                <div class="payment-card highlighted">
+                  <div class="payment-pct">40%</div>
+                  <div>
+                    <div class="payment-title-sum">Livraison V1 — 1 000 USD</div>
+                    <div class="payment-desc">Après démonstration fonctionnelle et accès au prototype opérationnel.</div>
+                  </div>
+                </div>
+                <div class="payment-card">
+                  <div class="payment-pct">50%</div>
+                  <div>
+                    <div class="payment-title-sum">Suivi 3 mois — 1 250 USD</div>
+                    <div class="payment-desc">Phase d’optimisation, accompagnement, ajustements et amélioration continue selon les retours terrain.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ------------------------------------------------------------- -->
+          <!-- SLIDE 11 : CONFIDENTIALITÉ & SÉCURITÉ -->
+          <!-- ------------------------------------------------------------- -->
+          <div class="slide" id="slide-10">
+            <div class="slide-header">
+              <span class="slide-tag">Gouvernance des Données</span>
+              <span class="slide-decor-logo">OPAYS SOVEREIGN</span>
+            </div>
+            <div class="slide-body">
+              <h2 class="slide-title" style="font-size: 1.65rem; margin-bottom: 0.3rem;">CONFIDENTIALITÉ, SÉCURITÉ & GOUVERNANCE</h2>
+              
+              <p class="slide-desc" style="font-size: 0.76rem; color: var(--text-muted); margin-bottom: 0.6rem;">
+                La sécurité et la confidentialité des données constituent une priorité centrale du système proposé. Bridgesat conserve l’entière propriété de ses données, ses documents, ses workflows et ses informations internes.
+              </p>
+              
+              <div class="security-grid">
+                <div class="security-card">
+                  <div class="security-title">Souveraineté des serveurs</div>
+                  <div class="security-desc">Le système sera hébergé directement sur le VPS / serveur de Bridgesat afin de garantir un contrôle total de l’infrastructure et des données.</div>
+                </div>
+                <div class="security-card">
+                  <div class="security-title">Absence de serveurs tiers</div>
+                  <div class="security-desc">Aucune donnée de Bridgesat ne sera revendue, partagée, utilisée pour entraîner des modèles publics, ni stockée sur des serveurs externes sans autorisation.</div>
+                </div>
+                <div class="security-card" style="grid-column: span 2; background: rgba(6, 182, 212, 0.02); border-left-color: var(--cyan-primary); padding: 0.5rem 0.8rem;">
+                  <div class="security-title" style="color: #a5f3fc; font-size: 0.8rem;">Accès sécurisé & niveaux d’autorisation stricts</div>
+                  <div class="security-desc" style="font-size: 0.7rem; line-height: 1.35;">
+                    La base documentaire intelligente fonctionnera avec des niveaux d’accès stricts selon les rôles.<br>
+                    <span class="highlight">Exemples :</span> un caissier ne pourra pas voir les contrats partenaires ; un responsable Academy ne verra que les données liées à son département ; certaines informations resteront limitées à la direction.<br>
+                    <span class="highlight">L’objectif :</span> centraliser les informations sans exposer les données sensibles.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ------------------------------------------------------------- -->
+          <!-- SLIDE 12 : AGENTS IA OPÉRATIONNELS -->
+          <!-- ------------------------------------------------------------- -->
+          <div class="slide" id="slide-11">
+            <div class="slide-header">
+              <span class="slide-tag">Focus Agents IA</span>
+              <span class="slide-decor-logo">OPAYS FORGE</span>
+            </div>
+            <div class="slide-body">
+              <h2 class="slide-title" style="font-size: 1.65rem; margin-bottom: 0.3rem;">5. AGENTS IA OPÉRATIONNELS</h2>
+              <div class="two-cols-equal">
+                <div style="background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.04); border-radius: 8px; padding: 0.8rem; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <p class="slide-desc" style="font-size: 0.8rem; margin-bottom: 0.4rem; font-weight: 700; color: white;">
+                      Assistance de tâches répétitives
+                    </p>
+                    <div class="list-container" style="gap: 0.25rem; font-size: 0.74rem;">
+                      <div class="list-item"><span class="list-bullet">▪</span><span>génération automatique de rapports ;</span></div>
+                      <div class="list-item"><span class="list-bullet">▪</span><span>rappels intelligents ;</span></div>
+                      <div class="list-item"><span class="list-bullet">▪</span><span>notifications Telegram ;</span></div>
+                      <div class="list-item"><span class="list-bullet">▪</span><span>suivi des tâches ;</span></div>
+                      <div class="list-item"><span class="list-bullet">▪</span><span>assistance documentaire ;</span></div>
+                      <div class="list-item"><span class="list-bullet">▪</span><span>coordination des activités ;</span></div>
+                      <div class="list-item"><span class="list-bullet">▪</span><span>alertes sur les échéances importantes.</span></div>
+                    </div>
+                  </div>
+                  <p class="slide-desc highlight" style="font-size: 0.68rem; font-weight: 700; margin-bottom: 0; border-top: 1px dashed rgba(255,255,255,0.08); padding-top: 0.4rem;">
+                    Chaque agent reste supervisé et contrôlé par les équipes.
+                  </p>
+                </div>
+                
+                <div style="background: rgba(6, 182, 212, 0.03); border: 1px solid rgba(6, 182, 212, 0.15); border-radius: 8px; padding: 0.8rem; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <div style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1px; color: var(--cyan-primary); font-weight: 700; margin-bottom: 0.15rem;">
+                      Focus Stratégique
+                    </div>
+                    <p class="slide-desc highlight" style="font-size: 0.95rem; font-weight: 800; margin-bottom: 0.3rem; line-height: 1.2;">
+                      Agent IA de relance commerciale
+                    </p>
+                    <p class="slide-desc" style="font-size: 0.7rem; margin-bottom: 0.3rem; line-height: 1.35;">
+                      Un agent dédié pourra notamment assister Bridgesat dans :
+                    </p>
+                    <div class="list-container" style="gap: 0.2rem; font-size: 0.7rem;">
+                      <div class="list-item"><span class="list-bullet">›</span><span>la relance automatique des prospects ;</span></div>
+                      <div class="list-item"><span class="list-bullet">›</span><span>le suivi des clients inactifs ;</span></div>
+                      <div class="list-item"><span class="list-bullet">›</span><span>les rappels de paiement ;</span></div>
+                      <div class="list-item"><span class="list-bullet">›</span><span>les relances WhatsApp ou email ;</span></div>
+                      <div class="list-item"><span class="list-bullet">›</span><span>et le suivi après vente.</span></div>
+                    </div>
+                  </div>
+                  <p class="slide-desc" style="font-size: 0.68rem; margin-bottom: 0; color: #a5f3fc; border-top: 1px dashed rgba(6, 182, 212, 0.2); padding-top: 0.4rem;">
+                    <strong>L’objectif :</strong> relancer et améliorer le suivi sans surcharge.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ------------------------------------------------------------- -->
+          <!-- SLIDE 13 : CONCLUSION -->
+          <!-- ------------------------------------------------------------- -->
+          <div class="slide" id="slide-12">
+            <!-- OFFICIAL SEAMLESS EN-TÊTE (HEADER) AT THE TOP OF CONCLUSION -->
+            <header class="document-header">
+              <div class="header-logo-area">
+                <svg class="opays-logo-svg" width="105" height="32" viewBox="0 0 160 50" xmlns="http://www.w3.org/2000/svg">
+                  <g transform="translate(5, 5)">
+                    <path d="M 20 5 C 11.7 5 5 11.7 5 20 C 5 28.3 11.7 35 20 35 C 28.3 35 35 28.3 35 20" fill="none" stroke="url(#conclusion-grad-dark)" stroke-width="4.5" stroke-linecap="round" />
+                    <path d="M 12 16 L 28 16 M 20 16 L 20 32" fill="none" stroke="url(#conclusion-grad-light)" stroke-width="4" stroke-linecap="round" />
+                    <rect x="33" y="4" width="4" height="4" rx="1" fill="#06b6d4" />
+                    <rect x="39" y="8" width="4" height="4" rx="1" fill="#3b82f6" />
+                    <rect x="35" y="11" width="3" height="3" rx="0.5" fill="#00c4ff" />
+                  </g>
+                  <text class="logo-opays" x="55" y="27" font-family="'Outfit', sans-serif" font-weight="800" font-size="16">OPAYS</text>
+                  <text class="logo-tech" x="110" y="27" font-family="'Outfit', sans-serif" font-weight="300" font-size="16">TECH</text>
+                  <defs>
+                    <linearGradient id="conclusion-grad-dark" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#1e40af" />
+                      <stop offset="100%" stop-color="#3b82f6" />
+                    </linearGradient>
+                    <linearGradient id="conclusion-grad-light" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#06b6d4" />
+                      <stop offset="100%" stop-color="#22d3ee" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </div>
+              <div class="header-contact-area">
+                <div class="header-contact-line"><strong>X :</strong> <a href="https://x.com/OpaysTech" target="_blank">https://x.com/OpaysTech</a></div>
+                <div class="header-contact-line"><strong>Facebook :</strong> <a href="https://www.facebook.com/share/1HXhTPzytG/?mibextid=wwXlfr" target="_blank">https://www.facebook.com/share/1HXhTPzytG/...</a></div>
+                <div class="header-contact-line"><strong>LinkedIn :</strong> <a href="https://www.linkedin.com/company/opaystech/" target="_blank">https://www.linkedin.com/company/opaystech/</a></div>
+                <div class="header-contact-line"><strong>web site :</strong> <a href="https://opays.io/" target="_blank">https://opays.io/</a></div>
+                <div class="header-contact-line"><strong>Email :</strong> <a href="mailto:opaystech@gmail.com">opaystech@gmail.com</a></div>
+                <div class="header-contact-line"><strong>Tel :</strong> +243 983 819 398</div>
+              </div>
+            </header>
+
+            <div class="slide-body" style="justify-content: center; flex: 1; padding: 0.5rem 0;">
+              <div class="two-cols" style="align-items: stretch; gap: 2rem;">
+                <div>
+                  <div class="statement-card" style="padding: 0.8rem; margin-bottom: 0.5rem;">
+                    <p class="statement-text" style="font-size: 0.88rem; line-height: 1.4; color: #f8fafc;">
+                      Bridgesat possède aujourd’hui le potentiel pour devenir une organisation beaucoup plus fluide, coordonnée et scalable.
+                    </p>
+                  </div>
+                  <p class="slide-desc" style="font-size: 0.76rem; line-height: 1.4; margin-bottom: 0.3rem;">
+                    Mais à mesure que les activités grandissent, la performance dépend de moins en moins des individus seuls, et de plus en plus de la capacité du système à :
+                  </p>
+                  <p class="slide-desc highlight" style="font-size: 0.85rem; font-weight: 700; line-height: 1.35; margin-bottom: 0;">
+                    organiser ; centraliser ; coordonner ; transmettre ; et rendre l’information exploitable au bon moment.
+                  </p>
+                </div>
+                
+                <div style="background: rgba(255,255,255,0.01); border-left: 3px solid var(--cyan-primary); padding: 0.8rem 1.2rem; display: flex; flex-direction: column; justify-content: center; gap: 0.5rem;">
+                  <p class="slide-desc" style="font-size: 0.78rem; margin-bottom: 0; line-height: 1.35;">
+                    L’objectif de ce programme pilote est de poser les bases de cette nouvelle infrastructure opérationnelle intelligente.
+                  </p>
+                  <p class="slide-desc highlight" style="font-size: 1.05rem; font-weight: 800; line-height: 1.35; margin-bottom: 0;">
+                    Une organisation :<br>
+                    plus fluide, plus visible,<br>
+                    plus structurée, plus scalable,<br>
+                    et progressivement augmentée par l'IA.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Bottom controls bar (Progress, Navigation counter) -->
+      <div class="bottom-nav">
+        <div style="font-size: 0.75rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.4rem;">
+          <span class="hotkey-badge">←</span>
+          <span class="hotkey-badge">→</span>
+          <span>ou</span>
+          <span class="hotkey-badge">Espace</span>
+          <span>pour naviguer</span>
+        </div>
+        
+        <div class="slide-progress-container">
+          <div class="slide-progress-bar" id="progressBar"></div>
+        </div>
+        
+        <div class="nav-buttons">
+          <button class="nav-btn" onclick="prevSlide()" title="Précédent (Flèche Gauche)">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path>
+            </svg>
+          </button>
+          <div class="nav-counter" id="navCounter">1 / 13</div>
+          <button class="nav-btn" onclick="nextSlide()" title="Suivant (Flèche Droite ou Espace)">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </main>
+
+  </div>
+
+  <!-- ================= TEXT CACHE ZONE (FOR 1-CLICK CLIPBOARD COPY) ================= -->
+  <!-- Every single block matches user input word-for-word, preserving any typos/formatting exactly -->
+  <div class="hidden-copy-area">
+    <!-- Clean, formatted contact block cache with their email integrated -->
+    <textarea id="copy-text-contact">X: https://x.com/OpaysTech
+Facebook : https://www.facebook.com/share/1HXhTPzytG/?mibextid=wwXlfr
+LinkedIn: https://www.linkedin.com/company/opaystech/
+web site : https://opays.io/
+Email : opaystech@gmail.com
+Tel : +243 983 819 398</textarea>
+
+    <textarea id="copy-text-0">PROGRAMME PILOTE DE TRANSFORMATION OPÉRATIONNELLE INTELLIGENTE
+Proposition stratégique pour Bridgesat
+Présentée par Opays Tech
+Document confidentiel du 26 Mai 2026</textarea>
+    
+    <textarea id="copy-text-1">BRIDGESAT ENTRE DANS UNE NOUVELLE PHASE
+En quelques années, Bridgesat a construit un écosystème ambitieux autour de plusieurs activités stratégiques :
+développement logiciel ;
+Academy & formation ;
+adoption Bitcoin universitaire ;
+OTC Bitcoin ;
+cybersécurité & SATGLOB ;
+distribution de solutions technologiques ;
+commerce & distribution ;
+opérations terrain ;
+développement de nouveaux projets à forte croissance.
+Cette capacité d’exécution démontre une vraie dynamique entrepreneuriale.
+Mais lorsqu’une organisation commence à gérer simultanément plusieurs pôles, plusieurs équipes, plusieurs partenaires et plusieurs opérations, un nouveau défi apparaît naturellement :
+la coordination devient plus complexe que la croissance elle-même.</textarea>
+    
+    <textarea id="copy-text-2">Aujourd’hui, une grande partie du fonctionnement opérationnel repose encore principalement sur :
+les échanges WhatsApp ;
+des validations humaines dispersées ;
+des fichiers Excel ou Word isolés ;
+des informations non centralisées ;
+et une forte dépendance à certaines personnes clés.
+Ce modèle peut fonctionner efficacement dans une phase de démarrage.
+Mais à mesure que les activités grandissent, il devient progressivement plus difficile :
+d’avoir une visibilité globale sur les opérations ;
+de suivre clairement les responsabilités ;
+de centraliser la mémoire documentaire ;
+de fluidifier les validations ;
+de coordonner plusieurs pôles simultanément ;
+et de rendre l’information accessible au bon moment.
+Le véritable risque n’est pas technique.
+Le véritable risque est opérationnel :
+perte de fluidité, surcharge décisionnelle, dépendance humaine et difficulté de passage à l’échelle.</textarea>
+    
+    <textarea id="copy-text-3">NOTRE CONVICTION
+Le futur des organisations modernes ne repose plus uniquement sur des équipes ou des outils séparés.
+Il repose sur des systèmes capables de :
+centraliser ;
+coordonner ;
+assister ;
+automatiser ;
+et fluidifier les opérations au quotidien.
+C’est précisément l’objectif du programme pilote proposé par Opays Tech.
+CE QUE NOUS PROPOSONS
+Nous ne proposons pas simplement un logiciel supplémentaire.
+Nous proposons la mise en place progressive d’une couche opérationnelle intelligente permettant à Bridgesat de :
+mieux coordonner ses activités ;
+centraliser ses opérations ;
+fluidifier ses validations ;
+structurer sa mémoire documentaire ;
+améliorer sa visibilité managériale ;
+réduire la dépendance aux échanges dispersés ;
+et intégrer progressivement des assistants IA capables d’assister les équipes dans les opérations quotidiennes.
+L’objectif n’est pas de remplacer les équipes.
+L’objectif est de leur offrir :
+plus de visibilité ;
+plus de fluidité ;
+plus de coordination ;
+plus de continuité ;
+et une meilleure capacité d’exécution.</textarea>
+    
+    <textarea id="copy-text-4">LES FRICTIONS OPÉRATIONNELLES IDENTIFIÉES
+Notre experiance après avoir travailler plus d’une année dans l’entreprise, nous a permi d’avoir une vision plus clair de faire ce petit observation, bien que ca ne va pas remplacer l’audit que nous allons faire , plusieurs défis structurels apparaissent naturellement :
+Communication dispersée
+Une grande partie des échanges opérationnels, validations et suivis transitent principalement par WhatsApp, rendant certaines informations difficiles à retrouver ou à suivre dans le temps.
+Centralisation limitée de l’information
+Les documents, rapports, contrats et suivis opérationnels sont souvent répartis entre plusieurs appareils, comptes ou fichiers isolés.
+Cela réduit progressivement :
+la visibilité ;
+la continuité opérationnelle ;
+et la capacité de coordination globale.
+Dépendance forte à certaines personnes clés
+Une grande partie des validations et décisions importantes dépend actuellement de quelques responsables centraux.
+À mesure que les activités augmentent, cette centralisation crée naturellement :
+des retards ;
+des blocages ;
+et une surcharge décisionnelle.
+Difficulté de suivi transversal
+Avec plusieurs pôles fonctionnant simultanément :
+Academy ;
+OTC ;
+commerce ;
+développement ;
+SATGLOB ;
+il devient difficile d’avoir une visibilité centralisée et instantanée sur :
+les activités en cours ;
+les responsabilités ;
+les échéances ;
+les validations ;
+les opérations critiques.
+Absence de mémoire opérationnelle unifiée
+Aujourd’hui, une grande partie des connaissances de l’entreprise reste encore fortement dépendante des personnes plutôt que d’un système structuré.
+Cela rend plus difficile :
+la continuité ;
+la transmission ;
+le suivi historique ;
+et la scalabilité des opérations.
+NOTRE OBJECTIF
+Transformer progressivement ce fonctionnement dispersé en une infrastructure opérationnelle moderne, centralisée et intelligente.</textarea>
+    
+    <textarea id="copy-text-5">CE QUE LE PROGRAMME PILOTE VA CONSTRUIRE (V1)
+Cette première version sera volontairement pragmatique, progressive et orientée usage réel.
+L’objectif est de graphite rapidement une première couche opérationnelle fonctionnelle capable d’améliorer immédiatement la coordination et la visibilité de Bridgesat.
+1. HUB OPÉRATIONNEL CENTRALISÉ
+Mise en place d’un espace unique permettant de suivre :
+activités ;
+projets ;
+tâches ;
+validations ;
+opérations importantes ;
+reporting ;
+alertes ;
+échéances ;
+responsabilités.
+L’objectif :
+donner une visibilité claire et centralisée sur le fonctionnement de l’organisation.
+2. WORKFLOW & VALIDATION INTELLIGENTE
+Le système permettra progressivement de :
+centraliser les demandes ;
+fluidifier les validations ;
+conserver un historique des décisions ;
+notifier automatiquement les responsables concernés ;
+réduire les retards liés aux validations dispersées.
+L’objectif :
+accélérer la coordination sans perdre le contrôle décisionnel.
+3. MÉMOIRE DOCUMENTAIRE CENTRALISÉE
+Centralisation intelligente des :
+contrats ;
+rapports ;
+procédures ;
+documents Academy ;
+ressources internes ;
+historiques ;
+fichiers administratifs ;
+documents opérationnels.
+L’objectif :
+rendre l’information accessible rapidement sans dépendre uniquement des conversations privées ou des appareils individuels.</textarea>
+    
+    <textarea id="copy-text-6">4. ASSISTANT OPÉRATIONNEL INTELLIGENT
+Le système intégrera un assistant conversationnel capable d’interagir naturellement avec les informations de l’entreprise.
+Exemples :
+“Montre-moi les activités Academy prévues cette semaine.”
+“Retrouve le dernier rapport envoyé au partenaire OTC.”
+“Quels projets nécessitent encore une validation ?”
+“Qui n’a pas encore soumis son reporting ?”
+“Retrouve le contrat SATGLOB du client X.”
+Cet assistant permettra progressivement :
+un accès plus rapide à l’information ;
+une meilleure exploitation des données ;
+et une réduction de la dépendance aux échanges manuels.
+5. AGENTS IA OPÉRATIONNELS
+Le système pourra intégrer progressivement plusieurs agents spécialisés capables d’assister certaines opérations répétitives.
+Exemples :
+génération automatique de rapports ;
+rappels intelligents ;
+notifications Telegram ;
+suivi des tâches ;
+relances automatiques des clients ;
+assistance documentaire ;
+suivi opérationnel ;
+coordination des activités ;
+rédaction de contenus administratifs ;
+alertes sur les échéances importantes.
+Chaque agent reste supervisé et contrôlé par les équipes.
+L’objectif :
+réduire progressivement les frictions opérationnelles sans remplacer les équipes humaines.
+6. STRUCTURATION & CONTINUITÉ OPÉRATIONNELLE
+Le système permettra progressivement de :
+réduire la dépendance à certaines personnes clés ;
+améliorer la continuité des opérations ;
+standardiser certaines procédures ;
+rendre les responsabilités plus visibles ;
+améliorer la transmission des informations ;
+faciliter le pilotage global.</textarea>
+    
+    <textarea id="copy-text-7">POURQUOI CETTE APPROCHE EST DIFFÉRENTE
+Développer des outils isolés ou des interfaces est relativement accessible.
+Mais construire :
+une mémoire opérationnelle intelligente ;
+une coordination centralisée ;
+une couche conversationnelle IA ;
+des agents opérationnels ;
+et une infrastructure cohérente capable de connecter plusieurs activités ;
+nécessite :
+une vision globale ;
+une architecture cohérente ;
+une logique de gouvernance ;
+et une approche orientée scalabilité.
+Le programme proposé par Opays Tech vise précisément cette transformation progressive.</textarea>
+    
+    <textarea id="copy-text-8">PROGRAMME PILOTE — 30 JOURS
+Phase | Livrable
+Jour 0 | Signature & lancement
+J+3 | Audit rapide & cadrage
+J+10 | Validation structure & maquettes
+J+20 | Première version opérationnelle
+J+30 | Livraison V1 & phase test</textarea>
+    
+    <textarea id="copy-text-9">INVESTISSEMENT PILOTE
+Montant global : 2 500 USD
+Ce programme pilote est volontairement proposé dans une logique de partenariat stratégique afin de :
+permettre une validation terrain rapide ;
+construire progressivement le système avec les équipes ;
+adapter les usages à la réalité opérationnelle de Bridgesat ;
+et poser les bases d’une collaboration long terme.
+MODALITÉS DE PAIEMENT
+10% au lancement — 250 USD
+Mobilisation des ressources, infrastructure initiale et audit rapide.
+40% après livraison de la V1 — 1 000 USD
+Après démonstration fonctionnelle et accès au prototype opérationnel.
+50% sur les 3 mois suivants — 1 250 USD
+Phase d’optimisation, accompagnement, ajustements et amélioration continue selon les retours terrain.</textarea>
+    
+    <textarea id="copy-text-10">CONFIDENTIALITÉ, SÉCURITÉ & GOUVERNANCE DES DONNÉES
+La sécurité et la confidentialité des données constituent une priorité centrale du système proposé.
+Bridgesat conserve l’entière propriété de :
+ses données ;
+ses documents ;
+ses workflows ;
+ses informations internes.
+Le système sera hébergé directement sur le VPS / serveur de Bridgesat afin de garantir un contrôle total de l’infrastructure et des données.
+Aucune donnée de Bridgesat :
+ne sera revendue ;
+ne sera partagée ;
+ne sera utilisée pour entraîner des modèles publics ;
+ni stockée sur des serveurs externes sans autorisation.
+Accès sécurisé & niveaux d’autorisation
+La base documentaire intelligente fonctionnera avec des niveaux d’accès stricts selon les rôles.
+Exemples :
+un caissier ne pourra pas voir les contrats partenaires ;
+un responsable Academy ne verra que les données liées à son département ;
+certaines informations resteront limitées à la direction.
+L’objectif :
+ centraliser les informations sans exposer les données sensibles.</textarea>
+    
+    <textarea id="copy-text-11">5. AGENTS IA OPÉRATIONNELS
+Le système pourra intégrer progressivement plusieurs agents spécialisés capables d’assister certaines opérations répétitives.
+Exemples :
+génération automatique de rapports ;
+rappels intelligents ;
+notifications Telegram ;
+suivi des tâches ;
+assistance documentaire ;
+coordination des activités ;
+alertes sur les échéances importantes.
+Agent IA de relance commerciale
+Un agent dédié pourra notamment assister Bridgesat dans :
+la relance automatique des prospects ;
+le suivi des clients inactifs ;
+les rappels de paiement ;
+les relances WhatsApp ou email ;
+et le suivi après vente.
+L’objectif :
+ réduire la perte d’opportunités commerciales et améliorer le suivi client sans surcharge humaine supplémentaire.</textarea>
+    
+    <textarea id="copy-text-12">CONCLUSION
+Bridgesat possède aujourd’hui le potentiel pour devenir une organisation beaucoup plus fluide, coordonnée et scalable.
+Mais à mesure que les activités grandissent, la performance dépend de moins en moins des individus seuls, et de plus en plus de la capacité du système à :
+organiser ;
+centraliser ;
+coordonner ;
+transmettre ;
+et rendre l’information exploitable au bon moment.
+L’objectif de ce programme pilote est de poser les bases de cette nouvelle infrastructure opérationnelle intelligente.
+Une organisation :
+plus fluide ;
+plus visible ;
+plus structurée ;
+plus scalable ;
+et progressivement augmentée par l’intelligence artificielle.</textarea>
+  </div>
+
+  <!-- ================= RUNTIME FUNCTIONALITIES (NAV + CLIPPINGS) ================= -->
+  <script>
+    let currentSlideIndex = 0;
+    const totalSlides = 13;
+
+    const slides = [];
+    const listItems = [];
+    
+    // Initialize slides and sidebar elements references
+    for (let i = 0; i < totalSlides; i++) {
+      slides.push(document.getElementById(`slide-${i}`));
+    }
+    
+    const sidebarItems = document.getElementById('slideIndexList').children;
+
+    function updateProgressBar() {
+      const bar = document.getElementById('progressBar');
+      const percentage = ((currentSlideIndex) / (totalSlides - 1)) * 100;
+      bar.style.width = `${percentage}%`;
+    }
+
+    function goToSlide(index) {
+      if (index < 0 || index >= totalSlides) return;
+      
+      // Update slide states
+      slides[currentSlideIndex].classList.remove('active');
+      sidebarItems[currentSlideIndex].classList.remove('active');
+      
+      currentSlideIndex = index;
+      
+      slides[currentSlideIndex].classList.add('active');
+      sidebarItems[currentSlideIndex].classList.add('active');
+      
+      // Update interfaces
+      document.getElementById('navCounter').innerText = `${currentSlideIndex + 1} / ${totalSlides}`;
+      updateProgressBar();
+      
+      // Auto scroll side item into view
+      sidebarItems[currentSlideIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function nextSlide() {
+      if (currentSlideIndex < totalSlides - 1) {
+        goToSlide(currentSlideIndex + 1);
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlideIndex > 0) {
+        goToSlide(currentSlideIndex - 1);
+      }
+    }
+
+    // Single click clipboard copy script
+    function copyCurrentSlideText() {
+      const textarea = document.getElementById(`copy-text-${currentSlideIndex}`);
+      if (!textarea) return;
+      
+      textarea.select();
+      textarea.setSelectionRange(0, 99999);
+      
+      try {
+        navigator.clipboard.writeText(textarea.value);
+        showToast("Texte de la planche copié !");
+      } catch (err) {
+        document.execCommand('copy');
+        showToast("Texte de la planche copié !");
+      }
+    }
+
+    // 1-Click copy for the entire corporate contact block with new email
+    function copyContactBlockText() {
+      const textarea = document.getElementById('copy-text-contact');
+      if (!textarea) return;
+      
+      textarea.select();
+      textarea.setSelectionRange(0, 99999);
+      
+      try {
+        navigator.clipboard.writeText(textarea.value);
+        showToast("En-tête de contact copié !");
+      } catch (err) {
+        document.execCommand('copy');
+        showToast("En-tête de contact copié !");
+      }
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('copyToast');
+      const toastText = document.getElementById('copyToastText');
+      toastText.innerText = message || "Copié dans le presse-papiers !";
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2000);
+    }
+
+    // Intercept sidebar button click to auto-copy too as user convenience
+    for (let i = 0; i < sidebarItems.length; i++) {
+      sidebarItems[i].onclick = function(e) {
+        goToSlide(i);
+        copyCurrentSlideText();
+      };
+    }
+
+    // Keyboard bindings for comfortable presentation flow
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'ArrowRight' || event.key === ' ') {
+        event.preventDefault();
+        nextSlide();
+      } else if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        prevSlide();
+      }
+    });
+
+    // Initialize progress on launch
+    updateProgressBar();
+  </script>
+</body>
+</html>

@@ -3,6 +3,7 @@
 ## 🎯 Stratégie & Audit
 - **[[Ingénierie de l'Efficience]]** : Analyse des flux, détection des "fuites" de coûts et conception Zero-Friction.
 - **[[Strategic Planning]]** : Vision à long terme et alignement des ressources.
+- **[[Opays Compass]]** : Mémoire de projet, gouvernance technique et contrôle de cohérence.
 
 ## 🎨 Design & Branding
 - **[[Premium UI Design]]** : Création d'interfaces haute-fidélité, sombres, élégantes et professionnelles.
@@ -14,6 +15,9 @@
 - **[[Web Artifacts Builder]]** : Capacité à générer des composants web réutilisables et performants.
 - **[[AI Operational Intelligence]]** : Intégration de l'intelligence artificielle au cœur des processus métiers.
 - **[[Webapp Testing]]** : Assurance qualité et robustesse des plateformes SaaS.
+- **[[Check Compliance]]** : Audit d'état technique et conformité du tenant.
+- **[[Plan Progress]]** : Suivi de l'avancement réel vs plan de refonte.
+- **[[Generate Checklist]]** : Génération de checklists techniques exécutables.
 
 ## ⚙️ Opérations & Vente
 - **[[Lead Research]]** : Identification et qualification chirurgicale des prospects.
