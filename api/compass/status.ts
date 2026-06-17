@@ -12,6 +12,16 @@ export default async function handler(_request: Request) {
     const metrics = await getCompassMetrics();
     return json(metrics);
   } catch (error) {
-    return json({ error: "Compass metrics failed", detail: error instanceof Error ? error.message : String(error) }, 500);
+    return json(
+      {
+        error: "Compass metrics failed",
+        detail: error instanceof Error ? error.message : String(error),
+      },
+      500,
+    );
   }
 }
+
+export const config = {
+  runtime: "nodejs",
+};

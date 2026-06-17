@@ -32,13 +32,7 @@ export default async function handler(request: Request) {
 
   const query = await readQuery(request);
   if (!query) {
-    return json(
-      {
-        error: "Missing query",
-        hint: "Use ?q=... or POST { query }",
-      },
-      400,
-    );
+    return json({ error: "Missing query", hint: "Use ?q=... or POST { query }" }, 400);
   }
 
   try {
@@ -54,3 +48,8 @@ export default async function handler(request: Request) {
     );
   }
 }
+
+export const config = {
+  // Runtime Node.js car la recherche lit des fichiers Markdown locaux (node:fs).
+  runtime: "nodejs",
+};

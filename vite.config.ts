@@ -90,17 +90,8 @@ export default defineConfig({
     },
   },
   plugins: [
-    // `autoCodeSplitting` extrait le composant (et les parties non critiques) de
-    // chaque route dans un chunk dédié, chargé à la demande. Les prototypes
-    // internes (`/tenant-0`, `/bridges-os`), très lourds (framer-motion, dizaines
-    // d'icônes lucide, données de démo), sortent ainsi du bundle initial des
-    // pages publiques (Requirements 15.1, 15.2). La définition de route reste
-    // dans l'arbre (head/noindex préservés), seul le rendu est différé.
     TanStackRouterVite({
       autoCodeSplitting: true,
-      // Les tests Property-Based sur les routes publiques vivent à côté des
-      // fichiers de route. On les ignore explicitement pour éviter les warnings
-      // "route non exportée" lors du build (Flow Opays — validation verte).
       routeFileIgnorePattern: "\\.test\\.tsx?$",
     }),
     compassApiDevPlugin(),
