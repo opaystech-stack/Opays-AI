@@ -8,9 +8,9 @@ FROM node:22-alpine AS builder
 
 WORKDIR /app
 
-# Dépendances
+# Dépendances (dev inclus, nécessaires pour vite-node et le build)
 COPY package*.json ./
-RUN npm ci --omit=dev --no-audit --no-fund
+RUN npm ci --no-audit --no-fund
 
 # Sources
 COPY . .
