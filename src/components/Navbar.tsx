@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { ExternalLink as ExternalLinkIcon, Menu, X } from "lucide-react";
 import logoIcon from "/logo-opays.svg";
-import { PUBLIC_PAGES } from "@/content/navigation";
+import { PUBLIC_PAGES, SECONDARY_PAGES } from "@/content/navigation";
 import { EXTERNAL_PROJECTS } from "@/content/externalProjects";
 import { resolveCta } from "@/content/rules/cta";
 import { resolveExternalLink } from "@/content/rules/externalLinks";
@@ -12,6 +12,8 @@ import { resolveExternalLink } from "@/content/rules/externalLinks";
  * la page « Services » (pas de sous-menu). État actif via `useRouterState`,
  * CTA unique via `resolveCta()`, liens externes conditionnels, navigation client.
  */
+
+const ALL_NAV_PAGES = [...PUBLIC_PAGES, ...SECONDARY_PAGES];
 
 type NavTo = Parameters<typeof Link>[0]["to"];
 

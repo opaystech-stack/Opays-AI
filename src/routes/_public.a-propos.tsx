@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { ArrowRight, MapPin, ShieldCheck, Target, Users } from "lucide-react";
-import { TeamSection } from "@/components/TeamSection";
 import { Container, Section, SectionTitle } from "@/components/marketing/Sections";
 import { TerminalAnimation } from "@/components/TerminalAnimation";
 
@@ -44,7 +43,6 @@ function AboutPage() {
       <Hero />
       <Mission />
       <Pillars />
-      <TeamSection />
       <Closing />
     </>
   );

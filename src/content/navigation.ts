@@ -30,11 +30,13 @@ export const PUBLIC_PAGES: NavPage[] = [
   { path: "/methode", label: "Méthode" },
   { path: "/offres", label: "Offres" },
   { path: "/portfolio", label: "Portfolio" },
-  { path: "/faq", label: "FAQ" },
-  { path: "/saas", label: "Produits SaaS" },
-  { path: "/souverainete-rd", label: "Souveraineté & R&D" },
+  { path: "/saas", label: "SaaS" },
+  { path: "/souverainete-rd", label: "R&D" },
   { path: "/contact", label: "Contact" },
 ];
+
+/** Pages publiques secondaires, accessibles depuis le footer mais pas dans la navigation principale. */
+export const SECONDARY_PAGES: NavPage[] = [{ path: "/faq", label: "FAQ" }];
 
 /**
  * L'appel à l'action unique du Site_Vitrine, défini une seule fois.

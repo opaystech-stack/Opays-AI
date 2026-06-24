@@ -57,6 +57,9 @@ beforeAll(() => {
 /** Chemins des pages publiques (source unique de vérité). */
 const PUBLIC_PATHS = PUBLIC_PAGES.map((p) => p.path);
 
+/** Nombre total de pages accessibles via la navbar (principales uniquement). */
+const TOTAL_NAV_PAGES = PUBLIC_PAGES.length;
+
 /**
  * Monte un mini routeur en mémoire dont la racine rend la Navbar + l'Outlet,
  * avec les six routes publiques enregistrées et le chemin courant imposé.
@@ -123,10 +126,10 @@ describe("Navbar — Navigation_Principale", () => {
 
             const entries = internalNavEntries(container);
 
-            // Exactement une entrée interne par page publique, ni plus ni moins.
-            expect(entries).toHaveLength(PUBLIC_PAGES.length);
+            // Exactement une entrée interne par page accessible via la navbar.
+            expect(entries).toHaveLength(TOTAL_NAV_PAGES);
 
-            // Pour chaque page : un lien activable (ancre avec href) portant son
+            // Pour chaque page publique : un lien activable (ancre avec href) portant son
             // libellé et menant à son URL dédiée.
             for (const page of PUBLIC_PAGES) {
               const match = entries.find((e) => e.href === page.path);
@@ -166,7 +169,7 @@ describe("Navbar — Navigation_Principale", () => {
 
           // Tous les autres liens internes sont dans l'état par défaut.
           const others = internalNavEntries(container).filter((e) => e.href !== currentPath);
-          expect(others).toHaveLength(PUBLIC_PAGES.length - 1);
+          expect(others).toHaveLength(TOTAL_NAV_PAGES - 1);
 
           cleanup();
         }),

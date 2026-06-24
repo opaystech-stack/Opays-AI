@@ -21,7 +21,7 @@
  * 6.4, 6.5, 10.2 (durcissement).
  */
 
-import { PUBLIC_PAGES } from "@/content/navigation";
+import { PUBLIC_PAGES, SECONDARY_PAGES } from "@/content/navigation";
 
 /** Origine canonique absolue du Site_Vitrine (domaine officiel d'Opays Tech). */
 export const SITE_ORIGIN = "https://opays.io";
@@ -343,15 +343,16 @@ export function assertPublicRoutesValid(): void {
   const duplicates = titles.filter((title, index) => titles.indexOf(title) !== index);
   if (duplicates.length > 0) {
     throw new Error(
-      `[seo/meta] Titres dupliqués parmi les pages publiques : ${[...new Set(duplicates)].join(", ")}.`,
+      `[seo/meta] Titres dupliqués parmi les pages publiques : ${Array.from(new Set(duplicates)).join(", ")}.`,
     );
   }
 
-  // Cohérence avec la Navigation_Principale.
-  const navPaths = new Set(PUBLIC_PAGES.map((page) => page.path));
+  // Cohérence avec la Navigation_Principale et les pages secondaires.
+  const allNavPages: Array<{ path: string }> = PUBLIC_PAGES.concat(SECONDARY_PAGES);
+  const navPaths = new Set(allNavPages.map((page) => page.path));
   const metaPaths = new Set(PUBLIC_ROUTES.map((route) => route.path));
-  const missingInMeta = [...navPaths].filter((path) => !metaPaths.has(path));
-  const missingInNav = [...metaPaths].filter((path) => !navPaths.has(path));
+  const missingInMeta = Array.from(navPaths).filter((path) => !metaPaths.has(path));
+  const missingInNav = Array.from(metaPaths).filter((path) => !navPaths.has(path));
   if (missingInMeta.length > 0 || missingInNav.length > 0) {
     throw new Error(
       `[seo/meta] Incohérence navigation ↔ métadonnées. ` +

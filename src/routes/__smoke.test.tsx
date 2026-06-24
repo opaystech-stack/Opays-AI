@@ -43,7 +43,7 @@ import { Navbar } from "@/components/Navbar";
 import { Route as IndexRoute } from "./_public.index";
 import { Route as RootRoute } from "./__root";
 const DefaultNotFound = RootRoute.options.notFoundComponent as import("@tanstack/react-router").NotFoundRouteComponent;
-import { PUBLIC_PAGES } from "@/content/navigation";
+import { PUBLIC_PAGES, SECONDARY_PAGES } from "@/content/navigation";
 import {
   PUBLIC_ROUTES,
   buildPublicPageMeta,
@@ -273,9 +273,9 @@ describe("Smoke — génération des métadonnées par page (Req. 12.1, 12.2, 12
   }
 
   it("PUBLIC_ROUTES couvre exactement les pages publiques (cohérence navigation ↔ métadonnées)", () => {
-    expect(PUBLIC_ROUTES.length).toBe(PUBLIC_PAGES.length);
+    expect(PUBLIC_ROUTES.length).toBe(PUBLIC_PAGES.length + SECONDARY_PAGES.length);
     const metaPaths = PUBLIC_ROUTES.map((r) => r.path).sort();
-    const navPaths = PUBLIC_PAGES.map((p) => p.path).sort();
+    const navPaths = [...PUBLIC_PAGES, ...SECONDARY_PAGES].map((p) => p.path).sort();
     expect(metaPaths).toEqual(navPaths);
   });
 

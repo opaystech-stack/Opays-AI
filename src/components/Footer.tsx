@@ -12,6 +12,14 @@ const NAV: { path: string; label: string }[] = [
   { path: "/contact", label: "Contact" },
 ];
 
+const SECONDARY_NAV: { path: string; label: string }[] = [
+  { path: "/a-propos", label: "À propos" },
+  { path: "/portfolio", label: "Portfolio" },
+  { path: "/saas", label: "SaaS" },
+  { path: "/souverainete-rd", label: "R&D" },
+  { path: "/faq", label: "FAQ" },
+];
+
 /**
  * Pied de page global (rendu sur toutes les pages via le layout `_public`).
  * Année de copyright dynamique (12.1) ; liens légaux fonctionnels vers
@@ -23,7 +31,7 @@ export function Footer() {
   return (
     <footer className="border-t border-border/50 bg-card/20">
       <div className="mx-auto max-w-6xl px-6 py-14">
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-5">
           <div className="lg:col-span-1">
             <div className="flex items-center gap-2.5">
               <img
@@ -51,6 +59,24 @@ export function Footer() {
             </h3>
             <ul className="mt-4 space-y-2 text-sm">
               {NAV.map((n) => (
+                <li key={n.path}>
+                  <Link
+                    to={n.path as NavTo}
+                    className="text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    {n.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-[color:var(--neon-cyan)]">
+              Pages
+            </h3>
+            <ul className="mt-4 space-y-2 text-sm">
+              {SECONDARY_NAV.map((n) => (
                 <li key={n.path}>
                   <Link
                     to={n.path as NavTo}

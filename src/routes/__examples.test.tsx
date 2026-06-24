@@ -37,7 +37,7 @@ import {
 } from "@tanstack/react-router";
 import { render, screen, cleanup, within, type RenderResult } from "@testing-library/react";
 
-import { PUBLIC_PAGES } from "@/content/navigation";
+import { PUBLIC_PAGES, SECONDARY_PAGES } from "@/content/navigation";
 import { selectRenderableProducts } from "@/content/rules/saas";
 import { Footer } from "@/components/Footer";
 import { TeamSection } from "@/components/TeamSection";
@@ -56,6 +56,9 @@ import { Route as ContactRoute } from "./_public.contact";
 /** Message_Pivot exact du Glossaire (Requirements 2.2, 9.3). */
 const MESSAGE_PIVOT =
   "L'efficience par l'IA, sans dépendre d'infrastructures que vous ne contrôlez pas.";
+
+/** Routes montées dans le routeur de test (pages principales + secondaires). */
+const TEST_PAGES = [...PUBLIC_PAGES, ...SECONDARY_PAGES];
 
 /** Composants de page réels, extraits de chaque route fichier. */
 const PAGE_COMPONENTS: Record<string, ComponentType> = {
@@ -101,7 +104,7 @@ function renderAt(path: string): RenderResult {
     component: () => <Outlet />,
     notFoundComponent: RootRoute.options.notFoundComponent as NotFoundRouteComponent,
   });
-  const children = PUBLIC_PAGES.map((page) =>
+  const children = TEST_PAGES.map((page) =>
     createRoute({
       getParentRoute: () => rootRoute,
       path: page.path,
@@ -140,8 +143,8 @@ function renderFooter(): RenderResult {
 }
 
 describe("Structure multi-pages — pages distinctes et URL directes", () => {
-  // Requirement 1.1 : pages publiques distinctes, chacune à une URL unique.
-  it("Requirement 1.1 : PUBLIC_PAGES expose neuf chemins distincts et uniques", () => {
+  // Requirement 1.1 : pages publiques principales distinctes, chacune à une URL unique.
+  it("Requirement 1.1 : PUBLIC_PAGES expose huit chemins distincts et uniques", () => {
     const paths = PUBLIC_PAGES.map((p) => p.path);
     expect(new Set(paths).size).toBe(paths.length);
     expect(paths).toEqual([
@@ -150,11 +153,17 @@ describe("Structure multi-pages — pages distinctes et URL directes", () => {
       "/methode",
       "/offres",
       "/portfolio",
-      "/faq",
       "/saas",
       "/souverainete-rd",
       "/contact",
     ]);
+  });
+
+  // Requirement 1.1b : la FAQ est accessible mais hors navigation principale.
+  it("Requirement 1.1b : FAQ est listée dans SECONDARY_PAGES, pas dans PUBLIC_PAGES", () => {
+    const publicPaths = new Set(PUBLIC_PAGES.map((p) => p.path));
+    expect(publicPaths.has("/faq")).toBe(false);
+    expect(SECONDARY_PAGES.map((p) => p.path)).toContain("/faq");
   });
 
   // Requirement 1.4 : ouvrir directement une URL affiche la page correspondante.
