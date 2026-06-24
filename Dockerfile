@@ -25,13 +25,15 @@ RUN npm run build
 # ── Étape 2 : serveur statique Nginx (non-root) ──────────────────────────────
 FROM nginx:stable-alpine
 
-# Supprime la configuration par défaut et prépare les dossiers pour l'utilisateur non-root
+# Supprime la configuration par défaut, configure Nginx pour non-root (PID dans /tmp, pas de directive user)
 RUN rm -f /etc/nginx/conf.d/default.conf \
   && rm -f /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh \
   && mkdir -p /var/log/nginx /tmp /usr/share/nginx/html \
-  && chown -R nginx:nginx /var/log/nginx /tmp /usr/share/nginx/html /etc/nginx/conf.d
+  && chown -R nginx:nginx /var/log/nginx /tmp /usr/share/nginx/html /etc/nginx/conf.d \
+  && sed -i 's|^pid.*|pid /tmp/nginx.pid;|' /etc/nginx/nginx.conf \
+  && sed -i '/^user /d' /etc/nginx/nginx.conf
 
-# Configuration Nginx écoutant sur 8080 et PID dans /tmp
+# Configuration Nginx écoutant sur 8080
 COPY --from=builder /app/dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
