@@ -28,8 +28,8 @@ FROM nginx:stable-alpine
 # Supprime la configuration par défaut, configure Nginx pour non-root (PID dans /tmp, pas de directive user)
 RUN rm -f /etc/nginx/conf.d/default.conf \
   && rm -f /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh \
-  && mkdir -p /var/log/nginx /tmp /usr/share/nginx/html \
-  && chown -R nginx:nginx /var/log/nginx /tmp /usr/share/nginx/html /etc/nginx/conf.d \
+  && mkdir -p /var/log/nginx /tmp /usr/share/nginx/html /var/cache/nginx/client_temp \
+  && chown -R nginx:nginx /var/log/nginx /tmp /usr/share/nginx/html /etc/nginx/conf.d /var/cache/nginx \
   && sed -i 's|^pid.*|pid /tmp/nginx.pid;|' /etc/nginx/nginx.conf \
   && sed -i '/^user /d' /etc/nginx/nginx.conf
 
@@ -40,12 +40,12 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 # Droits
 RUN chown -R nginx:nginx /usr/share/nginx/html
 
+# Validation avant démarrage, exécutée en root car nginx -t nécessite d'écrire dans /var/cache/nginx
+RUN nginx -t
+
 # Utilisateur non-root
 USER nginx
 
 EXPOSE 8080
-
-# Validation avant démarrage
-RUN nginx -t
 
 CMD ["nginx", "-g", "daemon off;"]
