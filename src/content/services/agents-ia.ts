@@ -13,12 +13,12 @@ export const AGENTS_IA: ServiceContent = {
     badge: "Service premium",
     title: "Des collaborateurs numériques",
     highlight: "qui ne s'arrêtent jamais.",
-    lead: "Pendant que vous lisez ces lignes, vos concurrents commencent à déployer des agents qui travaillent sans pause, sans congé et sans démission.",
+    lead: "vos concurrents commencent à déployer des agents qui travaillent sans pause, sans congé et sans démission.",
     paragraphs: [
       "Les agents IA ne relèvent plus de la fiction. Ils existent, ils produisent, et ils transforment des organisations entières dans le plus grand silence. La plupart des organisations opérationnelles en RDC pensent encore que l'IA, « c'est pour plus tard ».",
       "Le retard accumulé aujourd'hui deviendra très difficile à combler d'ici deux ans. Plus tard, c'est souvent trop tard.",
     ],
-    ctaLabel: "Réserver mon diagnostic gratuit",
+    ctaLabel: "Diagnostic gratuit",
   },
   stats: {
     eyebrow: "Le constat",
@@ -226,7 +226,7 @@ export const AGENTS_IA: ServiceContent = {
       },
       {
         q: "Combien coûte un agent IA ?",
-        a: "Selon la complexité, la conception se situe généralement entre 10 000 et 100 000 $ et plus. Les coûts d'exploitation varient de quelques centaines à quelques milliers de dollars par mois selon le volume. Le retour se mesure souvent en 3 à 9 mois sur les bons cas d'usage.",
+        a: "Selon la complexité, la conception se situe généralement entre 10 000 et un budget significatif et plus. Les coûts d'exploitation varient de quelques centaines à quelques milliers de dollars par mois selon le volume. Le retour se mesure souvent en 3 à 9 mois sur les bons cas d'usage.",
       },
       {
         q: "Les agents IA peuvent-ils commettre des erreurs graves ?",

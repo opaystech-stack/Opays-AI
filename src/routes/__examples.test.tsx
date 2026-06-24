@@ -44,8 +44,11 @@ import { TeamSection } from "@/components/TeamSection";
 
 import { Route as RootRoute } from "./__root";
 import { Route as IndexRoute } from "./_public.index";
+import { Route as AProposRoute } from "./_public.a-propos";
 import { Route as MethodeRoute } from "./_public.methode";
 import { Route as OffresRoute } from "./_public.offres";
+import { Route as PortfolioRoute } from "./_public.portfolio";
+import { Route as FaqRoute } from "./_public.faq";
 import { Route as SaasRoute } from "./_public.saas";
 import { Route as SouveraineteRoute } from "./_public.souverainete-rd";
 import { Route as ContactRoute } from "./_public.contact";
@@ -57,8 +60,11 @@ const MESSAGE_PIVOT =
 /** Composants de page réels, extraits de chaque route fichier. */
 const PAGE_COMPONENTS: Record<string, ComponentType> = {
   "/": IndexRoute.options.component as ComponentType,
+  "/a-propos": AProposRoute.options.component as ComponentType,
   "/methode": MethodeRoute.options.component as ComponentType,
   "/offres": OffresRoute.options.component as ComponentType,
+  "/portfolio": PortfolioRoute.options.component as ComponentType,
+  "/faq": FaqRoute.options.component as ComponentType,
   "/saas": SaasRoute.options.component as ComponentType,
   "/souverainete-rd": SouveraineteRoute.options.component as ComponentType,
   "/contact": ContactRoute.options.component as ComponentType,
@@ -86,7 +92,7 @@ beforeAll(() => {
 });
 
 /**
- * Monte un routeur en mémoire enregistrant les six routes publiques (composants
+ * Monte un routeur en mémoire enregistrant les routes publiques (composants
  * réels) et positionné sur `path`. Le composant correspondant à l'URL est rendu
  * dans l'`<Outlet/>` de la racine.
  */
@@ -134,19 +140,31 @@ function renderFooter(): RenderResult {
 }
 
 describe("Structure multi-pages — pages distinctes et URL directes", () => {
-  // Requirement 1.1 : six pages publiques distinctes, chacune à une URL unique.
-  it("Requirement 1.1 : PUBLIC_PAGES expose six chemins distincts et uniques", () => {
+  // Requirement 1.1 : pages publiques distinctes, chacune à une URL unique.
+  it("Requirement 1.1 : PUBLIC_PAGES expose neuf chemins distincts et uniques", () => {
     const paths = PUBLIC_PAGES.map((p) => p.path);
-    expect(paths).toHaveLength(6);
-    expect(new Set(paths).size).toBe(6);
-    expect(paths).toEqual(["/", "/methode", "/offres", "/saas", "/souverainete-rd", "/contact"]);
+    expect(new Set(paths).size).toBe(paths.length);
+    expect(paths).toEqual([
+      "/",
+      "/a-propos",
+      "/methode",
+      "/offres",
+      "/portfolio",
+      "/faq",
+      "/saas",
+      "/souverainete-rd",
+      "/contact",
+    ]);
   });
 
   // Requirement 1.4 : ouvrir directement une URL affiche la page correspondante.
   it.each([
     ["/", /Pour les organisations opérationnelles en RDC/],
+    ["/a-propos", /organisations opérationnelles en RDC/],
     ["/methode", /Des phases concrètes, des livrables, des délais\./],
     ["/offres", /Trois paliers d'efficience/],
+    ["/portfolio", /automatisation, chatbots, agents/],
+    ["/faq", /Questions fréquentes/],
     ["/saas", /Opays Nexus/],
     ["/souverainete-rd", /L'IA chez vous, sous votre contrôle\./],
     ["/contact", /Réservez votre Diagnostic gratuit\./],

@@ -13,12 +13,12 @@ export const INTEGRATION_IA: ServiceContent = {
     badge: "Service premium",
     title: "Vos outils actuels,",
     highlight: "dotés enfin d'un cerveau.",
-    lead: "Pendant que vous lisez ces lignes, vous payez des dizaines de milliers d'euros de logiciels qui n'exploitent qu'une infime part de l'IA disponible.",
+    lead: "vous payez des dizaines de milliers d'euros de logiciels qui n'exploitent qu'une infime part de l'IA disponible.",
     paragraphs: [
       "Votre CRM regorge de données qu'aucun humain n'a le temps d'exploiter. Vos e-mails contiennent des signaux que personne ne capte. Votre site pourrait personnaliser chaque interaction.",
       "Rien de tout cela n'arrive, parce que vos outils ne « pensent » pas. L'IA, c'est précisément le cerveau qui leur manque — sans changer votre stack.",
     ],
-    ctaLabel: "Réserver mon diagnostic gratuit",
+    ctaLabel: "Diagnostic gratuit",
   },
   stats: {
     eyebrow: "Le constat",

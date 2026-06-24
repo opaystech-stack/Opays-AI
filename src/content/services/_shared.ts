@@ -1,9 +1,9 @@
 import type { FinalCtaData } from "@/components/marketing/Sections";
 
 /**
- * Bloc « Le moment est maintenant » — récurrent sur chaque page de service du
- * site de référence, reformulé pour Opays Tech. Réutilisé pour garantir une
- * clôture cohérente sur toutes les pages.
+ * Bloc « Le moment est maintenant » — récurrent sur chaque page de service,
+ * reformulé pour Opays Tech. Réutilisé pour garantir une clôture cohérente sur
+ * toutes les pages. Le libellé du CTA est le même que sur le reste du site.
  */
 export const MOMENT_NOW: FinalCtaData = {
   eyebrow: "Le moment est maintenant",
@@ -12,7 +12,7 @@ export const MOMENT_NOW: FinalCtaData = {
   ifNothing: [
     "Des opportunités qui filent chez vos concurrents.",
     "Du temps perdu sur des tâches que l'on pourrait automatiser.",
-    "Une efficacité opérationnelle qui s'érode mois après mois.",
+    "Une efficience opérationnelle qui s'érode mois après mois.",
     "Du chiffre d'affaires laissé sur la table, sans même le voir.",
   ],
   ifStartTitle: "Si vous démarrez maintenant",
@@ -24,5 +24,5 @@ export const MOMENT_NOW: FinalCtaData = {
   ],
   scarcity:
     "Nous limitons volontairement le nombre de nouveaux projets engagés chaque mois pour garantir la qualité de l'accompagnement.",
-  ctaLabel: "Réserver mon diagnostic gratuit",
+  ctaLabel: "Diagnostic gratuit",
 };

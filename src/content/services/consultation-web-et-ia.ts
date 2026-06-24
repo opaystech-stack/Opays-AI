@@ -12,14 +12,14 @@ import { MOMENT_NOW } from "./_shared";
 export const CONSULTATION_WEB_IA: ServiceContent = {
   hero: {
     badge: "Service premium",
-    title: "Avant d'engager 50 000 $,",
+    title: "Avant d'engager un budget significatif,",
     highlight: "parlez-en une heure avec quelqu'un qui sait.",
-    lead: "Pendant que vous lisez ces lignes, la pire décision en transformation digitale reste celle qu'on prend seul.",
+    lead: "la pire décision en transformation digitale reste celle qu'on prend seul.",
     paragraphs: [
-      "Un concurrent a lancé un site qui marche. On vous parle d'IA partout. Vous lisez des articles contradictoires. Des prestataires proposent des solutions à 30 000, 50 000, 100 000 $. Comment savoir ce qui est juste pour vous ?",
+      "Un concurrent a lancé un site qui marche. On vous parle d'IA partout. Vous lisez des articles contradictoires. Des prestataires proposent des solutions à 30 000, 50 000, un budget significatif. Comment savoir ce qui est juste pour vous ?",
       "Sans une vision claire, chaque euro investi devient un pari. Une heure de cadrage lucide vaut souvent mieux que des mois d'hésitation.",
     ],
-    ctaLabel: "Réserver mon diagnostic gratuit",
+    ctaLabel: "Diagnostic gratuit",
   },
   stats: {
     eyebrow: "Le constat",
@@ -56,7 +56,7 @@ export const CONSULTATION_WEB_IA: ServiceContent = {
     ],
     costTitle: "Le coût de la mauvaise décision",
     costText:
-      "Investir 30 000 $ dans la mauvaise solution finit par en coûter près de 90 000 $ : la mise initiale, le coût de remplacement et le manque à gagner pendant 12 à 18 mois. Une consultation à 1 500 $ aurait suffi à éviter ce scénario.",
+      "Investir un budget significatif dans la mauvaise solution finit par en coûter près de un budget significatif : la mise initiale, le coût de remplacement et le manque à gagner pendant 12 à 18 mois. Une consultation à un budget significatif aurait suffi à éviter ce scénario.",
   },
   pillars: {
     eyebrow: "Notre approche",
@@ -216,25 +216,25 @@ export const CONSULTATION_WEB_IA: ServiceContent = {
       },
     ],
     roiNote:
-      "Une consultation de 1 500 à 5 000 $ évite typiquement 30 000 à 200 000 $ de dépenses mal orientées. C'est l'investissement au meilleur ratio coût/impact que vous ferez cette année.",
+      "Une consultation de 1 500 à un budget significatif évite typiquement 30 000 à un budget significatif de dépenses mal orientées. C'est l'investissement au meilleur ratio coût/impact que vous ferez cette année.",
   },
   caseStudy: {
     eyebrow: "Étude de cas",
     title: "Services professionnels, 25 collaborateurs",
     profileTitle: "Profil client",
     profile:
-      "Entreprise de services B2B de 25 collaborateurs en RDC, en pleine évaluation d'un projet de refonte digitale. Trois prestataires en lice, avec des propositions entre 45 000 et 95 000 $.",
+      "Entreprise de services B2B de 25 collaborateurs en RDC, en pleine évaluation d'un projet de refonte digitale. Trois prestataires en lice, avec des propositions entre 45 000 et un budget significatif.",
     actionsTitle: "Ce que nous avons fait",
     actions:
       "Consultation stratégique de deux jours : audit complet, analyse des trois propositions, mise au jour des risques cachés et recommandation d'une approche phasée différente, avec une roadmap sur 18 mois au budget optimisé.",
     metrics: [
-      { label: "Erreurs évitées", value: "80 000 $" },
+      { label: "Erreurs évitées", value: "un budget significatif" },
       { label: "Budget final", value: "−58 %" },
       { label: "ROI de la consultation", value: "× 23" },
       { label: "Délai de retour", value: "−12 mois" },
     ],
     quote:
-      "On allait signer une proposition à 75 000 $ qui ne répondait pas vraiment à nos besoins. La consultation nous a fait comprendre qu'on prenait le problème à l'envers. On a refait toute la stratégie, économisé un budget énorme et obtenu de meilleurs résultats.",
+      "On allait signer une proposition à un budget significatif qui ne répondait pas vraiment à nos besoins. La consultation nous a fait comprendre qu'on prenait le problème à l'envers. On a refait toute la stratégie, économisé un budget énorme et obtenu de meilleurs résultats.",
     author: "Dirigeant, services professionnels en RDC",
   },
   faq: {
@@ -247,7 +247,7 @@ export const CONSULTATION_WEB_IA: ServiceContent = {
       },
       {
         q: "Combien coûte une consultation ?",
-        a: "Selon l'ampleur, elle se situe généralement entre 1 500 et 5 000 $. C'est sans commune mesure avec les dizaines de milliers d'euros qu'une décision mal orientée peut coûter.",
+        a: "Selon l'ampleur, elle se situe généralement entre 1 500 et un budget significatif. C'est sans commune mesure avec les dizaines de milliers d'euros qu'une décision mal orientée peut coûter.",
       },
       {
         q: "Allez-vous forcément essayer de me vendre vos services ?",

@@ -23,11 +23,14 @@ export interface CtaDiagnostic {
   target: "/contact";
 }
 
-/** Les six pages publiques, dans l'ordre de navigation. */
+/** Les pages publiques, dans l'ordre de navigation. */
 export const PUBLIC_PAGES: NavPage[] = [
   { path: "/", label: "Accueil" },
+  { path: "/a-propos", label: "À propos" },
   { path: "/methode", label: "Méthode" },
   { path: "/offres", label: "Offres" },
+  { path: "/portfolio", label: "Portfolio" },
+  { path: "/faq", label: "FAQ" },
   { path: "/saas", label: "Produits SaaS" },
   { path: "/souverainete-rd", label: "Souveraineté & R&D" },
   { path: "/contact", label: "Contact" },

@@ -13,12 +13,12 @@ export const AUTOMATISATION: ServiceContent = {
     badge: "Service premium",
     title: "Arrêtez de faire à la main",
     highlight: "ce qu'une machine fait mieux.",
-    lead: "Pendant que vous lisez ces lignes, vos équipes font le travail d'un robot — payé au prix d'un humain.",
+    lead: "vos équipes font le travail d'un robot — payé au prix d'un humain.",
     paragraphs: [
       "Recopier des données d'un logiciel à l'autre, envoyer les relances une par une, ressaisir dans le CRM, produire les rapports à la main : autant d'heures volées à ce qui compte vraiment, votre opération.",
       "Chaque heure passée sur ces tâches est une heure qui ne sert ni vos clients, ni votre marge, ni vos équipes.",
     ],
-    ctaLabel: "Réserver mon diagnostic gratuit",
+    ctaLabel: "Diagnostic gratuit",
   },
   stats: {
     eyebrow: "Le constat",
@@ -30,7 +30,7 @@ export const AUTOMATISATION: ServiceContent = {
         label: "du temps de travail part dans des tâches répétitives, automatisables.",
       },
       {
-        value: "26 000 $",
+        value: "un budget significatif",
         label: "perdus en moyenne par employé et par an à cause de tâches manuelles évitables.",
       },
       {
@@ -52,7 +52,7 @@ export const AUTOMATISATION: ServiceContent = {
     ],
     costTitle: "La fuite invisible",
     costText:
-      "Pour une équipe de 10 personnes payées 500 $ par mois, 40 % de temps perdu équivaut à environ 24 000 $ de productivité évaporée chaque année. C'est une capacité réelle qui ne sert ni vos clients ni votre marge.",
+      "Pour une équipe de 10 personnes payées un budget significatif par mois, 40 % de temps perdu équivaut à environ un budget significatif de productivité évaporée chaque année. C'est une capacité réelle qui ne sert ni vos clients ni votre marge.",
   },
   pillars: {
     eyebrow: "Notre approche",
@@ -109,7 +109,7 @@ export const AUTOMATISATION: ServiceContent = {
         bad: "heures de bureau",
         good: "24/7, sans interruption",
       },
-      { criterion: "Coût par tâche traitée", bad: "20 à 50 $", good: "moins de 1 $" },
+      { criterion: "Coût par tâche traitée", bad: "20 à un budget significatif", good: "moins de un budget significatif" },
       {
         criterion: "Montée en charge",
         bad: "embaucher = délai + coût",

@@ -17,16 +17,19 @@ import { Route as PublicWebIntelligentRouteImport } from './routes/_public.web-i
 import { Route as PublicSouveraineteRdRouteImport } from './routes/_public.souverainete-rd'
 import { Route as PublicServicesRouteImport } from './routes/_public.services'
 import { Route as PublicSaasRouteImport } from './routes/_public.saas'
+import { Route as PublicPortfolioRouteImport } from './routes/_public.portfolio'
 import { Route as PublicOffresRouteImport } from './routes/_public.offres'
 import { Route as PublicMethodeRouteImport } from './routes/_public.methode'
 import { Route as PublicMentionsLegalesRouteImport } from './routes/_public.mentions-legales'
 import { Route as PublicIntegrationIaRouteImport } from './routes/_public.integration-ia'
+import { Route as PublicFaqRouteImport } from './routes/_public.faq'
 import { Route as PublicContactRouteImport } from './routes/_public.contact'
 import { Route as PublicConsultationWebEtIaRouteImport } from './routes/_public.consultation-web-et-ia'
 import { Route as PublicConfidentialiteRouteImport } from './routes/_public.confidentialite'
 import { Route as PublicChatbotIntelligentRouteImport } from './routes/_public.chatbot-intelligent'
 import { Route as PublicAutomatisationRouteImport } from './routes/_public.automatisation'
 import { Route as PublicAgentsIaRouteImport } from './routes/_public.agents-ia'
+import { Route as PublicAProposRouteImport } from './routes/_public.a-propos'
 
 const Tenant0Route = Tenant0RouteImport.update({
   id: '/tenant-0',
@@ -67,6 +70,11 @@ const PublicSaasRoute = PublicSaasRouteImport.update({
   path: '/saas',
   getParentRoute: () => PublicRoute,
 } as any)
+const PublicPortfolioRoute = PublicPortfolioRouteImport.update({
+  id: '/portfolio',
+  path: '/portfolio',
+  getParentRoute: () => PublicRoute,
+} as any)
 const PublicOffresRoute = PublicOffresRouteImport.update({
   id: '/offres',
   path: '/offres',
@@ -85,6 +93,11 @@ const PublicMentionsLegalesRoute = PublicMentionsLegalesRouteImport.update({
 const PublicIntegrationIaRoute = PublicIntegrationIaRouteImport.update({
   id: '/integration-ia',
   path: '/integration-ia',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicFaqRoute = PublicFaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
   getParentRoute: () => PublicRoute,
 } as any)
 const PublicContactRoute = PublicContactRouteImport.update({
@@ -119,21 +132,29 @@ const PublicAgentsIaRoute = PublicAgentsIaRouteImport.update({
   path: '/agents-ia',
   getParentRoute: () => PublicRoute,
 } as any)
+const PublicAProposRoute = PublicAProposRouteImport.update({
+  id: '/a-propos',
+  path: '/a-propos',
+  getParentRoute: () => PublicRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof PublicIndexRoute
   '/bridges-os': typeof BridgesOsRoute
   '/tenant-0': typeof Tenant0Route
+  '/a-propos': typeof PublicAProposRoute
   '/agents-ia': typeof PublicAgentsIaRoute
   '/automatisation': typeof PublicAutomatisationRoute
   '/chatbot-intelligent': typeof PublicChatbotIntelligentRoute
   '/confidentialite': typeof PublicConfidentialiteRoute
   '/consultation-web-et-ia': typeof PublicConsultationWebEtIaRoute
   '/contact': typeof PublicContactRoute
+  '/faq': typeof PublicFaqRoute
   '/integration-ia': typeof PublicIntegrationIaRoute
   '/mentions-legales': typeof PublicMentionsLegalesRoute
   '/methode': typeof PublicMethodeRoute
   '/offres': typeof PublicOffresRoute
+  '/portfolio': typeof PublicPortfolioRoute
   '/saas': typeof PublicSaasRoute
   '/services': typeof PublicServicesRoute
   '/souverainete-rd': typeof PublicSouveraineteRdRoute
@@ -142,16 +163,19 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/bridges-os': typeof BridgesOsRoute
   '/tenant-0': typeof Tenant0Route
+  '/a-propos': typeof PublicAProposRoute
   '/agents-ia': typeof PublicAgentsIaRoute
   '/automatisation': typeof PublicAutomatisationRoute
   '/chatbot-intelligent': typeof PublicChatbotIntelligentRoute
   '/confidentialite': typeof PublicConfidentialiteRoute
   '/consultation-web-et-ia': typeof PublicConsultationWebEtIaRoute
   '/contact': typeof PublicContactRoute
+  '/faq': typeof PublicFaqRoute
   '/integration-ia': typeof PublicIntegrationIaRoute
   '/mentions-legales': typeof PublicMentionsLegalesRoute
   '/methode': typeof PublicMethodeRoute
   '/offres': typeof PublicOffresRoute
+  '/portfolio': typeof PublicPortfolioRoute
   '/saas': typeof PublicSaasRoute
   '/services': typeof PublicServicesRoute
   '/souverainete-rd': typeof PublicSouveraineteRdRoute
@@ -163,16 +187,19 @@ export interface FileRoutesById {
   '/_public': typeof PublicRouteWithChildren
   '/bridges-os': typeof BridgesOsRoute
   '/tenant-0': typeof Tenant0Route
+  '/_public/a-propos': typeof PublicAProposRoute
   '/_public/agents-ia': typeof PublicAgentsIaRoute
   '/_public/automatisation': typeof PublicAutomatisationRoute
   '/_public/chatbot-intelligent': typeof PublicChatbotIntelligentRoute
   '/_public/confidentialite': typeof PublicConfidentialiteRoute
   '/_public/consultation-web-et-ia': typeof PublicConsultationWebEtIaRoute
   '/_public/contact': typeof PublicContactRoute
+  '/_public/faq': typeof PublicFaqRoute
   '/_public/integration-ia': typeof PublicIntegrationIaRoute
   '/_public/mentions-legales': typeof PublicMentionsLegalesRoute
   '/_public/methode': typeof PublicMethodeRoute
   '/_public/offres': typeof PublicOffresRoute
+  '/_public/portfolio': typeof PublicPortfolioRoute
   '/_public/saas': typeof PublicSaasRoute
   '/_public/services': typeof PublicServicesRoute
   '/_public/souverainete-rd': typeof PublicSouveraineteRdRoute
@@ -185,16 +212,19 @@ export interface FileRouteTypes {
     | '/'
     | '/bridges-os'
     | '/tenant-0'
+    | '/a-propos'
     | '/agents-ia'
     | '/automatisation'
     | '/chatbot-intelligent'
     | '/confidentialite'
     | '/consultation-web-et-ia'
     | '/contact'
+    | '/faq'
     | '/integration-ia'
     | '/mentions-legales'
     | '/methode'
     | '/offres'
+    | '/portfolio'
     | '/saas'
     | '/services'
     | '/souverainete-rd'
@@ -203,16 +233,19 @@ export interface FileRouteTypes {
   to:
     | '/bridges-os'
     | '/tenant-0'
+    | '/a-propos'
     | '/agents-ia'
     | '/automatisation'
     | '/chatbot-intelligent'
     | '/confidentialite'
     | '/consultation-web-et-ia'
     | '/contact'
+    | '/faq'
     | '/integration-ia'
     | '/mentions-legales'
     | '/methode'
     | '/offres'
+    | '/portfolio'
     | '/saas'
     | '/services'
     | '/souverainete-rd'
@@ -223,16 +256,19 @@ export interface FileRouteTypes {
     | '/_public'
     | '/bridges-os'
     | '/tenant-0'
+    | '/_public/a-propos'
     | '/_public/agents-ia'
     | '/_public/automatisation'
     | '/_public/chatbot-intelligent'
     | '/_public/confidentialite'
     | '/_public/consultation-web-et-ia'
     | '/_public/contact'
+    | '/_public/faq'
     | '/_public/integration-ia'
     | '/_public/mentions-legales'
     | '/_public/methode'
     | '/_public/offres'
+    | '/_public/portfolio'
     | '/_public/saas'
     | '/_public/services'
     | '/_public/souverainete-rd'
@@ -304,6 +340,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicSaasRouteImport
       parentRoute: typeof PublicRoute
     }
+    '/_public/portfolio': {
+      id: '/_public/portfolio'
+      path: '/portfolio'
+      fullPath: '/portfolio'
+      preLoaderRoute: typeof PublicPortfolioRouteImport
+      parentRoute: typeof PublicRoute
+    }
     '/_public/offres': {
       id: '/_public/offres'
       path: '/offres'
@@ -330,6 +373,13 @@ declare module '@tanstack/react-router' {
       path: '/integration-ia'
       fullPath: '/integration-ia'
       preLoaderRoute: typeof PublicIntegrationIaRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/faq': {
+      id: '/_public/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof PublicFaqRouteImport
       parentRoute: typeof PublicRoute
     }
     '/_public/contact': {
@@ -374,20 +424,30 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicAgentsIaRouteImport
       parentRoute: typeof PublicRoute
     }
+    '/_public/a-propos': {
+      id: '/_public/a-propos'
+      path: '/a-propos'
+      fullPath: '/a-propos'
+      preLoaderRoute: typeof PublicAProposRouteImport
+      parentRoute: typeof PublicRoute
+    }
   }
 }
 
 interface PublicRouteChildren {
+  PublicAProposRoute: typeof PublicAProposRoute
   PublicAgentsIaRoute: typeof PublicAgentsIaRoute
   PublicAutomatisationRoute: typeof PublicAutomatisationRoute
   PublicChatbotIntelligentRoute: typeof PublicChatbotIntelligentRoute
   PublicConfidentialiteRoute: typeof PublicConfidentialiteRoute
   PublicConsultationWebEtIaRoute: typeof PublicConsultationWebEtIaRoute
   PublicContactRoute: typeof PublicContactRoute
+  PublicFaqRoute: typeof PublicFaqRoute
   PublicIntegrationIaRoute: typeof PublicIntegrationIaRoute
   PublicMentionsLegalesRoute: typeof PublicMentionsLegalesRoute
   PublicMethodeRoute: typeof PublicMethodeRoute
   PublicOffresRoute: typeof PublicOffresRoute
+  PublicPortfolioRoute: typeof PublicPortfolioRoute
   PublicSaasRoute: typeof PublicSaasRoute
   PublicServicesRoute: typeof PublicServicesRoute
   PublicSouveraineteRdRoute: typeof PublicSouveraineteRdRoute
@@ -396,16 +456,19 @@ interface PublicRouteChildren {
 }
 
 const PublicRouteChildren: PublicRouteChildren = {
+  PublicAProposRoute: PublicAProposRoute,
   PublicAgentsIaRoute: PublicAgentsIaRoute,
   PublicAutomatisationRoute: PublicAutomatisationRoute,
   PublicChatbotIntelligentRoute: PublicChatbotIntelligentRoute,
   PublicConfidentialiteRoute: PublicConfidentialiteRoute,
   PublicConsultationWebEtIaRoute: PublicConsultationWebEtIaRoute,
   PublicContactRoute: PublicContactRoute,
+  PublicFaqRoute: PublicFaqRoute,
   PublicIntegrationIaRoute: PublicIntegrationIaRoute,
   PublicMentionsLegalesRoute: PublicMentionsLegalesRoute,
   PublicMethodeRoute: PublicMethodeRoute,
   PublicOffresRoute: PublicOffresRoute,
+  PublicPortfolioRoute: PublicPortfolioRoute,
   PublicSaasRoute: PublicSaasRoute,
   PublicServicesRoute: PublicServicesRoute,
   PublicSouveraineteRdRoute: PublicSouveraineteRdRoute,

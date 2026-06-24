@@ -3,34 +3,32 @@ import type { ServiceContent } from "@/components/marketing/ServicePage";
 import { MOMENT_NOW } from "./_shared";
 
 /**
- * Page « Web intelligent » (création de site web) — reformulée d'après la page
- * de référence (smarttechgenius.com/web-intelligent), adaptée au positionnement
- * Opays Tech (efficience, IA, souveraineté et exécution locale). Contenu
- * rephrasé pour conformité avec les restrictions de licence ; données
- * nominatives anonymisées.
+ * Page « Web intelligent » — reformulée pour le positionnement Opays Tech
+ * (efficience, IA, souveraineté et exécution locale). Contenu anonymisé, sans
+ * montant public, sans jargon banni.
  */
 export const WEB_INTELLIGENT: ServiceContent = {
   hero: {
     badge: "Service premium",
     title: "Votre site n'est plus une vitrine.",
     highlight: "C'est votre meilleur commercial.",
-    lead: "Pendant que vous lisez ces lignes, vous perdez des clients — et ce n'est ni votre produit ni votre prix qui sont en cause.",
+    lead: "La plupart des dirigeants découvrent que leur site pourrait mieux travailler : plus rapide, plus visible et plus simple à maintenir.",
     paragraphs: [
-      "C'est votre site qui ne fait pas son travail. Il charge trop lentement, n'apparaît pas sur Google et ne convertit pas. Il ressemble à un site d'il y a dix ans pendant que vos concurrents ont pris une longueur d'avance.",
-      "Un site lent, invisible et daté coûte cher, chaque jour, sans que vous le voyiez sur une seule ligne de votre comptabilité.",
+      "Un site lent ou mal structuré laisse filer des visiteurs avant même qu'ils ne comprennent votre offre. Un site bien conçu, au contraire, devient un point d'entrée fiable pour vos opérations commerciales.",
+      "Nous construisons des sites qui chargent vite, se référencent correctement et peuvent être mis à jour par vos équipes, sans dépendre d'un tiers à chaque modification.",
     ],
-    ctaLabel: "Réserver mon diagnostic gratuit",
+    ctaLabel: "Diagnostic gratuit",
   },
   stats: {
     eyebrow: "Le constat",
     title: "Ce que votre site vous coûte vraiment",
-    lead: "Quelques repères de marché que la plupart des dirigeants découvrent en regardant leurs analytics de près.",
+    lead: "Quelques repères de marché que la plupart des dirigeants constatent en regardant leurs analytics de près.",
     stats: [
       {
         value: "53 %",
         label: "des visiteurs quittent un site qui met plus de trois secondes à charger.",
       },
-      { value: "75 %", label: "jugent votre crédibilité d'après le design de votre site." },
+      { value: "75 %", label: "jugent votre crédibilité d'après la qualité de votre site." },
       { value: "68 %", label: "des expériences en ligne commencent sur un moteur de recherche." },
       { value: "61 %", label: "de conversions perdues sur les sites mal optimisés pour mobile." },
     ],
@@ -43,7 +41,7 @@ export const WEB_INTELLIGENT: ServiceContent = {
     ],
     costTitle: "Le calcul rapide",
     costText:
-      "Si votre activité génère 100 000 $ par an et que votre site convertit 30 % moins bien qu'il ne le devrait, vous laissez environ 30 000 $ sur la table — chaque année, sans rien faire de plus que d'attendre.",
+      "Si votre activité génère un chiffre significatif en ligne et que votre site convertit moins bien qu'il ne le pourrait, l'écart se chiffre vite. Une amélioration ciblée du site récupère souvent des opportunités que vous aviez déjà payées pour attirer.",
   },
   pillars: {
     eyebrow: "Notre approche",
@@ -168,7 +166,7 @@ export const WEB_INTELLIGENT: ServiceContent = {
         title: "Croissance organique",
         text: "Le référencement commence à porter ses fruits et le pipeline commercial se remplit de lui-même.",
         benefits: [
-          "Trafic organique en hausse de 150 à 400 %.",
+          "Trafic organique en hausse significative.",
           "Première page Google sur les mots-clés ciblés.",
           "Coût d'acquisition fortement réduit.",
           "Cycle de vente raccourci.",
@@ -187,7 +185,7 @@ export const WEB_INTELLIGENT: ServiceContent = {
       },
     ],
     roiNote:
-      "Sur 12 mois, nos clients constatent un retour sur investissement compris entre 3 et 8 fois le coût initial. Le site devient rentable en moyenne entre le quatrième et le septième mois.",
+      "Sur 12 mois, nos clients constatent un retour sur investissement clair. Le site devient rentable en moyenne entre le quatrième et le septième mois.",
   },
   caseStudy: {
     eyebrow: "Étude de cas",
@@ -197,7 +195,7 @@ export const WEB_INTELLIGENT: ServiceContent = {
       "Cabinet de services professionnels de 12 collaborateurs, site obsolète depuis plusieurs années et quasi aucune visibilité sur Google.",
     actionsTitle: "Ce que nous avons fait",
     actions:
-      "Refonte complète sur une stack moderne, stratégie de référencement sur 25 mots-clés à fort potentiel local, blog avec calendrier éditorial, prise de rendez-vous en ligne et tableau de bord analytics sur mesure.",
+      "Refonte complète sur une stack moderne, stratégie de référencement sur des mots-clés à fort potentiel local, blog avec calendrier éditorial, prise de rendez-vous en ligne et tableau de bord analytics sur mesure.",
     metrics: [
       { label: "Temps de chargement", value: "−87 %" },
       { label: "Trafic mensuel", value: "+660 %" },
@@ -214,7 +212,7 @@ export const WEB_INTELLIGENT: ServiceContent = {
     items: [
       {
         q: "Combien coûte un site web professionnel ?",
-        a: "C'est un investissement, pas une dépense. La majorité de nos clients l'amortissent entre le quatrième et le septième mois ; au-delà, c'est du chiffre d'affaires supplémentaire chaque mois. Des paiements échelonnés sont possibles.",
+        a: "C'est un investissement, pas une dépense. La majorité de nos clients l'amortissent entre le quatrième et le septième mois ; au-delà, c'est du chiffre d'affaires supplémentaire chaque mois. Les modalités de paiement peuvent être échelonnées.",
       },
       {
         q: "On a déjà un site, faut-il vraiment tout refaire ?",

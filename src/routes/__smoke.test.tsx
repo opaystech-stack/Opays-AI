@@ -272,8 +272,8 @@ describe("Smoke — génération des métadonnées par page (Req. 12.1, 12.2, 12
     return head.links.find((l) => l.rel === "canonical")?.href;
   }
 
-  it("PUBLIC_ROUTES couvre exactement les 6 pages publiques (cohérence navigation ↔ métadonnées)", () => {
-    expect(PUBLIC_ROUTES).toHaveLength(6);
+  it("PUBLIC_ROUTES couvre exactement les pages publiques (cohérence navigation ↔ métadonnées)", () => {
+    expect(PUBLIC_ROUTES.length).toBe(PUBLIC_PAGES.length);
     const metaPaths = PUBLIC_ROUTES.map((r) => r.path).sort();
     const navPaths = PUBLIC_PAGES.map((p) => p.path).sort();
     expect(metaPaths).toEqual(navPaths);
@@ -319,13 +319,13 @@ describe("Smoke — génération des métadonnées par page (Req. 12.1, 12.2, 12
 });
 
 describe("Smoke — génération du sitemap et du robots.txt (Req. 12.6, 12.8, 13.5)", () => {
-  it("buildSitemapXml inclut les URL canoniques des 6 pages publiques", () => {
+  it("buildSitemapXml inclut les URL canoniques des pages publiques", () => {
     const xml = buildSitemapXml(PUBLIC_ROUTES);
     for (const route of PUBLIC_ROUTES) {
       const url = toCanonicalUrl(route.path);
       expect(xml, `URL absente du sitemap : ${url}`).toContain(url);
     }
-    // Exactement 6 entrées <url>.
+    // Exactement autant d'entrées <url> que de routes publiques.
     const count = (xml.match(/<url>/g) ?? []).length;
     expect(count).toBe(PUBLIC_ROUTES.length);
   });

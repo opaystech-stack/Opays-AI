@@ -34,7 +34,7 @@
   --color-terminal: var(--terminal);
   --color-terminal-foreground: var(--terminal-foreground);
   --color-success: var(--success);
-  --font-display: "Space Grotesk", "Inter", sans-serif;
+  --font-display: "Metropolis", "Space Grotesk", "Inter", sans-serif;
   --font-sans: "Inter", sans-serif;
   --font-mono: "JetBrains Mono", monospace;
 }
@@ -93,6 +93,63 @@ html {
 }
 
 @layer base {
+  @font-face {
+    font-family: "Metropolis";
+    src: url("/fonts/metropolis/Metropolis-Regular.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Metropolis";
+    src: url("/fonts/metropolis/Metropolis-RegularItalic.woff2") format("woff2");
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Metropolis";
+    src: url("/fonts/metropolis/Metropolis-Medium.woff2") format("woff2");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Metropolis";
+    src: url("/fonts/metropolis/Metropolis-MediumItalic.woff2") format("woff2");
+    font-weight: 500;
+    font-style: italic;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Metropolis";
+    src: url("/fonts/metropolis/Metropolis-SemiBold.woff2") format("woff2");
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Metropolis";
+    src: url("/fonts/metropolis/Metropolis-SemiBoldItalic.woff2") format("woff2");
+    font-weight: 600;
+    font-style: italic;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Metropolis";
+    src: url("/fonts/metropolis/Metropolis-Bold.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Metropolis";
+    src: url("/fonts/metropolis/Metropolis-BoldItalic.woff2") format("woff2");
+    font-weight: 700;
+    font-style: italic;
+    font-display: swap;
+  }
+
   * {
     border-color: var(--color-border);
   }

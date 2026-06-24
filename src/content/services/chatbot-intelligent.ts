@@ -21,12 +21,12 @@ export const CHATBOT_INTELLIGENT: ServiceContent = {
     badge: "Service premium",
     title: "Votre meilleur vendeur",
     highlight: "ne dort jamais, et parle 50 langues.",
-    lead: "Pendant que vous lisez ces lignes, la plupart des clients qui posent une question hors heures d'ouverture ne reviennent jamais.",
+    lead: "la plupart des clients qui posent une question hors heures d'ouverture ne reviennent jamais.",
     paragraphs: [
       "Pendant que vous dormez, vos concurrents répondent. Pendant votre pause, vos prospects s'en vont. Chaque minute sans réponse, c'est une vente potentielle qui s'évapore.",
       "Embaucher du personnel disponible jour et nuit n'est ni rentable ni réaliste. Un chatbot intelligent, lui, répond toujours, instantanément.",
     ],
-    ctaLabel: "Réserver mon diagnostic gratuit",
+    ctaLabel: "Diagnostic gratuit",
   },
   stats: {
     eyebrow: "Le constat",
@@ -117,8 +117,8 @@ export const CHATBOT_INTELLIGENT: ServiceContent = {
       },
       {
         criterion: "Coût mensuel",
-        bad: "3 000 à 5 000 $ pour un employé",
-        good: "forfait à partir de 200 $/mois",
+        bad: "3 000 à un budget significatif pour un employé",
+        good: "forfait à partir de un budget significatif/mois",
       },
       { criterion: "Capacité simultanée", bad: "une conversation par personne", good: "illimitée" },
       { criterion: "Langues prises en charge", bad: "1 à 2 langues", good: "plus de 50 langues" },
@@ -220,7 +220,7 @@ export const CHATBOT_INTELLIGENT: ServiceContent = {
       "Chatbot multilingue (FR/EN) sur le site et la messagerie, connecté à la boutique, à l'agenda de showroom et au CRM. Capable de conseiller, suivre les commandes, gérer les retours et prendre des rendez-vous.",
     metrics: [
       { label: "Conversions", value: "+247 %" },
-      { label: "Économies / an", value: "84 000 $" },
+      { label: "Économies / an", value: "un budget significatif" },
       { label: "Précision IA", value: "92 %" },
       { label: "Temps de réponse", value: "< 2 s" },
     ],

@@ -232,6 +232,14 @@ export const PUBLIC_ROUTES: PublicRoute[] = [
     priority: 1,
   },
   {
+    path: "/a-propos",
+    title: "À propos — Opays Tech",
+    description:
+      "Découvrez Opays Tech : cabinet d'ingénierie de l'efficience en RDC, sa vision, son équipe fondatrice et ses engagements souverains.",
+    changefreq: "monthly",
+    priority: 0.8,
+  },
+  {
     path: "/methode",
     title: "La méthode Opays — phases, livrables et durées",
     description:
@@ -246,6 +254,22 @@ export const PUBLIC_ROUTES: PublicRoute[] = [
       "Trois paliers d'efficience présentés sans montant : Diagnostic d'Efficience, Système d'Efficience et Transformation Souveraine, avec leurs livrables.",
     changefreq: "monthly",
     priority: 0.9,
+  },
+  {
+    path: "/portfolio",
+    title: "Portfolio — Réalisations Opays Tech",
+    description:
+      "Retrouvez les réalisations d'Opays Tech : automatisation, chatbots, agents IA et systèmes souverains pour les organisations opérationnelles en RDC.",
+    changefreq: "monthly",
+    priority: 0.7,
+  },
+  {
+    path: "/faq",
+    title: "FAQ — Questions fréquentes Opays Tech",
+    description:
+      "Questions fréquentes sur l'efficience, l'IA locale, la souveraineté des données et la méthode Opays Tech.",
+    changefreq: "monthly",
+    priority: 0.6,
   },
   {
     path: "/saas",
