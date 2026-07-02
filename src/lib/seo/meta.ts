@@ -295,6 +295,78 @@ export const PUBLIC_ROUTES: PublicRoute[] = [
     changefreq: "yearly",
     priority: 0.6,
   },
+  {
+    path: "/services",
+    title: "Nos services — Opays Tech",
+    description:
+      "Découvrez les services Opays Tech : Web Intelligent, Chatbot, Automatisation, Agents IA, Intégration IA et Consultation Web & IA pour votre entreprise.",
+    changefreq: "monthly",
+    priority: 0.8,
+  },
+  {
+    path: "/web-intelligent",
+    title: "Web Intelligent — Opays Tech",
+    description:
+      "Un site rapide, visible sur Google et pensé pour convertir. Audit, design, développement et référencement : votre site devient votre meilleur commercial.",
+    changefreq: "monthly",
+    priority: 0.7,
+  },
+  {
+    path: "/chatbot-intelligent",
+    title: "Chatbot intelligent 24/7 — Opays Tech",
+    description:
+      "Un assistant conversationnel disponible jour et nuit qui répond, qualifie vos prospects et prend des rendez-vous. Diagnostic gratuit Opays Tech.",
+    changefreq: "monthly",
+    priority: 0.7,
+  },
+  {
+    path: "/automatisation",
+    title: "Automatisation des processus — Opays Tech",
+    description:
+      "Automatisez vos tâches répétitives et libérez vos équipes pour l'essentiel. Opays Tech conçoit des workflows intelligents pour votre organisation.",
+    changefreq: "monthly",
+    priority: 0.7,
+  },
+  {
+    path: "/agents-ia",
+    title: "Agents IA pour entreprises — Opays Tech",
+    description:
+      "Des agents IA autonomes pour automatiser vos processus métier, analyser vos données et piloter vos opérations. Déployés localement ou dans le cloud.",
+    changefreq: "monthly",
+    priority: 0.7,
+  },
+  {
+    path: "/integration-ia",
+    title: "Intégration IA dans vos outils — Opays Tech",
+    description:
+      "Intégrez l'intelligence artificielle dans vos outils existants : CRM, ERP, messagerie, bases de données. L'IA au service de vos processus, sans tout casser.",
+    changefreq: "monthly",
+    priority: 0.7,
+  },
+  {
+    path: "/consultation-web-et-ia",
+    title: "Consultation web et IA — Opays Tech",
+    description:
+      "Un accompagnement stratégique pour définir votre feuille de route numérique : audit, conseil, architecture et pilotage de projets web et IA.",
+    changefreq: "monthly",
+    priority: 0.7,
+  },
+  {
+    path: "/mentions-legales",
+    title: "Mentions légales — Opays Tech",
+    description:
+      "Mentions légales d'Opays Tech : éditeur du site, hébergement, propriété intellectuelle, responsabilité et coordonnées de contact.",
+    changefreq: "yearly",
+    priority: 0.3,
+  },
+  {
+    path: "/confidentialite",
+    title: "Politique de confidentialité — Opays Tech",
+    description:
+      "Politique de confidentialité d'Opays Tech : données du formulaire de contact, finalité, base légale, conservation et droits RGPD.",
+    changefreq: "yearly",
+    priority: 0.3,
+  },
 ];
 
 /**

@@ -36,7 +36,18 @@ export const PUBLIC_PAGES: NavPage[] = [
 ];
 
 /** Pages publiques secondaires, accessibles depuis le footer mais pas dans la navigation principale. */
-export const SECONDARY_PAGES: NavPage[] = [{ path: "/faq", label: "FAQ" }];
+export const SECONDARY_PAGES: NavPage[] = [
+  { path: "/faq", label: "FAQ" },
+  { path: "/services", label: "Services" },
+  { path: "/web-intelligent", label: "Web Intelligent" },
+  { path: "/chatbot-intelligent", label: "Chatbot Intelligent" },
+  { path: "/automatisation", label: "Automatisation" },
+  { path: "/agents-ia", label: "Agents IA" },
+  { path: "/integration-ia", label: "Intégration IA" },
+  { path: "/consultation-web-et-ia", label: "Consultation Web & IA" },
+  { path: "/mentions-legales", label: "Mentions légales" },
+  { path: "/confidentialite", label: "Confidentialité" },
+];
 
 /**
  * L'appel à l'action unique du Site_Vitrine, défini une seule fois.
