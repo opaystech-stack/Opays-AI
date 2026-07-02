@@ -10,6 +10,8 @@
     "generate:seo": "vite-node scripts/generate-seo-assets.ts",
     "prebuild": "vite-node scripts/generate-seo-assets.ts",
     "prebuild:dev": "vite-node scripts/generate-seo-assets.ts",
+    "prerender": "vite-node scripts/prerender.ts",
+    "postbuild": "vite-node scripts/prerender.ts",
     "preview": "vite preview",
     "lint": "eslint .",
     "format": "prettier --write .",
