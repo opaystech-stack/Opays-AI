@@ -273,9 +273,9 @@ export const PUBLIC_ROUTES: PublicRoute[] = [
   },
   {
     path: "/saas",
-    title: "Produits SaaS Opays — Nexus et Brand Content OS",
+    title: "Produits SaaS Opays — Fox et Biz",
     description:
-      "Explorez les produits SaaS développés par Opays Tech, dont Opays Nexus et Brand Content OS, pensés pour appliquer la même méthode d'efficience sans erreur.",
+      "Explorez les produits SaaS développés par Opays Tech : Opays Fox pour le trading crypto automatisé et Opays Biz pour la gestion d'entreprise tout-en-un.",
     changefreq: "monthly",
     priority: 0.7,
   },
