@@ -22,7 +22,7 @@ export const SAAS_PRODUCTS: SaasProduct[] = [
     name: "Opays Fox",
     description:
       "Solution de trading et d'arbitrage crypto automatisée : bots IA, analyse de marché en temps réel, gestion de portefeuille multi-exchange. Pilotez vos stratégies depuis un tableau de bord unifié.",
-    accessUrl: "https://hq.opays.io",
+    accessUrl: "https://fox.opays.io",
   },
   {
     name: "Opays Biz",
