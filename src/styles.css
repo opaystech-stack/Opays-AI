@@ -197,4 +197,39 @@ html {
     background-size: 48px 48px;
     mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
   }
+
+  .animate-bar {
+    transform-origin: bottom;
+    animation: grow-bar 1.2s ease-out both;
+    animation-iteration-count: infinite;
+  }
+
+  .animate-path {
+    stroke-dasharray: 600;
+    stroke-dashoffset: 600;
+    animation: draw-path 2.5s ease-out forwards, pulse-path 2.5s ease-in-out 2.5s infinite;
+  }
+
+  .animate-pulse-slow {
+    animation: pulse-dot 2.5s ease-in-out infinite;
+  }
+}
+
+@keyframes grow-bar {
+  0%, 100% { transform: scaleY(0.45); }
+  50% { transform: scaleY(1); }
+}
+
+@keyframes draw-path {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes pulse-path {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.4); opacity: 1; }
 }

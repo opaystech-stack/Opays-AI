@@ -174,7 +174,7 @@ describe("Structure multi-pages — pages distinctes et URL directes", () => {
     ["/offres", /Trois paliers d'efficience/],
     ["/portfolio", /automatisation, chatbots, agents/],
     ["/faq", /Questions fréquentes/],
-    ["/saas", /Opays Nexus/],
+    ["/saas", /Opays Fox/],
     ["/souverainete-rd", /L'IA chez vous, sous votre contrôle\./],
     ["/contact", /Réservez votre Diagnostic gratuit\./],
   ])("Requirement 1.4 : l'URL directe %s rend sa page dédiée", async (path, marker) => {
@@ -285,11 +285,11 @@ describe("Section_Equipe — fondateurs nommés avec leurs rôles", () => {
 });
 
 describe("Page_SaaS — produits nommés et CTA conservé", () => {
-  // Requirement 8.3 : la page inclut au minimum Opays Nexus et Brand Content OS.
-  it("Requirement 8.3 : affiche Opays Nexus et Brand Content OS", async () => {
+  // Requirement 8.3 : la page inclut au minimum Opays Fox et Opays Biz.
+  it("Requirement 8.3 : affiche Opays Fox et Opays Biz", async () => {
     renderAt("/saas");
-    expect(await screen.findByText("Opays Nexus")).toBeInTheDocument();
-    expect(screen.getByText("Brand Content OS")).toBeInTheDocument();
+    expect(await screen.findByText("Opays Fox")).toBeInTheDocument();
+    expect(screen.getByText("Opays Biz")).toBeInTheDocument();
   });
 
   // Requirement 8.5 : sans produit affichable, la page conserve le CTA_Diagnostic global.

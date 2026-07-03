@@ -30,6 +30,8 @@ import { Route as PublicChatbotIntelligentRouteImport } from './routes/_public.c
 import { Route as PublicAutomatisationRouteImport } from './routes/_public.automatisation'
 import { Route as PublicAgentsIaRouteImport } from './routes/_public.agents-ia'
 import { Route as PublicAProposRouteImport } from './routes/_public.a-propos'
+import { Route as PublicPortfolioCategorySlugRouteImport } from './routes/_public.portfolio.$categorySlug'
+import { Route as PublicPortfolioCategorySlugProductSlugRouteImport } from './routes/_public.portfolio.$categorySlug.$productSlug'
 
 const Tenant0Route = Tenant0RouteImport.update({
   id: '/tenant-0',
@@ -137,6 +139,18 @@ const PublicAProposRoute = PublicAProposRouteImport.update({
   path: '/a-propos',
   getParentRoute: () => PublicRoute,
 } as any)
+const PublicPortfolioCategorySlugRoute =
+  PublicPortfolioCategorySlugRouteImport.update({
+    id: '/$categorySlug',
+    path: '/$categorySlug',
+    getParentRoute: () => PublicPortfolioRoute,
+  } as any)
+const PublicPortfolioCategorySlugProductSlugRoute =
+  PublicPortfolioCategorySlugProductSlugRouteImport.update({
+    id: '/$productSlug',
+    path: '/$productSlug',
+    getParentRoute: () => PublicPortfolioCategorySlugRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof PublicIndexRoute
@@ -154,11 +168,13 @@ export interface FileRoutesByFullPath {
   '/mentions-legales': typeof PublicMentionsLegalesRoute
   '/methode': typeof PublicMethodeRoute
   '/offres': typeof PublicOffresRoute
-  '/portfolio': typeof PublicPortfolioRoute
+  '/portfolio': typeof PublicPortfolioRouteWithChildren
   '/saas': typeof PublicSaasRoute
   '/services': typeof PublicServicesRoute
   '/souverainete-rd': typeof PublicSouveraineteRdRoute
   '/web-intelligent': typeof PublicWebIntelligentRoute
+  '/portfolio/$categorySlug': typeof PublicPortfolioCategorySlugRouteWithChildren
+  '/portfolio/$categorySlug/$productSlug': typeof PublicPortfolioCategorySlugProductSlugRoute
 }
 export interface FileRoutesByTo {
   '/bridges-os': typeof BridgesOsRoute
@@ -175,12 +191,14 @@ export interface FileRoutesByTo {
   '/mentions-legales': typeof PublicMentionsLegalesRoute
   '/methode': typeof PublicMethodeRoute
   '/offres': typeof PublicOffresRoute
-  '/portfolio': typeof PublicPortfolioRoute
+  '/portfolio': typeof PublicPortfolioRouteWithChildren
   '/saas': typeof PublicSaasRoute
   '/services': typeof PublicServicesRoute
   '/souverainete-rd': typeof PublicSouveraineteRdRoute
   '/web-intelligent': typeof PublicWebIntelligentRoute
   '/': typeof PublicIndexRoute
+  '/portfolio/$categorySlug': typeof PublicPortfolioCategorySlugRouteWithChildren
+  '/portfolio/$categorySlug/$productSlug': typeof PublicPortfolioCategorySlugProductSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -199,12 +217,14 @@ export interface FileRoutesById {
   '/_public/mentions-legales': typeof PublicMentionsLegalesRoute
   '/_public/methode': typeof PublicMethodeRoute
   '/_public/offres': typeof PublicOffresRoute
-  '/_public/portfolio': typeof PublicPortfolioRoute
+  '/_public/portfolio': typeof PublicPortfolioRouteWithChildren
   '/_public/saas': typeof PublicSaasRoute
   '/_public/services': typeof PublicServicesRoute
   '/_public/souverainete-rd': typeof PublicSouveraineteRdRoute
   '/_public/web-intelligent': typeof PublicWebIntelligentRoute
   '/_public/': typeof PublicIndexRoute
+  '/_public/portfolio/$categorySlug': typeof PublicPortfolioCategorySlugRouteWithChildren
+  '/_public/portfolio/$categorySlug/$productSlug': typeof PublicPortfolioCategorySlugProductSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -229,6 +249,8 @@ export interface FileRouteTypes {
     | '/services'
     | '/souverainete-rd'
     | '/web-intelligent'
+    | '/portfolio/$categorySlug'
+    | '/portfolio/$categorySlug/$productSlug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/bridges-os'
@@ -251,6 +273,8 @@ export interface FileRouteTypes {
     | '/souverainete-rd'
     | '/web-intelligent'
     | '/'
+    | '/portfolio/$categorySlug'
+    | '/portfolio/$categorySlug/$productSlug'
   id:
     | '__root__'
     | '/_public'
@@ -274,6 +298,8 @@ export interface FileRouteTypes {
     | '/_public/souverainete-rd'
     | '/_public/web-intelligent'
     | '/_public/'
+    | '/_public/portfolio/$categorySlug'
+    | '/_public/portfolio/$categorySlug/$productSlug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -431,8 +457,50 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicAProposRouteImport
       parentRoute: typeof PublicRoute
     }
+    '/_public/portfolio/$categorySlug': {
+      id: '/_public/portfolio/$categorySlug'
+      path: '/$categorySlug'
+      fullPath: '/portfolio/$categorySlug'
+      preLoaderRoute: typeof PublicPortfolioCategorySlugRouteImport
+      parentRoute: typeof PublicPortfolioRoute
+    }
+    '/_public/portfolio/$categorySlug/$productSlug': {
+      id: '/_public/portfolio/$categorySlug/$productSlug'
+      path: '/$productSlug'
+      fullPath: '/portfolio/$categorySlug/$productSlug'
+      preLoaderRoute: typeof PublicPortfolioCategorySlugProductSlugRouteImport
+      parentRoute: typeof PublicPortfolioCategorySlugRoute
+    }
   }
 }
+
+interface PublicPortfolioCategorySlugRouteChildren {
+  PublicPortfolioCategorySlugProductSlugRoute: typeof PublicPortfolioCategorySlugProductSlugRoute
+}
+
+const PublicPortfolioCategorySlugRouteChildren: PublicPortfolioCategorySlugRouteChildren =
+  {
+    PublicPortfolioCategorySlugProductSlugRoute:
+      PublicPortfolioCategorySlugProductSlugRoute,
+  }
+
+const PublicPortfolioCategorySlugRouteWithChildren =
+  PublicPortfolioCategorySlugRoute._addFileChildren(
+    PublicPortfolioCategorySlugRouteChildren,
+  )
+
+interface PublicPortfolioRouteChildren {
+  PublicPortfolioCategorySlugRoute: typeof PublicPortfolioCategorySlugRouteWithChildren
+}
+
+const PublicPortfolioRouteChildren: PublicPortfolioRouteChildren = {
+  PublicPortfolioCategorySlugRoute:
+    PublicPortfolioCategorySlugRouteWithChildren,
+}
+
+const PublicPortfolioRouteWithChildren = PublicPortfolioRoute._addFileChildren(
+  PublicPortfolioRouteChildren,
+)
 
 interface PublicRouteChildren {
   PublicAProposRoute: typeof PublicAProposRoute
@@ -447,7 +515,7 @@ interface PublicRouteChildren {
   PublicMentionsLegalesRoute: typeof PublicMentionsLegalesRoute
   PublicMethodeRoute: typeof PublicMethodeRoute
   PublicOffresRoute: typeof PublicOffresRoute
-  PublicPortfolioRoute: typeof PublicPortfolioRoute
+  PublicPortfolioRoute: typeof PublicPortfolioRouteWithChildren
   PublicSaasRoute: typeof PublicSaasRoute
   PublicServicesRoute: typeof PublicServicesRoute
   PublicSouveraineteRdRoute: typeof PublicSouveraineteRdRoute
@@ -468,7 +536,7 @@ const PublicRouteChildren: PublicRouteChildren = {
   PublicMentionsLegalesRoute: PublicMentionsLegalesRoute,
   PublicMethodeRoute: PublicMethodeRoute,
   PublicOffresRoute: PublicOffresRoute,
-  PublicPortfolioRoute: PublicPortfolioRoute,
+  PublicPortfolioRoute: PublicPortfolioRouteWithChildren,
   PublicSaasRoute: PublicSaasRoute,
   PublicServicesRoute: PublicServicesRoute,
   PublicSouveraineteRdRoute: PublicSouveraineteRdRoute,
