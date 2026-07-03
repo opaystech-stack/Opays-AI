@@ -33,10 +33,10 @@ export const DESCRIPTION_MIN = 50;
 export const DESCRIPTION_MAX = 160;
 
 /** Image Open Graph par défaut (URL absolue), mutualisée avec le durcissement. */
-export const DEFAULT_OG_IMAGE = `${SITE_ORIGIN}/opays-og.png`;
+export const DEFAULT_OG_IMAGE = `${SITE_ORIGIN}/logo.png`;
 
 /** Logo officiel d'Opays Tech (URL absolue), utilisé par le JSON-LD. */
-export const ORGANIZATION_LOGO = `${SITE_ORIGIN}/logo-opays.svg`;
+export const ORGANIZATION_LOGO = `${SITE_ORIGIN}/logo.png`;
 
 /** Raison sociale / nom de marque d'Opays Tech. */
 export const ORGANIZATION_NAME = "Opays Tech";
