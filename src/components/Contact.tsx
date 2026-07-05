@@ -4,6 +4,7 @@ import { Link } from "@tanstack/react-router";
 import { MessageSquare, Send } from "lucide-react";
 import { toast } from "sonner";
 import { SectionHeader } from "./Approche";
+import { getHqApiUrl } from "@/lib/api-hq";
 
 export function Contact() {
   const [loading, setLoading] = useState(false);
@@ -28,7 +29,7 @@ export function Contact() {
     const data = Object.fromEntries(formData.entries());
 
     try {
-      const response = await fetch("/api/send", {
+      const response = await fetch(getHqApiUrl('/contacts'), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),

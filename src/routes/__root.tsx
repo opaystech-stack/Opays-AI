@@ -5,7 +5,10 @@ import {
   HeadContent,
   createRootRouteWithContext,
   useRouter,
+  useLocation,
 } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { trackPageView } from "@/lib/api-hq";
 
 function NotFoundComponent() {
   return (
@@ -62,6 +65,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const location = useLocation();
+
+  useEffect(() => {
+    trackPageView(location.pathname, document.referrer);
+  }, [location.pathname]);
+
   return (
     <QueryClientProvider client={queryClient}>
       {/*

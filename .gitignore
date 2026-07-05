@@ -47,3 +47,9 @@ _private/
 # Secrets / clés locales — ne jamais committer
 .webui_secret_key
 *.secret
+
+# Heavy folders & temporary binaries
+tools/
+spec-kit/
+*.zip
+*.pdf
