@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import logoIcon from "/logo.png";
+const logoIcon = "/logo.png";
 import { SERVICE_CATALOG } from "@/content/services/catalog";
 
 type NavTo = Parameters<typeof Link>[0]["to"];

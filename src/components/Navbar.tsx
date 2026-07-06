@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { ExternalLink as ExternalLinkIcon, Menu, X } from "lucide-react";
-import logoIcon from "/logo.png";
+const logoIcon = "/logo.png";
 import { PUBLIC_PAGES, SECONDARY_PAGES } from "@/content/navigation";
 import { EXTERNAL_PROJECTS } from "@/content/externalProjects";
 import { resolveCta } from "@/content/rules/cta";
