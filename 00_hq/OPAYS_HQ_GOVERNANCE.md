@@ -14,7 +14,7 @@ Ce document définit les règles de fonctionnement, les rôles et la répartitio
 
 ## 3. Mécanisme de Parts Sociales (Vesting)
 Pour garantir la stabilité, les parts sont acquises selon le modèle suivant :
-- **Période de Vesting :** 4 ans.
+- **Période de Vesting :** 2 ans (24 mois).
 - **Cliff :** 1 an (aucune part acquise avant 12 mois de travail effectif).
 - **Distribution :** Mensuelle après le Cliff.
 

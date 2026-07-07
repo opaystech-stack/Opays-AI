@@ -33,6 +33,7 @@ Ce fichier est la porte d'entree principale pour Codex et les autres agents dans
 - Design et interface: `00_hq/skills/frontend_design.md`, `00_hq/skills/premium_ui_design.md`, `00_hq/skills/theme_factory.md`, `00_hq/skills/open_design_studio.md`
 - Tests, verification, checklist: `00_hq/skills/webapp_testing.md`, `00_hq/skills/generate_checklist.md`, `00_hq/skills/plan_progress.md`
 - Documentation et livraison: `00_hq/skills/document_suite.md`, `00_hq/skills/web_artifacts_builder.md`
+- Juridique, fiscalité et conformité RDC (OHADA): `00_hq/skills/juriste_conformite_rdc.md`
 - Creation ou amelioration de competences: `00_hq/skills/skill_creator.md`
 - Skill design Codex utilise pour le rendu UI/brand: `frontend-skill` (deja installe dans Codex).
 - Code, review, refactor, debugging: `andrej-karpathy-skill` pour renforcer la prudence, les changements chirurgicaux et la verification explicite.

@@ -51,11 +51,7 @@ function Hero() {
             transition={{ duration: 0.6 }}
             className="max-w-2xl"
           >
-            <div className="inline-flex items-center gap-2 rounded-full border border-[color:var(--neon-cyan)]/30 bg-[color:var(--neon-cyan)]/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-[color:var(--neon-cyan)]">
-              <Sparkles size={12} />
-              Pour les organisations opérationnelles en RDC
-            </div>
-            <h1 className="mt-6 text-4xl font-bold leading-[1.08] md:text-5xl lg:text-6xl">
+            <h1 className="text-4xl font-bold leading-[1.08] md:text-5xl lg:text-6xl">
               Structurez vos opérations, <span className="text-gradient">gagnez en efficience.</span>
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">

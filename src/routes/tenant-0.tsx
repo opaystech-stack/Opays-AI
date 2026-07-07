@@ -15,6 +15,7 @@ import {
   LayoutDashboard,
   Layers3,
   Radar,
+  Search,
   ShieldCheck,
   Workflow,
 } from "lucide-react";
@@ -420,12 +421,15 @@ function TenantZeroPrototype() {
                             <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground">
                               Recherche Compass
                             </p>
-                            <Input
-                              value={compassQuery}
-                              onChange={(event) => setCompassQuery(event.target.value)}
-                              placeholder='Ex: "tenant 0", "UX", "versioning"'
-                              className="h-11 border-border/60 bg-background/80"
-                            />
+                            <div className="relative">
+                              <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                              <Input
+                                value={compassQuery}
+                                onChange={(event) => setCompassQuery(event.target.value)}
+                                placeholder='Ex: "tenant 0", "UX", "versioning"'
+                                className="h-11 border-border/60 bg-background/80 pl-10"
+                              />
+                            </div>
                           </div>
                           <div className="flex items-end">
                             <Button type="submit" className="h-11" disabled={compassLoading}>

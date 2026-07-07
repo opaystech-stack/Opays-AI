@@ -12,7 +12,7 @@
 
 ## Mécanisme d'Equity (Vesting)
 Pour garantir la stabilité de l'entreprise sur le long terme :
-- **Durée totale** : 4 ans.
+- **Durée totale** : 2 ans (24 mois).
 - **Cliff** : 1 an (aucune part n'est acquise avant 12 mois de travail).
 - **Acquisition** : Mensuelle après le cliff.
 

@@ -2627,22 +2627,34 @@ function BridgesOsPrototypePage() {
                           )}
                         </div>
                         <div style={{ display: "flex", gap: 8 }}>
-                          <input
-                            type="text"
-                            placeholder="Interroger l'assistant... (ex: validations, stock, sécurité)"
-                            value={assistantQuery}
-                            onChange={(e) => setAssistantQuery(e.target.value)}
-                            onKeyDown={(e) => e.key === "Enter" && runAssistant()}
-                            style={{
-                              flex: 1,
-                              border: "1px solid #E8E8ED",
-                              borderRadius: 10,
-                              padding: "10px 14px",
-                              fontSize: 13,
-                              outline: "none",
-                              background: "#FFFFFF",
-                            }}
-                          />
+                          <div style={{ position: "relative", flex: 1, display: "flex" }}>
+                            <Search
+                              size={16}
+                              style={{
+                                position: "absolute",
+                                left: 12,
+                                top: "50%",
+                                transform: "translateY(-50%)",
+                                color: "#8C8CA1",
+                              }}
+                            />
+                            <input
+                              type="text"
+                              placeholder="Interroger l'assistant... (ex: validations, stock, sécurité)"
+                              value={assistantQuery}
+                              onChange={(e) => setAssistantQuery(e.target.value)}
+                              onKeyDown={(e) => e.key === "Enter" && runAssistant()}
+                              style={{
+                                flex: 1,
+                                border: "1px solid #E8E8ED",
+                                borderRadius: 10,
+                                padding: "10px 14px 10px 36px",
+                                fontSize: 13,
+                                outline: "none",
+                                background: "#FFFFFF",
+                              }}
+                            />
+                          </div>
                           <button
                             onClick={runAssistant}
                             style={{

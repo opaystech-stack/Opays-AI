@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<style>
+@page { size: A4 landscape; margin: 0; @bottom-center { content: "Opays Tech — Plan Dashboards — Page " counter(page); font-family: Arial; font-size: 8pt; color: #aaa; } }
+@page :first { @bottom-center { content: ""; } }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', Arial, sans-serif; color: #1a1a2e; font-size: 10pt; line-height: 1.5; }
+
+.cover { page-break-after: always; height: 100vh; background: linear-gradient(135deg, #0a0a23 0%, #1a1a3e 40%, #2d1b69 70%, #6b2fa0 100%); color: white; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 60px; }
+.cover-tag { font-size: 10pt; letter-spacing: 4px; text-transform: uppercase; color: #a78bfa; margin-bottom: 20px; font-weight: 600; }
+.cover h1 { font-size: 40pt; font-weight: 800; margin-bottom: 12px; color: #fff; }
+.cover h2 { font-size: 15pt; font-weight: 400; color: #ddd6fe; margin-bottom: 50px; }
+.cover-line { width: 80px; height: 4px; background: linear-gradient(to right, #8b5cf6, #3b82f6); margin: 20px auto; border-radius: 2px; }
+.cover-meta { font-size: 11pt; color: #94a3b8; line-height: 1.8; text-align: center; }
+.cover-meta strong { color: #e2e8f0; }
+
+.slide { page-break-after: always; padding: 45px 55px; min-height: 100vh; background: #f8f9fc; }
+.slide:last-child { page-break-after: auto; }
+.slide-header { margin-bottom: 25px; padding-bottom: 12px; border-bottom: 3px solid #8b5cf6; }
+.slide-number { font-size: 8pt; color: #8b5cf6; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; }
+.slide h3 { font-size: 20pt; font-weight: 700; color: #1e1b4b; }
+.slide-subtitle { font-size: 10pt; color: #64748b; margin-top: 4px; }
+
+table { width: 100%; border-collapse: collapse; font-size: 9pt; margin: 12px 0; }
+th { background: #4c1d95; color: white; padding: 8px 10px; text-align: left; font-weight: 600; font-size: 8.5pt; }
+td { padding: 7px 10px; border-bottom: 1px solid #e2e8f0; color: #334155; }
+tr:nth-child(even) td { background: #f1f5f9; }
+
+.cards { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 15px 0; }
+.card { background: white; border-radius: 10px; padding: 18px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); border-left: 4px solid #8b5cf6; }
+.card-blue { border-left-color: #3b82f6; }
+.card-green { border-left-color: #10b981; }
+.card-orange { border-left-color: #f59e0b; }
+.card-red { border-left-color: #ef4444; }
+.card h4 { font-size: 12pt; font-weight: 700; color: #1e1b4b; margin-bottom: 6px; }
+.card p { font-size: 9.5pt; color: #475569; }
+.card .price { font-size: 16pt; font-weight: 800; color: #7c3aed; margin: 6px 0 2px; }
+.card .meta { font-size: 8pt; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; }
+
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 20px 0; }
+.stat { text-align: center; padding: 18px; background: white; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.04); }
+.stat-number { font-size: 26pt; font-weight: 800; color: #7c3aed; }
+.stat-label { font-size: 8pt; color: #64748b; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 4px; }
+
+.badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 7.5pt; font-weight: 600; }
+.badge-red { background: #fee2e2; color: #991b1b; }
+.badge-yellow { background: #fef3c7; color: #92400e; }
+.badge-green { background: #d1fae5; color: #065f46; }
+.badge-purple { background: #ede9fe; color: #5b21b6; }
+.badge-blue { background: #dbeafe; color: #1e40af; }
+
+.callout { background: #f5f3ff; border-radius: 8px; padding: 15px 20px; margin: 15px 0; border-left: 4px solid #7c3aed; font-size: 9.5pt; color: #4c1d95; }
+.product-price { color: #7c3aed; font-weight: 700; }
+.phase-block { margin: 12px 0; padding: 15px 20px; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.03); }
+.phase-title { font-size: 12pt; font-weight: 700; color: #1e1b4b; margin-bottom: 4px; }
+.phase-desc { font-size: 9.5pt; color: #64748b; }
+.footer-slide { page-break-after: auto; background: linear-gradient(135deg, #0a0a23, #1e1b4b); color: white; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 60px; min-height: 100vh; }
+.footer-slide h3 { font-size: 26pt; color: #c4b5fd; margin-bottom: 15px; }
+.footer-slide p { color: #a78bfa; font-size: 11pt; }
+ol, ul { padding-left: 18px; }
+ol li, ul li { margin: 4px 0; font-size: 9.5pt; color: #334155; }
+</style>
+</head>
+<body>
+
+<!-- COUVERTURE -->
+<div class="cover">
+  <div class="cover-tag">Opays Tech — Ingénierie de l'efficacité</div>
+  <h1>PLAN OPAYS DASHBOARDS</h1>
+  <h2>Stratégie commerciale et feuille de route de développement</h2>
+  <div class="cover-line"></div>
+  <div class="cover-meta">
+    <strong>50 dashboards</strong> · <strong>7 catégories métier</strong> · <strong>10 produits prioritaires</strong><br>
+    Marché cible : RDC et Afrique francophone · Devise : USD ($)<br>
+    Version 2.0 — Juillet 2026
+  </div>
+</div>
+
+<!-- SYNTHÈSE -->
+<div class="slide">
+  <div class="slide-header">
+    <div class="slide-number">01 — Synthèse exécutive</div>
+    <h3>La vision Opays Dashboards</h3>
+    <div class="slide-subtitle">Transformer chaque dashboard en un environnement piloté par intention</div>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-number">50</div><div class="stat-label">Dashboards</div></div>
+    <div class="stat"><div class="stat-number">7</div><div class="stat-label">Catégories</div></div>
+    <div class="stat"><div class="stat-number">10</div><div class="stat-label">Produits P1</div></div>
+    <div class="stat"><div class="stat-number">$105K</div><div class="stat-label">ARR cible</div></div>
+  </div>
+  <div class="cards">
+    <div class="card"><h4>🎯 Vision</h4><p>L'utilisateur ne clique plus — il <strong>exprime une intention en langage naturel</strong>. Le système comprend, planifie, exécute et confirme.</p></div>
+    <div class="card card-blue"><h4>🌍 Marché cible</h4><p>PME et organisations en <strong>RDC</strong>. Devise : <strong>USD ($)</strong>. Villes : Kinshasa, Lubumbashi, Goma, Bukavu.</p></div>
+    <div class="card card-green"><h4>💰 Modèle</h4><p>SaaS mensuel ($15-$45), packs ($50-$150), enterprise sur devis ($100-$300).</p></div>
+    <div class="card card-orange"><h4>🚀 Phase 1</h4><p><strong>10 dashboards</strong> en Mois 1-3 : 5 haute valeur + 5 volume rapide.</p></div>
+  </div>
+  <div class="callout"><strong>Chaque dashboard = un projet produit autonome</strong> avec son propre cycle de vie, ses métriques et son positionnement commercial.</div>
+</div>
+
+<!-- ARCHITECTURE COMMERCIALE -->
+<div class="slide">
+  <div class="slide-header">
+    <div class="slide-number">02 — Architecture commerciale</div>
+    <h3>Catégories et tarification</h3>
+  </div>
+  <table>
+    <thead><tr><th>#</th><th>Catégorie</th><th>Dashboards</th><th>Marché cible</th><th>Priorité</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>ONG & Projets de développement</td><td>8</td><td>ONG, bailleurs, associations</td><td><span class="badge badge-red">🔴 Haute</span></td></tr>
+      <tr><td>2</td><td>Audit & Conformité</td><td>9</td><td>Cabinets d'audit, QHSE, ISO</td><td><span class="badge badge-yellow">🟡 Moyenne</span></td></tr>
+      <tr><td>3</td><td>Finance & Comptabilité</td><td>7</td><td>PME, cabinets comptables</td><td><span class="badge badge-red">🔴 Haute</span></td></tr>
+      <tr><td>4</td><td>Ressources Humaines</td><td>3</td><td>PME, cabinets RH</td><td><span class="badge badge-red">🔴 Haute</span></td></tr>
+      <tr><td>5</td><td>Commerce & Stock</td><td>8</td><td>Commerces, boutiques, CRM</td><td><span class="badge badge-red">🔴 Haute</span></td></tr>
+      <tr><td>6</td><td>Services & Activités</td><td>10</td><td>Écoles, fitness, transport, events</td><td><span class="badge badge-red">🔴 Haute</span></td></tr>
+      <tr><td>7</td><td>Production & Logistique</td><td>5</td><td>BTP, garages, agriculture</td><td><span class="badge badge-yellow">🟡 Moyenne</span></td></tr>
+    </tbody>
+  </table>
+  <h4 style="margin: 18px 0 8px; color: #1e1b4b; font-size: 12pt;">Stratégie de tarification (USD)</h4>
+  <table>
+    <thead><tr><th>Niveau</th><th>Prix mensuel</th><th>Contenu</th><th>Cible</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Starter</strong></td><td class="product-price">$15 - $25</td><td>1 dashboard, 1 utilisateur</td><td>TPE, commerçants</td></tr>
+      <tr><td><strong>Business</strong></td><td class="product-price">$35 - $60</td><td>1 dashboard + agent, 5 utilisateurs</td><td>PME</td></tr>
+      <tr><td><strong>Enterprise</strong></td><td class="product-price">$100 - $300</td><td>Multi-dashboards, API, MCP</td><td>ONG, grandes structures</td></tr>
+      <tr><td><strong>Pack catégorie</strong></td><td class="product-price">$80 - $150</td><td>Pack complet par catégorie</td><td>Organisations</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- VAGUE A -->
+<div class="slide">
+  <div class="slide-header">
+    <div class="slide-number">03 — Phase 1 · Vague A</div>
+    <h3>Haute valeur — 5 produits phares</h3>
+    <div class="slide-subtitle">Cycle de vente long, panier élevé, clients à long terme</div>
+  </div>
+  <div class="cards">
+    <div class="card"><div class="meta">ONG — $80-150/mois</div><h4>Pack ONG complet</h4><p>Produit phare. Marché bailleurs (USAID, UE, PNUD). 8 dashboards inclus. Clients à long terme.</p></div>
+    <div class="card card-blue"><div class="meta">Finance — $25/mois</div><h4>Trésorerie & Cash Flow</h4><p>Besoin universel PME. Se vend en crossover avec tous les autres dashboards.</p></div>
+    <div class="card card-green"><div class="meta">Commerce — $35/mois</div><h4>CRM Commercial</h4><p>Pipeline commercial fondamental. Commissions, clients, prévisions.</p></div>
+    <div class="card card-orange"><div class="meta">RH/Finance — $35/mois</div><h4>Paie & Charges OHADA</h4><p>Obligatoire mensuellement. Récurrent garanti. Conformité légale.</p></div>
+  </div>
+  <div class="callout"><strong>5ᵉ produit :</strong> Pack BTP complet — $80-120/mois. Marché BTP très actif en RDC. Devis, matériaux, ouvriers, planning, finances.</div>
+  <table>
+    <thead><tr><th>#</th><th>Dashboard</th><th>Pourquoi</th><th>Prix/mois</th><th>Délai</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><strong>Pack ONG complet</strong></td><td>Marché bailleurs, panier élevé</td><td class="product-price">$80-150</td><td>4 sem</td></tr>
+      <tr><td>2</td><td><strong>Trésorerie & Cash Flow</strong></td><td>Besoin universel PME</td><td class="product-price">$25</td><td>3 sem</td></tr>
+      <tr><td>3</td><td><strong>CRM Commercial</strong></td><td>Pipeline commercial fondamental</td><td class="product-price">$35</td><td>3 sem</td></tr>
+      <tr><td>4</td><td><strong>Paie & Charges OHADA</strong></td><td>Obligatoire, récurrent garanti</td><td class="product-price">$35</td><td>4 sem</td></tr>
+      <tr><td>5</td><td><strong>Pack BTP complet</strong></td><td>Marché BTP actif en RDC</td><td class="product-price">$80-120</td><td>4 sem</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- VAGUE B -->
+<div class="slide">
+  <div class="slide-header">
+    <div class="slide-number">04 — Phase 1 · Vague B</div>
+    <h3>Volume rapide — 5 produits de masse</h3>
+    <div class="slide-subtitle">Cycle de vente court, marchés de masse en RDC</div>
+  </div>
+  <div class="cards">
+    <div class="card card-red"><div class="meta">Services — $25/mois</div><h4>Service Traiteur</h4><p>Restaurants, traiteurs, cantines. Énorme marché urbain RDC. Cycle de vente court.</p></div>
+    <div class="card card-blue"><div class="meta">RH — $20/mois</div><h4>Congés & Absences</h4><p>Besoin universel RH. Tout employeur en a besoin. Simple à vendre.</p></div>
+    <div class="card card-green"><div class="meta">Commerce — $20/mois</div><h4>Épicerie</h4><p>Commerces de quartier. Très grand volume. Démarchage porte-à-porte.</p></div>
+    <div class="card card-orange"><div class="meta">Éducation — $30/mois</div><h4>École Privée</h4><p>Boom des écoles privées en RDC. Marché énorme et récurrent.</p></div>
+  </div>
+  <div class="callout"><strong>5ᵉ produit :</strong> Fitness / Salle de Sport — $25/mois. Forte croissance urbaine. Abonnements récurrents = MRR prévisible.</div>
+  <div class="callout" style="background: #fef3c7; border-left-color: #f59e0b; color: #92400e;"><strong>Stratégie Vague B :</strong> Ces dashboards ciblent des marchés de masse avec des besoins simples. Un traiteur ou une épicerie peut souscrire en 5 minutes. Ticket plus petit ($20-25/mois) mais volume potentiel énorme.</div>
+</div>
+
+<!-- FEUILLE DE ROUTE -->
+<div class="slide">
+  <div class="slide-header">
+    <div class="slide-number">05 — Feuille de route</div>
+    <h3>4 phases sur 9 mois</h3>
+  </div>
+  <div class="phase-block"><div class="phase-title"><span class="badge badge-purple">Phase 1</span> Fondamentaux + Volume (Mois 1-3)</div><div class="phase-desc">10 dashboards : 5 haute valeur (ONG, Finance, BTP) + 5 volume rapide (Traiteur, RH, Épicerie, École, Fitness)</div></div>
+  <div class="phase-block"><div class="phase-title"><span class="badge badge-blue">Phase 2</span> Expansion (Mois 3-5)</div><div class="phase-desc">8 dashboards : M&E, Suivi Bénéficiaires, Créances, Immobilisations, Pack Comptabilité, Pack RH, Pièces Auto, Université</div></div>
+  <div class="phase-block"><div class="phase-title"><span class="badge badge-green">Phase 3</span> Diversification (Mois 5-7)</div><div class="phase-desc">9 dashboards : Audit Interne, ISO 9001, Pack QHSE, Gantt, Performance, Boulangerie, Location, Taxi, Garage</div></div>
+  <div class="phase-block"><div class="phase-title"><span class="badge badge-yellow">Phase 4</span> Longue traîne (Mois 7-9)</div><div class="phase-desc">23 dashboards restants pour atteindre les 50 produits complets</div></div>
+  <h4 style="margin: 18px 0 8px; color: #1e1b4b; font-size: 12pt;">Catalogue complet — 50 dashboards par catégorie</h4>
+  <table>
+    <thead><tr><th>Catégorie</th><th>Produits</th><th>Prix unitaire</th><th>Prix pack</th></tr></thead>
+    <tbody>
+      <tr><td>ONG & Projets</td><td>Pack ONG, Portefeuille Bailleurs, Suivi Bénéficiaires, M&E, PTA, Suivi Budgétaire, Multi-Projets, Risques</td><td>$20-30</td><td class="product-price">$80-150</td></tr>
+      <tr><td>Audit & Conformité</td><td>Pack QHSE, ISO 17025/22000/9001/45001/14001, Audit Interne, Audit Financier, Système Management</td><td>$30-40</td><td class="product-price">$100-200</td></tr>
+      <tr><td>Finance & Comptabilité</td><td>Pack Compta PME, Trésorerie, Créances, Paie OHADA, Immobilisations, Budget, Tontine</td><td>$10-35</td><td class="product-price">$80-120</td></tr>
+      <tr><td>Ressources Humaines</td><td>Pack RH, Congés & Absences, Performance Équipe</td><td>$20-25</td><td class="product-price">$50-80</td></tr>
+      <tr><td>Commerce & Stock</td><td>CRM, Épicerie, Poissonnerie, Librairie, Boulangerie, Boutique Élec, Auto-École, Agence Marketing</td><td>$20-35</td><td>—</td></tr>
+      <tr><td>Services & Activités</td><td>École Privée, Université, Formation Linguistique, Crèche, Fitness, Traiteur, Taxi, Événementiel, Location, Parking</td><td>$15-30</td><td>—</td></tr>
+      <tr><td>Production & Logistique</td><td>Pack BTP, Garage, Pièces Auto, Aviculture, Gantt Planning</td><td>$20-25</td><td class="product-price">$80-120</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ARCHITECTURE TECHNIQUE -->
+<div class="slide">
+  <div class="slide-header">
+    <div class="slide-number">06 — Architecture technique</div>
+    <h3>Stack et intégration agentique</h3>
+  </div>
+  <div class="cards">
+    <div class="card"><h4>🖥️ Frontend</h4><p>React + TypeScript + Tailwind + TanStack Router</p></div>
+    <div class="card card-blue"><h4>⚙️ Backend</h4><p>API REST (Bun + Elysia) ou GraphQL</p></div>
+    <div class="card card-green"><h4>🤖 Agent</h4><p>LLM + tool-use (MCP). Skill <code>dashboard-agentique</code></p></div>
+    <div class="card card-orange"><h4>🖱️ UI Fallback</h4><p>Page Agent (Alibaba) — tools/page-agent</p></div>
+  </div>
+  <h4 style="margin: 15px 0 8px; color: #1e1b4b; font-size: 12pt;">Pipeline agentique (11 étapes)</h4>
+  <table>
+    <thead><tr><th>Étape</th><th>Action</th><th>Étape</th><th>Action</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Entrée utilisateur (texte/voix)</td><td>7</td><td>Sélection des outils (API/DB/UI)</td></tr>
+      <tr><td>2</td><td>Compréhension de l'intention</td><td>8</td><td>Exécution des actions</td></tr>
+      <tr><td>3</td><td>Extraction des entités métier</td><td>9</td><td>Vérification des résultats</td></tr>
+      <tr><td>4</td><td>Normalisation des données</td><td>10</td><td>Confirmation utilisateur</td></tr>
+      <tr><td>5</td><td>Déduction du contexte métier</td><td>11</td><td>Réponse finale (texte/voix)</td></tr>
+      <tr><td>6</td><td>Planification des actions</td><td>—</td><td>—</td></tr>
+    </tbody>
+  </table>
+  <div class="callout"><strong>Priorité des actions :</strong> 1. API directe (MCP) → 2. Base de données → 3. Services internes → 4. Interface utilisateur (Page Agent) — dernier recours</div>
+  <h4 style="margin: 15px 0 8px; color: #1e1b4b; font-size: 12pt;">Structure de projet (chaque dashboard = projet séparé)</h4>
+  <pre style="background: #1e1b4b; color: #c4b5fd; padding: 15px; border-radius: 8px; font-size: 9pt; overflow: hidden;">dashboards/01-pack-ong/
+  ├── apps/web/       (Frontend React)
+  ├── apps/api/       (Backend API)
+  ├── apps/agent/     (Agent LLM + MCP)
+  ├── packages/shared/ (Types communs)
+  ├── packages/tools/  (Outils métier)
+  └── docs/            (Documentation produit)</pre>
+</div>
+
+<!-- STRATÉGIE COMMERCIALE -->
+<div class="slide">
+  <div class="slide-header">
+    <div class="slide-number">07 — Stratégie commerciale</div>
+    <h4 style="color: #1e1b4b; font-size: 12pt; margin-bottom: 8px;">Canaux de vente</h4>
+    <table>
+      <thead><tr><th>Canal</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>Site vitrine</td><td>Pages produit avec démo interactive</td></tr>
+        <tr><td>Prospection directe</td><td>ONG, cabinets d'audit, écoles privées, BTP</td></tr>
+        <tr><td>Démarchage de masse</td><td>Épiceries, restaurants, salles de sport</td></tr>
+        <tr><td>Partenariats</td><td>Cabinets comptables, consultants QHSE</td></tr>
+        <tr><td>Réseaux</td><td>Chambres de commerce, fédérations, associations ONG</td></tr>
+      </tbody>
+    </table>
+    <h4 style="color: #1e1b4b; font-size: 12pt; margin: 15px 0 8px;">Cycles de vente</h4>
+    <table>
+      <thead><tr><th>Type de client</th><th>Cycle</th><th>Dashboards</th><th>Prix</th></tr></thead>
+      <tbody>
+        <tr><td>ONG / institution</td><td>Long (2-3 mois)</td><td>Pack ONG, M&E</td><td class="product-price">$80-150/mois</td></tr>
+        <tr><td>PME établie</td><td>Moyen (2-4 sem)</td><td>Trésorerie, Paie, CRM</td><td class="product-price">$25-35/mois</td></tr>
+        <tr><td>TPE / commerce</td><td>Court (1-3 jours)</td><td>Épicerie, Traiteur, Fitness</td><td class="product-price">$20-25/mois</td></tr>
+        <tr><td>École privée</td><td>Court-Moyen (1-2 sem)</td><td>École Privée</td><td class="product-price">$30/mois</td></tr>
+        <tr><td>Entreprise BTP</td><td>Moyen (3-6 sem)</td><td>Pack BTP</td><td class="product-price">$80-120/mois</td></tr>
+      </tbody>
+    </table>
+    <h4 style="color: #1e1b4b; font-size: 12pt; margin: 15px 0 8px;">Packs prioritaires</h4>
+    <table>
+      <thead><tr><th>Pack</th><th>Inclus</th><th>Prix</th><th>Économie</th></tr></thead>
+      <tbody>
+        <tr><td>Pack ONG</td><td>8 dashboards</td><td class="product-price">$80-150</td><td>30%</td></tr>
+        <tr><td>Pack Audit QHSE</td><td>5 dashboards ISO</td><td class="product-price">$100-200</td><td>35%</td></tr>
+        <tr><td>Pack Comptabilité PME</td><td>7 dashboards finance</td><td class="product-price">$80-120</td><td>35%</td></tr>
+        <tr><td>Pack RH</td><td>3 dashboards</td><td class="product-price">$50-80</td><td>25%</td></tr>
+        <tr><td>Pack BTP</td><td>5 dashboards</td><td class="product-price">$80-120</td><td>30%</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <!-- PROJECTION DE REVENUS -->
+    <div class="slide">
+    <div class="slide-header">
+      <div class="slide-number">08 — Projection de revenus</div>
+      <h3>Trajectoire commerciale 12 mois</h3>
+      <div class="slide-subtitle">Objectif : 350 clients actifs, $105K ARR</div>
+    </div>
+    <h4 style="color: #1e1b4b; font-size: 12pt; margin-bottom: 8px;">Projection 6 mois</h4>
+    <table>
+      <thead><tr><th>Mois</th><th>Dashboards actifs</th><th>Clients</th><th>MRR (USD)</th></tr></thead>
+      <tbody>
+        <tr><td>M1</td><td>5 (Vague A)</td><td>10</td><td class="product-price">$250</td></tr>
+        <tr><td>M2</td><td>5</td><td>20</td><td class="product-price">$500</td></tr>
+        <tr><td>M3</td><td>10 (Vague A+B)</td><td>40</td><td class="product-price">$1 000</td></tr>
+        <tr><td>M4</td><td>10</td><td>60</td><td class="product-price">$1 500</td></tr>
+        <tr><td>M5</td><td>18</td><td>85</td><td class="product-price">$2 125</td></tr>
+        <tr><td>M6</td><td>18</td><td>120</td><td class="product-price">$3 000</td></tr>
+      </tbody>
+    </table>
+    <h4 style="color: #1e1b4b; font-size: 12pt; margin: 15px 0 8px;">Projection étendue 12 mois</h4>
+    <table>
+      <thead><tr><th>Mois</th><th>Dashboards actifs</th><th>Clients</th><th>MRR (USD)</th><th>ARR (USD)</th></tr></thead>
+      <tbody>
+        <tr><td>M6</td><td>18</td><td>120</td><td class="product-price">$3 000</td><td class="product-price">$36 000</td></tr>
+        <tr><td>M9</td><td>27</td><td>200</td><td class="product-price">$5 000</td><td class="product-price">$60 000</td></tr>
+        <tr><td>M12</td><td>50</td><td>350</td><td class="product-price">$8 750</td><td class="product-price">$105 000</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><strong>Hypothèse :</strong> Panier moyen de $25/client/mois. Le marché RDC utilise le USD comme monnaie de référence. Les ONG paient en USD directement.</div>
+    </div>
+
+    <!-- MARCHÉ RDC -->
+    <div class="slide">
+    <div class="slide-header">
+      <div class="slide-number">09 — Marché RDC</div>
+      <h3>Analyse spécifique et avantages concurrentiels</h3>
+    </div>
+    <table>
+      <thead><tr><th>Segment</th><th>Taille estimée</th><th>Dashboards pertinents</th><th>Potentiel</th></tr></thead>
+      <tbody>
+        <tr><td>ONG internationales</td><td>200+</td><td>Pack ONG</td><td><span class="badge badge-red">🔴 Très fort</span></td></tr>
+        <tr><td>ONG locales</td><td>500+</td><td>Pack ONG</td><td><span class="badge badge-red">🔴 Très fort</span></td></tr>
+        <tr><td>Écoles privées</td><td>5 000+</td><td>École Privée, Université</td><td><span class="badge badge-red">🔴 Très fort</span></td></tr>
+        <tr><td>Épiceries / supérettes</td><td>50 000+</td><td>Épicerie</td><td><span class="badge badge-red">🔴 Très fort</span></td></tr>
+        <tr><td>Restaurants / traiteurs</td><td>10 000+</td><td>Service Traiteur</td><td><span class="badge badge-red">🔴 Très fort</span></td></tr>
+        <tr><td>Salles de sport</td><td>500+</td><td>Fitness</td><td><span class="badge badge-yellow">🟡 Moyen</span></td></tr>
+        <tr><td>Entreprises BTP</td><td>1 000+</td><td>Pack BTP, Gantt</td><td><span class="badge badge-red">🔴 Très fort</span></td></tr>
+        <tr><td>PME avec employés</td><td>10 000+</td><td>Paie OHADA, Congés, CRM</td><td><span class="badge badge-red">🔴 Très fort</span></td></tr>
+      </tbody>
+    </table>
+    <h4 style="margin: 15px 0 8px; color: #1e1b4b; font-size: 12pt;">Avantages concurrentiels Opays</h4>
+    <ol>
+      <li><strong>Agentique</strong> : Seul dashboard sur le marché RDC avec un agent IA intégré — l'utilisateur dialogue avec son entreprise</li>
+      <li><strong>Conformité OHADA</strong> : Respect des normes comptables locales</li>
+      <li><strong>Sectoriel</strong> : Dashboards métier vs solutions génériques</li>
+      <li><strong>Prix accessible</strong> : $15-45/mois vs $100-500/mois pour les solutions internationales</li>
+      <li><strong>Support local</strong> : Équipe basée en RDC, compréhension du terrain</li>
+    </ol>
+    </div>
+
+    <!-- MÉTRIQUES & GOUVERNANCE -->
+    <div class="slide">
+    <div class="slide-header">
+      <div class="slide-number">10 — Métriques et gouvernance</div>
+      <h3>Pilotage et prochaines étapes</h3>
+    </div>
+    <h4 style="color: #1e1b4b; font-size: 12pt; margin-bottom: 8px;">KPIs par dashboard</h4>
+    <table>
+      <thead><tr><th>KPI</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><strong>MRR</strong></td><td>Revenu mensuel récurrent</td></tr>
+        <tr><td><strong>Churn rate</strong></td><td>Taux de désabonnement mensuel</td></tr>
+        <tr><td><strong>Activation rate</strong></td><td>% de clients actifs vs inscrits</td></tr>
+        <tr><td><strong>Time-to-value</strong></td><td>Temps entre inscription et première valeur</td></tr>
+        <tr><td><strong>NPS</strong></td><td>Net Promoter Score</td></tr>
+        <tr><td><strong>Agent usage</strong></td><td>% d'interactions via l'agent vs UI manuelle</td></tr>
+      </tbody>
+    </table>
+    <h4 style="color: #1e1b4b; font-size: 12pt; margin: 15px 0 8px;">Gouvernance</h4>
+    <div class="callout">
+      <strong>Révision mensuelle</strong> · Ajuster les priorités selon le feedback marché<br>
+      <strong>Pivot</strong> · Si un dashboard n'atteint pas 10 clients en 2 mois, revoir le positionnement<br>
+      <strong>Scale</strong> · Si un dashboard dépasse 50 clients, lui allouer une équipe dédiée
+    </div>
+    <h4 style="color: #1e1b4b; font-size: 12pt; margin: 15px 0 8px;">Prochaines étapes</h4>
+    <ul>
+      <li>Valider le plan commercial pour les 10 produits prioritaires</li>
+      <li>Créer les projets Git pour chaque dashboard (10 repos séparés)</li>
+      <li>Définir le backlog détaillé du premier produit (Pack ONG)</li>
+      <li>Designer les maquettes des dashboards Vague A</li>
+      <li>Configurer les dépôts Dokploy pour le déploiement continu</li>
+      <li>Préparer les démos pour la prospection commerciale</li>
+      <li>Lancer la prospection ONG (Vague A) et le démarchage TPE (Vague B) en parallèle</li>
+    </ul>
+    </div>
+
+    <!-- FIN -->
+    <div class="slide">
+    <div class="slide-header">
+      <div class="slide-number">11 — Analyse concurrentielle</div>
+      <h3>U-COMPTA (UBS Congo) — Concurrent direct</h3>
+      <div class="slide-subtitle">Application web comptable OHADA & SYCEBNL — marché RDC</div>
+    </div>
+    <table>
+      <thead><tr><th>Plan U-COMPTA</th><th>Prix/an</th><th>≈ Mensuel</th><th>Limites clés</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Démo</strong></td><td class="product-price">Gratuit</td><td>$0</td><td>10 écritures, 5 comptes</td></tr>
+        <tr><td><strong>Start</strong></td><td class="product-price">$99.90</td><td>~$8</td><td>150 comptes, 2 utilisateurs</td></tr>
+        <tr><td><strong>Smart</strong></td><td class="product-price">$299.90</td><td>~$25</td><td>250 comptes, 3 utilisateurs, bilan</td></tr>
+        <tr><td><strong>Smart Plus</strong></td><td class="product-price">$599.90</td><td>~$50</td><td>500 comptes, 5 utilisateurs, suivi budgétaire</td></tr>
+        <tr><td><strong>Full Package</strong></td><td class="product-price">$799.90</td><td>~$67</td><td>Tout illimité, 5 utilisateurs</td></tr>
+      </tbody>
+    </table>
+    <h4 style="color: #1e1b4b; font-size: 12pt; margin: 15px 0 8px;">Opays Tech vs U-COMPTA</h4>
+    <table>
+      <thead><tr><th>Critère</th><th>U-COMPTA</th><th>Opays Tech</th></tr></thead>
+      <tbody>
+        <tr><td>Modèle</td><td>SaaS annuel</td><td><strong>SaaS mensuel (flexible)</strong></td></tr>
+        <tr><td>Couverture</td><td>Comptabilité uniquement</td><td><strong>7 catégories, 50 dashboards</strong></td></tr>
+        <tr><td>Agent IA</td><td>❌ Non</td><td><strong>✅ Agent agentique</strong></td></tr>
+        <tr><td>Conformité</td><td>OHADA + SYCEBNL</td><td>OHADA (SYCEBNL à ajouter)</td></tr>
+        <tr><td>Facturation</td><td>UJUZI FACTURE</td><td>À intégrer</td></tr>
+        <tr><td>Multi-dashboard</td><td>❌ 1 app</td><td><strong>✅ 50 dashboards sectoriels</strong></td></tr>
+      </tbody>
+    </table>
+    <div class="callout">
+      <strong>Leçon clé :</strong> U-COMPTA valide le marché RDC pour la compta OHADA. C'est un <strong>outil</strong>, Opays est une <strong>plateforme agentique</strong>.<br>
+      <strong>Argument de vente :</strong> « U-COMPTA vous aide à saisir votre comptabilité. Opays dialogue avec votre entreprise et agit pour vous. »
+    </div>
+    <h4 style="color: #1e1b4b; font-size: 12pt; margin: 10px 0 8px;">Actions à prendre</h4>
+    <ul>
+      <li>Ajouter la facturation numérisée dans le Pack Comptabilité PME</li>
+      <li>Intégrer la conformité SYCEBNL dans Paie & Charges OHADA</li>
+      <li>Offrir un essai gratuit (compte démo) sur tous les dashboards</li>
+      <li>Ajouter le suivi budgétaire dans Trésorerie & Cash Flow</li>
+      <li>Préparer un argumentaire concurrentiel pour les commerciaux</li>
+    </ul>
+    </div>
+
+    <div class="footer-slide">
+    <h3>Opays Tech — Plan Dashboards</h3>
+    <p>Document vivant — Version 2.0 — Juillet 2026</p>
+    <p style="margin-top: 10px; font-size: 9pt; color: #64748b;">Mise à jour mensuelle selon feedback marché et avancement développement</p>
+    </div>
+
+    </body>
+    </html>

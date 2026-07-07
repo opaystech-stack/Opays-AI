@@ -28,7 +28,7 @@ L'organisation est basée sur un modèle "Commando" agile alliant expertise stra
 
 ## Modèle Opérationnel
 - **Cycle Commando** : Itérations rapides et autonomie.
-- **Vesting** : Mécanisme d'acquisition des parts sur 4 ans (Cliff 1 an).
+- **Vesting** : Mécanisme d'acquisition des parts sur 2 ans (Cliff 1 an).
 
 ## Liens
 - [[Vision Souveraineté Numérique]]
