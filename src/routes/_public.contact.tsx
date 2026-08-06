@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { CheckCircle2, Clock, ShieldCheck } from "lucide-react";
 import { Contact } from "@/components/Contact";
+import { VoiceAuditWidget } from "@/components/VoiceAuditWidget";
 import { resolveCta } from "@/content/rules/cta";
 
 /**
@@ -53,9 +54,18 @@ const REASSURANCES: { icon: typeof CheckCircle2; text: string }[] = [
 ];
 
 function ContactPage() {
+  // Fallback du widget vocal : faire défiler vers le formulaire écrit.
+  const scrollToForm = () => {
+    document.getElementById("contact-form")?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <>
       <ContactHero />
+      {/* Audit vocal conversationnel — option « Diagnostic gratuit » en parlant. */}
+      <section className="relative mx-auto max-w-7xl px-6 pb-4">
+        <VoiceAuditWidget onFallback={scrollToForm} />
+      </section>
       {/* Formulaire de Diagnostic gratuit : composant durci réutilisé tel quel. */}
       <Contact />
     </>
