@@ -19,6 +19,7 @@ interface TokenResponse {
   token: string;
   url: string;
   room: string;
+  ice_servers?: { urls: string[]; username: string; credential: string }[];
 }
 
 export function VoiceAuditWidget({ onFallback }: { onFallback?: () => void }) {
@@ -48,8 +49,10 @@ export function VoiceAuditWidget({ onFallback }: { onFallback?: () => void }) {
       if (!res.ok) throw new Error("Impossible d'obtenir une session vocale.");
       const data: TokenResponse = await res.json();
 
-      // 2. Connexion WebRTC
-      const room = new Room();
+      // 2. Connexion WebRTC (ICE servers TURN fournis par le token server)
+      const room = new Room({
+        iceServers: data.ice_servers ?? [],
+      });
       roomRef.current = room;
 
       room

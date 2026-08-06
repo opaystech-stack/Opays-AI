@@ -7,10 +7,10 @@ rtc:
   port_range_end: 50100
   use_external_ip: true
 redis:
-  address: redis:6379
+  address: 172.16.6.2:6379
   password: ""
 keys:
-  APIopaysAudit2026: SecretOpaysAudit2026!
+  APIopaysAudit2026: SecretOpaysAudit2026!Xy7Qz9Wm4Kp2Lv8R
 logging:
   level: info
   json: false
