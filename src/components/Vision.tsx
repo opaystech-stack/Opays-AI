@@ -64,7 +64,7 @@ function VisionCard({ icon: Icon, title, text }: { icon: any; title: string; tex
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
-      className="p-8 rounded-2xl border border-white/5 bg-white/[0.02] hover:border-primary/20 transition-colors"
+      className="p-8 rounded-2xl border border-border/60 bg-card/50 hover:border-primary/20 transition-colors"
     >
       <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-6">
         <Icon size={24} className="text-primary" />

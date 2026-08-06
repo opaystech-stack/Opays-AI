@@ -42,37 +42,37 @@
 :root {
   --radius: 0.75rem;
 
-  /* Premium dark with better readability — lighter than before */
-  --background: oklch(0.26 0.02 260);
-  --foreground: oklch(0.97 0.01 250);
-  --card: oklch(0.32 0.025 260);
-  --card-foreground: oklch(0.97 0.01 250);
-  --popover: oklch(0.34 0.025 260);
-  --popover-foreground: oklch(0.97 0.01 250);
-  --primary: oklch(0.62 0.2 255);
+  /* Premium light theme — clean, readable, brand blues preserved */
+  --background: oklch(0.985 0.004 250);
+  --foreground: oklch(0.23 0.035 260);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.23 0.035 260);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.23 0.035 260);
+  --primary: oklch(0.52 0.19 255);
   --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.36 0.03 260);
-  --secondary-foreground: oklch(0.97 0.01 250);
-  --muted: oklch(0.38 0.03 260);
-  --muted-foreground: oklch(0.82 0.02 255);
-  --accent: oklch(0.78 0.16 220);
-  --accent-foreground: oklch(0.13 0.02 260);
-  --destructive: oklch(0.62 0.22 25);
+  --secondary: oklch(0.95 0.01 250);
+  --secondary-foreground: oklch(0.3 0.04 260);
+  --muted: oklch(0.95 0.008 250);
+  --muted-foreground: oklch(0.45 0.03 255);
+  --accent: oklch(0.78 0.14 210);
+  --accent-foreground: oklch(0.15 0.03 260);
+  --destructive: oklch(0.55 0.2 25);
   --destructive-foreground: oklch(0.99 0 0);
-  --border: oklch(1 0 0 / 14%);
-  --input: oklch(1 0 0 / 16%);
-  --ring: oklch(0.62 0.2 255);
+  --border: oklch(0.88 0.015 255);
+  --input: oklch(0.85 0.015 255);
+  --ring: oklch(0.52 0.19 255);
 
-  --neon: oklch(0.62 0.2 255);
-  --neon-cyan: oklch(0.8 0.15 210);
-  --terminal: oklch(0.18 0.02 260);
-  --terminal-foreground: oklch(0.95 0.02 200);
-  --success: oklch(0.72 0.16 150);
+  --neon: oklch(0.52 0.19 255);
+  --neon-cyan: oklch(0.6 0.13 215);
+  --terminal: oklch(0.21 0.03 260);
+  --terminal-foreground: oklch(0.93 0.02 200);
+  --success: oklch(0.55 0.15 150);
 
   --gradient-hero:
     radial-gradient(
       ellipse at top left,
-      color-mix(in oklab, var(--neon) 16%, transparent),
+      color-mix(in oklab, var(--neon) 14%, transparent),
       transparent 55%
     ),
     radial-gradient(
@@ -80,9 +80,9 @@
       color-mix(in oklab, var(--neon-cyan) 12%, transparent),
       transparent 60%
     );
-  --shadow-neon: 0 0 34px -10px color-mix(in oklab, var(--neon) 55%, transparent);
-  --shadow-glow: 0 0 50px -12px color-mix(in oklab, var(--neon-cyan) 45%, transparent);
-  --glass-bg: color-mix(in oklab, var(--card) 55%, transparent);
+  --shadow-neon: 0 0 34px -10px color-mix(in oklab, var(--neon) 45%, transparent);
+  --shadow-glow: 0 0 50px -12px color-mix(in oklab, var(--neon-cyan) 40%, transparent);
+  --glass-bg: color-mix(in oklab, var(--card) 75%, transparent);
   --glass-border: color-mix(in oklab, var(--foreground) 10%, transparent);
 }
 

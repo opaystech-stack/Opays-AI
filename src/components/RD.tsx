@@ -44,7 +44,7 @@ export function RD() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="relative"
           >
-            <div className="aspect-square rounded-3xl overflow-hidden border border-white/10 glass p-8 flex items-center justify-center relative">
+            <div className="aspect-square rounded-3xl overflow-hidden border border-border/60 glass p-8 flex items-center justify-center relative">
               {/* Pulsing rings background */}
               <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
                 {[...Array(3)].map((_, i) => (
@@ -63,7 +63,7 @@ export function RD() {
                 ))}
               </div>
 
-              <div className="relative h-full w-full rounded-2xl bg-black/40 border border-white/5 overflow-hidden flex items-center justify-center group shadow-2xl">
+              <div className="relative h-full w-full rounded-2xl bg-card border border-border/60 overflow-hidden flex items-center justify-center group shadow-2xl">
                 <motion.div
                   animate={{ rotate: 360 }}
                   transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
@@ -84,7 +84,7 @@ export function RD() {
                       className="text-primary mb-4 mx-auto drop-shadow-[0_0_15px_rgba(0,186,255,0.5)]"
                     />
                   </motion.div>
-                  <div className="text-3xl font-bold text-white mb-2 tracking-tight">R&D Lab</div>
+                  <div className="text-3xl font-bold text-foreground mb-2 tracking-tight">R&D Lab</div>
                   <div className="flex items-center justify-center gap-2">
                     <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
                     <span className="text-[10px] text-muted-foreground font-mono uppercase tracking-[0.2em]">

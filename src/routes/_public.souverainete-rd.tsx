@@ -152,7 +152,7 @@ function LocalAiSection() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="relative"
           >
-            <div className="relative flex aspect-square items-center justify-center overflow-hidden rounded-3xl border border-white/10 glass p-8">
+            <div className="relative flex aspect-square items-center justify-center overflow-hidden rounded-3xl border border-border/60 glass p-8">
               <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
                 {[0, 1, 2].map((i) => (
                   <motion.div
@@ -179,7 +179,7 @@ function LocalAiSection() {
                     className="mx-auto mb-4 text-primary drop-shadow-[0_0_15px_rgba(0,186,255,0.5)]"
                   />
                 </motion.div>
-                <div className="mb-2 text-2xl font-bold tracking-tight text-white">
+                <div className="mb-2 text-2xl font-bold tracking-tight text-foreground">
                   Circuit fermé
                 </div>
                 <div className="flex items-center justify-center gap-2">
@@ -285,7 +285,7 @@ function ResearchSection() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="relative"
           >
-            <div className="relative flex aspect-square items-center justify-center overflow-hidden rounded-3xl border border-white/10 glass p-8">
+            <div className="relative flex aspect-square items-center justify-center overflow-hidden rounded-3xl border border-border/60 glass p-8">
               <motion.div
                 animate={{ rotate: 360 }}
                 transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
@@ -305,7 +305,7 @@ function ResearchSection() {
                     className="mx-auto mb-4 text-primary drop-shadow-[0_0_15px_rgba(0,186,255,0.5)]"
                   />
                 </motion.div>
-                <div className="mb-2 text-2xl font-bold tracking-tight text-white">R&amp;D Lab</div>
+                <div className="mb-2 text-2xl font-bold tracking-tight text-foreground">R&amp;D Lab</div>
                 <div className="flex items-center justify-center gap-2">
                   <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary" />
                   <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">

@@ -83,7 +83,7 @@ export function TerminalAnimation() {
 
       <div className="rounded-2xl border border-border/60 bg-[color:var(--terminal)] shadow-[var(--shadow-glow)] overflow-hidden">
         {/* title bar */}
-        <div className="flex items-center gap-2 px-4 py-3 border-b border-border/50 bg-black/40">
+        <div className="flex items-center gap-2 px-4 py-3 border-b border-border/50 bg-muted/60">
           <span className="h-3 w-3 rounded-full bg-red-500/80" />
           <span className="h-3 w-3 rounded-full bg-yellow-500/80" />
           <span className="h-3 w-3 rounded-full bg-green-500/80" />
@@ -132,7 +132,7 @@ export function TerminalAnimation() {
         </div>
 
         {/* metrics footer */}
-        <div className="grid grid-cols-3 border-t border-border/50 bg-black/30 text-xs font-mono">
+        <div className="grid grid-cols-3 border-t border-border/50 bg-muted/40 text-xs font-mono">
           <Metric label="SYS_LOAD" value="24%" />
           <Metric label="MEM_ALLOC" value="OPTIMAL" tone="accent" />
           <Metric label="NET_LATENCY" value="12ms" />

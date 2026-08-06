@@ -81,13 +81,13 @@ function FAQAccordionItem({
   onClick: () => void;
 }) {
   return (
-    <div className="border border-white/10 rounded-2xl bg-black/20 backdrop-blur-sm overflow-hidden transition-all hover:border-white/20">
+    <div className="border border-border/60 rounded-2xl bg-card/60 backdrop-blur-sm overflow-hidden transition-all hover:border-primary/30">
       <button
         onClick={onClick}
         className="w-full flex items-center justify-between p-6 text-left focus:outline-none"
       >
         <h4 className="text-lg font-medium text-foreground pr-8">{item.question}</h4>
-        <div className="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-white/5 text-muted-foreground transition-colors hover:text-white">
+        <div className="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-muted text-muted-foreground transition-colors hover:text-foreground">
           {isOpen ? <Minus size={18} /> : <Plus size={18} />}
         </div>
       </button>
@@ -117,7 +117,7 @@ export function FAQ() {
 
   return (
     <section id="faq" className="py-24 relative overflow-hidden">
-      <div className="absolute inset-0 bg-black/40 -z-10" />
+      <div className="absolute inset-0 bg-muted/30 -z-10" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[var(--neon-cyan)]/5 blur-[120px] rounded-full -z-10" />
 
       <div className="mx-auto max-w-4xl px-6">
@@ -137,7 +137,7 @@ export function FAQ() {
               key={catIndex}
               className="p-8 rounded-3xl border border-[color:var(--neon-cyan)]/30 bg-[color:var(--neon-cyan)]/5 backdrop-blur-sm space-y-6 shadow-[var(--shadow-neon)] transition-all hover:border-[color:var(--neon-cyan)]/60"
             >
-              <h3 className="text-2xl font-bold text-white flex items-center gap-3">
+              <h3 className="text-2xl font-bold text-foreground flex items-center gap-3">
                 <span className="w-3 h-3 rounded-full bg-[color:var(--neon-cyan)] shadow-[var(--shadow-neon)]" />
                 {category.title}
               </h3>

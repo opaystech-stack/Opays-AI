@@ -36,7 +36,7 @@ export function Navbar() {
 
   return (
     <header className="fixed inset-x-0 top-6 z-50 px-6">
-      <div className="mx-auto max-w-5xl rounded-full border border-white/30 bg-background/20 backdrop-blur-lg shadow-[0_8px_32px_rgba(0,0,0,0.3)] transition-all duration-300">
+      <div className="mx-auto max-w-5xl rounded-full border border-border/60 bg-background/70 backdrop-blur-lg shadow-[0_8px_32px_rgba(0,0,0,0.08)] transition-all duration-300">
         <div className="flex h-12 items-center justify-between px-6">
           <Link to="/" className="flex items-center gap-2 group shrink-0">
             <img
@@ -87,7 +87,7 @@ export function Navbar() {
           <div className="flex items-center gap-4 shrink-0">
             <Link
               to={cta.target as NavTo}
-              className="hidden md:inline-flex items-center justify-center rounded-full bg-blue-600 px-5 py-1.5 text-xs font-semibold text-white hover:bg-blue-500 shadow-[0_0_15px_rgba(37,99,235,0.4)] hover:shadow-[0_0_20px_rgba(37,99,235,0.6)] transition-all"
+              className="hidden md:inline-flex items-center justify-center rounded-full bg-primary px-5 py-1.5 text-xs font-semibold text-primary-foreground hover:bg-primary/90 shadow-[0_0_15px_rgba(37,99,235,0.3)] hover:shadow-[0_0_20px_rgba(37,99,235,0.5)] transition-all"
             >
               {cta.label}
             </Link>
@@ -103,7 +103,7 @@ export function Navbar() {
       </div>
 
       {open && (
-        <div className="md:hidden mt-2 rounded-2xl border border-white/30 bg-background/90 backdrop-blur-xl p-4 space-y-1 shadow-xl">
+        <div className="md:hidden mt-2 rounded-2xl border border-border/60 bg-background/95 backdrop-blur-xl p-4 space-y-1 shadow-xl">
           {NAV_LINKS.map((page) => {
             const active = isActive(page.path);
             return (
@@ -136,7 +136,7 @@ export function Navbar() {
           <Link
             to={cta.target as NavTo}
             onClick={() => setOpen(false)}
-            className="mt-2 flex items-center justify-center rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-[0_0_15px_rgba(37,99,235,0.4)]"
+            className="mt-2 flex items-center justify-center rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-[0_0_15px_rgba(37,99,235,0.3)]"
           >
             {cta.label}
           </Link>
