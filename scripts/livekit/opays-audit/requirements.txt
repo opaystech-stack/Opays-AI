@@ -1,0 +1,7 @@
+livekit-agents>=1.0
+livekit-plugins-openai>=0.12
+livekit-plugins-silero>=0.10
+faster-whisper>=1.0
+piper-tts>=1.2
+numpy
+python-dotenv
