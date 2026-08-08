@@ -1,7 +1,10 @@
 import { chromium } from "playwright";
-import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { createHash } from "node:crypto";
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+
+import { analyzeConversationTimeline } from "./voice-conversation-oracle.mjs";
 
 const url = process.env.VOICE_URL ?? "https://opays.io/contact/?voice-e2e=playwright";
 const executablePath =
@@ -36,6 +39,34 @@ function createToneWave(directory) {
   return file;
 }
 
+function loadAttestedFixture(audioFile, metadataFile) {
+  if (!metadataFile) {
+    throw new Error("FULL_CONVERSATION requires FAKE_AUDIO_METADATA from Piper/STT validation");
+  }
+  const metadata = JSON.parse(readFileSync(metadataFile, "utf8"));
+  const audioSha256 = createHash("sha256").update(readFileSync(audioFile)).digest("hex");
+  if (
+    metadata.schemaVersion !== 1 ||
+    metadata.generator !== "piper" ||
+    metadata.validator !== "faster-whisper" ||
+    metadata.validated !== true ||
+    metadata.validatedExpectedResponse !== "validation conversationnelle réussie" ||
+    metadata.audioSha256 !== audioSha256
+  ) {
+    throw new Error("FULL_CONVERSATION requires a Piper fixture attested by faster-whisper");
+  }
+  const speechStartMs = Number(metadata.speechStartMs);
+  const speechEndMs = Number(metadata.speechEndMs);
+  if (
+    !Number.isFinite(speechStartMs) ||
+    !Number.isFinite(speechEndMs) ||
+    speechEndMs <= speechStartMs
+  ) {
+    throw new Error("Attested fixture has invalid speech bounds");
+  }
+  return { speechStartMs, speechEndMs };
+}
+
 function sanitize(message) {
   return message
     .replace(/access_token=[^&\s]+/gi, "access_token=<redacted>")
@@ -52,12 +83,33 @@ const warnings = [];
 const errors = [];
 
 try {
+  const fullConversation = process.env.FULL_CONVERSATION === "1";
+  if (fullConversation && !process.env.FAKE_AUDIO_FILE) {
+    throw new Error("FULL_CONVERSATION requires FAKE_AUDIO_FILE with intelligible speech");
+  }
+  let speechStartMs = Number.NaN;
+  let speechEndMs = Number.NaN;
+  const conversationResponseTimeoutMs = Number(
+    process.env.CONVERSATION_RESPONSE_TIMEOUT_MS ?? 30_000,
+  );
+  if (
+    fullConversation &&
+    (!Number.isFinite(conversationResponseTimeoutMs) || conversationResponseTimeoutMs <= 0)
+  ) {
+    throw new Error("FULL_CONVERSATION requires a positive response timeout");
+  }
   const audioFile =
     process.env.FAKE_AUDIO_FILE ??
     (() => {
       generatedAudioDirectory = mkdtempSync(join(tmpdir(), "opays-voice-e2e-"));
       return createToneWave(generatedAudioDirectory);
     })();
+  if (fullConversation) {
+    ({ speechStartMs, speechEndMs } = loadAttestedFixture(
+      audioFile,
+      process.env.FAKE_AUDIO_METADATA,
+    ));
+  }
   const browserArgs = [
     "--use-fake-device-for-media-stream",
     "--use-fake-ui-for-media-stream",
@@ -79,6 +131,7 @@ try {
     await context.grantPermissions(["microphone"], { origin });
   }
   const blockAudioPlay = process.env.BLOCK_AUDIO_PLAY === "1";
+  const forceTurnRelay = process.env.FORCE_TURN_RELAY === "1";
   const unmountDuringMic = process.env.UNMOUNT_DURING_MIC === "1";
   const expectMicTimeout = process.env.EXPECT_MIC_TIMEOUT === "1";
   if (blockAudioPlay) {
@@ -108,30 +161,54 @@ try {
       };
     });
   }
+  if (forceTurnRelay) {
+    await context.addInitScript(() => {
+      const OriginalPeerConnection = window.RTCPeerConnection;
+      class RelayOnlyPeerConnection extends OriginalPeerConnection {
+        constructor(configuration = {}) {
+          super({ ...configuration, iceTransportPolicy: "relay" });
+        }
+      }
+      window.RTCPeerConnection = RelayOnlyPeerConnection;
+      if (window.webkitRTCPeerConnection) {
+        window.webkitRTCPeerConnection = RelayOnlyPeerConnection;
+      }
+    });
+  }
   const microphoneDelayMs = Number(
     process.env.MIC_PERMISSION_DELAY_MS ??
       (expectMicTimeout ? 21_500 : unmountDuringMic ? 1500 : 0),
   );
-  if (microphoneDelayMs > 0) {
-    await context.addInitScript((delayMs) => {
-      const original = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
-      navigator.mediaDevices.getUserMedia = async (...args) => {
-        window.__voiceAuditMicRequested = true;
+  await context.addInitScript((delayMs) => {
+    const original = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
+    navigator.mediaDevices.getUserMedia = async (...args) => {
+      window.__voiceAuditMicRequested = true;
+      if (delayMs > 0) {
         await new Promise((resolve) => setTimeout(resolve, delayMs));
-        const stream = await original(...args);
-        window.__voiceAuditCapturedTracks = stream.getTracks();
-        window.__voiceAuditMicResolved = true;
-        return stream;
-      };
-    }, microphoneDelayMs);
-  }
+      }
+      const stream = await original(...args);
+      window.__voiceAuditCapturedTracks = stream.getTracks();
+      window.__voiceAuditMicResolved = true;
+      window.__voiceAuditMicStartedAt = performance.now();
+      return stream;
+    };
+  }, microphoneDelayMs);
   page = await context.newPage();
+  await page.addInitScript(() => {
+    window.addEventListener("voice-audit:user-input-final", () => {
+      window.__voiceAuditAssistantTurnAt ??= performance.now();
+    });
+  });
   const tokenEndpoint = process.env.TOKEN_ENDPOINT;
   if (tokenEndpoint) {
+    const tokenRequestOrigin = process.env.TOKEN_REQUEST_ORIGIN ?? new URL(tokenEndpoint).origin;
     await page.route("**/api/voice/token", async (route) => {
       const response = await fetch(tokenEndpoint, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Origin: tokenRequestOrigin,
+        },
         body: "{}",
         signal: AbortSignal.timeout(10_000),
       });
@@ -249,84 +326,105 @@ try {
     });
 
     const requireGreetingAfterActive = process.env.REQUIRE_GREETING_AFTER_ACTIVE === "1";
-    const greetingSignal = requireGreetingAfterActive
-      ? await page.evaluate(async () => {
-          const audio = document.querySelector("audio[data-voice-audit-audio]");
-          if (!audio || !(audio.srcObject instanceof MediaStream)) {
-            throw new Error("Remote audio MediaStream is unavailable");
-          }
-          const context = new AudioContext();
-          const source = context.createMediaStreamSource(audio.srcObject);
-          const analyser = context.createAnalyser();
-          analyser.fftSize = 2048;
-          source.connect(analyser);
-          await context.resume();
-          const data = new Float32Array(analyser.fftSize);
-          let maxRms = 0;
-          let activeSamples = 0;
-          for (let index = 0; index < 80; index += 1) {
-            analyser.getFloatTimeDomainData(data);
-            let sumSquares = 0;
-            for (const sample of data) sumSquares += sample * sample;
-            const rms = Math.sqrt(sumSquares / data.length);
-            maxRms = Math.max(maxRms, rms);
-            if (rms > 0.003) activeSamples += 1;
-            await new Promise((resolve) => setTimeout(resolve, 100));
-          }
-          await context.close();
-          return { maxRms, activeSamples };
-        })
-      : null;
+    const greetingSignal =
+      requireGreetingAfterActive && !fullConversation
+        ? await page.evaluate(async () => {
+            const audio = document.querySelector("audio[data-voice-audit-audio]");
+            if (!audio || !(audio.srcObject instanceof MediaStream)) {
+              throw new Error("Remote audio MediaStream is unavailable");
+            }
+            const context = new AudioContext();
+            const source = context.createMediaStreamSource(audio.srcObject);
+            const analyser = context.createAnalyser();
+            analyser.fftSize = 2048;
+            source.connect(analyser);
+            await context.resume();
+            const data = new Float32Array(analyser.fftSize);
+            let maxRms = 0;
+            let activeSamples = 0;
+            for (let index = 0; index < 80; index += 1) {
+              analyser.getFloatTimeDomainData(data);
+              let sumSquares = 0;
+              for (const sample of data) sumSquares += sample * sample;
+              const rms = Math.sqrt(sumSquares / data.length);
+              maxRms = Math.max(maxRms, rms);
+              if (rms > 0.003) activeSamples += 1;
+              await new Promise((resolve) => setTimeout(resolve, 100));
+            }
+            await context.close();
+            return { maxRms, activeSamples };
+          })
+        : null;
 
-    if (requireGreetingAfterActive && (!greetingSignal || greetingSignal.activeSamples < 3)) {
+    if (
+      requireGreetingAfterActive &&
+      !fullConversation &&
+      (!greetingSignal || greetingSignal.activeSamples < 3)
+    ) {
       throw new Error("No audible greeting after microphone activation");
     }
 
-    const fullConversation = process.env.FULL_CONVERSATION === "1";
-    const signal = fullConversation
-      ? await page.evaluate(async () => {
-          const audio = document.querySelector("audio[data-voice-audit-audio]");
-          if (!audio || !(audio.srcObject instanceof MediaStream)) {
-            throw new Error("Remote audio MediaStream is unavailable");
-          }
-          const context = new AudioContext();
-          const source = context.createMediaStreamSource(audio.srcObject);
-          const analyser = context.createAnalyser();
-          analyser.fftSize = 2048;
-          source.connect(analyser);
-          await context.resume();
-          const data = new Float32Array(analyser.fftSize);
-          const rmsSamples = [];
-          let bursts = 0;
-          let active = false;
-          let quietSamples = 20;
-          for (let index = 0; index < 420; index += 1) {
-            analyser.getFloatTimeDomainData(data);
-            let sumSquares = 0;
-            for (const sample of data) sumSquares += sample * sample;
-            const rms = Math.sqrt(sumSquares / data.length);
-            rmsSamples.push(rms);
-            if (rms > 0.003) {
-              if (!active && quietSamples >= 8) bursts += 1;
-              active = true;
-              quietSamples = 0;
-            } else {
-              quietSamples += 1;
-              if (quietSamples >= 8) active = false;
+    const rawConversationSignal = fullConversation
+      ? await page.evaluate(
+          async ({ speechEndMs, responseTimeoutMs }) => {
+            const audio = document.querySelector("audio[data-voice-audit-audio]");
+            if (!audio || !(audio.srcObject instanceof MediaStream)) {
+              throw new Error("Remote audio MediaStream is unavailable");
             }
-            await new Promise((resolve) => setTimeout(resolve, 100));
-          }
-          await context.close();
-          return {
-            bursts,
-            maxRms: Math.max(...rmsSamples),
-            activeSamples: rmsSamples.filter((value) => value > 0.003).length,
-          };
-        })
+            const microphoneStartedAt = window.__voiceAuditMicStartedAt;
+            if (!Number.isFinite(microphoneStartedAt)) {
+              throw new Error("Microphone timeline origin is unavailable");
+            }
+            const context = new AudioContext();
+            const source = context.createMediaStreamSource(audio.srcObject);
+            const analyser = context.createAnalyser();
+            analyser.fftSize = 2048;
+            source.connect(analyser);
+            await context.resume();
+            const data = new Float32Array(analyser.fftSize);
+            const rmsSamples = [];
+            let assistantTurnStartMs = null;
+            const stopAtMs = speechEndMs + responseTimeoutMs;
+            while (performance.now() - microphoneStartedAt <= stopAtMs) {
+              if (
+                assistantTurnStartMs === null &&
+                Number.isFinite(window.__voiceAuditAssistantTurnAt)
+              ) {
+                assistantTurnStartMs = window.__voiceAuditAssistantTurnAt - microphoneStartedAt;
+              }
+              analyser.getFloatTimeDomainData(data);
+              let sumSquares = 0;
+              for (const sample of data) sumSquares += sample * sample;
+              const rms = Math.sqrt(sumSquares / data.length);
+              rmsSamples.push({
+                timestampMs: performance.now() - microphoneStartedAt,
+                rms,
+              });
+              await new Promise((resolve) => setTimeout(resolve, 100));
+            }
+            await context.close();
+            return { rmsSamples, assistantTurnStartMs };
+          },
+          {
+            speechEndMs,
+            responseTimeoutMs: conversationResponseTimeoutMs,
+          },
+        )
       : null;
 
-    if (fullConversation && (!signal || signal.bursts < 2)) {
-      throw new Error(`Expected two remote speech bursts, observed ${signal?.bursts ?? 0}`);
+    const signal = rawConversationSignal
+      ? analyzeConversationTimeline(rawConversationSignal.rmsSamples, {
+          speechStartMs,
+          speechEndMs,
+          assistantTurnStartMs: rawConversationSignal.assistantTurnStartMs,
+        })
+      : null;
+    if (fullConversation && (!signal?.hasGreeting || !signal.hasPostInputResponse)) {
+      throw new Error(
+        `Expected greeting before input and response after input; greeting=${Boolean(
+          signal?.hasGreeting,
+        )}, response=${Boolean(signal?.hasPostInputResponse)}`,
+      );
     }
 
     console.log(
@@ -334,6 +432,7 @@ try {
         {
           status: "PASS",
           sessionActive: true,
+          forceTurnRelay,
           audioState,
           greetingSignal,
           signal,

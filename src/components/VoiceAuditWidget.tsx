@@ -212,6 +212,13 @@ export function VoiceAuditWidget({ onFallback }: { onFallback?: () => void }) {
         .on(RoomEvent.AudioPlaybackStatusChanged, (canPlay) => {
           if (isCurrentAttempt()) setAudioBlocked(!canPlay);
         })
+        .on(RoomEvent.DataReceived, (payload) => {
+          if (!isCurrentAttempt()) return;
+          const marker = new TextDecoder().decode(payload);
+          if (marker === "voice-audit:user-input-final") {
+            window.dispatchEvent(new CustomEvent("voice-audit:user-input-final"));
+          }
+        })
         .on(RoomEvent.TrackSubscribed, (track) => {
           if (track.kind !== "audio" || !isCurrentAttempt()) return;
           const element = track.attach();

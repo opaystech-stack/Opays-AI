@@ -15,6 +15,7 @@ Pile self-hosted pour le transport et la voix, avec LLM OpenRouter :
   - TTS  : piper (local, StreamAdapter)
 """
 
+import asyncio
 import logging
 import os
 
@@ -50,7 +51,8 @@ if not OPENROUTER_API_KEY:
 
 
 class AuditAgent(Agent):
-    def __init__(self) -> None:
+    def __init__(self, room) -> None:
+        self.room = room
         super().__init__(
             instructions=(
                 "Tu es « Amara », l'auditrice IA vocale d'Opays Tech, cabinet d'ingénierie "
@@ -67,6 +69,14 @@ class AuditAgent(Agent):
                 "d'envoyer le résumé par email. "
             ),
             tools=[EndCallTool()],
+        )
+
+    async def on_user_turn_completed(self, turn_ctx, new_message) -> None:
+        """Publish the final-STT marker before the framework asks the LLM to reply."""
+        await self.room.local_participant.publish_data(
+            b"voice-audit:user-input-final",
+            reliable=True,
+            topic="voice-audit",
         )
 
     async def on_enter(self) -> None:
@@ -171,7 +181,7 @@ async def entrypoint(ctx: JobContext) -> None:
         pass  # métriques loggées par le serveur
 
     await session.start(
-        agent=AuditAgent(),
+        agent=AuditAgent(ctx.room),
         room=ctx.room,
         room_options=room_io.RoomOptions(
             audio_input=room_io.AudioInputOptions(),

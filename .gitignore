@@ -53,3 +53,8 @@ tools/
 spec-kit/
 *.zip
 *.pdf
+
+# Runtime voice test artefacts
+__pycache__/
+*.py[cod]
+scripts/livekit/**/*.wav

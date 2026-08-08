@@ -9,8 +9,14 @@ are installed:
 from __future__ import annotations
 
 import asyncio
+import unittest
 
-from adapters_locaux import PiperTTS
+try:
+    from adapters_locaux import PiperTTS
+except ModuleNotFoundError as error:
+    if error.name != "livekit":
+        raise
+    raise unittest.SkipTest("test_piper_runtime doit être exécuté dans l'image agent") from error
 
 
 async def test_piper_emits_pcm() -> None:

@@ -75,7 +75,7 @@ class FasterWhisperSTT(stt.STT):
             model.transcribe,
             samples,
             language=lang,
-            beam_size=1,
+            beam_size=5,
             vad_filter=True,
         )
         text = "".join(seg.text for seg in segments).strip()
