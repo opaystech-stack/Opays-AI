@@ -198,6 +198,16 @@ class DeployAgentRuntimeTests(unittest.TestCase):
 
         self.assertEqual(result.returncode, 0, result.stderr)
 
+    def test_invalid_voice_e2e_value_is_rejected(self) -> None:
+        result, calls = self.run_deploy(
+            REQUIRE_VOICE_E2E="2",
+            EXPECT_EARLY_REJECT="1",
+        )
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertEqual(calls, [])
+        self.assertIn("doit valoir 0 ou 1", result.stderr)
+
 
 if __name__ == "__main__":
     unittest.main()

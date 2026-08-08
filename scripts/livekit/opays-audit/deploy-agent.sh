@@ -77,7 +77,11 @@ FIXTURE_DIR=$(mktemp -d /tmp/opays-speech-fixture.XXXXXX)
 chmod 733 "$FIXTURE_DIR"
 E2E_FIXTURE_DIR=${E2E_FIXTURE_DIR:-/opt/opays-voice/e2e-fixtures/$RELEASE_SHA}
 REQUIRE_VOICE_E2E=${REQUIRE_VOICE_E2E:-1}
-if [ "$REQUIRE_VOICE_E2E" != "1" ] && { [ "${ALLOW_UNVERIFIED_SOURCE_TEST:-0}" != "1" ] || [ "$VALIDATE_ONLY" != "1" ]; }; then
+case "$REQUIRE_VOICE_E2E" in
+  0|1) ;;
+  *) echo "REQUIRE_VOICE_E2E doit valoir 0 ou 1" >&2; exit 1 ;;
+esac
+if [ "$REQUIRE_VOICE_E2E" = "0" ] && { [ "${ALLOW_UNVERIFIED_SOURCE_TEST:-0}" != "1" ] || [ "$VALIDATE_ONLY" != "1" ]; }; then
   echo "REQUIRE_VOICE_E2E ne peut être désactivé qu'en VALIDATE_ONLY test explicite" >&2
   exit 1
 fi
