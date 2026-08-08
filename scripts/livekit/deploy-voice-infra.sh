@@ -131,7 +131,7 @@ run_livekit() {
       -p 7881:7881
       -p 50000-50100:50000-50100/udp
       --label 'traefik.enable=true'
-      --label 'traefik.http.routers.opays-rtc.rule=Host(`opays.io`) && PathPrefix(`/rtc`)'
+      --label 'traefik.http.routers.opays-rtc.rule=Host(`opays.io`) && HeadersRegexp(`Connection`, `(?i)Upgrade`)'
       --label 'traefik.http.routers.opays-rtc.entrypoints=websecure'
       --label 'traefik.http.routers.opays-rtc.tls.certresolver=letsencrypt'
       --label 'traefik.http.routers.opays-rtc.service=opays-rtc'
